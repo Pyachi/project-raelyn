@@ -12,7 +12,7 @@ Game::Game() : QGraphicsView() {
 
     background = new QGraphicsPixmapItem();
     QPixmap backgroundImage(gameHeight - (playBorder * 2),gameHeight - (playBorder * 2));
-    backgroundImage.fill(Qt::black);
+		backgroundImage.fill(Qt::darkBlue);
     background->setPixmap(backgroundImage);
     background->setOffset(playBorder, playBorder);
     scene->addItem(background);
@@ -24,7 +24,7 @@ Game::Game() : QGraphicsView() {
     connect(tickClock, &QTimer::timeout, this, &Game::tick);
 
     new Player(this);
-    new Enemy(this, "24", QPoint(40,100), 2, 200);
+		new Enemy(this, ":/images/enemy.png", QPoint(40,100), 2, 200);
 }
 
 void Game::tick() {

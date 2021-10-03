@@ -5,7 +5,7 @@
 #include <QtMath>
 #include <QDebug>
 
-Player::Player(Game* game) : Entity(game, "a", QPoint(400, 400), 2) {
+Player::Player(Game* game) : Entity(game, ":/images/player.png", QPoint(400, 400), 2) {
 		hitbox = new Hitbox(game, this, ":/images/player_hitbox.png", getCenter(), 3);
 }
 
