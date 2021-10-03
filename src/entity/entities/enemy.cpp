@@ -22,7 +22,7 @@ void Enemy::tick() {
 }
 
 void Enemy::fireBullet(int, int) {
-    new Bullet(game, this, "16", getCenter(), QPoint(0,5));
-    new Bullet(game, this, "16", getCenter(), QPoint(3,5));
-    new Bullet(game, this, "16", getCenter(), QPoint(-3,5));
+		new Bullet(game, this, ":/images/enemy_bullet.png", getCenter(), QPoint(0,5));
+		new Bullet(game, this, ":/images/enemy_bullet.png", getCenter(), QPoint(3,5));
+		new Bullet(game, this, ":/images/enemy_bullet.png", getCenter(), QPoint(-3,5));
 }

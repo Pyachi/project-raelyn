@@ -4,9 +4,7 @@
 
 Entity::Entity(Game* game, QString texture, QPoint spawnLoc, int zValue) : QGraphicsPixmapItem() {
     this->game = game;
-    int size = texture.toInt();
-    QPixmap image(size, size);
-    image.fill(QColor(rand()%255,rand()%255,rand()%255));
+		QPixmap image(texture);
 		setPixmap(image);
     setCenter(spawnLoc);
     setZValue(zValue);

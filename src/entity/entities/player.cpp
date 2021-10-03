@@ -5,8 +5,8 @@
 #include <QtMath>
 #include <QDebug>
 
-Player::Player(Game* game) : Entity(game, "64", QPoint(400, 400), 2) {
-    hitbox = new Hitbox(game, this, "12", getCenter(), 3);
+Player::Player(Game* game) : Entity(game, "a", QPoint(400, 400), 2) {
+		hitbox = new Hitbox(game, this, ":/images/player_hitbox.png", getCenter(), 3);
 }
 
 void Player::tick() {
@@ -77,6 +77,6 @@ void Player::shootBullets() {
 }
 
 void Player::fireBullet(int dx, int dy) {
-    Bullet* bullet = new Bullet(game, this, "32", getCenter() + QPoint(dx, dy), QPoint(0,-40));
+		Bullet* bullet = new Bullet(game, this, ":/images/player_bullet.png", getCenter() + QPoint(dx, dy), QPoint(0,-40));
     bullet->setOpacity(0.25);
 }
