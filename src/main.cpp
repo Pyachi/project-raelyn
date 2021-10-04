@@ -1,11 +1,11 @@
-#include "src/game/game.h"
 #include <QApplication>
-#include <stdlib.h>
+#include "src/game/game.h"
 
-int main(int argc, char *argv[]) {
-    QApplication a(argc, argv);
-    srand(time(NULL));
-    Game w;
-    w.show();
-    return a.exec();
+int main(int argc, char* argv[]) {
+	QApplication a(argc, argv);
+	Game w;
+
+	w.show();
+
+	return a.exec();
 }

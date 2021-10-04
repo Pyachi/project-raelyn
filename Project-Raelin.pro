@@ -16,20 +16,29 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/assets/textures.cpp \
+    src/entity/ai/ai.cpp \
     src/entity/entities/bullet.cpp \
     src/entity/entities/enemy.cpp \
-    src/entity/entities/hitbox.cpp \
     src/entity/entities/player.cpp \
-    src/entity/entity.cpp \
+    src/entity/entities/playerhitbox.cpp \
+    src/entity/types/baseentity.cpp \
+    src/entity/types/collidableentity.cpp \
+    src/entity/types/linkedentity.cpp \
     src/game/game.cpp \
     src/main.cpp
 
 HEADERS += \
+    src/assets/textures.h \
+    src/entity/ai/ai.h \
     src/entity/entities/bullet.h \
     src/entity/entities/enemy.h \
-    src/entity/entities/hitbox.h \
     src/entity/entities/player.h \
-    src/entity/entity.h \
+    src/entity/entities/playerhitbox.h \
+    src/entity/types/aientity.h \
+    src/entity/types/baseentity.h \
+    src/entity/types/collidableentity.h \
+    src/entity/types/linkedentity.h \
     src/game/game.h
 
 FORMS +=
@@ -41,3 +50,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     assets/assets.qrc
+
+DISTFILES +=

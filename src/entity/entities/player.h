@@ -2,30 +2,27 @@
 #define PLAYER_H
 
 #include <QSet>
-#include "src/entity/entity.h"
+#include "src/entity/types/baseentity.h"
+#include "src/entity/types/collidableentity.h"
 
-class Hitbox;
+class PlayerHitbox;
 
-const int baseSpeed = 15;
-const int focusSpeed = 5;
-const int playerSize = 64;
-const int playerHitboxSize = 12;
+class Player : public BaseEntity {
+ public:
+	Player(Game*);
 
-class Player : public Entity {
-public:
-    Player(Game*);
+	QList<CollidableEntity*> getValidHits();
 
-    void tick();
+ private:
+	PlayerHitbox* hitbox;
+	bool firing = false;
+	bool focus = false;
+	int level = 1;
 
-private:
-    Hitbox* hitbox;
-    bool firing = false;
-    bool focus = false;
-    int level = 1;
-
-    void checkMovement(const QSet<int> &keys);
-    void shootBullets();
-    void fireBullet(int, int);
+	void tick() override;
+	void checkMovement(const QSet<int>& keys);
+	void shootBullets();
+	void fireBullet(int, int);
 };
 
-#endif // PLAYER_H
+#endif  // PLAYER_H

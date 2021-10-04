@@ -1,15 +1,20 @@
 #include "bullet.h"
-#include "src/game/game.h"
-#include "hitbox.h"
+#include "src/assets/textures.h"
 
-Bullet::Bullet(Game* game, Entity* owner, QString texture, QPoint spawnLoc, QPoint dir)
-    : Hitbox(game, owner, texture, spawnLoc, 1) {
-    this->dir = dir;
+Bullet::Bullet(Game* game,
+							 Texture texture,
+							 QPoint spawn,
+							 BaseEntity* owner,
+							 std::function<void(Bullet*)> ai,
+							 double rotation)
+		: BaseEntity(game, texture, spawn),
+			LinkedEntity(game, texture, spawn, owner),
+			AIEntity<Bullet>(game, texture, spawn, ai),
+			CollidableEntity(game, texture, spawn) {
+	setRotation(rotation);
 }
 
 void Bullet::tick() {
-    setPos(pos() + dir);
-    QPointF newPos(pos());
-    if (borderCollision(newPos))
-        cleanup = true;
+	BaseEntity::tick();
+	AIEntity::tick(this);
 }

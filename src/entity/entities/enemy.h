@@ -1,24 +1,24 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "hitbox.h"
+#include "playerhitbox.h"
+#include "src/entity/types/aientity.h"
+#include "src/entity/types/baseentity.h"
+#include "src/entity/types/collidableentity.h"
 
-class Enemy : public Hitbox {
-public:
-    Enemy(Game*,
-          QString texture,
-          QPoint spawnLoc,
-          int zValue,
-          int health);
+class Enemy : public AIEntity<Enemy>, public CollidableEntity {
+ public:
+	Enemy(Game*, Texture, QPoint, std::function<void(Enemy*)>, int);
 
-    void tick();
+	void decHealth();
+	int getHealth();
 
-private:
-    QPoint dir;
-    int time;
-    int health;
+	QList<CollidableEntity*> getValidHits();
 
-    void fireBullet(int, int);
+ private:
+	int health;
+
+	void tick() override;
 };
 
-#endif // ENEMY_H
+#endif  // ENEMY_H
