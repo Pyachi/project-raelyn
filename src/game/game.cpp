@@ -13,7 +13,7 @@ Game::Game() : QGraphicsView() {
 	background = new QGraphicsPixmapItem();
 	QPixmap backgroundImage(gameHeight - (playBorder * 2),
 													gameHeight - (playBorder * 2));
-	backgroundImage.fill(Qt::darkBlue);
+	backgroundImage.fill(Qt::darkRed);
 	background->setPixmap(backgroundImage);
 	background->setOffset(playBorder, playBorder);
 	scene->addItem(background);
@@ -25,7 +25,7 @@ Game::Game() : QGraphicsView() {
 	connect(tickClock, &QTimer::timeout, this, &Game::tick);
 
 	new Player(this);
-	new Enemy(this, Textures::enemy1, QPoint(360, 100), AI::enemy, 200);
+	new Enemy(this, Textures::enemy1, QPoint(360, 100), AI::enemy, 500);
 }
 
 void Game::tick() {

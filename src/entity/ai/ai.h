@@ -12,6 +12,13 @@ extern std::function<void(Bullet*)> enemyBullet1;
 extern std::function<void(Bullet*)> enemyBullet2;
 extern std::function<void(Bullet*)> enemyBulletSpiral;
 extern std::function<void(Enemy*)> enemy;
+
+extern void bulletCircle(Enemy*,
+												 Texture,
+												 QPoint,
+												 std::function<void(Bullet*)>,
+												 double,
+												 int);
 }  // namespace AI
 
 #endif  // AI_H

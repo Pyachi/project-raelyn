@@ -40,30 +40,8 @@ std::function<void(Bullet*)> AI::enemyBulletSpiral = [](Bullet* bullet) {
 
 std::function<void(Enemy*)> AI::enemy = [](Enemy* enemy) {
 	if (enemy->time % 10 == 0) {
-		enemy->fireBullet(Textures::enemyBullet2, enemy->getCenter(),
-											AI::enemyBulletSpiral, 0);
-		enemy->fireBullet(Textures::enemyBullet2, enemy->getCenter(),
-											AI::enemyBulletSpiral, 30);
-		enemy->fireBullet(Textures::enemyBullet2, enemy->getCenter(),
-											AI::enemyBulletSpiral, 60);
-		enemy->fireBullet(Textures::enemyBullet2, enemy->getCenter(),
-											AI::enemyBulletSpiral, 90);
-		enemy->fireBullet(Textures::enemyBullet2, enemy->getCenter(),
-											AI::enemyBulletSpiral, 120);
-		enemy->fireBullet(Textures::enemyBullet2, enemy->getCenter(),
-											AI::enemyBulletSpiral, 150);
-		enemy->fireBullet(Textures::enemyBullet2, enemy->getCenter(),
-											AI::enemyBulletSpiral, 180);
-		enemy->fireBullet(Textures::enemyBullet2, enemy->getCenter(),
-											AI::enemyBulletSpiral, -30);
-		enemy->fireBullet(Textures::enemyBullet2, enemy->getCenter(),
-											AI::enemyBulletSpiral, -60);
-		enemy->fireBullet(Textures::enemyBullet2, enemy->getCenter(),
-											AI::enemyBulletSpiral, -90);
-		enemy->fireBullet(Textures::enemyBullet2, enemy->getCenter(),
-											AI::enemyBulletSpiral, -120);
-		enemy->fireBullet(Textures::enemyBullet2, enemy->getCenter(),
-											AI::enemyBulletSpiral, -150);
+		bulletCircle(enemy, Textures::enemyBullet2, enemy->getCenter(),
+								 AI::enemyBulletSpiral, enemy->time, 8);
 	}
 	foreach (CollidableEntity* entity, enemy->getValidHits()) {
 		enemy->decHealth();
@@ -72,3 +50,16 @@ std::function<void(Enemy*)> AI::enemy = [](Enemy* enemy) {
 	if (enemy->getHealth() == 0)
 		enemy->cleanup = true;
 };
+
+void AI::bulletCircle(Enemy* enemy,
+											Texture texture,
+											QPoint spawn,
+											std::function<void(Bullet*)> ai,
+											double startRotation,
+											int count) {
+	double rot = startRotation;
+	for (int i = 0; i < count; i++) {
+		enemy->fireBullet(texture, spawn, ai, rot);
+		rot += double(360) / count;
+	}
+}
