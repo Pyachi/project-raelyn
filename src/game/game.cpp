@@ -1,14 +1,15 @@
 #include "game.h"
+#include <QDebug>
 #include <QKeyEvent>
+#include <QOpenGLWidget>
 #include <QTimer>
-#include "src/assets/textures.h"
-#include "src/entity/ai/ai.h"
-#include "src/entity/entities/enemy.h"
-#include "src/entity/entities/player.h"
 
 Game::Game() : QGraphicsView() {
 	scene = new QGraphicsScene(0, 0, gameWidth, gameHeight);
 	setScene(scene);
+
+	setInteractive(false);
+	setViewport(new QOpenGLWidget);
 
 	background = new QGraphicsPixmapItem();
 	QPixmap backgroundImage(gameHeight - (playBorder * 2),

@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,27 +18,29 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     src/assets/textures.cpp \
     src/entity/ai/ai.cpp \
-    src/entity/entities/bullet.cpp \
-    src/entity/entities/enemy.cpp \
-    src/entity/entities/player.cpp \
-    src/entity/entities/playerhitbox.cpp \
+    src/entity/entitytypes.cpp \
     src/entity/types/baseentity.cpp \
+    src/entity/types/bullet.cpp \
     src/entity/types/collidableentity.cpp \
+    src/entity/types/enemy.cpp \
     src/entity/types/linkedentity.cpp \
+    src/entity/types/player.cpp \
+    src/entity/types/playerhitbox.cpp \
     src/game/game.cpp \
     src/main.cpp
 
 HEADERS += \
     src/assets/textures.h \
     src/entity/ai/ai.h \
-    src/entity/entities/bullet.h \
-    src/entity/entities/enemy.h \
-    src/entity/entities/player.h \
-    src/entity/entities/playerhitbox.h \
+    src/entity/entitytypes.h \
     src/entity/types/aientity.h \
     src/entity/types/baseentity.h \
+    src/entity/types/bullet.h \
     src/entity/types/collidableentity.h \
+    src/entity/types/enemy.h \
     src/entity/types/linkedentity.h \
+    src/entity/types/player.h \
+    src/entity/types/playerhitbox.h \
     src/game/game.h
 
 FORMS +=

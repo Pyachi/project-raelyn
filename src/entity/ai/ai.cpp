@@ -41,7 +41,7 @@ std::function<void(Bullet*)> AI::enemyBulletSpiral = [](Bullet* bullet) {
 std::function<void(Enemy*)> AI::enemy = [](Enemy* enemy) {
 	if (enemy->time % 10 == 0) {
 		bulletCircle(enemy, Textures::enemyBullet2, enemy->getCenter(),
-								 AI::enemyBulletSpiral, enemy->time, 8);
+								 AI::enemyBulletSpiral, enemy->time, 16);
 	}
 	foreach (CollidableEntity* entity, enemy->getValidHits()) {
 		enemy->decHealth();
