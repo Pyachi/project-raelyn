@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "src/game/game.h"
+#include "game.h"
 
 int main(int argc, char* argv[]) {
 	QApplication a(argc, argv);
