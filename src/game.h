@@ -15,12 +15,11 @@ class Game : public QGraphicsView {
 
  public:
 	Game();
-	QGraphicsScene* scene;
-
 	QSet<int> getKeys() const;
 	void addEntity(BaseEntity*);
 
  private:
+	QGraphicsScene* scene;
 	QGraphicsPixmapItem* background;
 	QSet<BaseEntity*> entities;
 	QSet<int> keys;

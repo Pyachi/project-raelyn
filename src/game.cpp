@@ -1,11 +1,13 @@
 #include "game.h"
 #include <QGraphicsPixmapItem>
+#include <QKeyEvent>
 #include <QOpenGLWidget>
 #include <QTimer>
-#include "entities.h"
-#include <QKeyEvent>
-#include "textures.h"
 #include "ai.h"
+#include "entities.h"
+#include "entityinfo.h"
+#include "entitytypes.h"
+#include "textures.h"
 
 Game::Game() : QGraphicsView() {
 	scene = new QGraphicsScene(0, 0, gameWidth, gameHeight);
@@ -28,8 +30,8 @@ Game::Game() : QGraphicsView() {
 	tickClock->start(1000 / 60);
 	connect(tickClock, &QTimer::timeout, this, &Game::tick);
 
-	new Player(this);
-	new Enemy(this, Textures::enemy1, QPoint(360, 100), AI::enemy1, 500);
+	new Player(this, Players::player1, QPointF(400, 400));
+	new Enemy(this, Enemies::enemy1, QPointF(340, 100));
 }
 
 void Game::tick() {

@@ -3,16 +3,20 @@
 
 #include <functional>
 
-class Bullet;
+class PlayerHitbox;
+class Player;
 class Enemy;
+class Bullet;
 
 template <class T>
 using EntityAI = std::function<void(T*)>;
 
 namespace AI {
+extern EntityAI<PlayerHitbox> playerHitbox;
+extern EntityAI<Player> player1;
+extern EntityAI<Enemy> enemy1;
 extern EntityAI<Bullet> playerBullet1;
 extern EntityAI<Bullet> enemyBullet1;
-extern EntityAI<Enemy> enemy1;
-}  // namespace AI
+};  // namespace AI
 
 #endif  // AI_H

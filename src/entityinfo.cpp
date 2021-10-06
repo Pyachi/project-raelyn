@@ -1,30 +1,10 @@
 #include "entityinfo.h"
-#include "entities.h"
 
-PlayerInfo::PlayerInfo(Texture* texture) { this->texture = texture; }
+PlayerInfo::PlayerInfo(Texture& texture, EntityAI<Player>& ai)
+		: texture(texture), ai(ai) {}
 
-EnemyInfo::EnemyInfo(Texture* texture, EntityAI<Enemy>* ai, int health) {
-	this->texture = texture;
-	this->ai = ai;
-	this->health = health;
-}
+EnemyInfo::EnemyInfo(Texture& texture, EntityAI<Enemy>& ai, int health)
+		: texture(texture), ai(ai), health(health) {}
 
-BulletInfo::BulletInfo(Texture* texture, EntityAI<Bullet>* ai) {
-	this->texture = texture;
-	this->ai = ai;
-}
-
-Player* PlayerInfo::create(Game* game, QPointF spawn) {
-	return new Player(game, this, spawn);
-}
-
-Enemy* EnemyInfo::create(Game* game, QPointF spawn) {
-	return new Enemy(game, this, spawn);
-}
-
-Bullet* BulletInfo::create(Game* game,
-													 BaseEntity* owner,
-													 QPointF spawn,
-													 qreal rotation) {
-	return new Bullet(game, this, owner, spawn, rotation);
-}
+BulletInfo::BulletInfo(Texture& texture, EntityAI<Bullet>& ai, bool boundsCheck)
+		: texture(texture), ai(ai), boundsCheck(boundsCheck) {}
