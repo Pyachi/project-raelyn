@@ -16,32 +16,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/assets/textures.cpp \
-    src/entity/ai/ai.cpp \
-    src/entity/entitytypes.cpp \
-    src/entity/types/baseentity.cpp \
-    src/entity/types/bullet.cpp \
-    src/entity/types/collidableentity.cpp \
-    src/entity/types/enemy.cpp \
-    src/entity/types/linkedentity.cpp \
-    src/entity/types/player.cpp \
-    src/entity/types/playerhitbox.cpp \
-    src/game/game.cpp \
-    src/main.cpp
+    src/ai.cpp \
+    src/entities.cpp \
+    src/entityinfo.cpp \
+    src/entitytypes.cpp \
+    src/game.cpp \
+    src/main.cpp \
+    src/textures.cpp
 
 HEADERS += \
-    src/assets/textures.h \
-    src/entity/ai/ai.h \
-    src/entity/entitytypes.h \
-    src/entity/types/aientity.h \
-    src/entity/types/baseentity.h \
-    src/entity/types/bullet.h \
-    src/entity/types/collidableentity.h \
-    src/entity/types/enemy.h \
-    src/entity/types/linkedentity.h \
-    src/entity/types/player.h \
-    src/entity/types/playerhitbox.h \
-    src/game/game.h
+    src/ai.h \
+    src/entities.h \
+    src/entityinfo.h \
+    src/entitytypes.h \
+    src/game.h \
+    src/textures.h
 
 FORMS +=
 
