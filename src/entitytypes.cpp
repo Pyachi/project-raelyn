@@ -112,12 +112,13 @@ void PlayerHitbox::tick() {
 }
 
 void Player::tick() {
-	timeAlive++;
 	ai(this);
+	timeAlive++;
 }
 
 void Enemy::tick() {
-	timeAlive++;
+	setPos(pos() + (move / 10));
+	move -= move / 10;
 	foreach (BaseEntity* entity, getHits()) {
 		health--;
 		if (health == 0)
@@ -125,12 +126,25 @@ void Enemy::tick() {
 		entity->cleanup = true;
 	}
 	ai(this);
+	timeAlive++;
+}
+
+bool BaseEntity::cycle(int dur) {
+	return cycle(dur, 0, 0);
+}
+
+bool BaseEntity::cycle(int dur, int time) {
+	return cycle(dur, time, time);
+}
+
+bool BaseEntity::cycle(int dur, int low, int high) {
+	return (timeAlive % dur >= low && timeAlive % dur <= high);
 }
 
 void Bullet::tick() {
-	timeAlive++;
 	QPointF checkPos = pos();
 	if (boundsCheck && Util::confineToPlayableArea(checkPos, pixmap().size()))
 		cleanup = true;
 	ai(this);
+	timeAlive++;
 }

@@ -5,6 +5,67 @@
 #include "game.h"
 #include "utilities.h"
 
+EntityAI<Enemy> AI::enemy1 = [](Enemy* enemy) {
+	if (enemy->cycle(50)) {
+		Util::bulletCircle(enemy, Bullets::spiralCW, 16, 0);
+		Util::bulletCircle(enemy, Bullets::spiralCCW, 16, 0);
+	}
+	if (enemy->cycle(150, 0))
+		enemy->move = QPointF(-200, 200);
+	if (enemy->cycle(150, 50))
+		enemy->move = QPointF(400, 0);
+	if (enemy->cycle(150, 100))
+		enemy->move = QPointF(-200, -200);
+};
+
+EntityAI<Enemy> AI::enemy2 = [](Enemy* enemy) {
+	if (enemy->cycle(80, 0, 8)) {
+		Util::bulletCircle(enemy, Bullets::flowerCW, 24, enemy->timeAlive);
+		//		Util::bulletCircle(enemy, Bullets::flowerCCW, 8,
+		//-enemy->timeAlive);
+	}
+	if (enemy->cycle(160, 50))
+		enemy->move = QPointF(0, 200);
+	if (enemy->cycle(160, 130))
+		enemy->move = QPointF(0, -200);
+};
+
+EntityAI<Bullet> BulletAI::playerBasic = [](Bullet* bullet) {
+	bullet->moveBy(0, -40);
+};
+
+EntityAI<Bullet> BulletAI::spiralCW = [](Bullet* bullet) {
+	bullet->moveFoward(3);
+	bullet->setRotation(bullet->rotation() + 0.1);
+};
+
+EntityAI<Bullet> BulletAI::spiralCCW = [](Bullet* bullet) {
+	bullet->moveFoward(3);
+	bullet->setRotation(bullet->rotation() - 0.1);
+};
+
+EntityAI<Bullet> BulletAI::flowerCW = [](Bullet* bullet) {
+	if (bullet->cycle(10000, 0, 120)) {
+		bullet->moveFoward(3);
+		bullet->setRotation(bullet->rotation() + 3);
+	} else {
+		bullet->boundsCheck = true;
+		bullet->moveFoward(10);
+		bullet->setRotation(bullet->rotation() + 1);
+	}
+};
+
+EntityAI<Bullet> BulletAI::flowerCCW = [](Bullet* bullet) {
+	if (bullet->cycle(10000, 0, 120)) {
+		bullet->moveFoward(3);
+		bullet->setRotation(bullet->rotation() - 3);
+	} else {
+		bullet->boundsCheck = true;
+		bullet->moveFoward(10);
+		bullet->setRotation(bullet->rotation() - 1);
+	}
+};
+
 EntityAI<PlayerHitbox> AI::playerHitbox = [](PlayerHitbox* hitbox) {
 	hitbox->setCenter(hitbox->owner->getCenter());
 };
@@ -21,22 +82,22 @@ EntityAI<Player> AI::player1 = [](Player* player) {
 		if (player->focus) {
 			switch (player->level) {
 				case 1:
-					player->fireBullet(Bullets::playerBullet1, QPointF(0, 0), 0)
+					player->fireBullet(Bullets::playerBasic, QPointF(0, 0), 0)
 							->setOpacity(0.25);
-					player->fireBullet(Bullets::playerBullet1, QPointF(10, 0), 0)
+					player->fireBullet(Bullets::playerBasic, QPointF(10, 0), 0)
 							->setOpacity(0.25);
-					player->fireBullet(Bullets::playerBullet1, QPointF(-10, 0), 0)
+					player->fireBullet(Bullets::playerBasic, QPointF(-10, 0), 0)
 							->setOpacity(0.25);
 					break;
 			}
 		} else {
 			switch (player->level) {
 				case 1:
-					player->fireBullet(Bullets::playerBullet1, QPointF(0, 0), 0)
+					player->fireBullet(Bullets::playerBasic, QPointF(0, 0), 0)
 							->setOpacity(0.25);
-					player->fireBullet(Bullets::playerBullet1, QPointF(20, 0), 0)
+					player->fireBullet(Bullets::playerBasic, QPointF(20, 0), 0)
 							->setOpacity(0.25);
-					player->fireBullet(Bullets::playerBullet1, QPointF(-20, 0), 0)
+					player->fireBullet(Bullets::playerBasic, QPointF(-20, 0), 0)
 							->setOpacity(0.25);
 					break;
 			}
@@ -65,27 +126,4 @@ EntityAI<Player> AI::player1 = [](Player* player) {
 		player->cleanup = true;
 		player->hitbox->cleanup = true;
 	}
-};
-
-EntityAI<Enemy> AI::enemy1 = [](Enemy* enemy) {
-	if (enemy->timeAlive % 10 == 0) {
-		Util::bulletCircle(enemy, Bullets::enemyBullet2, 8, enemy->timeAlive);
-	}
-};
-
-EntityAI<Bullet> AI::playerBullet1 = [](Bullet* bullet) {
-	bullet->moveBy(0, -40);
-};
-
-EntityAI<Bullet> AI::enemyBullet1 = [](Bullet* bullet) {
-	if (bullet->timeAlive < 120) {
-		bullet->moveFoward(5);
-		bullet->setRotation(bullet->rotation() + 3);
-	} else if (bullet->timeAlive < 2000) {
-		bullet->moveFoward(10);
-		bullet->setRotation(bullet->rotation() + 1);
-	} else
-		bullet->cleanup = true;
-	if (bullet->timeAlive == 120)
-		bullet->boundsCheck = true;
 };

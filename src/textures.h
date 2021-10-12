@@ -14,9 +14,9 @@ namespace Textures {
 extern Texture playerHitbox;
 extern Texture player1;
 extern Texture enemy1;
-extern Texture playerBullet1;
-extern Texture enemyBullet1;
-extern Texture enemyBullet2;
+extern Texture playerBasic;
+extern Texture bulletRound;
+extern Texture bulletEllipse;
 };  // namespace Textures
 
 #endif  // TEXTURES_H

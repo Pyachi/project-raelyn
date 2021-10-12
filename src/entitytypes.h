@@ -27,6 +27,9 @@ class BaseEntity : virtual public QGraphicsPixmapItem {
 	QPointF getCenter();
 	Bullet* fireBullet(BulletInfo&, QPointF, qreal);
 	QList<CollidableEntity*> getCollidingEntities();
+	bool cycle(int);
+	bool cycle(int, int);
+	bool cycle(int, int, int);
 
 	virtual void tick() = 0;
 };
@@ -88,6 +91,7 @@ class Enemy : public AIEntity<Enemy>, public CollidableEntity {
 	Enemy(Game*, EnemyInfo&, QPointF);
 
 	int health;
+	QPointF move;
 
 	QList<Bullet*> getHits();
 

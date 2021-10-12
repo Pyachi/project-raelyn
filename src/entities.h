@@ -14,9 +14,11 @@ extern EnemyInfo enemy1;
 }
 
 namespace Bullets {
-extern BulletInfo playerBullet1;
-extern BulletInfo enemyBullet1;
-extern BulletInfo enemyBullet2;
+extern BulletInfo playerBasic;
+extern BulletInfo spiralCW;
+extern BulletInfo spiralCCW;
+extern BulletInfo flowerCW;
+extern BulletInfo flowerCCW;
 }  // namespace Bullets
 
 #endif  // ENTITIES_H
