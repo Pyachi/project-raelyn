@@ -31,6 +31,7 @@ Game::Game() : QGraphicsView() {
 	connect(tickClock, &QTimer::timeout, this, &Game::tick);
 
 	new Player(this, Players::player1, QPointF(400, 400));
+	new Enemy(this, Enemies::enemy2, QPointF(260, 100));
 	new Enemy(this, Enemies::enemy1, QPointF(360, 100));
 }
 
@@ -61,4 +62,8 @@ void Game::keyPressEvent(QKeyEvent* e) {
 void Game::keyReleaseEvent(QKeyEvent* e) {
 	keys.remove(e->key());
 	QGraphicsView::keyReleaseEvent(e);
+}
+
+QSet<BaseEntity*> Game::getEntities() {
+	return entities;
 }

@@ -11,10 +11,12 @@ extern PlayerInfo player1;
 
 namespace Enemies {
 extern EnemyInfo enemy1;
+extern EnemyInfo enemy2;
 }
 
 namespace Bullets {
 extern BulletInfo playerBasic;
+extern BulletInfo playerHoming;
 extern BulletInfo spiralCW;
 extern BulletInfo spiralCCW;
 extern BulletInfo flowerCW;

@@ -4,6 +4,7 @@
 #include "entitytypes.h"
 #include "game.h"
 #include "utilities.h"
+#include <QVector2D>
 
 EntityAI<Enemy> AI::enemy1 = [](Enemy* enemy) {
 	if (enemy->cycle(50)) {
@@ -19,19 +20,30 @@ EntityAI<Enemy> AI::enemy1 = [](Enemy* enemy) {
 };
 
 EntityAI<Enemy> AI::enemy2 = [](Enemy* enemy) {
-	if (enemy->cycle(80, 0, 8)) {
-		Util::bulletCircle(enemy, Bullets::flowerCW, 24, enemy->timeAlive);
-		//		Util::bulletCircle(enemy, Bullets::flowerCCW, 8,
-		//-enemy->timeAlive);
-	}
+	if (enemy->cycle(160, 0, 40) && enemy->cycle(4))
+		Util::bulletCircle(enemy, Bullets::flowerCW, 24, enemy->timeAlive / 2);
+	if (enemy->cycle(160, 80, 120) && enemy->cycle(4))
+		Util::bulletCircle(enemy, Bullets::flowerCCW, 24, -enemy->timeAlive / 2);
 	if (enemy->cycle(160, 50))
-		enemy->move = QPointF(0, 200);
+		enemy->move = QPointF(200, 0);
 	if (enemy->cycle(160, 130))
-		enemy->move = QPointF(0, -200);
+		enemy->move = QPointF(-200, 0);
 };
 
 EntityAI<Bullet> BulletAI::playerBasic = [](Bullet* bullet) {
 	bullet->moveBy(0, -40);
+};
+
+EntityAI<Bullet> BulletAI::playerHoming = [](Bullet* bullet) {
+	if (bullet->getNearestEnemy() == nullptr) {
+		bullet->moveBy(0, -20);
+		return;
+	}
+	bullet->setRotation(bullet->rotation() + 20);
+	QVector2D dir = QVector2D(bullet->getNearestEnemy()->pos() - bullet->pos());
+	dir.normalize();
+	dir *= 20;
+	bullet->setPos(bullet->pos() + dir.toPointF());
 };
 
 EntityAI<Bullet> BulletAI::spiralCW = [](Bullet* bullet) {
@@ -50,8 +62,8 @@ EntityAI<Bullet> BulletAI::flowerCW = [](Bullet* bullet) {
 		bullet->setRotation(bullet->rotation() + 3);
 	} else {
 		bullet->boundsCheck = true;
-		bullet->moveFoward(10);
-		bullet->setRotation(bullet->rotation() + 1);
+		bullet->moveFoward(5);
+		bullet->setRotation(bullet->rotation() + 0.5);
 	}
 };
 
@@ -61,8 +73,8 @@ EntityAI<Bullet> BulletAI::flowerCCW = [](Bullet* bullet) {
 		bullet->setRotation(bullet->rotation() - 3);
 	} else {
 		bullet->boundsCheck = true;
-		bullet->moveFoward(10);
-		bullet->setRotation(bullet->rotation() - 1);
+		bullet->moveFoward(5);
+		bullet->setRotation(bullet->rotation() - 0.5);
 	}
 };
 
@@ -88,6 +100,12 @@ EntityAI<Player> AI::player1 = [](Player* player) {
 							->setOpacity(0.25);
 					player->fireBullet(Bullets::playerBasic, QPointF(-10, 0), 0)
 							->setOpacity(0.25);
+					if (player->cycle(5)) {
+						player->fireBullet(Bullets::playerHoming, QPointF(-25, -25), 0)
+								->setOpacity(0.5);
+						player->fireBullet(Bullets::playerHoming, QPointF(25, -25), 0)
+								->setOpacity(0.5);
+					}
 					break;
 			}
 		} else {
@@ -99,6 +117,12 @@ EntityAI<Player> AI::player1 = [](Player* player) {
 							->setOpacity(0.25);
 					player->fireBullet(Bullets::playerBasic, QPointF(-20, 0), 0)
 							->setOpacity(0.25);
+					if (player->cycle(5)) {
+						player->fireBullet(Bullets::playerHoming, QPointF(-50, 0), 0)
+								->setOpacity(0.5);
+						player->fireBullet(Bullets::playerHoming, QPointF(50, 0), 0)
+								->setOpacity(0.5);
+					}
 					break;
 			}
 		}

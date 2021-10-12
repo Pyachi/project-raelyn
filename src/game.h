@@ -17,6 +17,7 @@ class Game : public QGraphicsView {
 	Game();
 	QSet<int> getKeys() const;
 	void addEntity(BaseEntity*);
+	QSet<BaseEntity*> getEntities();
 
  private:
 	QGraphicsScene* scene;

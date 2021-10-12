@@ -10,6 +10,7 @@ struct BulletInfo;
 class Game;
 class Bullet;
 class CollidableEntity;
+class Enemy;
 
 template <class T>
 using EntityAI = std::function<void(T*)>;
@@ -30,6 +31,7 @@ class BaseEntity : virtual public QGraphicsPixmapItem {
 	bool cycle(int);
 	bool cycle(int, int);
 	bool cycle(int, int, int);
+	Enemy* getNearestEnemy();
 
 	virtual void tick() = 0;
 };

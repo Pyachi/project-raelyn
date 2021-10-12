@@ -5,6 +5,7 @@
 #include "game.h"
 #include "textures.h"
 #include "utilities.h"
+#include <QVector2D>
 
 BaseEntity::BaseEntity(Game* game, Texture& texture, QPointF spawn)
 		: cleanup(false), timeAlive(0), game(game) {
@@ -147,4 +148,19 @@ void Bullet::tick() {
 		cleanup = true;
 	ai(this);
 	timeAlive++;
+}
+
+Enemy* BaseEntity::getNearestEnemy() {
+	Enemy* closest = nullptr;
+	float closestDis = 99999999;
+	foreach (BaseEntity* entity, game->getEntities()) {
+		if (Enemy* enemy = dynamic_cast<Enemy*>(entity)) {
+			float distance = QVector2D(enemy->pos()).lengthSquared();
+			if (distance < closestDis) {
+				closest = enemy;
+				closestDis = distance;
+			}
+		}
+	}
+	return closest;
 }

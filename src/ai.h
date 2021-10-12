@@ -20,6 +20,7 @@ extern EntityAI<Player> player1;
 
 namespace BulletAI {
 extern EntityAI<Bullet> playerBasic;
+extern EntityAI<Bullet> playerHoming;
 extern EntityAI<Bullet> spiralCW;
 extern EntityAI<Bullet> spiralCCW;
 extern EntityAI<Bullet> flowerCW;
