@@ -8,8 +8,8 @@
 
 EntityAI<Enemy> AI::enemy1 = [](Enemy* enemy) {
 	if (enemy->cycle(50)) {
-		Util::bulletCircle(enemy, Bullets::spiralCW, 16, 0);
-		Util::bulletCircle(enemy, Bullets::spiralCCW, 16, 0);
+		Util::bulletCircle(enemy, Bullets::spiralCW, 32, 0);
+		Util::bulletCircle(enemy, Bullets::spiralCCW, 32, 0);
 	}
 	if (enemy->cycle(150, 0))
 		enemy->move = QPointF(-200, 200);
@@ -35,11 +35,11 @@ EntityAI<Bullet> BulletAI::playerBasic = [](Bullet* bullet) {
 };
 
 EntityAI<Bullet> BulletAI::playerHoming = [](Bullet* bullet) {
+	bullet->setRotation(bullet->rotation() + 20);
 	if (bullet->getNearestEnemy() == nullptr) {
 		bullet->moveBy(0, -20);
 		return;
 	}
-	bullet->setRotation(bullet->rotation() + 20);
 	QVector2D dir = QVector2D(bullet->getNearestEnemy()->pos() - bullet->pos());
 	dir.normalize();
 	dir *= 20;
