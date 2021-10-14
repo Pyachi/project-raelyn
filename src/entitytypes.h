@@ -24,9 +24,10 @@ class BaseEntity : virtual public QGraphicsPixmapItem {
 	Game* game;
 
 	void moveFoward(int);
+	void rotate(double);
 	void setCenter(QPointF);
 	QPointF getCenter();
-	Bullet* fireBullet(BulletInfo&, QPointF, qreal);
+	Bullet* fireBullet(BulletInfo&, QPointF, qreal = 0);
 	QList<CollidableEntity*> getCollidingEntities();
 	bool cycle(int);
 	bool cycle(int, int);
@@ -104,7 +105,7 @@ class Bullet : public AIEntity<Bullet>,
 							 public LinkedEntity,
 							 public CollidableEntity {
  public:
-	Bullet(Game*, BulletInfo&, BaseEntity*, QPointF, qreal);
+	Bullet(Game*, BulletInfo&, BaseEntity*, QPointF, qreal = 0);
 
 	bool boundsCheck;
 

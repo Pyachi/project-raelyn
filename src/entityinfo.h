@@ -28,7 +28,7 @@ struct EnemyInfo {
 };
 
 struct BulletInfo {
-	BulletInfo(Texture&, EntityAI<Bullet>&, bool);
+	BulletInfo(Texture&, EntityAI<Bullet>&, bool = true);
 
 	Texture& texture;
 	EntityAI<Bullet>& ai;

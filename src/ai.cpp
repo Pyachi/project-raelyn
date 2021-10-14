@@ -1,15 +1,15 @@
 #include "ai.h"
+#include <QVector2D>
 #include <QtMath>
 #include "entities.h"
 #include "entitytypes.h"
 #include "game.h"
 #include "utilities.h"
-#include <QVector2D>
 
 EntityAI<Enemy> AI::enemy1 = [](Enemy* enemy) {
 	if (enemy->cycle(50)) {
-		Util::bulletCircle(enemy, Bullets::spiralCW, 32, 0);
-		Util::bulletCircle(enemy, Bullets::spiralCCW, 32, 0);
+		Util::bulletCircle(enemy, Bullets::spiralCW, 32);
+		Util::bulletCircle(enemy, Bullets::spiralCCW, 32);
 	}
 	if (enemy->cycle(150, 0))
 		enemy->move = QPointF(-200, 200);
@@ -35,7 +35,7 @@ EntityAI<Bullet> BulletAI::playerBasic = [](Bullet* bullet) {
 };
 
 EntityAI<Bullet> BulletAI::playerHoming = [](Bullet* bullet) {
-	bullet->setRotation(bullet->rotation() + 20);
+	bullet->rotate(20);
 	if (bullet->getNearestEnemy() == nullptr) {
 		bullet->moveBy(0, -20);
 		return;
@@ -48,33 +48,33 @@ EntityAI<Bullet> BulletAI::playerHoming = [](Bullet* bullet) {
 
 EntityAI<Bullet> BulletAI::spiralCW = [](Bullet* bullet) {
 	bullet->moveFoward(3);
-	bullet->setRotation(bullet->rotation() + 0.1);
+	bullet->rotate(0.1);
 };
 
 EntityAI<Bullet> BulletAI::spiralCCW = [](Bullet* bullet) {
 	bullet->moveFoward(3);
-	bullet->setRotation(bullet->rotation() - 0.1);
+	bullet->rotate(-0.1);
 };
 
 EntityAI<Bullet> BulletAI::flowerCW = [](Bullet* bullet) {
 	if (bullet->cycle(10000, 0, 120)) {
 		bullet->moveFoward(3);
-		bullet->setRotation(bullet->rotation() + 3);
+		bullet->rotate(3);
 	} else {
 		bullet->boundsCheck = true;
 		bullet->moveFoward(5);
-		bullet->setRotation(bullet->rotation() + 0.5);
+		bullet->rotate(0.5);
 	}
 };
 
 EntityAI<Bullet> BulletAI::flowerCCW = [](Bullet* bullet) {
 	if (bullet->cycle(10000, 0, 120)) {
 		bullet->moveFoward(3);
-		bullet->setRotation(bullet->rotation() - 3);
+		bullet->rotate(-3);
 	} else {
 		bullet->boundsCheck = true;
 		bullet->moveFoward(5);
-		bullet->setRotation(bullet->rotation() - 0.5);
+		bullet->rotate(-0.5);
 	}
 };
 
@@ -94,16 +94,16 @@ EntityAI<Player> AI::player1 = [](Player* player) {
 		if (player->focus) {
 			switch (player->level) {
 				case 1:
-					player->fireBullet(Bullets::playerBasic, QPointF(0, 0), 0)
+					player->fireBullet(Bullets::playerBasic, QPointF(0, 0))
 							->setOpacity(0.25);
-					player->fireBullet(Bullets::playerBasic, QPointF(10, 0), 0)
+					player->fireBullet(Bullets::playerBasic, QPointF(10, 0))
 							->setOpacity(0.25);
-					player->fireBullet(Bullets::playerBasic, QPointF(-10, 0), 0)
+					player->fireBullet(Bullets::playerBasic, QPointF(-10, 0))
 							->setOpacity(0.25);
 					if (player->cycle(5)) {
-						player->fireBullet(Bullets::playerHoming, QPointF(-25, -25), 0)
+						player->fireBullet(Bullets::playerHoming, QPointF(-25, -25))
 								->setOpacity(0.5);
-						player->fireBullet(Bullets::playerHoming, QPointF(25, -25), 0)
+						player->fireBullet(Bullets::playerHoming, QPointF(25, -25))
 								->setOpacity(0.5);
 					}
 					break;
@@ -111,16 +111,16 @@ EntityAI<Player> AI::player1 = [](Player* player) {
 		} else {
 			switch (player->level) {
 				case 1:
-					player->fireBullet(Bullets::playerBasic, QPointF(0, 0), 0)
+					player->fireBullet(Bullets::playerBasic, QPointF(0, 0))
 							->setOpacity(0.25);
-					player->fireBullet(Bullets::playerBasic, QPointF(20, 0), 0)
+					player->fireBullet(Bullets::playerBasic, QPointF(20, 0))
 							->setOpacity(0.25);
-					player->fireBullet(Bullets::playerBasic, QPointF(-20, 0), 0)
+					player->fireBullet(Bullets::playerBasic, QPointF(-20, 0))
 							->setOpacity(0.25);
 					if (player->cycle(5)) {
-						player->fireBullet(Bullets::playerHoming, QPointF(-50, 0), 0)
+						player->fireBullet(Bullets::playerHoming, QPointF(-50, 0))
 								->setOpacity(0.5);
-						player->fireBullet(Bullets::playerHoming, QPointF(50, 0), 0)
+						player->fireBullet(Bullets::playerHoming, QPointF(50, 0))
 								->setOpacity(0.5);
 					}
 					break;

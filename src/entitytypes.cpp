@@ -1,11 +1,11 @@
 #include "entitytypes.h"
+#include <QVector2D>
 #include <QtMath>
 #include "ai.h"
 #include "entityinfo.h"
 #include "game.h"
 #include "textures.h"
 #include "utilities.h"
-#include <QVector2D>
 
 BaseEntity::BaseEntity(Game* game, Texture& texture, QPointF spawn)
 		: cleanup(false), timeAlive(0), game(game) {
@@ -91,7 +91,7 @@ bool Player::isHit() {
 		if (Bullet* bullet = dynamic_cast<Bullet*>(entity))
 			if (dynamic_cast<Enemy*>(bullet->owner))
 				return true;
-		if (Enemy* enemy = dynamic_cast<Enemy*>(entity))
+		if (dynamic_cast<Enemy*>(entity))
 			return true;
 	}
 	return false;
@@ -163,4 +163,8 @@ Enemy* BaseEntity::getNearestEnemy() {
 		}
 	}
 	return closest;
+}
+
+void BaseEntity::rotate(double deg) {
+	setRotation(rotation() + deg);
 }

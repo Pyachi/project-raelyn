@@ -9,7 +9,7 @@ struct BulletInfo;
 
 namespace Util {
 extern bool confineToPlayableArea(QPointF&, QSizeF);
-extern void bulletCircle(BaseEntity*, BulletInfo&, int, double);
+extern void bulletCircle(BaseEntity*, BulletInfo&, int, double = 0);
 }  // namespace Util
 
 #endif  // UTILITIES_H
