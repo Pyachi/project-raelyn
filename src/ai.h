@@ -25,6 +25,7 @@ extern EntityAI<Bullet> spiralCW;
 extern EntityAI<Bullet> spiralCCW;
 extern EntityAI<Bullet> flowerCW;
 extern EntityAI<Bullet> flowerCCW;
+extern EntityAI<Bullet> accelerating;
 }  // namespace BulletAI
 
 #endif  // AI_H

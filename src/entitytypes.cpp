@@ -23,7 +23,7 @@ CollidableEntity::CollidableEntity() {}
 
 CollidableEntity::~CollidableEntity() {}
 
-void BaseEntity::moveFoward(int distance) {
+void BaseEntity::moveFoward(double distance) {
 	double rot = qDegreesToRadians(rotation());
 	double dx = distance * -sin(rot);
 	double dy = distance * cos(rot);

@@ -19,3 +19,5 @@ BulletInfo Bullets::flowerCW =
 		BulletInfo(Textures::bulletEllipse, BulletAI::flowerCW, false);
 BulletInfo Bullets::flowerCCW =
 		BulletInfo(Textures::bulletEllipse, BulletAI::flowerCCW, false);
+BulletInfo Bullets::accelerating =
+		BulletInfo(Textures::bulletRound, BulletAI::accelerating, true);

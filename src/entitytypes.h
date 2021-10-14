@@ -23,7 +23,7 @@ class BaseEntity : virtual public QGraphicsPixmapItem {
 	int timeAlive;
 	Game* game;
 
-	void moveFoward(int);
+	void moveFoward(double);
 	void rotate(double);
 	void setCenter(QPointF);
 	QPointF getCenter();

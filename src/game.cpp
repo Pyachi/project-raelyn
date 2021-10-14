@@ -32,7 +32,7 @@ Game::Game() : QGraphicsView() {
 
 	new Player(this, Players::player1, QPointF(400, 400));
 	new Enemy(this, Enemies::enemy2, QPointF(260, 100));
-	new Enemy(this, Enemies::enemy1, QPointF(360, 100));
+//	new Enemy(this, Enemies::enemy1, QPointF(360, 100));
 }
 
 void Game::tick() {

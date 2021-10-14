@@ -21,6 +21,7 @@ extern BulletInfo spiralCW;
 extern BulletInfo spiralCCW;
 extern BulletInfo flowerCW;
 extern BulletInfo flowerCCW;
+extern BulletInfo accelerating;
 }  // namespace Bullets
 
 #endif  // ENTITIES_H

@@ -20,10 +20,12 @@ EntityAI<Enemy> AI::enemy1 = [](Enemy* enemy) {
 };
 
 EntityAI<Enemy> AI::enemy2 = [](Enemy* enemy) {
-	if (enemy->cycle(160, 0, 40) && enemy->cycle(4))
-		Util::bulletCircle(enemy, Bullets::flowerCW, 24, enemy->timeAlive / 2);
-	if (enemy->cycle(160, 80, 120) && enemy->cycle(4))
-		Util::bulletCircle(enemy, Bullets::flowerCCW, 24, -enemy->timeAlive / 2);
+	if (enemy->cycle(80, 0, 40)) {
+		if (enemy->cycle(4))
+			Util::bulletCircle(enemy, Bullets::accelerating, 12);
+		else if (enemy->cycle(4, 2))
+			Util::bulletCircle(enemy, Bullets::accelerating, 12, 12);
+	}
 	if (enemy->cycle(160, 50))
 		enemy->move = QPointF(200, 0);
 	if (enemy->cycle(160, 130))
@@ -76,6 +78,10 @@ EntityAI<Bullet> BulletAI::flowerCCW = [](Bullet* bullet) {
 		bullet->moveFoward(5);
 		bullet->rotate(-0.5);
 	}
+};
+
+EntityAI<Bullet> BulletAI::accelerating = [](Bullet* bullet) {
+	bullet->moveFoward(pow(bullet->timeAlive, 3) / 100000);
 };
 
 EntityAI<PlayerHitbox> AI::playerHitbox = [](PlayerHitbox* hitbox) {
