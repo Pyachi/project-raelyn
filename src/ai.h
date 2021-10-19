@@ -11,11 +11,14 @@ class Bullet;
 template <class T>
 using EntityAI = std::function<void(T*)>;
 
+using PlayerAI = EntityAI<Player>;
+using EnemyAI = EntityAI<Enemy>;
+using BulletAI = EntityAI<Bullet>;
+
 namespace AI {
-extern EntityAI<Enemy> enemy1;
-extern EntityAI<Enemy> enemy2;
-extern EntityAI<PlayerHitbox> playerHitbox;
-extern EntityAI<Player> player1;
+extern PlayerAI player1;
+extern EnemyAI enemy1;
+extern EnemyAI enemy2;
 };  // namespace AI
 
 namespace BulletAI {

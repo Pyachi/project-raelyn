@@ -8,3 +8,7 @@ EnemyInfo::EnemyInfo(Texture& texture, EntityAI<Enemy>& ai, int health)
 
 BulletInfo::BulletInfo(Texture& texture, EntityAI<Bullet>& ai, bool boundsCheck)
 		: texture(texture), ai(ai), boundsCheck(boundsCheck) {}
+
+template <class T>
+EntityInfo<T>::EntityInfo(Texture& texture, EntityAI<T>& ai) :
+	texture(texture), ai(ai) {}

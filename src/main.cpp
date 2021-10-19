@@ -1,9 +1,9 @@
 #include <QApplication>
-#include "game.h"
+#include "menu.h"
 
 int main(int argc, char* argv[]) {
 	QApplication a(argc, argv);
-	Game w;
+	Menu w;
 
 	w.show();
 

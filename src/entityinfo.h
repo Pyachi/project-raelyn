@@ -1,38 +1,23 @@
 #ifndef ENTITYINFO_H
 #define ENTITYINFO_H
 
-#include <QPointF>
 #include <functional>
 
 struct Texture;
-class Player;
-class Enemy;
-class Bullet;
 
 template <class T>
 using EntityAI = std::function<void(T*)>;
 
-struct PlayerInfo {
-	PlayerInfo(Texture&, EntityAI<Player>&);
+template <class T>
+struct EntityInfo {
+	EntityInfo(Texture&, EntityAI<T>&);
 
 	Texture& texture;
-	EntityAI<Player>& ai;
+	EntityAI<T>& ai;
 };
 
-struct EnemyInfo {
-	EnemyInfo(Texture&, EntityAI<Enemy>&, int);
-
-	Texture& texture;
-	EntityAI<Enemy>& ai;
-	int health;
-};
-
-struct BulletInfo {
-	BulletInfo(Texture&, EntityAI<Bullet>&, bool = true);
-
-	Texture& texture;
-	EntityAI<Bullet>& ai;
-	bool boundsCheck;
-};
+template <class T>
+EntityInfo<T>::EntityInfo(Texture& texture, EntityAI<T>& ai)
+		: texture(texture), ai(ai) {}
 
 #endif  // ENTITYINFO_H

@@ -22,6 +22,7 @@ SOURCES += \
     src/entitytypes.cpp \
     src/game.cpp \
     src/main.cpp \
+    src/menu.cpp \
     src/textures.cpp \
     src/utilities.cpp
 
@@ -31,6 +32,7 @@ HEADERS += \
     src/entityinfo.h \
     src/entitytypes.h \
     src/game.h \
+    src/menu.h \
     src/textures.h \
     src/utilities.h
 
