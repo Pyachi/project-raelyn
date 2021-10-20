@@ -16,25 +16,29 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/ai.cpp \
-    src/entities.cpp \
+    src/bullet.cpp \
+    src/enemy.cpp \
     src/entityinfo.cpp \
     src/entitytypes.cpp \
     src/game.cpp \
     src/main.cpp \
-    src/menu.cpp \
-    src/textures.cpp \
-    src/utilities.cpp
+    src/menu/mainmenu.cpp \
+    src/menu/singleplayermenu.cpp \
+    src/player.cpp \
+    src/playerhitbox.cpp \
+    src/texture.cpp
 
 HEADERS += \
-    src/ai.h \
-    src/entities.h \
+    src/bullet.h \
+    src/enemy.h \
     src/entityinfo.h \
     src/entitytypes.h \
     src/game.h \
-    src/menu.h \
-    src/textures.h \
-    src/utilities.h
+    src/menu/mainmenu.h \
+    src/menu/singleplayermenu.h \
+    src/player.h \
+    src/playerhitbox.h \
+    src/texture.h
 
 FORMS +=
 

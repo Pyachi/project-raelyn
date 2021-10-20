@@ -3,11 +3,8 @@
 #include <QKeyEvent>
 #include <QOpenGLWidget>
 #include <QTimer>
-#include "ai.h"
-#include "entities.h"
-#include "entityinfo.h"
-#include "entitytypes.h"
-#include "textures.h"
+#include "enemy.h"
+#include "player.h"
 
 Game::Game() : QGraphicsView() {
 	scene = new QGraphicsScene(0, 0, gameWidth, gameHeight);
@@ -21,7 +18,9 @@ Game::Game() : QGraphicsView() {
 													gameHeight - (playBorder * 2));
 	backgroundImage.fill(Qt::darkRed);
 	background->setPixmap(backgroundImage);
-	background->setOffset(playBorder, playBorder);
+	background->setOffset(-background->boundingRect().center());
+	background->setPos(playBorder + background->boundingRect().width() / 2,
+										 playBorder + background->boundingRect().height() / 2);
 	scene->addItem(background);
 
 	setFixedSize(gameWidth + 2, gameHeight + 2);
@@ -30,9 +29,8 @@ Game::Game() : QGraphicsView() {
 	tickClock->start(1000 / 60);
 	connect(tickClock, &QTimer::timeout, this, &Game::tick);
 
-	new Player(this, Players::player1, QPointF(400, 400));
-	new Enemy(this, Enemies::enemy2, QPointF(260, 100));
-//	new Enemy(this, Enemies::enemy1, QPointF(360, 100));
+	new Player(this, PlayerInfo::PLAYER1, QPointF(0, 200));
+	new Enemy(this, EnemyInfo::ENEMY1, QPointF(0, -300));
 }
 
 void Game::tick() {
@@ -45,13 +43,16 @@ void Game::tick() {
 	}
 }
 
-QSet<int> Game::getKeys() const {
+QSet<int> Game::getKeys() {
 	return keys;
+}
+
+QSet<BaseEntity*> Game::getEntities() {
+	return entities;
 }
 
 void Game::addEntity(BaseEntity* entity) {
 	entities.insert(entity);
-	scene->addItem(entity);
 }
 
 void Game::keyPressEvent(QKeyEvent* e) {
@@ -62,8 +63,4 @@ void Game::keyPressEvent(QKeyEvent* e) {
 void Game::keyReleaseEvent(QKeyEvent* e) {
 	keys.remove(e->key());
 	QGraphicsView::keyReleaseEvent(e);
-}
-
-QSet<BaseEntity*> Game::getEntities() {
-	return entities;
 }

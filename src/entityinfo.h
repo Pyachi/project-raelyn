@@ -1,23 +1,49 @@
-#ifndef ENTITYINFO_H
-#define ENTITYINFO_H
+#ifndef AI_H
+#define AI_H
 
 #include <functional>
+#include "entitytypes.h"
 
-struct Texture;
+using FiringPattern = EntityAI<Player>;
+using EnemyAI = EntityAI<Enemy>;
+using BulletAI = EntityAI<Bullet>;
 
-template <class T>
-using EntityAI = std::function<void(T*)>;
+class PlayerInfo {
+ public:
+	static const PlayerInfo PLAYER1;
 
-template <class T>
-struct EntityInfo {
-	EntityInfo(Texture&, EntityAI<T>&);
+	const Texture& texture;
+	const FiringPattern firingPattern;
+	const int normalSpeed;
+	const int focusSpeed;
 
-	Texture& texture;
-	EntityAI<T>& ai;
+ private:
+	PlayerInfo(const Texture&, const FiringPattern&, int, int);
 };
 
-template <class T>
-EntityInfo<T>::EntityInfo(Texture& texture, EntityAI<T>& ai)
-		: texture(texture), ai(ai) {}
+class EnemyInfo {
+ public:
+	static const EnemyInfo ENEMY1;
 
-#endif  // ENTITYINFO_H
+	const Texture& texture;
+	const EnemyAI ai;
+	const int health;
+
+ private:
+	EnemyInfo(const Texture&, const EnemyAI&, int);
+};
+
+class BulletInfo {
+ public:
+	static const BulletInfo PLAYERBASIC;
+	static const BulletInfo PLAYERHOMING;
+	static const BulletInfo ACCELERATING;
+
+	const Texture& texture;
+	const BulletAI ai;
+
+ private:
+	BulletInfo(const Texture&, const BulletAI&);
+};
+
+#endif  // AI_H

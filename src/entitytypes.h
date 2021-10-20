@@ -2,39 +2,47 @@
 #define ENTITYTYPES_H
 
 #include <QGraphicsPixmapItem>
-
-struct Texture;
-struct PlayerInfo;
-struct EnemyInfo;
-struct BulletInfo;
-class Game;
-class Bullet;
-class CollidableEntity;
-class Enemy;
+#include "texture.h"
 
 template <class T>
 using EntityAI = std::function<void(T*)>;
 
-class BaseEntity : virtual public QGraphicsPixmapItem {
+class Game;
+class Player;
+class Enemy;
+class Bullet;
+class PlayerHitbox;
+class BulletInfo;
+
+class BaseEntity : public QGraphicsPixmapItem {
  public:
-	BaseEntity(Game*, Texture&, QPointF);
+	BaseEntity(Game*, const Texture&, const QPointF&);
 
 	bool cleanup;
 	int timeAlive;
-	Game* game;
 
-	void moveFoward(double);
-	void rotate(double);
-	void setCenter(QPointF);
-	QPointF getCenter();
-	Bullet* fireBullet(BulletInfo&, QPointF, qreal = 0);
-	QList<CollidableEntity*> getCollidingEntities();
-	bool cycle(int);
-	bool cycle(int, int);
-	bool cycle(int, int, int);
+	void moveFoward(const double&);
+	void rotate(const double&);
+
+	Bullet* fireBullet(const BulletInfo&, const QPointF&, const double& = 0);
+	QList<Bullet*> fireBulletCircle(const BulletInfo&,
+																	const QPointF&,
+																	const int&,
+																	const double& = 0);
 	Enemy* getNearestEnemy();
+	QList<BaseEntity*> getCollisions();
+
+	QPointF confineToPlayableArea(const QPointF&);
+	bool isOnScreen();
+
+	bool cycle(const int&);
+	bool cycle(const int&, const int&);
+	bool cycle(const int&, const int&, const int&);
 
 	virtual void tick() = 0;
+
+ protected:
+	Game* game;
 };
 
 class LinkedEntity {
@@ -53,63 +61,16 @@ class CollidableEntity {
 template <class T>
 class AIEntity : public BaseEntity {
  public:
-	AIEntity(Game*, Texture&, QPointF, EntityAI<T>&);
+	AIEntity(Game*, const Texture&, const EntityAI<T>&, const QPointF&);
 
-	EntityAI<T>& ai;
+	const EntityAI<T> ai;
 };
 
 template <class T>
 AIEntity<T>::AIEntity(Game* game,
-											Texture& texture,
-											QPointF spawn,
-											EntityAI<T>& ai)
+											const Texture& texture,
+											const EntityAI<T>& ai,
+											const QPointF& spawn)
 		: BaseEntity(game, texture, spawn), ai(ai) {}
-
-class PlayerHitbox : public AIEntity<PlayerHitbox>,
-										 public LinkedEntity,
-										 public CollidableEntity {
- public:
-	PlayerHitbox(Game*, BaseEntity*);
-
-	void tick() override;
-};
-
-class Player : public AIEntity<Player> {
- public:
-	Player(Game*, PlayerInfo&, QPointF);
-
-	PlayerHitbox* hitbox;
-
-	bool firing;
-	bool focus;
-	int level;
-
-	bool isHit();
-
-	void tick() override;
-};
-
-class Enemy : public AIEntity<Enemy>, public CollidableEntity {
- public:
-	Enemy(Game*, EnemyInfo&, QPointF);
-
-	int health;
-	QPointF move;
-
-	QList<Bullet*> getHits();
-
-	void tick() override;
-};
-
-class Bullet : public AIEntity<Bullet>,
-							 public LinkedEntity,
-							 public CollidableEntity {
- public:
-	Bullet(Game*, BulletInfo&, BaseEntity*, QPointF, qreal = 0);
-
-	bool boundsCheck;
-
-	void tick() override;
-};
 
 #endif  // ENTITYTYPES_H
