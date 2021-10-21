@@ -10,7 +10,8 @@ using BulletAI = EntityAI<Bullet>;
 
 class PlayerInfo {
  public:
-	static const PlayerInfo PLAYER1;
+	static const PlayerInfo PYACHI;
+	static const PlayerInfo AERON;
 
 	const Texture& texture;
 	const FiringPattern firingPattern;
@@ -38,6 +39,7 @@ class BulletInfo {
 	static const BulletInfo PLAYERBASIC;
 	static const BulletInfo PLAYERHOMING;
 	static const BulletInfo ACCELERATING;
+	static const BulletInfo SCREENWRAPTEST;
 
 	const Texture& texture;
 	const BulletAI ai;

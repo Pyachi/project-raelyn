@@ -6,22 +6,29 @@
 #include "enemy.h"
 #include "player.h"
 
-Game::Game() : QGraphicsView() {
-	scene = new QGraphicsScene(0, 0, gameWidth, gameHeight);
+Game::Game(const PlayerInfo& player, const QString& difficulty)
+		: QGraphicsView(),
+			playableArea(new QGraphicsPixmapItem),
+			scene(new QGraphicsScene(0, 0, gameWidth, gameHeight)),
+			background(new QGraphicsPixmapItem) {
 	setScene(scene);
 
 	setInteractive(false);
 	setViewport(new QOpenGLWidget);
 
-	background = new QGraphicsPixmapItem();
-	QPixmap backgroundImage(gameHeight - (playBorder * 2),
-													gameHeight - (playBorder * 2));
-	backgroundImage.fill(Qt::darkRed);
-	background->setPixmap(backgroundImage);
-	background->setOffset(-background->boundingRect().center());
-	background->setPos(playBorder + background->boundingRect().width() / 2,
-										 playBorder + background->boundingRect().height() / 2);
+	QPixmap backgroundPixmap(Texture::BACKGROUND.texture);
+	background->setPixmap(backgroundPixmap);
+	background->setZValue(Texture::BACKGROUND.zValue);
 	scene->addItem(background);
+
+	QPixmap playableAreaPixmap(gameHeight - (playBorder * 2),
+														 gameHeight - (playBorder * 2));
+	playableAreaPixmap.fill(Qt::darkRed);
+	playableArea->setPixmap(playableAreaPixmap);
+	playableArea->setOffset(-playableArea->boundingRect().center());
+	playableArea->setPos(playBorder + playableArea->boundingRect().width() / 2,
+											 playBorder + playableArea->boundingRect().height() / 2);
+	scene->addItem(playableArea);
 
 	setFixedSize(gameWidth + 2, gameHeight + 2);
 
@@ -29,7 +36,7 @@ Game::Game() : QGraphicsView() {
 	tickClock->start(1000 / 60);
 	connect(tickClock, &QTimer::timeout, this, &Game::tick);
 
-	new Player(this, PlayerInfo::PLAYER1, QPointF(0, 200));
+	new Player(this, player, QPointF(0, 200));
 	new Enemy(this, EnemyInfo::ENEMY1, QPointF(0, -300));
 }
 

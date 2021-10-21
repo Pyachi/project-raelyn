@@ -11,6 +11,7 @@ class Texture {
 	static const Texture PLAYERBULLETBASIC;
 	static const Texture BULLETROUND;
 	static const Texture BULLETELLIPSE;
+	static const Texture BACKGROUND;
 
 	const QString texture;
 	const int zValue;

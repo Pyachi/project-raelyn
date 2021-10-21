@@ -6,7 +6,7 @@
 #include "game.h"
 
 BaseEntity::BaseEntity(Game* game, const Texture& texture, const QPointF& spawn)
-		: QGraphicsPixmapItem(game->background),
+		: QGraphicsPixmapItem(game->playableArea),
 			cleanup(false),
 			timeAlive(0),
 			game(game) {
@@ -48,7 +48,7 @@ QList<Bullet*> BaseEntity::fireBulletCircle(const BulletInfo& info,
 	double rotation = startRotation;
 	for (int i = 0; i < count; i++) {
 		list.append(new Bullet(game, info, this, pos() + spawn, rotation));
-		rotation += 360 / count;
+		rotation += 360.0 / count;
 	}
 	return list;
 }
@@ -79,17 +79,18 @@ QList<BaseEntity*> BaseEntity::getCollisions() {
 
 QPointF BaseEntity::confineToPlayableArea(const QPointF& pos) {
 	return QPointF(
-			qBound(game->background->boundingRect().left() - boundingRect().left(),
-						 pos.x(),
-						 game->background->boundingRect().right() - boundingRect().right()),
 			qBound(
-					game->background->boundingRect().top() - boundingRect().top(),
-					pos.y(),
-					game->background->boundingRect().bottom() - boundingRect().bottom()));
+					game->playableArea->boundingRect().left() - boundingRect().left(),
+					pos.x(),
+					game->playableArea->boundingRect().right() - boundingRect().right()),
+			qBound(game->playableArea->boundingRect().top() - boundingRect().top(),
+						 pos.y(),
+						 game->playableArea->boundingRect().bottom() -
+								 boundingRect().bottom()));
 }
 
 bool BaseEntity::isOnScreen() {
-	return collidesWithItem(game->background);
+	return collidesWithItem(game->playableArea);
 }
 
 bool BaseEntity::cycle(const int& dur) {

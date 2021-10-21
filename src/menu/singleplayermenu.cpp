@@ -1,47 +1,69 @@
 #include "singleplayermenu.h"
-#include <QPushButton>
-#include <QVBoxLayout>
+#include <QGridLayout>
 #include "mainmenu.h"
+#include "src/entityinfo.h"
 #include "src/game.h"
 
-SingleplayerMenu::SingleplayerMenu() {
-	QVBoxLayout* layout = new QVBoxLayout;
-	setLayout(layout);
-	setFixedSize(0, 0);
+SingleplayerMenu* SingleplayerMenu::MENU = nullptr;
 
-	QPushButton* characterButton = new QPushButton("Character: Pyachi");
-	layout->addWidget(characterButton);
-	connect(characterButton, &QPushButton::clicked, this,
+SingleplayerMenu::SingleplayerMenu()
+		: QDialog(),
+			characterButton("Character: Pyachi"),
+			difficultyButton("Difficulty: Normal"),
+			startButton("Start"),
+			quitButton("Back") {
+	QGridLayout* layout = new QGridLayout;
+	setLayout(layout);
+	setFixedSize(200, 120);
+
+	layout->addWidget(&characterButton, 1, 1, 1, -1);
+	connect(&characterButton, &QPushButton::clicked, this,
 					&SingleplayerMenu::changeCharacter);
 
-	QPushButton* difficultyButton = new QPushButton("Difficulty: Normal");
-	layout->addWidget(difficultyButton);
-	connect(difficultyButton, &QPushButton::clicked, this,
+	layout->addWidget(&difficultyButton, 2, 1, 1, -1);
+	connect(&difficultyButton, &QPushButton::clicked, this,
 					&SingleplayerMenu::changeDifficulty);
 
-	QPushButton* startButton = new QPushButton("Start Game");
-	layout->addWidget(startButton);
-	connect(startButton, &QPushButton::clicked, this,
+	layout->addWidget(&startButton, 3, 1, 1, 1);
+	connect(&startButton, &QPushButton::clicked, this,
 					&SingleplayerMenu::startGame);
 
-	QPushButton* quitButton = new QPushButton("Return to Menu");
-	layout->addWidget(quitButton);
-	connect(quitButton, &QPushButton::clicked, this,
+	layout->addWidget(&quitButton, 3, 2, 1, 1);
+	connect(&quitButton, &QPushButton::clicked, this,
 					&SingleplayerMenu::returnToMenu);
 }
 
-void SingleplayerMenu::changeCharacter() {}
+void SingleplayerMenu::openMenu() {
+	if (MENU == nullptr)
+		MENU = new SingleplayerMenu();
+	MENU->show();
+}
 
-void SingleplayerMenu::changeDifficulty() {}
+void SingleplayerMenu::changeCharacter() {
+	if (characterButton.text().contains("Pyachi"))
+		characterButton.setText("Character: Aeron");
+	else
+		characterButton.setText("Character: Pyachi");
+}
+
+void SingleplayerMenu::changeDifficulty() {
+	if (difficultyButton.text().contains("Normal"))
+		difficultyButton.setText("Difficulty: Hard");
+	else
+		difficultyButton.setText("Difficulty: Normal");
+}
 
 void SingleplayerMenu::startGame() {
-	Game* game = new Game;
+	Game* game;
+	if (characterButton.text().contains("Pyachi"))
+		game = new Game(PlayerInfo::PYACHI, "Normal");
+	else
+		game = new Game(PlayerInfo::AERON, "Normal");
 	game->show();
 	close();
 }
 
 void SingleplayerMenu::returnToMenu() {
-	MainMenu* menu = new MainMenu;
-	menu->show();
+	MainMenu::openMenu();
 	close();
 }

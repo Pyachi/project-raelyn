@@ -23,6 +23,7 @@ SOURCES += \
     src/game.cpp \
     src/main.cpp \
     src/menu/mainmenu.cpp \
+    src/menu/multiplayermenu.cpp \
     src/menu/singleplayermenu.cpp \
     src/player.cpp \
     src/playerhitbox.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     src/entitytypes.h \
     src/game.h \
     src/menu/mainmenu.h \
+    src/menu/multiplayermenu.h \
     src/menu/singleplayermenu.h \
     src/player.h \
     src/playerhitbox.h \

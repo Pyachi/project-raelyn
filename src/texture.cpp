@@ -10,3 +10,4 @@ const Texture Texture::PLAYERBULLETBASIC =
 		Texture(":/images/player_bullet.png", 2);
 const Texture Texture::BULLETROUND = Texture(":/images/bulletRound.png", 2);
 const Texture Texture::BULLETELLIPSE = Texture(":/images/bulletEllipse.png", 2);
+const Texture Texture::BACKGROUND = Texture(":/images/background.png", 5);
