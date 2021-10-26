@@ -1,7 +1,6 @@
 #ifndef AI_H
 #define AI_H
 
-#include <functional>
 #include "entitytypes.h"
 
 using FiringPattern = EntityAI<Player>;
@@ -40,6 +39,7 @@ class BulletInfo {
 	static const BulletInfo PLAYERHOMING;
 	static const BulletInfo ACCELERATING;
 	static const BulletInfo SCREENWRAPTEST;
+	static const BulletInfo FLOWER;
 
 	const Texture& texture;
 	const BulletAI ai;

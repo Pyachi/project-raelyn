@@ -9,7 +9,7 @@ MainMenu::MainMenu()
 		: QDialog(),
 			singleplayerButton("Singleplayer"),
 			multiplayerButton("Multiplayer"),
-			optionsButton("Options"),
+			optionsButton("Scores"),
 			quitButton("Quit") {
 	QGridLayout* layout = new QGridLayout;
 	setLayout(layout);

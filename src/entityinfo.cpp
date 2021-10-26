@@ -21,90 +21,96 @@ EnemyInfo::EnemyInfo(const Texture& texture, const EnemyAI& ai, int health)
 BulletInfo::BulletInfo(const Texture& texture, const BulletAI& ai)
 		: texture(texture), ai(ai) {}
 
-const PlayerInfo PlayerInfo::PYACHI = PlayerInfo(
-		Texture::PLAYER1,
-		[](Player* player) {
-			switch (player->level) {
-				case 1:
-					if (player->focus) {
-						player->fireBullet(BulletInfo::PLAYERBASIC, QPointF(-10, 0))
-								->setOpacity(0.25);
-						player->fireBullet(BulletInfo::PLAYERBASIC, QPointF(0, 0))
-								->setOpacity(0.25);
-						player->fireBullet(BulletInfo::PLAYERBASIC, QPointF(10, 0))
-								->setOpacity(0.25);
-						if (player->cycle(5)) {
-							player->fireBullet(BulletInfo::PLAYERHOMING, QPointF(-30, -30))
-									->setOpacity(0.5);
-							player->fireBullet(BulletInfo::PLAYERHOMING, QPointF(30, -30))
-									->setOpacity(0.5);
-						}
-					} else {
-						player->fireBullet(BulletInfo::PLAYERBASIC, QPointF(-20, 0))
-								->setOpacity(0.25);
-						player->fireBullet(BulletInfo::PLAYERBASIC, QPointF(0, 0))
-								->setOpacity(0.25);
-						player->fireBullet(BulletInfo::PLAYERBASIC, QPointF(20, 0))
-								->setOpacity(0.25);
-						if (player->cycle(5)) {
-							player->fireBullet(BulletInfo::PLAYERHOMING, QPointF(-50, 0))
-									->setOpacity(0.5);
-							player->fireBullet(BulletInfo::PLAYERHOMING, QPointF(50, 0))
-									->setOpacity(0.5);
-						}
-					}
-					break;
-			}
-		},
-		15,
-		5);
+const PlayerInfo PlayerInfo::PYACHI =
+		PlayerInfo(Texture::PLAYER1,
+							 [](Player* player) {
+								 switch (player->level) {
+									 case 1:
+										 if (player->focus) {
+											 player->fireBullet(BulletInfo::PLAYERBASIC,
+																					QPointF(-10, 0))->setOpacity(0.25);
+											 player->fireBullet(BulletInfo::PLAYERBASIC,
+																					QPointF(0, 0))->setOpacity(0.25);
+											 player->fireBullet(BulletInfo::PLAYERBASIC,
+																					QPointF(10, 0))->setOpacity(0.25);
+											 if (player->cycle(5)) {
+												 player->fireBullet(BulletInfo::PLAYERHOMING,
+																						QPointF(-30, -30))->setOpacity(0.5);
+												 player->fireBullet(BulletInfo::PLAYERHOMING,
+																						QPointF(30, -30))->setOpacity(0.5);
+											 }
+										 } else {
+											 player->fireBullet(BulletInfo::PLAYERBASIC,
+																					QPointF(-20, 0))->setOpacity(0.25);
+											 player->fireBullet(BulletInfo::PLAYERBASIC,
+																					QPointF(0, 0))->setOpacity(0.25);
+											 player->fireBullet(BulletInfo::PLAYERBASIC,
+																					QPointF(20, 0))->setOpacity(0.25);
+											 if (player->cycle(5)) {
+												 player->fireBullet(BulletInfo::PLAYERHOMING,
+																						QPointF(-50, 0))->setOpacity(0.5);
+												 player->fireBullet(BulletInfo::PLAYERHOMING,
+																						QPointF(50, 0))->setOpacity(0.5);
+											 }
+										 }
+										 break;
+								 }
+							 },
+							 15,
+							 5);
 
-const PlayerInfo PlayerInfo::AERON = PlayerInfo(
-		Texture::PLAYER1,
-		[](Player* player) {
-			switch (player->level) {
-				case 1:
-					if (player->focus) {
-						player->fireBullet(BulletInfo::PLAYERBASIC, QPointF(-10, 0))
-								->setOpacity(0.25);
-						player->fireBullet(BulletInfo::PLAYERBASIC, QPointF(0, 0))
-								->setOpacity(0.25);
-						player->fireBullet(BulletInfo::PLAYERBASIC, QPointF(10, 0))
-								->setOpacity(0.25);
-						if (player->cycle(5)) {
-							player->fireBullet(BulletInfo::PLAYERHOMING, QPointF(-30, -30))
-									->setOpacity(0.5);
-							player->fireBullet(BulletInfo::PLAYERHOMING, QPointF(30, -30))
-									->setOpacity(0.5);
-						}
-					} else {
-						player->fireBullet(BulletInfo::PLAYERBASIC, QPointF(-20, 0))
-								->setOpacity(0.25);
-						player->fireBullet(BulletInfo::PLAYERBASIC, QPointF(0, 0))
-								->setOpacity(0.25);
-						player->fireBullet(BulletInfo::PLAYERBASIC, QPointF(20, 0))
-								->setOpacity(0.25);
-						if (player->cycle(5)) {
-							player->fireBullet(BulletInfo::PLAYERHOMING, QPointF(-50, 0))
-									->setOpacity(0.5);
-							player->fireBullet(BulletInfo::PLAYERHOMING, QPointF(50, 0))
-									->setOpacity(0.5);
-						}
-					}
-					break;
-			}
-		},
-		18,
-		8);
+const PlayerInfo PlayerInfo::AERON =
+		PlayerInfo(Texture::PLAYER1,
+							 [](Player* player) {
+								 switch (player->level) {
+									 case 1:
+										 if (player->focus) {
+											 player->fireBullet(BulletInfo::PLAYERBASIC,
+																					QPointF(-10, 0))->setOpacity(0.25);
+											 player->fireBullet(BulletInfo::PLAYERBASIC,
+																					QPointF(0, 0))->setOpacity(0.25);
+											 player->fireBullet(BulletInfo::PLAYERBASIC,
+																					QPointF(10, 0))->setOpacity(0.25);
+											 if (player->cycle(5)) {
+												 player->fireBullet(BulletInfo::PLAYERHOMING,
+																						QPointF(-30, -30))->setOpacity(0.5);
+												 player->fireBullet(BulletInfo::PLAYERHOMING,
+																						QPointF(30, -30))->setOpacity(0.5);
+											 }
+										 } else {
+											 player->fireBullet(BulletInfo::PLAYERBASIC,
+																					QPointF(-20, 0))->setOpacity(0.25);
+											 player->fireBullet(BulletInfo::PLAYERBASIC,
+																					QPointF(0, 0))->setOpacity(0.25);
+											 player->fireBullet(BulletInfo::PLAYERBASIC,
+																					QPointF(20, 0))->setOpacity(0.25);
+											 if (player->cycle(5)) {
+												 player->fireBullet(BulletInfo::PLAYERHOMING,
+																						QPointF(-50, 0))->setOpacity(0.5);
+												 player->fireBullet(BulletInfo::PLAYERHOMING,
+																						QPointF(50, 0))->setOpacity(0.5);
+											 }
+										 }
+										 break;
+								 }
+							 },
+							 18,
+							 8);
 
-const EnemyInfo EnemyInfo::ENEMY1 = EnemyInfo(
-		Texture::ENEMY1,
-		[](Enemy* enemy) {
-			if (enemy->cycle(29))
-				enemy->fireBulletCircle(BulletInfo::SCREENWRAPTEST, QPointF(0, 0), 3,
-																enemy->timeAlive);
-		},
-		500);
+const EnemyInfo EnemyInfo::ENEMY1 =
+		EnemyInfo(Texture::ENEMY1,
+							[](Enemy* enemy) {
+								//			if (enemy->cycle(29))
+								//				enemy->fireBulletCircle(BulletInfo::SCREENWRAPTEST,
+								// QPointF(0, 0), 3,
+								//																enemy->timeAlive);
+//								enemy->fireBulletCircle(BulletInfo::SCREENWRAPTEST,
+//																				QPointF(0, 0),
+//																				5,
+//																				pow(enemy->timeAlive / 3.0, 2));
+		enemy->fireBulletCircle(BulletInfo::FLOWER, QPointF(0,0), 32, pow(enemy->timeAlive / 10.0, 2));
+							},
+							500);
 
 const BulletInfo BulletInfo::PLAYERBASIC =
 		BulletInfo(Texture::PLAYERBULLETBASIC,
@@ -134,7 +140,7 @@ const BulletInfo BulletInfo::SCREENWRAPTEST =
 			if (bullet->timeAlive == 1)
 				bullet->borderCheck = false;
 			bullet->moveFoward(5);
-			if (bullet->timeAlive > 200 && !bullet->isOnScreen()) {
+			if (bullet->timeAlive > 1 && !bullet->isOnScreen()) {
 				bullet->cleanup = true;
 				return;
 			}
@@ -148,4 +154,15 @@ const BulletInfo BulletInfo::SCREENWRAPTEST =
 				else if (bullet->pos().y() > 340)
 					bullet->moveBy(0, -690);
 			}
+		});
+
+const BulletInfo BulletInfo::FLOWER =
+		BulletInfo(Texture::BULLETELLIPSE, [](Bullet* bullet) {
+			if (bullet->timeAlive == 1)
+				bullet->borderCheck = false;
+			if (bullet->timeAlive < 20) {
+				bullet->rotate(18);
+			} else if (bullet->timeAlive == 20)
+				bullet->cleanup = true;
+			bullet->moveFoward(20);
 		});
