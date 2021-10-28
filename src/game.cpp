@@ -3,14 +3,18 @@
 #include <QKeyEvent>
 #include <QOpenGLWidget>
 #include <QTimer>
-#include "enemy.h"
-#include "player.h"
+#include "src/texture.h"
+#include "src/entity/player.h"
+#include "src/entity/enemy.h"
 
-Game::Game(const PlayerInfo& player, const QString& difficulty)
+Game* Game::GAME = nullptr;
+
+Game::Game()
 		: QGraphicsView(),
 			playableArea(new QGraphicsPixmapItem),
 			scene(new QGraphicsScene(0, 0, gameWidth, gameHeight)),
 			background(new QGraphicsPixmapItem) {
+	GAME = this;
 	setScene(scene);
 
 	setInteractive(false);
@@ -36,12 +40,12 @@ Game::Game(const PlayerInfo& player, const QString& difficulty)
 	tickClock->start(1000 / 60);
 	connect(tickClock, &QTimer::timeout, this, &Game::tick);
 
-	new Player(this, player, QPointF(0, 200));
-	new Enemy(this, EnemyInfo::ENEMY1, QPointF(0, -300));
+	new Player(Players::PYACHI, QPointF(0, 200));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
 }
 
 void Game::tick() {
-	foreach (BaseEntity* entity, entities) {
+	foreach(BaseEntity * entity, entities) {
 		entity->tick();
 		if (entity->cleanup) {
 			entities.remove(entity);
@@ -50,17 +54,11 @@ void Game::tick() {
 	}
 }
 
-QSet<int> Game::getKeys() {
-	return keys;
-}
+QSet<int> Game::getKeys() { return keys; }
 
-QSet<BaseEntity*> Game::getEntities() {
-	return entities;
-}
+QSet<BaseEntity*> Game::getEntities() { return entities; }
 
-void Game::addEntity(BaseEntity* entity) {
-	entities.insert(entity);
-}
+void Game::addEntity(BaseEntity* entity) { entities.insert(entity); }
 
 void Game::keyPressEvent(QKeyEvent* e) {
 	keys.insert(e->key());

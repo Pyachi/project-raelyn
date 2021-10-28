@@ -1,0 +1,111 @@
+#include "player.h"
+#include <QtMath>
+#include "bullet.h"
+#include "enemy.h"
+#include "src/game.h"
+#include "playerhitbox.h"
+
+Players::Players(const Texture& texture,
+								 const EntityAI<Player>& firingPattern,
+								 int speed,
+								 int focusSpeed)
+		: texture(texture),
+			firingPattern(firingPattern),
+			speed(speed),
+			focusSpeed(focusSpeed) {}
+
+const Players Players::PYACHI =
+		Players(Texture::PLAYER1,
+						[](Player* player) {
+							switch (player->level) {
+								case 1:
+									if (player->focus) {
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(-10, 0))
+												->setOpacity(0.25);
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(0, 0))
+												->setOpacity(0.25);
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(10, 0))
+												->setOpacity(0.25);
+										if (player->cycle(5)) {
+											player->fireBullet(Bullets::PLAYERHOMING,
+																				 QPointF(-30, -30))->setOpacity(0.5);
+											player->fireBullet(Bullets::PLAYERHOMING,
+																				 QPointF(30, -30))->setOpacity(0.5);
+										}
+									} else {
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(-20, 0))
+												->setOpacity(0.25);
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(0, 0))
+												->setOpacity(0.25);
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(20, 0))
+												->setOpacity(0.25);
+										if (player->cycle(5)) {
+											player->fireBullet(Bullets::PLAYERHOMING, QPointF(-50, 0))
+													->setOpacity(0.5);
+											player->fireBullet(Bullets::PLAYERHOMING, QPointF(50, 0))
+													->setOpacity(0.5);
+										}
+									}
+									break;
+							}
+						},
+						15,
+						5);
+
+Player::Player(const Players& stats, const QPointF& spawn)
+		: BaseEntity(stats.texture, spawn),
+			firing(false),
+			focus(false),
+			level(1),
+			normalSpeed(stats.speed),
+			focusSpeed(stats.focusSpeed),
+			firingPattern(stats.firingPattern),
+			ai([](Player* player) {
+				QSet<int> keys = Game::GAME->getKeys();
+
+				player->firing = keys.contains(Qt::Key_Z);
+				player->focus = keys.contains(Qt::Key_Shift);
+
+				player->hitbox->setVisible(player->focus);
+
+				if (player->firing)
+					player->firingPattern(player);
+
+				int dx = 0, dy = 0;
+				int speed = player->focus ? player->focusSpeed : player->normalSpeed;
+				if (keys.contains(Qt::Key_Right))
+					dx += speed;
+				if (keys.contains(Qt::Key_Left))
+					dx -= speed;
+				if (keys.contains(Qt::Key_Down))
+					dy += speed;
+				if (keys.contains(Qt::Key_Up))
+					dy -= speed;
+				if (dx != 0 && dy != 0) {
+					dx /= sqrt(2);
+					dy /= sqrt(2);
+				}
+				player->setPos(
+						player->confineToPlayableArea(player->pos() + QPointF(dx, dy)));
+
+				if (player->isHit()) {
+					player->cleanup = true;
+					player->hitbox->cleanup = true;
+				}
+			}),
+			hitbox(new PlayerHitbox(this)) {}
+
+bool Player::isHit() {
+	if (hitbox->getCollisions<Enemy>().size() > 0)
+		return true;
+	else
+		foreach(Bullet * bullet, hitbox->getCollisions<Bullet>())
+	if (dynamic_cast<Enemy*>(bullet->owner))
+		return true;
+	return false;
+}
+
+void Player::tick() {
+	timeAlive++;
+	ai(this);
+}

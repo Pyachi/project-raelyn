@@ -5,7 +5,7 @@
 #include <QSet>
 
 class BaseEntity;
-class PlayerInfo;
+class Players;
 
 const int gameWidth = 1280;
 const int gameHeight = 720;
@@ -15,10 +15,11 @@ class Game : public QGraphicsView {
 	Q_OBJECT
 
  public:
-	Game(const PlayerInfo&, const QString&);
+	Game();
+
+	static Game* GAME;
 
 	QGraphicsPixmapItem* playableArea;
-
 	QSet<int> getKeys();
 	QSet<BaseEntity*> getEntities();
 	void addEntity(BaseEntity*);

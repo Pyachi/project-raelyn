@@ -18,76 +18,42 @@ PlayerInfo::PlayerInfo(const Texture& texture,
 EnemyInfo::EnemyInfo(const Texture& texture, const EnemyAI& ai, int health)
 		: texture(texture), ai(ai), health(health) {}
 
-BulletInfo::BulletInfo(const Texture& texture, const BulletAI& ai)
+Bullets::BulletInfo(const Texture& texture, const BulletAI& ai)
 		: texture(texture), ai(ai) {}
 
 const PlayerInfo PlayerInfo::PYACHI =
 		PlayerInfo(Texture::PLAYER1,
-							 [](Player* player) {
-								 switch (player->level) {
-									 case 1:
-										 if (player->focus) {
-											 player->fireBullet(BulletInfo::PLAYERBASIC,
-																					QPointF(-10, 0))->setOpacity(0.25);
-											 player->fireBullet(BulletInfo::PLAYERBASIC,
-																					QPointF(0, 0))->setOpacity(0.25);
-											 player->fireBullet(BulletInfo::PLAYERBASIC,
-																					QPointF(10, 0))->setOpacity(0.25);
-											 if (player->cycle(5)) {
-												 player->fireBullet(BulletInfo::PLAYERHOMING,
-																						QPointF(-30, -30))->setOpacity(0.5);
-												 player->fireBullet(BulletInfo::PLAYERHOMING,
-																						QPointF(30, -30))->setOpacity(0.5);
-											 }
-										 } else {
-											 player->fireBullet(BulletInfo::PLAYERBASIC,
-																					QPointF(-20, 0))->setOpacity(0.25);
-											 player->fireBullet(BulletInfo::PLAYERBASIC,
-																					QPointF(0, 0))->setOpacity(0.25);
-											 player->fireBullet(BulletInfo::PLAYERBASIC,
-																					QPointF(20, 0))->setOpacity(0.25);
-											 if (player->cycle(5)) {
-												 player->fireBullet(BulletInfo::PLAYERHOMING,
-																						QPointF(-50, 0))->setOpacity(0.5);
-												 player->fireBullet(BulletInfo::PLAYERHOMING,
-																						QPointF(50, 0))->setOpacity(0.5);
-											 }
-										 }
-										 break;
-								 }
-							 },
-							 15,
-							 5);
 
-const PlayerInfo PlayerInfo::AERON =
+const PlayerInfo PlayerInfo:
+:AERON =
 		PlayerInfo(Texture::PLAYER1,
 							 [](Player* player) {
 								 switch (player->level) {
 									 case 1:
 										 if (player->focus) {
-											 player->fireBullet(BulletInfo::PLAYERBASIC,
+											 player->fireBullet(Bullets::PLAYERBASIC,
 																					QPointF(-10, 0))->setOpacity(0.25);
-											 player->fireBullet(BulletInfo::PLAYERBASIC,
+											 player->fireBullet(Bullets::PLAYERBASIC,
 																					QPointF(0, 0))->setOpacity(0.25);
-											 player->fireBullet(BulletInfo::PLAYERBASIC,
+											 player->fireBullet(Bullets::PLAYERBASIC,
 																					QPointF(10, 0))->setOpacity(0.25);
 											 if (player->cycle(5)) {
-												 player->fireBullet(BulletInfo::PLAYERHOMING,
+												 player->fireBullet(Bullets::PLAYERHOMING,
 																						QPointF(-30, -30))->setOpacity(0.5);
-												 player->fireBullet(BulletInfo::PLAYERHOMING,
+												 player->fireBullet(Bullets::PLAYERHOMING,
 																						QPointF(30, -30))->setOpacity(0.5);
 											 }
 										 } else {
-											 player->fireBullet(BulletInfo::PLAYERBASIC,
+											 player->fireBullet(Bullets::PLAYERBASIC,
 																					QPointF(-20, 0))->setOpacity(0.25);
-											 player->fireBullet(BulletInfo::PLAYERBASIC,
+											 player->fireBullet(Bullets::PLAYERBASIC,
 																					QPointF(0, 0))->setOpacity(0.25);
-											 player->fireBullet(BulletInfo::PLAYERBASIC,
+											 player->fireBullet(Bullets::PLAYERBASIC,
 																					QPointF(20, 0))->setOpacity(0.25);
 											 if (player->cycle(5)) {
-												 player->fireBullet(BulletInfo::PLAYERHOMING,
+												 player->fireBullet(Bullets::PLAYERHOMING,
 																						QPointF(-50, 0))->setOpacity(0.5);
-												 player->fireBullet(BulletInfo::PLAYERHOMING,
+												 player->fireBullet(Bullets::PLAYERHOMING,
 																						QPointF(50, 0))->setOpacity(0.5);
 											 }
 										 }
@@ -98,26 +64,14 @@ const PlayerInfo PlayerInfo::AERON =
 							 8);
 
 const EnemyInfo EnemyInfo::ENEMY1 =
-		EnemyInfo(Texture::ENEMY1,
-							[](Enemy* enemy) {
-								//			if (enemy->cycle(29))
-								//				enemy->fireBulletCircle(BulletInfo::SCREENWRAPTEST,
-								// QPointF(0, 0), 3,
-								//																enemy->timeAlive);
-//								enemy->fireBulletCircle(BulletInfo::SCREENWRAPTEST,
-//																				QPointF(0, 0),
-//																				5,
-//																				pow(enemy->timeAlive / 3.0, 2));
-		enemy->fireBulletCircle(BulletInfo::FLOWER, QPointF(0,0), 32, pow(enemy->timeAlive / 10.0, 2));
-							},
-							500);
 
-const BulletInfo BulletInfo::PLAYERBASIC =
-		BulletInfo(Texture::PLAYERBULLETBASIC,
+
+const Bullets Bullets::PLAYERBASIC =
+		Bullets(Texture::PLAYERBULLETBASIC,
 							 [](Bullet* bullet) { bullet->moveBy(0, -40); });
 
-const BulletInfo BulletInfo::PLAYERHOMING =
-		BulletInfo(Texture::PLAYERBULLETBASIC, [](Bullet* bullet) {
+const Bullets Bullets::PLAYERHOMING =
+		Bullets(Texture::PLAYERBULLETBASIC, [](Bullet* bullet) {
 			bullet->rotate(20);
 			if (bullet->getNearestEnemy() == nullptr) {
 				bullet->moveBy(0, -20);
@@ -130,13 +84,13 @@ const BulletInfo BulletInfo::PLAYERHOMING =
 			bullet->setPos(bullet->pos() + dir.toPointF());
 		});
 
-const BulletInfo BulletInfo::ACCELERATING =
-		BulletInfo(Texture::BULLETROUND, [](Bullet* bullet) {
+const Bullets Bullets::ACCELERATING =
+		Bullets(Texture::BULLETROUND, [](Bullet* bullet) {
 			bullet->moveFoward(pow(bullet->timeAlive, 3) / 100000);
 		});
 
-const BulletInfo BulletInfo::SCREENWRAPTEST =
-		BulletInfo(Texture::BULLETELLIPSE, [](Bullet* bullet) {
+const Bullets Bullets::SCREENWRAPTEST =
+		Bullets(Texture::BULLETELLIPSE, [](Bullet* bullet) {
 			if (bullet->timeAlive == 1)
 				bullet->borderCheck = false;
 			bullet->moveFoward(5);
@@ -156,8 +110,8 @@ const BulletInfo BulletInfo::SCREENWRAPTEST =
 			}
 		});
 
-const BulletInfo BulletInfo::FLOWER =
-		BulletInfo(Texture::BULLETELLIPSE, [](Bullet* bullet) {
+const Bullets Bullets::FLOWER =
+		Bullets(Texture::BULLETELLIPSE, [](Bullet* bullet) {
 			if (bullet->timeAlive == 1)
 				bullet->borderCheck = false;
 			if (bullet->timeAlive < 20) {

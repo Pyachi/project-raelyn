@@ -1,8 +1,8 @@
 #include "singleplayermenu.h"
 #include <QGridLayout>
 #include "mainmenu.h"
-#include "src/entityinfo.h"
 #include "src/game.h"
+#include "src/entity/player.h"
 
 SingleplayerMenu* SingleplayerMenu::MENU = nullptr;
 
@@ -54,11 +54,7 @@ void SingleplayerMenu::changeDifficulty() {
 }
 
 void SingleplayerMenu::startGame() {
-	Game* game;
-	if (characterButton.text().contains("Pyachi"))
-		game = new Game(PlayerInfo::PYACHI, "Normal");
-	else
-		game = new Game(PlayerInfo::AERON, "Normal");
+	Game* game = new Game();
 	game->show();
 	close();
 }
