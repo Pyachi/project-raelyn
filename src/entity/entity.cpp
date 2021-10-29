@@ -5,8 +5,7 @@
 #include "enemy.h"
 #include "src/game.h"
 
-BaseEntity::BaseEntity(const Texture& texture,
-											 const QPointF& spawn)
+BaseEntity::BaseEntity(const Texture& texture, const QPointF& spawn)
 		: QGraphicsPixmapItem(Game::GAME->playableArea),
 			cleanup(false),
 			timeAlive(0) {
@@ -24,6 +23,14 @@ void BaseEntity::moveFoward(const double& distance) {
 	double dy = distance * cos(rot);
 
 	moveBy(dx, dy);
+}
+
+void BaseEntity::moveTowardsPoint(const QPointF& point,
+																	const double& distance) {
+	QVector2D dir(point - pos());
+	dir.normalize();
+	dir *= distance;
+	moveBy(dir.x(),dir.y());
 }
 
 void BaseEntity::rotate(const double& deg) { setRotation(rotation() + deg); }
@@ -45,6 +52,11 @@ QList<Bullet*> BaseEntity::fireBulletCircle(const Bullets& info,
 		rotation += 360.0 / count;
 	}
 	return list;
+}
+
+double BaseEntity::distanceSquared(BaseEntity* entity) {
+	return pow(pos().x() - entity->pos().x(), 2) +
+				 pow(pos().y() - entity->pos().y(), 2);
 }
 
 QPointF BaseEntity::confineToPlayableArea(const QPointF& pos) {

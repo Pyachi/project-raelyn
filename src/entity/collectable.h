@@ -4,8 +4,7 @@
 #include "entity.h"
 
 class Collectable;
-
-using CollectableAI = EntityAI<Collectable>;
+class Player;
 
 class CollectableType {
  public:
@@ -15,10 +14,10 @@ class CollectableType {
 	static const CollectableType BOMB;
 
 	const Texture& texture;
-	const CollectableAI ai;
+	const EntityAI<Player> onPickup;
 
  private:
-	CollectableType(const Texture&, const CollectableAI&);
+	CollectableType(const Texture&, const EntityAI<Player>&);
 };
 
 class Collectable : public BaseEntity {
@@ -26,7 +25,8 @@ class Collectable : public BaseEntity {
 	Collectable(const CollectableType&, const QPointF&);
 
  private:
-	const CollectableAI ai;
+	const EntityAI<Collectable> ai;
+	const EntityAI<Player> onPickup;
 	void tick() override;
 };
 

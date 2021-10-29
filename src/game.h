@@ -19,6 +19,8 @@ class Game : public QGraphicsView {
 
 	static Game* GAME;
 
+	void screenShake();
+
 	QGraphicsPixmapItem* playableArea;
 	QSet<int> getKeys();
 	QSet<BaseEntity*> getEntities();
@@ -31,6 +33,9 @@ class Game : public QGraphicsView {
 	QSet<int> keys;
 
 	void tick();
+
+	bool shake;
+	int shakeTimer;
 
 	void keyPressEvent(QKeyEvent* e);
 	void keyReleaseEvent(QKeyEvent* e);

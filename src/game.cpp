@@ -13,7 +13,9 @@ Game::Game()
 		: QGraphicsView(),
 			playableArea(new QGraphicsPixmapItem),
 			scene(new QGraphicsScene(0, 0, gameWidth, gameHeight)),
-			background(new QGraphicsPixmapItem) {
+			background(new QGraphicsPixmapItem),
+			shake(false),
+			shakeTimer(0) {
 	GAME = this;
 	setScene(scene);
 
@@ -42,6 +44,30 @@ Game::Game()
 
 	new Player(Players::PYACHI, QPointF(0, 200));
 	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(100, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(200, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(300, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(-100, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(-200, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(-300, -300));
 }
 
 void Game::tick() {
@@ -50,6 +76,16 @@ void Game::tick() {
 		if (entity->cleanup) {
 			entities.remove(entity);
 			scene->removeItem(entity);
+		}
+	}
+	if (shake) {
+		shakeTimer++;
+		playableArea->moveBy((rand() % 10) - 4, (rand() % 10) - 4);
+		if (shakeTimer == 10) {
+			shakeTimer = 0;
+			shake = false;
+			playableArea->setPos(playBorder + playableArea->boundingRect().width() / 2,
+													 playBorder + playableArea->boundingRect().height() / 2);
 		}
 	}
 }
@@ -69,3 +105,5 @@ void Game::keyReleaseEvent(QKeyEvent* e) {
 	keys.remove(e->key());
 	QGraphicsView::keyReleaseEvent(e);
 }
+
+void Game::screenShake() { shake = true; }

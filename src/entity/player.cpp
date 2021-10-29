@@ -26,6 +26,23 @@ const Players Players::PYACHI =
 												->setOpacity(0.25);
 										player->fireBullet(Bullets::PLAYERBASIC, QPointF(10, 0))
 												->setOpacity(0.25);
+									} else {
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(-20, 0))
+												->setOpacity(0.25);
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(0, 0))
+												->setOpacity(0.25);
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(20, 0))
+												->setOpacity(0.25);
+									}
+									break;
+								case 2:
+									if (player->focus) {
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(-10, 0))
+												->setOpacity(0.25);
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(0, 0))
+												->setOpacity(0.25);
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(10, 0))
+												->setOpacity(0.25);
 										if (player->cycle(5)) {
 											player->fireBullet(Bullets::PLAYERHOMING,
 																				 QPointF(-30, -30))->setOpacity(0.5);
@@ -57,6 +74,7 @@ Player::Player(const Players& stats, const QPointF& spawn)
 			firing(false),
 			focus(false),
 			level(1),
+			power(0),
 			normalSpeed(stats.speed),
 			focusSpeed(stats.focusSpeed),
 			firingPattern(stats.firingPattern),
@@ -66,7 +84,10 @@ Player::Player(const Players& stats, const QPointF& spawn)
 				player->firing = keys.contains(Qt::Key_Z);
 				player->focus = keys.contains(Qt::Key_Shift);
 
-				player->hitbox->setVisible(player->focus);
+				if (player->focus)
+					player->hitbox->setZValue(4);
+				else
+					player->hitbox->setZValue(-1);
 
 				if (player->firing)
 					player->firingPattern(player);
@@ -87,6 +108,12 @@ Player::Player(const Players& stats, const QPointF& spawn)
 				}
 				player->setPos(
 						player->confineToPlayableArea(player->pos() + QPointF(dx, dy)));
+
+				if (player->power >= 100) {
+					player->level++;
+					if (player->level == 3) player->level = 2;
+					player->power = 0;
+				}
 
 				if (player->isHit()) {
 					player->cleanup = true;

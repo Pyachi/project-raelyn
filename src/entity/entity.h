@@ -20,6 +20,7 @@ class BaseEntity : public QGraphicsPixmapItem {
 	int timeAlive;
 
 	void moveFoward(const double&);
+	void moveTowardsPoint(const QPointF&, const double&);
 	void rotate(const double&);
 
 	Bullet* fireBullet(const Bullets&, const QPointF&, const double& = 0);
@@ -32,6 +33,8 @@ class BaseEntity : public QGraphicsPixmapItem {
 
 	template <class T>
 	QList<T*> getCollisions();
+
+	double distanceSquared(BaseEntity*);
 
 	QPointF confineToPlayableArea(const QPointF&);
 	bool isOnScreen();

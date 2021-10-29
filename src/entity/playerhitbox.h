@@ -6,10 +6,10 @@
 class PlayerHitbox : public BaseEntity {
  public:
 	PlayerHitbox(BaseEntity*);
+	BaseEntity* owner;
 
  private:
 	const EntityAI<PlayerHitbox> ai;
-	BaseEntity* owner;
 	void tick() override;
 };
 

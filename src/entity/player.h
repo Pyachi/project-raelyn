@@ -27,6 +27,7 @@ class Player : public BaseEntity {
 	bool firing;
 	bool focus;
 	int level;
+	int power;
 
 	bool isHit();
 
