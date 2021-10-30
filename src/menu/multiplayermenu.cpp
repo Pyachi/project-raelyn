@@ -9,8 +9,7 @@ MultiplayerMenu::MultiplayerMenu()
 		: QDialog(),
 			portDisplay("Port:"),
 			portForm("7"),
-			hostButton("Host"),
-			joinButton("Join"),
+			connectButton("Connect"),
 			quitButton("Back") {
 	QGridLayout* layout = new QGridLayout;
 	setLayout(layout);
@@ -23,11 +22,8 @@ MultiplayerMenu::MultiplayerMenu()
 							"|655[0-2][0-9]|6553[0-5])$")));
 	layout->addWidget(&portForm, 1, 2, 1, 1);
 
-	layout->addWidget(&hostButton, 2, 1, 1, 1);
-	connect(&hostButton, &QPushButton::clicked, this, &MultiplayerMenu::host);
-
-	layout->addWidget(&joinButton, 2, 2, 1, 1);
-	connect(&joinButton, &QPushButton::clicked, this, &MultiplayerMenu::join);
+	layout->addWidget(&connectButton, 2, 1, 1, -1);
+	connect(&connectButton, &QPushButton::clicked, this, &MultiplayerMenu::join);
 
 	layout->addWidget(&quitButton, 3, 1, 1, -1);
 	connect(&quitButton, &QPushButton::clicked, this,
@@ -39,8 +35,6 @@ void MultiplayerMenu::openMenu() {
 		MENU = new MultiplayerMenu();
 	MENU->show();
 }
-
-void MultiplayerMenu::host() {}
 
 void MultiplayerMenu::join() {}
 

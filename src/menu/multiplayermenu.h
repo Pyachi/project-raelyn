@@ -17,11 +17,9 @@ class MultiplayerMenu : public QDialog {
 
 	QLabel portDisplay;
 	QLineEdit portForm;
-	QPushButton hostButton;
-	QPushButton joinButton;
+	QPushButton connectButton;
 	QPushButton quitButton;
 
-	void host();
 	void join();
 	void returnToMenu();
 };

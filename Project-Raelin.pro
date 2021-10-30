@@ -1,4 +1,4 @@
-QT       += core gui opengl
+QT       += core gui opengl network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,6 +27,7 @@ SOURCES += \
     src/menu/mainmenu.cpp \
     src/menu/multiplayermenu.cpp \
     src/menu/singleplayermenu.cpp \
+    src/network/connection.cpp \
     src/texture.cpp
 
 HEADERS += \
@@ -40,6 +41,7 @@ HEADERS += \
     src/menu/mainmenu.h \
     src/menu/multiplayermenu.h \
     src/menu/singleplayermenu.h \
+    src/network/connection.h \
     src/texture.h
 
 FORMS +=

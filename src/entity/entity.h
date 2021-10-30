@@ -49,10 +49,10 @@ class BaseEntity : public QGraphicsPixmapItem {
 template <class T>
 T* BaseEntity::getNearestEntity() {
 	T* closest = nullptr;
-	float closestDis = 99999999;
+	double closestDis = 99999999;
 	foreach(BaseEntity * baseEntity, Game::GAME->getEntities()) {
 		if (T* entity = dynamic_cast<T*>(baseEntity)) {
-			float distance = QVector2D(entity->pos()).lengthSquared();
+			double distance = distanceSquared(entity);
 			if (distance < closestDis) {
 				closest = entity;
 				closestDis = distance;

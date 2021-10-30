@@ -47,21 +47,12 @@ Game::Game()
 	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
 	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
 	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-		new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
 	new Enemy(Enemies::ENEMY1, QPointF(100, -300));
 	new Enemy(Enemies::ENEMY1, QPointF(200, -300));
 	new Enemy(Enemies::ENEMY1, QPointF(300, -300));
@@ -80,12 +71,13 @@ void Game::tick() {
 	}
 	if (shake) {
 		shakeTimer++;
-		playableArea->moveBy((rand() % 10) - 4, (rand() % 10) - 4);
+		playableArea->moveBy((rand() % 5) - 2, (rand() % 5) - 2);
 		if (shakeTimer == 10) {
 			shakeTimer = 0;
 			shake = false;
-			playableArea->setPos(playBorder + playableArea->boundingRect().width() / 2,
-													 playBorder + playableArea->boundingRect().height() / 2);
+			playableArea->setPos(
+					playBorder + playableArea->boundingRect().width() / 2,
+					playBorder + playableArea->boundingRect().height() / 2);
 		}
 	}
 }
