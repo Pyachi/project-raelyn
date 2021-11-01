@@ -10,6 +10,16 @@ Enemies::Enemies(const Texture& texture, const EnemyAI& ai, int health)
 const Enemies Enemies::ENEMY1 = Enemies(
 		Texture::ENEMY1,
 		[](Enemy* enemy) {
+#include "bullet.h"
+#include "player.h"
+#include "src/entity/collectable.h"
+
+Enemies::Enemies(const Texture& texture, const EnemyAI& ai, int health)
+		: texture(texture), ai(ai), health(health) {}
+
+const Enemies Enemies::ENEMY1 = Enemies(
+		Texture::ENEMY1,
+		[](Enemy* enemy) {
 			if (enemy->cycle(100)) {
 				enemy->fireBulletArc(Bullets::BASIC8, QPointF(0, 0), 5, -30, 30);
 				enemy->fireBulletArc(Bullets::BASIC10, QPointF(0, 0), 5, -30, 30);
