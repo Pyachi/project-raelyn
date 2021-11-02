@@ -1,22 +1,21 @@
 #ifndef SOUND_H
 #define SOUND_H
 
-#include <QSet>
-#include <QMediaPlayer>
+#include <QQueue>
+#include <QSoundEffect>
 
 class SFX;
 class Song;
 
 class Sound {
  public:
-	static void playSound(SFX);
+	static void playSound(SFX, qreal);
 	static void playMusic(Song);
-	static void stopSound();
-	static void stopSound(SFX);
-	static void stopSound(Song);
 
  private:
-	static QSet<QMediaPlayer*>* sounds;
+	static QQueue<QSoundEffect*>* queue;
+	static bool ready;
+	static void init();
 };
 
 #endif  // SOUND_H

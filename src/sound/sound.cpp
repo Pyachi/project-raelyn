@@ -1,32 +1,24 @@
 #include "sound.h"
+#include <QSoundEffect>
 #include "sfx.h"
 
-QSet<QMediaPlayer*>* Sound::sounds = new QSet<QMediaPlayer*>();
+QQueue<QSoundEffect*>* Sound::queue = new QQueue<QSoundEffect*>;
 
-void Sound::playSound(SFX effect) {
-	QSet<QMediaPlayer*> set = QSet<QMediaPlayer*>(*sounds);
-	foreach(QMediaPlayer * player, set) {
-		if (player->state() == QMediaPlayer::StoppedState)
-			sounds->remove(player);
-	}
+bool Sound::ready = false;
 
-	QMediaPlayer* player = new QMediaPlayer;
-	player->setMedia(QUrl(effect.sound_effect));
+void Sound::playSound(SFX effect, qreal vol) {
+	if (!ready)
+		init();
+
+	QSoundEffect* player = queue->dequeue();
+	player->setSource(QUrl(effect.sound_effect));
+	player->setVolume(vol);
 	player->play();
-	sounds->insert(player);
+	queue->enqueue(player);
 }
 
-void Sound::stopSound() {
-	foreach(QMediaPlayer * player, *sounds) { player->stop(); }
-	sounds->clear();
-}
-
-void Sound::stopSound(SFX effect) {
-	QSet<QMediaPlayer*> set = QSet<QMediaPlayer*>(*sounds);
-	foreach(QMediaPlayer * player, set) {
-		if (player->media().canonicalUrl().path() == effect.sound_effect) {
-			player->stop();
-			sounds->remove(player);
-		}
-	}
+void Sound::init() {
+	for (int i = 0; i < 32; i++)
+		queue->enqueue(new QSoundEffect);
+	ready = true;
 }
