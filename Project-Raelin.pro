@@ -1,4 +1,4 @@
-QT       += core gui opengl network multimedia
+QT       += core gui opengl network multimedia sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,6 +16,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/database/database_api.cpp \
+    src/database/scoreboard.cpp \
     src/entity/bullet.cpp \
     src/entity/collectable.cpp \
     src/entity/enemy.cpp \
@@ -34,6 +36,8 @@ SOURCES += \
     src/texture.cpp
 
 HEADERS += \
+    src/database/database_api.h \
+    src/database/scoreboard.h \
     src/entity/bullet.h \
     src/entity/collectable.h \
     src/entity/enemy.h \
