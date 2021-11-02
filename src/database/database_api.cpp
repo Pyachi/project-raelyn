@@ -35,16 +35,21 @@ void database_API::add_score(QSqlDatabase db, QString level, QString user, int s
 
 Scoreboard database_API::get_scoreboard(QSqlDatabase db, QString level)
 {
-    QSqlQuery q;
-    QString query = "SELECT * FROM ";
+    QSqlQuery query;
+    QString querySTR = "SELECT * FROM ";
 
     Scoreboard board;
 
-    query.append(level);
-    if(!q.exec(query))
+    querySTR.append(level);
+    if(!query.exec(querySTR))
     {
         qDebug() << db.lastError();
         qDebug() << "Error: invalid query";
+    }
+
+    while(query.next())
+    {
+        board.Add_Score(query.value)
     }
 
     return board;
