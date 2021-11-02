@@ -1,5 +1,6 @@
 #include "scoreboard.h"
 #include <QDialog>
+#include <QGridLayout>
 
 Scoreboard::Scoreboard()
 {
@@ -27,8 +28,8 @@ bool Scoreboard::Add_Score(QString level, QString user, int score)
 }
 
 
-void Scoreboard::Show_Scoreboard() : QDialog()
+void Scoreboard::Show_Scoreboard()
 {
-
+    
 
 }
