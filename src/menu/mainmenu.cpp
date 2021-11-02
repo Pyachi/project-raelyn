@@ -30,8 +30,6 @@ MainMenu::MainMenu()
 
 	layout->addWidget(&quitButton, 3, 2, 1, 1);
 	connect(&quitButton, &QPushButton::clicked, this, &MainMenu::close);
-
-	Sound::playSound(SFX::EXPL_SUPERHEAVY_2);
 }
 
 void MainMenu::openMenu() {
