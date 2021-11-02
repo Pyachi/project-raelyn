@@ -15,11 +15,11 @@ Collectable::Collectable(const CollectableType& type, const QPointF& spawn)
 				if (entity->timeAlive < 10)
 					entity->moveBy(20 * -sin(dir), 20 * cos(dir));
 				else {
-					if (entity->getNearestEntity<Player>()->distanceSquared(entity) <
-									150 * 150 ||
-							entity->getNearestEntity<Player>()->pos().y() < -200)
-						entity->moveTowardsPoint(entity->getNearestEntity<Player>()->pos(),
-																		 15);
+					Player* player = entity->getNearestEntity<Player>();
+					if (player != nullptr &&
+							(player->distanceSquared(entity) < 150 * 150 ||
+							 player->pos().y() < -200))
+						entity->moveTowardsPoint(player->pos(), 15);
 					else
 						entity->moveBy(0, entity->timeAlive / 30.0);
 					if (!entity->getCollisions<PlayerHitbox>().isEmpty()) {
