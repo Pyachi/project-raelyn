@@ -1,6 +1,6 @@
 #include "sound.h"
-#include "sfx.h"
 #include <QMediaPlayer>
+#include "sfx.h"
 
 void Sound::playSound(SFX effect) {
 	QMediaPlayer* sound = new QMediaPlayer;
@@ -8,12 +8,10 @@ void Sound::playSound(SFX effect) {
 	sound->play();
 }
 
-//void Sound::playMusic(Song song) {
+// void Sound::playMusic(Song song) {
 //	QMediaPlayer* sound = new QMediaPlayer;
 //	sound->setMedia(QUrl(song.sound_effect));
 //	sound->play();
 //}
 
-void Sound::stopSound() {
-
-}
+void Sound::stopSound() {}
