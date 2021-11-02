@@ -10,6 +10,7 @@ Server* Server::SERVER = nullptr;
 bool Server::setup(quint16 port) {
 	Server::SERVER = new Server();
 	Server* server = Server::SERVER;
+
 	if (!server->listen(QHostAddress::Any, port))
 		return false;
 

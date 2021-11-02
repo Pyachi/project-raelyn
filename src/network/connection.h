@@ -1,18 +1,13 @@
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
-template <class T>
-class Packet;
+#include <QTcpSocket>
 
-class Connection {
+class Connection : public QTcpSocket {
  public:
-		template <class T>
-		static void sendPacket(Packet<T>);
+	Connection(QString, quint16);
 
-
-
-
-	Connection();
+	void printState(SocketState);
 };
 
 #endif  // CONNECTION_H
