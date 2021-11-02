@@ -15,11 +15,13 @@ class MultiplayerMenu : public QDialog {
 
 	static MultiplayerMenu* MENU;
 
-	QLabel portDisplay;
+	QLineEdit ipForm;
 	QLineEdit portForm;
-	QPushButton connectButton;
+	QPushButton hostButton;
+	QPushButton joinButton;
 	QPushButton quitButton;
 
+	void host();
 	void join();
 	void returnToMenu();
 };

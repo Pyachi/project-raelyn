@@ -28,6 +28,7 @@ SOURCES += \
     src/menu/multiplayermenu.cpp \
     src/menu/singleplayermenu.cpp \
     src/network/connection.cpp \
+    src/network/server.cpp \
     src/texture.cpp
 
 HEADERS += \
@@ -42,6 +43,7 @@ HEADERS += \
     src/menu/multiplayermenu.h \
     src/menu/singleplayermenu.h \
     src/network/connection.h \
+    src/network/server.h \
     src/texture.h
 
 FORMS +=
