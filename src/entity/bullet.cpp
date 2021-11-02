@@ -1,6 +1,7 @@
 #include "bullet.h"
-#include "enemy.h"
 #include <QVector2D>
+#include <QtMath>
+#include "enemy.h"
 
 Bullets::Bullets(const Texture& texture, const BulletAI& ai)
 		: texture(texture), ai(ai) {}

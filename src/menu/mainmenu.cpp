@@ -1,8 +1,8 @@
 #include "mainmenu.h"
-#include "src/sfx.h"
 #include <QGridLayout>
 #include "multiplayermenu.h"
 #include "singleplayermenu.h"
+#include "src/sfx.h"
 
 MainMenu* MainMenu::MENU = nullptr;
 
@@ -31,15 +31,13 @@ MainMenu::MainMenu()
 	layout->addWidget(&quitButton, 3, 2, 1, 1);
 	connect(&quitButton, &QPushButton::clicked, this, &MainMenu::close);
 
-    QMediaPlayer * explosion = new QMediaPlayer;
-    //explosion->setMedia(QUrl("qrc:/sounds/sounds/sound_collect_1"));
-    explosion->setMedia(QUrl(SFX::COLLECT_1.sound_effect));
-    explosion->play();
-
+	QMediaPlayer* explosion = new QMediaPlayer;
+	explosion->setMedia(QUrl("qrc:/sounds/sounds/sound_expl_superheavy_2.ogg"));
+	//    explosion->setMedia(QUrl(SFX::COLLECT_1.sound_effect));
+	explosion->play();
 }
 
 void MainMenu::openMenu() {
-
 	if (MENU == nullptr)
 		MENU = new MainMenu();
 	MENU->show();

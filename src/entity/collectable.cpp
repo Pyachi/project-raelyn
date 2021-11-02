@@ -1,6 +1,7 @@
 #include "collectable.h"
-#include "player.h"
+#include <QtMath>
 #include "bullet.h"
+#include "player.h"
 #include "playerhitbox.h"
 
 CollectableType::CollectableType(const Texture& texture,
