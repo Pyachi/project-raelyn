@@ -1,7 +1,6 @@
 #include "bullet.h"
-#include <QVector2D>
-#include <QtMath>
 #include "enemy.h"
+#include <QVector2D>
 
 Bullets::Bullets(const Texture& texture, const BulletAI& ai)
 		: texture(texture), ai(ai) {}
@@ -60,18 +59,6 @@ const Bullets Bullets::FLOWER =
 				bullet->cleanup = true;
 			bullet->moveFoward(20);
 		});
-
-const Bullets Bullets::BASIC8 =
-		Bullets(Texture::BULLETROUND,
-						[](Bullet* bullet) { bullet->moveFoward(8); });
-
-const Bullets Bullets::BASIC10 =
-		Bullets(Texture::BULLETROUND,
-						[](Bullet* bullet) { bullet->moveFoward(10); });
-
-const Bullets Bullets::BASIC12 =
-		Bullets(Texture::BULLETROUND,
-						[](Bullet* bullet) { bullet->moveFoward(12); });
 
 Bullet::Bullet(const Bullets& info,
 							 BaseEntity* owner,

@@ -12,9 +12,6 @@ class Bullets {
 	static const Bullets ACCELERATING;
 	static const Bullets SCREENWRAPTEST;
 	static const Bullets FLOWER;
-	static const Bullets BASIC8;
-	static const Bullets BASIC10;
-	static const Bullets BASIC12;
 
 	const Texture& texture;
 	const BulletAI ai;

@@ -8,4 +8,33 @@
         <file>images/bulletEllipse.png</file>
         <file>images/background.png</file>
     </qresource>
+    <qresource prefix="/sounds">
+        <file>sounds/sound_select_2.ogg</file>
+        <file>sounds/sound_select_1.ogg</file>
+        <file>sounds/sound_powerup_3.ogg</file>
+        <file>sounds/sound_powerup_2.ogg</file>
+        <file>sounds/sound_powerup_1.ogg</file>
+        <file>sounds/sound_missile_3.ogg</file>
+        <file>sounds/sound_missile_2.ogg</file>
+        <file>sounds/sound_missile_1.ogg</file>
+        <file>sounds/sound_laser_1.ogg</file>
+        <file>sounds/sound_hit_3.ogg</file>
+        <file>sounds/sound_hit_2.ogg</file>
+        <file>sounds/sound_hit_1.ogg</file>
+        <file>sounds/sound_expl_superheavy_2.ogg</file>
+        <file>sounds/sound_expl_superheavy_1.ogg</file>
+        <file>sounds/sound_expl_med_3.ogg</file>
+        <file>sounds/sound_expl_med_2.ogg</file>
+        <file>sounds/sound_expl_med_1.ogg</file>
+        <file>sounds/sound_expl_light_3.ogg</file>
+        <file>sounds/sound_expl_light_2.ogg</file>
+        <file>sounds/sound_expl_light_1.ogg</file>
+        <file>sounds/sound_expl_heavy_4.ogg</file>
+        <file>sounds/sound_expl_heavy_3.ogg</file>
+        <file>sounds/sound_expl_heavy_2.ogg</file>
+        <file>sounds/sound_expl_heavy_1.ogg</file>
+        <file>sounds/sound_collect_3.ogg</file>
+        <file>sounds/sound_collect_2.ogg</file>
+        <file>sounds/sound_collect_1.ogg</file>
+    </qresource>
 </RCC>
