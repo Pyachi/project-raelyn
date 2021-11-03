@@ -5,13 +5,14 @@
 #include "mainmenu.h"
 #include "src/network/connection.h"
 #include "src/network/server.h"
+#include "lobbymenu.h"
 
 MultiplayerMenu* MultiplayerMenu::MENU = nullptr;
 
 MultiplayerMenu::MultiplayerMenu()
 		: QDialog(),
-			ipForm("0.0.0.0"),
-			portForm("0"),
+			ipForm("127.0.0.1"),
+			portForm("1337"),
 			hostButton("Host"),
 			joinButton("Join"),
 			quitButton("Back") {
@@ -51,8 +52,10 @@ void MultiplayerMenu::host() {
 }
 
 void MultiplayerMenu::join() {
-	if (Connection::create(ipForm.text(), portForm.text().toUShort()))
+	if (Connection::create(ipForm.text(), portForm.text().toUShort())) {
+		LobbyMenu::openMenu();
 		close();
+	}
 }
 
 void MultiplayerMenu::returnToMenu() {

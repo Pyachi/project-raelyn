@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QNetworkProxy>
 #include "connection.h"
+#include "packet/packet.h"
 
 Connection* Connection::CON = nullptr;
 
@@ -12,15 +13,21 @@ bool Connection::create(QString ip, quint16 port) {
 	Connection* con = Connection::CON;
 
 	con->connectToHost(ip, port);
-	if (con->waitForConnected()) {
-		con->write("test");
+	if (con->waitForConnected())
 		return true;
-	} else {
+	else {
+		CON->deleteLater();
 		CON = nullptr;
 		return false;
 	}
 }
 
+void Connection::sendPacket(const Packet& packet) {
+	write(packet.encode().toUtf8());
+}
+
 Connection* Connection::get() { return CON; }
 
-Connection::Connection() : QTcpSocket() { setProxy(QNetworkProxy::NoProxy); }
+Connection::Connection() : QTcpSocket() {
+	setProxy(QNetworkProxy::NoProxy);
+}

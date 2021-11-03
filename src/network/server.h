@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QTcpServer>
 #include <QSet>
+#include <QTimer>
 
 class Server : public QTcpServer {
  public:
@@ -25,6 +26,7 @@ class Server : public QTcpServer {
 
 	void handleConnection();
 	void handlePacket();
+	void handleDisconnection();
 };
 
 #endif  // SERVER_H

@@ -24,11 +24,12 @@ SOURCES += \
     src/entity/playerhitbox.cpp \
     src/game.cpp \
     src/main.cpp \
+    src/menu/lobbymenu.cpp \
     src/menu/mainmenu.cpp \
     src/menu/multiplayermenu.cpp \
     src/menu/singleplayermenu.cpp \
     src/network/connection.cpp \
-    src/network/packet/basepacket.cpp \
+    src/network/packet/packet.cpp \
     src/network/server.cpp \
     src/sound/sfx.cpp \
     src/sound/sound.cpp \
@@ -42,11 +43,12 @@ HEADERS += \
     src/entity/player.h \
     src/entity/playerhitbox.h \
     src/game.h \
+    src/menu/lobbymenu.h \
     src/menu/mainmenu.h \
     src/menu/multiplayermenu.h \
     src/menu/singleplayermenu.h \
     src/network/connection.h \
-    src/network/packet/basepacket.h \
+    src/network/packet/packet.h \
     src/network/server.h \
     src/resources.h \
     src/sound/sfx.h \

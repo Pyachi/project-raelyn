@@ -34,7 +34,7 @@ MainMenu::MainMenu()
 
 void MainMenu::openMenu() {
 	if (MENU == nullptr)
-		MENU = new MainMenu();
+		MENU = new MainMenu;
 	MENU->show();
 }
 

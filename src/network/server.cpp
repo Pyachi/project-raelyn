@@ -54,9 +54,18 @@ void Server::handleConnection() {
 	QTcpSocket* socket = nextPendingConnection();
 	sockets.insert(socket);
 	connect(socket, &QTcpSocket::readyRead, this, &Server::handlePacket);
-	connect(socket, &QTcpSocket::disconnected, socket, &QTcpSocket::deleteLater);
+	connect(
+			socket, &QTcpSocket::disconnected, this, &Server::handleDisconnection);
+	connections.setNum(sockets.size());
 }
 
 void Server::handlePacket() {
-	qDebug() << "Packet Handled";
+	QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
+	qDebug() << socket->readAll();
+}
+
+void Server::handleDisconnection() {
+	QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
+	sockets.remove(socket);
+	connections.setNum(sockets.size());
 }
