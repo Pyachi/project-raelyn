@@ -4,21 +4,27 @@
 #include <QDialog>
 #include <QLabel>
 #include <QTcpServer>
+#include <QSet>
 
 class Server : public QTcpServer {
  public:
-	static bool setup(quint16);
+	static bool create(quint16);
+	static Server* get();
 
  private:
 	Server();
 
-	static Server* SERVER;
+	static Server* SER;
+
+	QSet<QTcpSocket*> sockets;
 
 	QDialog view;
 	QLabel ip;
 	QLabel text;
 	QLabel connections;
-	void incrementCounter();
+
+	void handleConnection();
+	void handlePacket();
 };
 
 #endif  // SERVER_H

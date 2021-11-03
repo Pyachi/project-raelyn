@@ -28,6 +28,7 @@ SOURCES += \
     src/menu/multiplayermenu.cpp \
     src/menu/singleplayermenu.cpp \
     src/network/connection.cpp \
+    src/network/packet/basepacket.cpp \
     src/network/server.cpp \
     src/sound/sfx.cpp \
     src/sound/sound.cpp \
@@ -45,6 +46,7 @@ HEADERS += \
     src/menu/multiplayermenu.h \
     src/menu/singleplayermenu.h \
     src/network/connection.h \
+    src/network/packet/basepacket.h \
     src/network/server.h \
     src/resources.h \
     src/sound/sfx.h \

@@ -5,9 +5,13 @@
 
 class Connection : public QTcpSocket {
  public:
-	Connection(QString, quint16);
+	static bool create(QString, quint16);
+	static Connection* get();
 
-	void printState(SocketState);
+ private:
+	Connection();
+
+	static Connection* CON;
 };
 
 #endif  // CONNECTION_H

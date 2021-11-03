@@ -3,12 +3,24 @@
 #include <QNetworkProxy>
 #include "connection.h"
 
-Connection::Connection(QString ip, quint16 port) : QTcpSocket() {
-	setProxy(QNetworkProxy::NoProxy);
-	connect(this, &Connection::stateChanged, this, &Connection::printState);
-	connectToHost(ip, port);
+Connection* Connection::CON = nullptr;
+
+bool Connection::create(QString ip, quint16 port) {
+	if (CON != nullptr)
+		return false;
+	Connection::CON = new Connection;
+	Connection* con = Connection::CON;
+
+	con->connectToHost(ip, port);
+	if (con->waitForConnected()) {
+		con->write("test");
+		return true;
+	} else {
+		CON = nullptr;
+		return false;
+	}
 }
 
-void Connection::printState(SocketState state) {
-	qDebug() << state;
-}
+Connection* Connection::get() { return CON; }
+
+Connection::Connection() : QTcpSocket() { setProxy(QNetworkProxy::NoProxy); }

@@ -6,14 +6,18 @@
 #include "src/menu/multiplayermenu.h"
 #include <QTcpSocket>
 
-Server* Server::SERVER = nullptr;
+Server* Server::SER = nullptr;
 
-bool Server::setup(quint16 port) {
-	Server::SERVER = new Server();
-	Server* server = Server::SERVER;
-
-	if (!server->listen(QHostAddress::Any, port))
+bool Server::create(quint16 port) {
+	if (SER != nullptr)
 		return false;
+	Server::SER = new Server;
+	Server* server = Server::SER;
+
+	if (!server->listen(QHostAddress::Any, port)) {
+		SER = nullptr;
+		return false;
+	}
 
 	QString localhostIP;
 	foreach(const QHostAddress & address, QNetworkInterface::allAddresses()) {
@@ -28,9 +32,14 @@ bool Server::setup(quint16 port) {
 	return true;
 }
 
+Server* Server::get() {
+	if (!SER)
+		create(0);
+	return SER;
+}
+
 Server::Server()
 		: QTcpServer(), view(), ip(), text("Players Connected:"), connections("0") {
-	Server::SERVER = this;
 	QGridLayout* layout = new QGridLayout;
 	view.setLayout(layout);
 
@@ -38,15 +47,16 @@ Server::Server()
 	layout->addWidget(&text, 2, 1, 1, 1);
 	layout->addWidget(&connections, 2, 2, 1, 1);
 
-	QTcpServer::connect(
-			this, &Server::newConnection, this, &Server::incrementCounter);
+	connect(this, &Server::newConnection, this, &Server::handleConnection);
 }
 
-void Server::incrementCounter() {
+void Server::handleConnection() {
 	QTcpSocket* socket = nextPendingConnection();
-	if (!socket)
-		return;
+	sockets.insert(socket);
+	connect(socket, &QTcpSocket::readyRead, this, &Server::handlePacket);
+	connect(socket, &QTcpSocket::disconnected, socket, &QTcpSocket::deleteLater);
+}
 
-	qDebug() << "Connection Established";
-	connections.setNum(connections.text().toInt() + 1);
+void Server::handlePacket() {
+	qDebug() << "Packet Handled";
 }
