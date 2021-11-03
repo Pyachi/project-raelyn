@@ -3,6 +3,7 @@
 #include "mainmenu.h"
 #include "src/game.h"
 #include "src/entity/player.h"
+#include "src/resources.h"
 
 SingleplayerMenu* SingleplayerMenu::MENU = nullptr;
 
@@ -40,6 +41,8 @@ void SingleplayerMenu::openMenu() {
 }
 
 void SingleplayerMenu::changeCharacter() {
+
+    Sound::playSound(SFX::SELECT_1, 1);
 	if (characterButton.text().contains("Pyachi"))
 		characterButton.setText("Character: Aeron");
 	else
@@ -47,6 +50,7 @@ void SingleplayerMenu::changeCharacter() {
 }
 
 void SingleplayerMenu::changeDifficulty() {
+    Sound::playSound(SFX::SELECT_1, 1);
 	if (difficultyButton.text().contains("Normal"))
 		difficultyButton.setText("Difficulty: Hard");
 	else
@@ -60,6 +64,7 @@ void SingleplayerMenu::startGame() {
 }
 
 void SingleplayerMenu::returnToMenu() {
+    Sound::playSound(SFX::SELECT_2, 1);
 	MainMenu::openMenu();
 	close();
 }

@@ -5,6 +5,7 @@
 #include "mainmenu.h"
 #include "src/network/connection.h"
 #include "src/network/server.h"
+#include "src/resources.h"
 
 MultiplayerMenu* MultiplayerMenu::MENU = nullptr;
 
@@ -46,16 +47,24 @@ void MultiplayerMenu::openMenu() {
 }
 
 void MultiplayerMenu::host() {
+
 	if (!Server::setup(QString(portForm.text()).toUInt()))
+    {
+        Sound::playSound(SFX::SELECT_2, 1);
 		return;
+    }
+
+    Sound::playSound(SFX::SELECT_1, 1);
 	close();
 }
 
 void MultiplayerMenu::join() {
+    Sound::playSound(SFX::SELECT_1, 1);
 	Connection* con = new Connection(ipForm.text(), QString(portForm.text()).toUInt());
 }
 
 void MultiplayerMenu::returnToMenu() {
 	MainMenu::openMenu();
+    Sound::playSound(SFX::SELECT_2, 1);
 	close();
 }

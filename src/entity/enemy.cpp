@@ -38,7 +38,7 @@ void Enemy::tick() {
 	ai(this);
 	setPos(pos() + ((targetLoc - pos()) / 8));
 	foreach (Bullet* bullet, getHits()) {
-		Sound::playSound(SFX::EXPL_SUPERHEAVY_2, 1);
+        Sound::playSound(SFX::EXPL_LIGHT_2, 0.1);
 		health--;
 		if (health == 0) {
 			for (int i = 0; i < 10; i++)

@@ -3,6 +3,7 @@
 #include "bullet.h"
 #include "player.h"
 #include "playerhitbox.h"
+#include "src/resources.h"
 
 CollectableType::CollectableType(const Texture& texture,
 																 const EntityAI<Player>& onPickup)
@@ -31,8 +32,10 @@ Collectable::Collectable(const CollectableType& type, const QPointF& spawn)
 			onPickup(type.onPickup) {}
 
 const CollectableType CollectableType::POWER =
-		CollectableType(Texture::PLAYERHITBOX,
-										[](Player* player) { player->power++; });
+        CollectableType(Texture::PLAYERHITBOX, [](Player* player) {
+        player->power++;
+        Sound::playSound(SFX::COLLECT_1, 1);
+        });
 
 void Collectable::tick() {
 	timeAlive++;

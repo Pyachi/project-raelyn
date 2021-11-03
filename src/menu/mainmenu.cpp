@@ -40,12 +40,16 @@ void MainMenu::openMenu() {
 
 void MainMenu::openSingleplayerMenu() {
 	SingleplayerMenu::openMenu();
+    Sound::playSound(SFX::SELECT_1, 1);
 	close();
 }
 
 void MainMenu::openMultiplayerMenu() {
 	MultiplayerMenu::openMenu();
+    Sound::playSound(SFX::SELECT_1, 1);
 	close();
 }
 
-void MainMenu::openOptionsMenu() {}
+void MainMenu::openOptionsMenu() {
+    Sound::playSound(SFX::SELECT_1,1);
+}
