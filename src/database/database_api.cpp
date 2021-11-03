@@ -21,14 +21,33 @@ QSqlDatabase database_API::start_connection(QString type, QString host, int port
         qDebug() << "Error: Unable to connect to above error.";
     }
 
-
     return start;
 }
 
-void database_API::add_score(QSqlDatabase db, QString level, QString user, int score)
+bool database_API::add_score(QSqlDatabase db, QString level, QString user, int score)
 {
-    QSqlQuery q;
-    QString query = "ADD ";
+    bool pass = true;
+
+    QSqlQuery query;
+    QString querySTR = "INSERT INTO (Id, Level, User, Score) VALUES (";
+
+    // querySTR.append(Id);
+    querySTR.append(", ");
+    querySTR.append(level);
+    querySTR.append(", ");
+    querySTR.append(user);
+    querySTR.append(", ");
+    querySTR.append(score);
+    querySTR.append(");");
+
+    if(!query.exec(querySTR))
+    {
+        qDebug() << db.lastError();
+        qDebug() << "Error: invalid query";
+        pass = false;
+    }
+
+    return pass;
 
 }
 
@@ -57,14 +76,30 @@ Scoreboard database_API::get_scoreboard(QSqlDatabase db, QString level)
 
 bool database_API::update_database(QString name, Scoreboard score)
 {
+    bool pass = true;
 
+
+    return pass;
 }
 
 
 
 bool database_API::create_level_table(QString level)
 {
+    QSqlQuery query;
+    QString querySTR = "CREATE TABLE ";
+    bool pass = true;
 
+    querySTR.append(level);
+    querySTR.append(" (Id: int , Level: TEXT, User: TEXT, Score: int);");
+    if(!query.exec(querySTR))
+    {
+        qDebug() << db.lastError();
+        qDebug() << "Error: invalid query";
+        pass = false;
+    }
+
+    return pass;
 }
 
 void database_API::close_database(QSqlDatabase db)
