@@ -3,6 +3,7 @@
 #include <QRegExpValidator>
 #include <QTcpSocket>
 #include "mainmenu.h"
+#include "src/network/connection.h"
 #include "src/network/server.h"
 
 MultiplayerMenu* MultiplayerMenu::MENU = nullptr;
@@ -51,8 +52,7 @@ void MultiplayerMenu::host() {
 }
 
 void MultiplayerMenu::join() {
-	QTcpSocket socket;
-	socket.connectToHost(ipForm.text(), QString(portForm.text()).toUInt());
+	Connection con(ipForm.text(), QString(portForm.text()).toUInt());
 }
 
 void MultiplayerMenu::returnToMenu() {
