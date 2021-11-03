@@ -2,6 +2,7 @@
 #include <QGridLayout>
 #include "multiplayermenu.h"
 #include "singleplayermenu.h"
+#include "src/resources.h"
 
 MainMenu* MainMenu::MENU = nullptr;
 

@@ -3,9 +3,9 @@
 #include <QKeyEvent>
 #include <QOpenGLWidget>
 #include <QTimer>
-#include "src/entity/enemy.h"
-#include "src/entity/player.h"
 #include "src/texture.h"
+#include "src/entity/player.h"
+#include "src/entity/enemy.h"
 
 Game* Game::GAME = nullptr;
 
@@ -44,10 +44,25 @@ Game::Game()
 
 	new Player(Players::PYACHI, QPointF(0, 200));
 	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(100, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(200, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(300, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(-100, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(-200, -300));
+	new Enemy(Enemies::ENEMY1, QPointF(-300, -300));
 }
 
 void Game::tick() {
-	foreach (BaseEntity* entity, entities) {
+	foreach(BaseEntity * entity, entities) {
 		entity->tick();
 		if (entity->cleanup) {
 			entities.remove(entity);
@@ -67,17 +82,11 @@ void Game::tick() {
 	}
 }
 
-QSet<int> Game::getKeys() {
-	return keys;
-}
+QSet<int> Game::getKeys() { return keys; }
 
-QSet<BaseEntity*> Game::getEntities() {
-	return entities;
-}
+QSet<BaseEntity*> Game::getEntities() { return entities; }
 
-void Game::addEntity(BaseEntity* entity) {
-	entities.insert(entity);
-}
+void Game::addEntity(BaseEntity* entity) { entities.insert(entity); }
 
 void Game::keyPressEvent(QKeyEvent* e) {
 	keys.insert(e->key());
@@ -89,6 +98,4 @@ void Game::keyReleaseEvent(QKeyEvent* e) {
 	QGraphicsView::keyReleaseEvent(e);
 }
 
-void Game::screenShake() {
-	shake = true;
-}
+void Game::screenShake() { shake = true; }

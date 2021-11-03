@@ -30,12 +30,10 @@ void BaseEntity::moveTowardsPoint(const QPointF& point,
 	QVector2D dir(point - pos());
 	dir.normalize();
 	dir *= distance;
-	moveBy(dir.x(), dir.y());
+	moveBy(dir.x(),dir.y());
 }
 
-void BaseEntity::rotate(const double& deg) {
-	setRotation(rotation() + deg);
-}
+void BaseEntity::rotate(const double& deg) { setRotation(rotation() + deg); }
 
 Bullet* BaseEntity::fireBullet(const Bullets& info,
 															 const QPointF& spawn,
@@ -52,20 +50,6 @@ QList<Bullet*> BaseEntity::fireBulletCircle(const Bullets& info,
 	for (int i = 0; i < count; i++) {
 		list.append(new Bullet(info, this, pos() + spawn, rotation));
 		rotation += 360.0 / count;
-	}
-	return list;
-}
-
-QList<Bullet*> BaseEntity::fireBulletArc(const Bullets& info,
-																				 const QPointF& spawn,
-																				 const int& count,
-																				 const double& startRotation,
-																				 const double& endRotation) {
-	QList<Bullet*> list;
-	double rotation = startRotation;
-	for (int i = 0; i < count; i++) {
-		list.append(new Bullet(info, this, pos() + spawn, rotation));
-		rotation += (endRotation - startRotation) / (count - 1);
 	}
 	return list;
 }
@@ -92,9 +76,7 @@ bool BaseEntity::isOnScreen() {
 	return collidesWithItem(Game::GAME->playableArea);
 }
 
-bool BaseEntity::cycle(const int& dur) {
-	return cycle(dur, 0, 0);
-}
+bool BaseEntity::cycle(const int& dur) { return cycle(dur, 0, 0); }
 
 bool BaseEntity::cycle(const int& dur, const int& time) {
 	return cycle(dur, time, time);

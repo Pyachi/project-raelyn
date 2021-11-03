@@ -3,6 +3,7 @@
 #include "bullet.h"
 #include "player.h"
 #include "src/entity/collectable.h"
+#include "src/resources.h"
 
 Enemies::Enemies(const Texture& texture, const EnemyAI& ai, int health)
 		: texture(texture), ai(ai), health(health) {}
@@ -10,11 +11,9 @@ Enemies::Enemies(const Texture& texture, const EnemyAI& ai, int health)
 const Enemies Enemies::ENEMY1 = Enemies(
 		Texture::ENEMY1,
 		[](Enemy* enemy) {
-			if (enemy->cycle(100)) {
-				enemy->fireBulletArc(Bullets::BASIC8, QPointF(0, 0), 5, -30, 30);
-				enemy->fireBulletArc(Bullets::BASIC10, QPointF(0, 0), 5, -30, 30);
-				enemy->fireBulletArc(Bullets::BASIC12, QPointF(0, 0), 5, -30, 30);
-			}
+			if (enemy->cycle(5))
+				enemy->fireBulletCircle(Bullets::FLOWER, QPointF(0, 0), 2,
+																pow(enemy->timeAlive / 10.0, 2));
 		},
 		50);
 
@@ -39,6 +38,7 @@ void Enemy::tick() {
 	ai(this);
 	setPos(pos() + ((targetLoc - pos()) / 8));
 	foreach (Bullet* bullet, getHits()) {
+		Sound::playSound(SFX::EXPL_SUPERHEAVY_2, 1);
 		health--;
 		if (health == 0) {
 			for (int i = 0; i < 10; i++)
