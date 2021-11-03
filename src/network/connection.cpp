@@ -1,4 +1,5 @@
 #include "connection.h"
+#include "connection.h"
 #include <QDebug>
 
 Connection::Connection(QString ip, quint16 port) : QTcpSocket() {

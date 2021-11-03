@@ -10,9 +10,11 @@ Enemies::Enemies(const Texture& texture, const EnemyAI& ai, int health)
 const Enemies Enemies::ENEMY1 = Enemies(
 		Texture::ENEMY1,
 		[](Enemy* enemy) {
-			if (enemy->cycle(5))
-				enemy->fireBulletCircle(Bullets::FLOWER, QPointF(0, 0), 2,
-																pow(enemy->timeAlive / 10.0, 2));
+			if (enemy->cycle(100)) {
+				enemy->fireBulletArc(Bullets::BASIC8, QPointF(0, 0), 5, -30, 30);
+				enemy->fireBulletArc(Bullets::BASIC10, QPointF(0, 0), 5, -30, 30);
+				enemy->fireBulletArc(Bullets::BASIC12, QPointF(0, 0), 5, -30, 30);
+			}
 		},
 		50);
 

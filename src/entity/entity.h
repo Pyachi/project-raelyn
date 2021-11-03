@@ -2,9 +2,9 @@
 #define ENTITYTYPES_H
 
 #include <QGraphicsPixmapItem>
-#include "src/texture.h"
-#include "src/game.h"
 #include <QVector2D>
+#include "src/game.h"
+#include "src/texture.h"
 
 class Bullet;
 class Bullets;
@@ -28,6 +28,11 @@ class BaseEntity : public QGraphicsPixmapItem {
 																	const QPointF&,
 																	const int&,
 																	const double& = 0);
+	QList<Bullet*> fireBulletArc(const Bullets&,
+															 const QPointF&,
+															 const int&,
+															 const double&,
+															 const double&);
 	template <class T>
 	T* getNearestEntity();
 
@@ -50,7 +55,7 @@ template <class T>
 T* BaseEntity::getNearestEntity() {
 	T* closest = nullptr;
 	double closestDis = 99999999;
-	foreach(BaseEntity * baseEntity, Game::GAME->getEntities()) {
+	foreach (BaseEntity* baseEntity, Game::GAME->getEntities()) {
 		if (T* entity = dynamic_cast<T*>(baseEntity)) {
 			double distance = distanceSquared(entity);
 			if (distance < closestDis) {
@@ -65,7 +70,7 @@ T* BaseEntity::getNearestEntity() {
 template <class T>
 QList<T*> BaseEntity::getCollisions() {
 	QList<T*> list;
-	foreach(QGraphicsItem * item, collidingItems()) {
+	foreach (QGraphicsItem* item, collidingItems()) {
 		if (T* entity = dynamic_cast<T*>(item))
 			list.append(entity);
 	}
