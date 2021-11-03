@@ -59,41 +59,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    assets/assets.qrc \
     assets/assets.qrc
-
-DISTFILES += \
-    assets/images/background.png \
-    assets/images/bulletEllipse.png \
-    assets/images/bulletRound.png \
-    assets/images/enemy.png \
-    assets/images/player.png \
-    assets/images/player_bullet.png \
-    assets/images/player_hitbox.png \
-    assets/sounds/sound_collect_1.wav \
-    assets/sounds/sound_collect_2.wav \
-    assets/sounds/sound_collect_3.wav \
-    assets/sounds/sound_expl_heavy_1.wav \
-    assets/sounds/sound_expl_heavy_2.wav \
-    assets/sounds/sound_expl_heavy_3.wav \
-    assets/sounds/sound_expl_heavy_4.wav \
-    assets/sounds/sound_expl_light_1.wav \
-    assets/sounds/sound_expl_light_2.wav \
-    assets/sounds/sound_expl_light_3.wav \
-    assets/sounds/sound_expl_med_1.wav \
-    assets/sounds/sound_expl_med_2.wav \
-    assets/sounds/sound_expl_med_3.wav \
-    assets/sounds/sound_expl_superheavy_1.wav \
-    assets/sounds/sound_expl_superheavy_2.wav \
-    assets/sounds/sound_hit_1.wav \
-    assets/sounds/sound_hit_2.wav \
-    assets/sounds/sound_hit_3.wav \
-    assets/sounds/sound_laser_1.wav \
-    assets/sounds/sound_missile_1.wav \
-    assets/sounds/sound_missile_2.wav \
-    assets/sounds/sound_missile_3.wav \
-    assets/sounds/sound_powerup_1.wav \
-    assets/sounds/sound_powerup_2.wav \
-    assets/sounds/sound_powerup_3.wav \
-    assets/sounds/sound_select_1.wav \
-    assets/sounds/sound_select_2.wav

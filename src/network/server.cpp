@@ -4,6 +4,7 @@
 #include <QHostInfo>
 #include <QNetworkInterface>
 #include "src/menu/multiplayermenu.h"
+#include <QTcpSocket>
 
 Server* Server::SERVER = nullptr;
 
@@ -15,7 +16,7 @@ bool Server::setup(quint16 port) {
 		return false;
 
 	QString localhostIP;
-	foreach (const QHostAddress& address, QNetworkInterface::allAddresses()) {
+	foreach(const QHostAddress & address, QNetworkInterface::allAddresses()) {
 		if (address.protocol() == QAbstractSocket::IPv4Protocol &&
 				address.isLoopback() == false) {
 			localhostIP = address.toString();
@@ -37,10 +38,15 @@ Server::Server()
 	layout->addWidget(&text, 2, 1, 1, 1);
 	layout->addWidget(&connections, 2, 2, 1, 1);
 
-	QTcpServer::connect(this, &QTcpServer::newConnection, this,
-											&Server::incrementCounter);
+	QTcpServer::connect(
+			this, &Server::newConnection, this, &Server::incrementCounter);
 }
 
 void Server::incrementCounter() {
+	QTcpSocket* socket = nextPendingConnection();
+	if (!socket)
+		return;
+
+	qDebug() << "Connection Established";
 	connections.setNum(connections.text().toInt() + 1);
 }

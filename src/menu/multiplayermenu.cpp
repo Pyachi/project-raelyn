@@ -52,7 +52,7 @@ void MultiplayerMenu::host() {
 }
 
 void MultiplayerMenu::join() {
-	Connection con(ipForm.text(), QString(portForm.text()).toUInt());
+	Connection* con = new Connection(ipForm.text(), QString(portForm.text()).toUInt());
 }
 
 void MultiplayerMenu::returnToMenu() {
