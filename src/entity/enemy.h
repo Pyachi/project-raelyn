@@ -7,21 +7,20 @@ class Enemy;
 
 using EnemyAI = EntityAI<Enemy>;
 
-class Enemies {
+class MovementPatterns {
  public:
-	static const Enemies ENEMY1;
+	static const EnemyAI NONE;
+	static const EnemyAI LEFTRIGHTTEST;  // Demo
+};
 
-	const Texture& texture;
-	const EnemyAI ai;
-	const int health;
-
- private:
-	Enemies(const Texture&, const EnemyAI&, int);
+class FiringPatterns {
+ public:
+	static const EnemyAI ENEMY1;  // Demo
 };
 
 class Enemy : public BaseEntity {
  public:
-	Enemy(const Enemies&, const QPointF&);
+	Enemy(const Texture&, const EnemyAI&, const EnemyAI&, int, const QPointF&);
 
 	int health;
 	QPointF targetLoc;
@@ -29,7 +28,8 @@ class Enemy : public BaseEntity {
 	const QList<Bullet*> getHits();
 
  private:
-	const EnemyAI ai;
+	const EnemyAI movementAI;
+	const EnemyAI firingAI;
 	void tick() override;
 };
 

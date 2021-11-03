@@ -5,27 +5,37 @@
 #include "src/entity/collectable.h"
 #include "src/resources.h"
 
-Enemies::Enemies(const Texture& texture, const EnemyAI& ai, int health)
-		: texture(texture), ai(ai), health(health) {}
+const EnemyAI MovementPatterns::NONE = [](Enemy* enemy) {};
 
-const Enemies Enemies::ENEMY1 = Enemies(
-		Texture::ENEMY1,
-		[](Enemy* enemy) {
-			if (enemy->cycle(5))
-				enemy->fireBulletCircle(Bullets::FLOWER, QPointF(0, 0), 2,
-																pow(enemy->timeAlive / 10.0, 2));
-		},
-		50);
+const EnemyAI MovementPatterns::LEFTRIGHTTEST = [](Enemy* enemy) {
+	if (enemy->cycle(200, 100))
+		enemy->targetLoc = QPointF(100, -300);
+	else if (enemy->cycle(200, 0))
+		enemy->targetLoc = QPointF(-100, -300);
+};
 
-Enemy::Enemy(const Enemies& info, const QPointF& spawn)
-		: BaseEntity(info.texture, spawn),
-			health(info.health),
+const EnemyAI FiringPatterns::ENEMY1 = [](Enemy* enemy) {
+	if (enemy->cycle(50)) {
+		enemy->fireBulletArc(Bullets::BASIC8, QPointF(0, 0), 5, -30, 30);
+		enemy->fireBulletArc(Bullets::BASIC10, QPointF(0, 0), 5, -30, 30);
+		enemy->fireBulletArc(Bullets::BASIC12, QPointF(0, 0), 5, -30, 30);
+	}
+};
+
+Enemy::Enemy(const Texture& texture,
+						 const EnemyAI& movementAI,
+						 const EnemyAI& firingAI,
+						 int health,
+						 const QPointF& spawn)
+		: BaseEntity(texture, spawn),
+			health(health),
 			targetLoc(spawn),
-			ai(info.ai) {}
+			movementAI(movementAI),
+			firingAI(firingAI) {}
 
 const QList<Bullet*> Enemy::getHits() {
 	QList<Bullet*> list;
-	foreach (BaseEntity* entity, getCollisions<Bullet>()) {
+	foreach(BaseEntity * entity, getCollisions<Bullet>()) {
 		if (Bullet* bullet = dynamic_cast<Bullet*>(entity))
 			if (dynamic_cast<Player*>(bullet->owner))
 				list.append(bullet);
@@ -35,9 +45,10 @@ const QList<Bullet*> Enemy::getHits() {
 
 void Enemy::tick() {
 	timeAlive++;
-	ai(this);
+	movementAI(this);
+	firingAI(this);
 	setPos(pos() + ((targetLoc - pos()) / 8));
-	foreach (Bullet* bullet, getHits()) {
+	foreach(Bullet * bullet, getHits()) {
 		Sound::playSound(SFX::EXPL_SUPERHEAVY_2, 1);
 		health--;
 		if (health == 0) {

@@ -30,7 +30,7 @@ void BaseEntity::moveTowardsPoint(const QPointF& point,
 	QVector2D dir(point - pos());
 	dir.normalize();
 	dir *= distance;
-	moveBy(dir.x(),dir.y());
+	moveBy(dir.x(), dir.y());
 }
 
 void BaseEntity::rotate(const double& deg) { setRotation(rotation() + deg); }
@@ -50,6 +50,20 @@ QList<Bullet*> BaseEntity::fireBulletCircle(const Bullets& info,
 	for (int i = 0; i < count; i++) {
 		list.append(new Bullet(info, this, pos() + spawn, rotation));
 		rotation += 360.0 / count;
+	}
+	return list;
+}
+
+QList<Bullet*> BaseEntity::fireBulletArc(const Bullets& info,
+																				 const QPointF& spawn,
+																				 int count,
+																				 double startRot,
+																				 double endRot) {
+	QList<Bullet*> list;
+	double rotation = startRot;
+	for (int i = 0; i < count; i++) {
+		list.append(new Bullet(info, this, pos() + spawn, rotation));
+		rotation += (endRot - startRot) / (count - 1);
 	}
 	return list;
 }

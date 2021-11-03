@@ -9,6 +9,10 @@ class Bullets {
  public:
 	static const Bullets PLAYERBASIC;
 	static const Bullets PLAYERHOMING;
+
+	static const Bullets BASIC8;
+	static const Bullets BASIC10;
+	static const Bullets BASIC12;
 	static const Bullets ACCELERATING;
 	static const Bullets SCREENWRAPTEST;
 	static const Bullets FLOWER;

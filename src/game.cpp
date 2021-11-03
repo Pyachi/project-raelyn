@@ -43,22 +43,7 @@ Game::Game()
 	connect(tickClock, &QTimer::timeout, this, &Game::tick);
 
 	new Player(Players::PYACHI, QPointF(0, 200));
-	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-	new Enemy(Enemies::ENEMY1, QPointF(0, -300));
-	new Enemy(Enemies::ENEMY1, QPointF(100, -300));
-	new Enemy(Enemies::ENEMY1, QPointF(200, -300));
-	new Enemy(Enemies::ENEMY1, QPointF(300, -300));
-	new Enemy(Enemies::ENEMY1, QPointF(-100, -300));
-	new Enemy(Enemies::ENEMY1, QPointF(-200, -300));
-	new Enemy(Enemies::ENEMY1, QPointF(-300, -300));
+	new Enemy(Texture::ENEMY1, MovementPatterns::LEFTRIGHTTEST, FiringPatterns::ENEMY1, 50, QPointF(0, -300));
 }
 
 void Game::tick() {
