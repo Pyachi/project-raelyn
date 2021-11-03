@@ -14,9 +14,13 @@ public:
     QSqlDatabase start_connection(QString type, QString host, int port, QString name, QString user, QString pass);
     void add_score(QSqlDatabase db, QString level, QString user, int score);
     Scoreboard get_scoreboard(QSqlDatabase db, QString level);
+
+    bool update_database(QString name, Scoreboard score);
+    bool create_level_table(QString level);
     void close_database(QSqlDatabase db);
 
 private:
+
     QSqlDatabase db;
 };
 

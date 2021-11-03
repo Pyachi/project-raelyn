@@ -49,10 +49,22 @@ Scoreboard database_API::get_scoreboard(QSqlDatabase db, QString level)
 
     while(query.next())
     {
-        board.Add_Score(query.value)
+        board.Add_Score(query.value(1).toString(), query.value(2).toString(), query.value(3).toInt());
     }
 
     return board;
+}
+
+bool database_API::update_database(QString name, Scoreboard score)
+{
+
+}
+
+
+
+bool database_API::create_level_table(QString level)
+{
+
 }
 
 void database_API::close_database(QSqlDatabase db)
