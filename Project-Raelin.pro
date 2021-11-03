@@ -22,12 +22,14 @@ SOURCES += \
     src/entity/entity.cpp \
     src/entity/player.cpp \
     src/entity/playerhitbox.cpp \
+    src/entityinfo.cpp \
     src/game.cpp \
     src/main.cpp \
     src/menu/mainmenu.cpp \
     src/menu/multiplayermenu.cpp \
     src/menu/singleplayermenu.cpp \
     src/network/connection.cpp \
+    src/network/server.cpp \
     src/sound/sfx.cpp \
     src/sound/sound.cpp \
     src/texture.cpp
@@ -35,6 +37,7 @@ SOURCES += \
 HEADERS += \
     src/entity/bullet.h \
     src/entity/collectable.h \
+    src/entity/enemy.cpp.orig \
     src/entity/enemy.h \
     src/entity/entity.h \
     src/entity/player.h \
@@ -43,7 +46,10 @@ HEADERS += \
     src/menu/mainmenu.h \
     src/menu/multiplayermenu.h \
     src/menu/singleplayermenu.h \
+    src/network/connection.cpp.orig \
     src/network/connection.h \
+    src/network/server.cpp.orig \
+    src/network/server.h \
     src/resources.h \
     src/sound/sfx.h \
     src/sound/sound.h \
@@ -57,6 +63,41 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    assets/assets.qrc \
     assets/assets.qrc
 
-DISTFILES +=
+DISTFILES += \
+    assets/images/background.png \
+    assets/images/bulletEllipse.png \
+    assets/images/bulletRound.png \
+    assets/images/enemy.png \
+    assets/images/player.png \
+    assets/images/player_bullet.png \
+    assets/images/player_hitbox.png \
+    assets/sounds/sound_collect_1.wav \
+    assets/sounds/sound_collect_2.wav \
+    assets/sounds/sound_collect_3.wav \
+    assets/sounds/sound_expl_heavy_1.wav \
+    assets/sounds/sound_expl_heavy_2.wav \
+    assets/sounds/sound_expl_heavy_3.wav \
+    assets/sounds/sound_expl_heavy_4.wav \
+    assets/sounds/sound_expl_light_1.wav \
+    assets/sounds/sound_expl_light_2.wav \
+    assets/sounds/sound_expl_light_3.wav \
+    assets/sounds/sound_expl_med_1.wav \
+    assets/sounds/sound_expl_med_2.wav \
+    assets/sounds/sound_expl_med_3.wav \
+    assets/sounds/sound_expl_superheavy_1.wav \
+    assets/sounds/sound_expl_superheavy_2.wav \
+    assets/sounds/sound_hit_1.wav \
+    assets/sounds/sound_hit_2.wav \
+    assets/sounds/sound_hit_3.wav \
+    assets/sounds/sound_laser_1.wav \
+    assets/sounds/sound_missile_1.wav \
+    assets/sounds/sound_missile_2.wav \
+    assets/sounds/sound_missile_3.wav \
+    assets/sounds/sound_powerup_1.wav \
+    assets/sounds/sound_powerup_2.wav \
+    assets/sounds/sound_powerup_3.wav \
+    assets/sounds/sound_select_1.wav \
+    assets/sounds/sound_select_2.wav
