@@ -22,7 +22,6 @@ SOURCES += \
     src/entity/entity.cpp \
     src/entity/player.cpp \
     src/entity/playerhitbox.cpp \
-    src/entityinfo.cpp \
     src/game.cpp \
     src/main.cpp \
     src/menu/mainmenu.cpp \
@@ -37,7 +36,6 @@ SOURCES += \
 HEADERS += \
     src/entity/bullet.h \
     src/entity/collectable.h \
-    src/entity/enemy.cpp.orig \
     src/entity/enemy.h \
     src/entity/entity.h \
     src/entity/player.h \
@@ -46,9 +44,7 @@ HEADERS += \
     src/menu/mainmenu.h \
     src/menu/multiplayermenu.h \
     src/menu/singleplayermenu.h \
-    src/network/connection.cpp.orig \
     src/network/connection.h \
-    src/network/server.cpp.orig \
     src/network/server.h \
     src/resources.h \
     src/sound/sfx.h \
