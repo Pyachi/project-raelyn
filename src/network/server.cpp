@@ -18,7 +18,7 @@ bool Server::create(quint16 port) {
 	}
 
 	QString localhostIP;
-	foreach (const QHostAddress& address, QNetworkInterface::allAddresses()) {
+	foreach(const QHostAddress & address, QNetworkInterface::allAddresses()) {
 		if (address.protocol() == QAbstractSocket::IPv4Protocol &&
 				address.isLoopback() == false) {
 			localhostIP = address.toString();
@@ -29,33 +29,15 @@ bool Server::create(quint16 port) {
 	return true;
 }
 
-void Server::viewServer() {
-	SER->view.show();
-}
+void Server::viewServer() { SER->view.show(); }
 
-void Server::sendPacket(const QString& packet, QTcpSocket* sender) {
+void Server::sendPacket(const Packet& packet, QTcpSocket* sender) {
 	if (SER == nullptr)
 		return;
-	foreach (QTcpSocket* socket, SER->sockets) {
+	foreach(QTcpSocket * socket, SER->sockets) {
 		if (sender != socket)
-			socket->write((packet + ";").toUtf8());
+			socket->write(packet.encode());
 	}
-}
-
-void Server::sendPacket(const QStringList& packet, QTcpSocket* sender) {
-	sendPacket(packet.join(":"), sender);
-}
-
-void Server::sendPacket(const QString& header,
-												const QString& data,
-												QTcpSocket* sender) {
-	sendPacket(header + ":" + data, sender);
-}
-
-void Server::sendPacket(const QString& header,
-												const QStringList& data,
-												QTcpSocket* sender) {
-	sendPacket(header, data.join(":"), sender);
 }
 
 Server::Server()
@@ -74,8 +56,8 @@ void Server::handleConnection() {
 	QTcpSocket* socket = nextPendingConnection();
 	sockets.insert(socket);
 	connect(socket, &QTcpSocket::readyRead, this, &Server::receivePacket);
-	connect(socket, &QTcpSocket::disconnected, this,
-					&Server::handleDisconnection);
+	connect(
+			socket, &QTcpSocket::disconnected, this, &Server::handleDisconnection);
 	connections.setNum(sockets.size());
 }
 
@@ -84,32 +66,36 @@ void Server::handleDisconnection() {
 	sockets.remove(socket);
 	users.remove(socket);
 	connections.setNum(sockets.size());
-	sendPacket("updateLobbyMenu:" + QStringList(users.values()).join(":") + ";");
+	sendPacket(Packet(PACKETPLAYOUTUPDATELOBBY, users.values()));
 }
 
 void Server::receivePacket() {
 	QTcpSocket* sent = qobject_cast<QTcpSocket*>(sender());
-	foreach (QStringList packet, decodePacket(sent->readAll())) {
+	foreach(Packet packet, Packet::decode(sent->readAll())) {
 		handlePacket(packet, sent);
 	}
 }
 
-void Server::handlePacket(QStringList& packet, QTcpSocket* sender) {
-	QString header = packet.first();
-	if (header == "connect") {
-		users.insert(sender, packet.at(1));
-	} else if (header == "updateLobbyMenu") {
-		sendPacket("updateLobbyMenu", QStringList(users.values()));
-	} else if (header == "startGame") {
-		sendPacket(packet);
-	} else if (header == "playerLocation") {
-		packet.append(users.value(sender));
-		sendPacket(packet, sender);
+void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
+	Header header = packet.header;
+	switch (header) {
+		case PACKETPLAYINCONNECT:
+			users.insert(sender, packet.data.at(0));
+			break;
+		case PACKETPLAYINDISCONNECT:
+			break;
+		case PACKETPLAYINUPDATELOBBY:
+			sendPacket(Packet(PACKETPLAYOUTUPDATELOBBY, users.values()));
+			break;
+		case PACKETPLAYINSTARTGAME:
+			sendPacket(Packet(PACKETPLAYOUTSTARTGAME));
+			break;
+		case PACKETPLAYINUPDATEPLAYER:
+			sendPacket(Packet(PACKETPLAYOUTUPDATEPLAYER,
+												QStringList(packet.data) << users.value(sender)));
+			break;
+		default:
+			qDebug() << "ERROR: Received OUT Packet!";
+			break;
 	}
-}
-
-QList<QStringList> Server::decodePacket(const QByteArray& data) {
-	QList<QStringList> list;
-	foreach (QString packet, data.split(';')) { list.append(packet.split(':')); }
-	return list;
 }

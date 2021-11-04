@@ -4,18 +4,14 @@
 #include <QDialog>
 #include <QLabel>
 #include <QTcpServer>
+#include "packet.h"
 
 class Server : public QTcpServer {
  public:
 	static bool create(quint16);
 	static void viewServer();
 
-	static void sendPacket(const QString&, QTcpSocket* = nullptr);
-	static void sendPacket(const QStringList&, QTcpSocket* = nullptr);
-	static void sendPacket(const QString&, const QString&, QTcpSocket* = nullptr);
-	static void sendPacket(const QString&,
-												 const QStringList&,
-												 QTcpSocket* = nullptr);
+	static void sendPacket(const Packet&, QTcpSocket* = nullptr);
 
  private:
 	Server();
@@ -34,8 +30,7 @@ class Server : public QTcpServer {
 	void handleDisconnection();
 
 	void receivePacket();
-	void handlePacket(QStringList&, QTcpSocket* = nullptr);
-	QList<QStringList> decodePacket(const QByteArray&);
+	void handlePacket(const Packet&, QTcpSocket* = nullptr);
 };
 
 #endif  // SERVER_H

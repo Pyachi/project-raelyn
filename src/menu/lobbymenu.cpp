@@ -22,7 +22,7 @@ LobbyMenu::LobbyMenu() : QDialog(), leaveButton("Leave"), startButton("Start") {
 
 void LobbyMenu::setPlayers(const QStringList& players) {
 	MENU->players.clear();
-	foreach (QString string, players) { MENU->players.addItem(string); }
+	foreach(QString string, players) { MENU->players.addItem(string); }
 }
 
 void LobbyMenu::leaveLobby() {
@@ -32,7 +32,7 @@ void LobbyMenu::leaveLobby() {
 }
 
 void LobbyMenu::startGame() {
-	Connection::sendPacket("startGame");
+	Connection::sendPacket(Packet(PACKETPLAYINSTARTGAME));
 }
 
 void LobbyMenu::openMenu() {

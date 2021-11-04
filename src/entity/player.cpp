@@ -15,60 +15,60 @@ Players::Players(const Texture& texture,
 			speed(speed),
 			focusSpeed(focusSpeed) {}
 
-const Players Players::PYACHI = Players(
-		Texture::PLAYER1,
-		[](Player* player) {
-			switch (player->level) {
-				case 1:
-					if (player->focus) {
-						player->fireBullet(Bullets::PLAYERBASIC, QPointF(-10, 0))
-								->setOpacity(0.25);
-						player->fireBullet(Bullets::PLAYERBASIC, QPointF(0, 0))
-								->setOpacity(0.25);
-						player->fireBullet(Bullets::PLAYERBASIC, QPointF(10, 0))
-								->setOpacity(0.25);
-					} else {
-						player->fireBullet(Bullets::PLAYERBASIC, QPointF(-20, 0))
-								->setOpacity(0.25);
-						player->fireBullet(Bullets::PLAYERBASIC, QPointF(0, 0))
-								->setOpacity(0.25);
-						player->fireBullet(Bullets::PLAYERBASIC, QPointF(20, 0))
-								->setOpacity(0.25);
-					}
-					break;
-				case 2:
-					if (player->focus) {
-						player->fireBullet(Bullets::PLAYERBASIC, QPointF(-10, 0))
-								->setOpacity(0.25);
-						player->fireBullet(Bullets::PLAYERBASIC, QPointF(0, 0))
-								->setOpacity(0.25);
-						player->fireBullet(Bullets::PLAYERBASIC, QPointF(10, 0))
-								->setOpacity(0.25);
-						if (player->cycle(5)) {
-							player->fireBullet(Bullets::PLAYERHOMING, QPointF(-30, -30))
-									->setOpacity(0.5);
-							player->fireBullet(Bullets::PLAYERHOMING, QPointF(30, -30))
-									->setOpacity(0.5);
-						}
-					} else {
-						player->fireBullet(Bullets::PLAYERBASIC, QPointF(-20, 0))
-								->setOpacity(0.25);
-						player->fireBullet(Bullets::PLAYERBASIC, QPointF(0, 0))
-								->setOpacity(0.25);
-						player->fireBullet(Bullets::PLAYERBASIC, QPointF(20, 0))
-								->setOpacity(0.25);
-						if (player->cycle(5)) {
-							player->fireBullet(Bullets::PLAYERHOMING, QPointF(-50, 0))
-									->setOpacity(0.5);
-							player->fireBullet(Bullets::PLAYERHOMING, QPointF(50, 0))
-									->setOpacity(0.5);
-						}
-					}
-					break;
-			}
-		},
-		15,
-		5);
+const Players Players::PYACHI =
+		Players(Texture::PLAYER1,
+						[](Player* player) {
+							switch (player->level) {
+								case 1:
+									if (player->focus) {
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(-10, 0))
+												->setOpacity(0.25);
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(0, 0))
+												->setOpacity(0.25);
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(10, 0))
+												->setOpacity(0.25);
+									} else {
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(-20, 0))
+												->setOpacity(0.25);
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(0, 0))
+												->setOpacity(0.25);
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(20, 0))
+												->setOpacity(0.25);
+									}
+									break;
+								case 2:
+									if (player->focus) {
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(-10, 0))
+												->setOpacity(0.25);
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(0, 0))
+												->setOpacity(0.25);
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(10, 0))
+												->setOpacity(0.25);
+										if (player->cycle(5)) {
+											player->fireBullet(Bullets::PLAYERHOMING,
+																				 QPointF(-30, -30))->setOpacity(0.5);
+											player->fireBullet(Bullets::PLAYERHOMING,
+																				 QPointF(30, -30))->setOpacity(0.5);
+										}
+									} else {
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(-20, 0))
+												->setOpacity(0.25);
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(0, 0))
+												->setOpacity(0.25);
+										player->fireBullet(Bullets::PLAYERBASIC, QPointF(20, 0))
+												->setOpacity(0.25);
+										if (player->cycle(5)) {
+											player->fireBullet(Bullets::PLAYERHOMING, QPointF(-50, 0))
+													->setOpacity(0.5);
+											player->fireBullet(Bullets::PLAYERHOMING, QPointF(50, 0))
+													->setOpacity(0.5);
+										}
+									}
+									break;
+							}
+						},
+						15,
+						5);
 
 Player::Player(const Players& stats, const QPointF& spawn)
 		: Entity(stats.texture, spawn),
@@ -107,8 +107,14 @@ Player::Player(const Players& stats, const QPointF& spawn)
 					dx /= sqrt(2);
 					dy /= sqrt(2);
 				}
-				player->setPos(
-						player->confineToPlayableArea(player->pos() + QPointF(dx, dy)));
+				if (dx != 0 || dy != 0) {
+					player->setPos(
+							player->confineToPlayableArea(player->pos() + QPointF(dx, dy)));
+					Connection::sendPacket(
+							Packet(PACKETPLAYINUPDATEPLAYER,
+										 QStringList() << QString::number(player->pos().x())
+																	 << QString::number(player->pos().y())));
+				}
 
 				if (player->power >= 100) {
 					player->level++;
@@ -121,10 +127,6 @@ Player::Player(const Players& stats, const QPointF& spawn)
 					player->cleanup = true;
 					player->hitbox->cleanup = true;
 				}
-
-				Connection::sendPacket("playerLocation",
-															 QString::number(player->pos().x()) + ":" +
-																	 QString::number(player->pos().y()));
 			}),
 			hitbox(new PlayerHitbox(this)) {}
 
@@ -132,9 +134,9 @@ bool Player::isHit() {
 	if (hitbox->getCollisions<Enemy>().size() > 0)
 		return true;
 	else
-		foreach (Bullet* bullet, hitbox->getCollisions<Bullet>())
-			if (dynamic_cast<Enemy*>(bullet->owner))
-				return true;
+		foreach(Bullet * bullet, hitbox->getCollisions<Bullet>())
+	if (dynamic_cast<Enemy*>(bullet->owner))
+		return true;
 	return false;
 }
 

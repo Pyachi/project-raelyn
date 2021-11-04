@@ -25,9 +25,9 @@ MultiplayerMenu::MultiplayerMenu()
       QRegExp("[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}")));
   layout->addWidget(&ipForm, 1, 1, 1, 1);
 
-	portForm.setValidator(new QRegExpValidator(
-			QRegExp("^(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}"
-							"|655[0-2][0-9]|6553[0-5])$")));
+	portForm.setValidator(new QRegExpValidator(QRegExp(
+			"^(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}"
+			"|655[0-2][0-9]|6553[0-5])$")));
   layout->addWidget(&portForm, 1, 2, 1, 1);
 
   layout->addWidget(&hostButton, 2, 1, 1, 1);
@@ -37,8 +37,8 @@ MultiplayerMenu::MultiplayerMenu()
   connect(&joinButton, &QPushButton::clicked, this, &MultiplayerMenu::join);
 
   layout->addWidget(&quitButton, 3, 1, 1, -1);
-	connect(&quitButton, &QPushButton::clicked, this,
-					&MultiplayerMenu::returnToMenu);
+	connect(
+			&quitButton, &QPushButton::clicked, this, &MultiplayerMenu::returnToMenu);
 }
 
 void MultiplayerMenu::openMenu() {
@@ -61,7 +61,7 @@ void MultiplayerMenu::host() {
 void MultiplayerMenu::join() {
 	if (Connection::create(ipForm.text(), portForm.text().toUShort())) {
 		LobbyMenu::openMenu();
-		Connection::sendPacket("updateLobbyMenu;");
+		Connection::sendPacket(Packet(PACKETPLAYINUPDATELOBBY));
 		close();
 	}
 }

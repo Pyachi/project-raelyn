@@ -20,19 +20,25 @@ SingleplayerMenu::SingleplayerMenu()
   setFixedSize(200, 120);
 
   layout->addWidget(&characterButton, 1, 1, 1, -1);
-	connect(&characterButton, &QPushButton::clicked, this,
+	connect(&characterButton,
+					&QPushButton::clicked,
+					this,
           &SingleplayerMenu::changeCharacter);
 
   layout->addWidget(&difficultyButton, 2, 1, 1, -1);
-	connect(&difficultyButton, &QPushButton::clicked, this,
+	connect(&difficultyButton,
+					&QPushButton::clicked,
+					this,
           &SingleplayerMenu::changeDifficulty);
 
   layout->addWidget(&startButton, 3, 1, 1, 1);
-	connect(&startButton, &QPushButton::clicked, this,
-					&SingleplayerMenu::startGame);
+	connect(
+			&startButton, &QPushButton::clicked, this, &SingleplayerMenu::startGame);
 
   layout->addWidget(&quitButton, 3, 2, 1, 1);
-	connect(&quitButton, &QPushButton::clicked, this,
+	connect(&quitButton,
+					&QPushButton::clicked,
+					this,
           &SingleplayerMenu::returnToMenu);
 }
 
@@ -63,7 +69,7 @@ void SingleplayerMenu::startGame() {
 		return;
 	if (!Connection::create("127.0.0.1", 1337))
 		return;
-	Connection::sendPacket("startGame");
+	Connection::sendPacket(Packet(PACKETPLAYINSTARTGAME));
 }
 
 void SingleplayerMenu::returnToMenu() {
