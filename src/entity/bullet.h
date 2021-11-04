@@ -3,8 +3,6 @@
 
 #include "entity.h"
 
-using BulletAI = EntityAI<Bullet>;
-
 class Bullets {
  public:
 	static const Bullets PLAYERBASIC;
@@ -14,21 +12,21 @@ class Bullets {
 	static const Bullets FLOWER;
 
 	const Texture& texture;
-	const BulletAI ai;
+	const EntityAI<Bullet> ai;
 
  private:
-	Bullets(const Texture&, const BulletAI&);
+	Bullets(const Texture&, const EntityAI<Bullet>&);
 };
 
-class Bullet : public BaseEntity {
+class Bullet : public Entity {
  public:
-	Bullet(const Bullets&, BaseEntity*, const QPointF&, double);
+	Bullet(const Bullets&, Entity*, const QPointF&, double);
 
 	bool borderCheck;
-	BaseEntity* owner;
+	Entity* owner;
 
  private:
-	const BulletAI ai;
+	const EntityAI<Bullet> ai;
 	void tick() override;
 };
 

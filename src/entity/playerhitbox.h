@@ -3,10 +3,10 @@
 
 #include "entity.h"
 
-class PlayerHitbox : public BaseEntity {
+class PlayerHitbox : public Entity {
  public:
-	PlayerHitbox(BaseEntity*);
-	BaseEntity* owner;
+	PlayerHitbox(Entity*);
+	Entity* owner;
 
  private:
 	const EntityAI<PlayerHitbox> ai;

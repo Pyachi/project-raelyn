@@ -1,9 +1,9 @@
 #include "bullet.h"
-#include <QVector2D>
-#include <QtMath>
 #include "enemy.h"
+#include <QVector2D>
+#include "src/texture.h"
 
-Bullets::Bullets(const Texture& texture, const BulletAI& ai)
+Bullets::Bullets(const Texture& texture, const EntityAI<Bullet>& ai)
 		: texture(texture), ai(ai) {}
 
 const Bullets Bullets::PLAYERBASIC =
@@ -62,10 +62,10 @@ const Bullets Bullets::FLOWER =
 		});
 
 Bullet::Bullet(const Bullets& info,
-							 BaseEntity* owner,
+							 Entity* owner,
 							 const QPointF& spawn,
 							 double rotation)
-		: BaseEntity(info.texture, spawn),
+		: Entity(info.texture, spawn),
 			borderCheck(true),
 			owner(owner),
 			ai(info.ai) {

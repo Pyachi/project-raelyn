@@ -2,7 +2,6 @@
 #define MULTIPLAYERMENU_H
 
 #include <QDialog>
-#include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
 

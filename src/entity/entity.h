@@ -2,19 +2,18 @@
 #define ENTITYTYPES_H
 
 #include <QGraphicsPixmapItem>
-#include "src/texture.h"
 #include "src/game.h"
-#include <QVector2D>
 
+class Texture;
 class Bullet;
 class Bullets;
 
 template <class T>
 using EntityAI = std::function<void(T*)>;
 
-class BaseEntity : public QGraphicsPixmapItem {
+class Entity : public QGraphicsPixmapItem {
  public:
-	BaseEntity(const Texture&, const QPointF&);
+	Entity(const Texture&, const QPointF&);
 
 	bool cleanup;
 	int timeAlive;
@@ -34,7 +33,7 @@ class BaseEntity : public QGraphicsPixmapItem {
 	template <class T>
 	QList<T*> getCollisions();
 
-	double distanceSquared(BaseEntity*);
+	double distanceSquared(Entity*);
 
 	QPointF confineToPlayableArea(const QPointF&);
 	bool isOnScreen();
@@ -47,10 +46,10 @@ class BaseEntity : public QGraphicsPixmapItem {
 };
 
 template <class T>
-T* BaseEntity::getNearestEntity() {
+T* Entity::getNearestEntity() {
 	T* closest = nullptr;
 	double closestDis = 99999999;
-	foreach(BaseEntity * baseEntity, Game::GAME->getEntities()) {
+	foreach(Entity * baseEntity, Game::GAME->getEntities()) {
 		if (T* entity = dynamic_cast<T*>(baseEntity)) {
 			double distance = distanceSquared(entity);
 			if (distance < closestDis) {
@@ -63,7 +62,7 @@ T* BaseEntity::getNearestEntity() {
 }
 
 template <class T>
-QList<T*> BaseEntity::getCollisions() {
+QList<T*> Entity::getCollisions() {
 	QList<T*> list;
 	foreach(QGraphicsItem * item, collidingItems()) {
 		if (T* entity = dynamic_cast<T*>(item))

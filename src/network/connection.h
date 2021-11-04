@@ -2,15 +2,15 @@
 #define CONNECTION_H
 
 #include <QTcpSocket>
-#include <QTimer>
-
-class Packet;
 
 class Connection : public QTcpSocket {
  public:
 	static bool create(QString, quint16);
-	static void sendPacket(const QString&);
 	static void disconnect();
+
+	static void sendPacket(const QString&);
+	static void sendPacket(const QString&, const QString&);
+	static void sendPacket(const QString&, const QStringList&);
 
  private:
 	Connection();

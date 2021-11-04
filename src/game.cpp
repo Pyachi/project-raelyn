@@ -62,7 +62,7 @@ Game::Game()
 }
 
 void Game::tick() {
-	foreach(BaseEntity * entity, entities) {
+	foreach(Entity * entity, entities) {
 		entity->tick();
 		if (entity->cleanup) {
 			entities.remove(entity);
@@ -84,9 +84,9 @@ void Game::tick() {
 
 QSet<int> Game::getKeys() { return keys; }
 
-QSet<BaseEntity*> Game::getEntities() { return entities; }
+QSet<Entity*> Game::getEntities() { return entities; }
 
-void Game::addEntity(BaseEntity* entity) { entities.insert(entity); }
+void Game::addEntity(Entity* entity) { entities.insert(entity); }
 
 void Game::keyPressEvent(QKeyEvent* e) {
 	keys.insert(e->key());

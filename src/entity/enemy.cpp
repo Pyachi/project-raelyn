@@ -1,31 +1,30 @@
 #include "enemy.h"
-#include <QtMath>
+#include "src/resources.h"
 #include "bullet.h"
 #include "player.h"
-#include "src/entity/collectable.h"
-#include "src/resources.h"
+#include "collectable.h"
 
-Enemies::Enemies(const Texture& texture, const EnemyAI& ai, int health)
+Enemies::Enemies(const Texture& texture, const EntityAI<Enemy>& ai, int health)
 		: texture(texture), ai(ai), health(health) {}
 
 const Enemies Enemies::ENEMY1 = Enemies(
 		Texture::ENEMY1,
 		[](Enemy* enemy) {
 			if (enemy->cycle(5))
-				enemy->fireBulletCircle(Bullets::FLOWER, QPointF(0, 0), 2,
-																pow(enemy->timeAlive / 10.0, 2));
+				enemy->fireBulletCircle(
+						Bullets::FLOWER, QPointF(0, 0), 2, pow(enemy->timeAlive / 10.0, 2));
 		},
 		50);
 
 Enemy::Enemy(const Enemies& info, const QPointF& spawn)
-		: BaseEntity(info.texture, spawn),
+		: Entity(info.texture, spawn),
 			health(info.health),
 			targetLoc(spawn),
 			ai(info.ai) {}
 
 const QList<Bullet*> Enemy::getHits() {
 	QList<Bullet*> list;
-	foreach (BaseEntity* entity, getCollisions<Bullet>()) {
+	foreach(Entity * entity, getCollisions<Bullet>()) {
 		if (Bullet* bullet = dynamic_cast<Bullet*>(entity))
 			if (dynamic_cast<Player*>(bullet->owner))
 				list.append(bullet);
@@ -37,7 +36,7 @@ void Enemy::tick() {
 	timeAlive++;
 	ai(this);
 	setPos(pos() + ((targetLoc - pos()) / 8));
-	foreach (Bullet* bullet, getHits()) {
+	foreach(Bullet * bullet, getHits()) {
 		Sound::playSound(SFX::EXPL_SUPERHEAVY_2, 1);
 		health--;
 		if (health == 0) {

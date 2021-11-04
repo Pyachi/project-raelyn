@@ -4,7 +4,7 @@
 #include <QGraphicsView>
 #include <QSet>
 
-class BaseEntity;
+class Entity;
 class Players;
 
 const int gameWidth = 1280;
@@ -23,13 +23,13 @@ class Game : public QGraphicsView {
 
 	QGraphicsPixmapItem* playableArea;
 	QSet<int> getKeys();
-	QSet<BaseEntity*> getEntities();
-	void addEntity(BaseEntity*);
+	QSet<Entity*> getEntities();
+	void addEntity(Entity*);
 
  private:
 	QGraphicsScene* scene;
 	QGraphicsPixmapItem* background;
-	QSet<BaseEntity*> entities;
+	QSet<Entity*> entities;
 	QSet<int> keys;
 
 	void tick();

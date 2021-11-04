@@ -4,13 +4,14 @@
 #include <QDialog>
 #include <QLabel>
 #include <QTcpServer>
-#include <QSet>
-#include <QTimer>
 
 class Server : public QTcpServer {
  public:
 	static bool create(quint16);
+
 	static void sendPacket(const QString&);
+	static void sendPacket(const QString&, const QString&);
+	static void sendPacket(const QString&, const QStringList&);
 
  private:
 	Server();

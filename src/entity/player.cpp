@@ -1,9 +1,8 @@
 #include "player.h"
-#include <QtMath>
+#include "src/texture.h"
 #include "bullet.h"
-#include "enemy.h"
-#include "src/game.h"
 #include "playerhitbox.h"
+#include "enemy.h"
 
 Players::Players(const Texture& texture,
 								 const EntityAI<Player>& firingPattern,
@@ -70,7 +69,7 @@ const Players Players::PYACHI =
 						5);
 
 Player::Player(const Players& stats, const QPointF& spawn)
-		: BaseEntity(stats.texture, spawn),
+		: Entity(stats.texture, spawn),
 			firing(false),
 			focus(false),
 			level(1),
@@ -111,7 +110,8 @@ Player::Player(const Players& stats, const QPointF& spawn)
 
 				if (player->power >= 100) {
 					player->level++;
-					if (player->level == 3) player->level = 2;
+					if (player->level == 3)
+						player->level = 2;
 					player->power = 0;
 				}
 

@@ -1,7 +1,5 @@
 #include "connection.h"
-#include <QDebug>
 #include <QNetworkProxy>
-#include "connection.h"
 #include "src/menu/lobbymenu.h"
 #include <QDir>
 
@@ -15,8 +13,7 @@ bool Connection::create(QString ip, quint16 port) {
 
 	con->connectToHost(ip, port);
 	if (con->waitForConnected()) {
-		con->write("connect:" + QDir::home().path().split("/").last().toUtf8() +
-							 ";");
+		con->sendPacket("connect", QDir::home().path().split("/").last());
 		return true;
 	} else {
 		CON->deleteLater();
@@ -33,7 +30,15 @@ void Connection::disconnect() {
 
 void Connection::sendPacket(const QString& packet) {
 	if (CON != nullptr)
-		CON->write(packet.toUtf8());
+		CON->write((packet + ";").toUtf8());
+}
+
+void Connection::sendPacket(const QString& header, const QString& data) {
+	sendPacket(header + ":" + data);
+}
+
+void Connection::sendPacket(const QString& header, const QStringList& data) {
+	sendPacket(header, data.join(":"));
 }
 
 void Connection::handlePacket() {
@@ -42,7 +47,6 @@ void Connection::handlePacket() {
 		if (packet == "")
 			continue;
 		QString header = packet.split(':').first();
-		qDebug() << "Connection::" + packet;
 		if (header == "updateLobbyMenu") {
 			QStringList list = packet.split(':');
 			list.removeAt(0);

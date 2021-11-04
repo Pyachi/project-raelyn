@@ -1,7 +1,6 @@
 #include "collectable.h"
-#include <QtMath>
-#include "bullet.h"
 #include "player.h"
+#include "src/texture.h"
 #include "playerhitbox.h"
 
 CollectableType::CollectableType(const Texture& texture,
@@ -9,7 +8,7 @@ CollectableType::CollectableType(const Texture& texture,
 		: texture(texture), onPickup(onPickup) {}
 
 Collectable::Collectable(const CollectableType& type, const QPointF& spawn)
-		: BaseEntity(type.texture, spawn),
+		: Entity(type.texture, spawn),
 			ai([](Collectable* entity) {
 				int dir = rand() % 360;
 				if (entity->timeAlive < 10)

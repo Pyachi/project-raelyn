@@ -20,7 +20,7 @@ class CollectableType {
 	CollectableType(const Texture&, const EntityAI<Player>&);
 };
 
-class Collectable : public BaseEntity {
+class Collectable : public Entity {
  public:
 	Collectable(const CollectableType&, const QPointF&);
 

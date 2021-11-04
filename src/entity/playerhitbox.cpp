@@ -1,7 +1,8 @@
 #include "playerhitbox.h"
+#include "src/texture.h"
 
-PlayerHitbox::PlayerHitbox(BaseEntity* owner)
-		: BaseEntity(Texture::PLAYERHITBOX, owner->pos()),
+PlayerHitbox::PlayerHitbox(Entity* owner)
+		: Entity(Texture::PLAYERHITBOX, owner->pos()),
 			owner(owner),
 			ai([](PlayerHitbox* hitbox) { hitbox->setPos(hitbox->owner->pos()); }) {}
 

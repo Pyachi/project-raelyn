@@ -5,21 +5,19 @@
 
 class Enemy;
 
-using EnemyAI = EntityAI<Enemy>;
-
 class Enemies {
  public:
 	static const Enemies ENEMY1;
 
 	const Texture& texture;
-	const EnemyAI ai;
+	const EntityAI<Enemy> ai;
 	const int health;
 
  private:
-	Enemies(const Texture&, const EnemyAI&, int);
+	Enemies(const Texture&, const EntityAI<Enemy>&, int);
 };
 
-class Enemy : public BaseEntity {
+class Enemy : public Entity {
  public:
 	Enemy(const Enemies&, const QPointF&);
 
@@ -29,7 +27,7 @@ class Enemy : public BaseEntity {
 	const QList<Bullet*> getHits();
 
  private:
-	const EnemyAI ai;
+	const EntityAI<Enemy> ai;
 	void tick() override;
 };
 

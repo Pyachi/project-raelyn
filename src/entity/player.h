@@ -20,7 +20,7 @@ class Players {
 	Players(const Texture&, const EntityAI<Player>&, int, int);
 };
 
-class Player : public BaseEntity {
+class Player : public Entity {
  public:
 	Player(const Players&, const QPointF&);
 

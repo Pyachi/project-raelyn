@@ -2,7 +2,6 @@
 #define LOBBYMENU_H
 
 #include <QDialog>
-#include <QLabel>
 #include <QPushButton>
 #include <QListWidget>
 

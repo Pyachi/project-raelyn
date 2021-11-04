@@ -1,11 +1,7 @@
 #include "server.h"
-#include <QDebug>
 #include <QGridLayout>
-#include <QHostInfo>
 #include <QNetworkInterface>
-#include "src/menu/multiplayermenu.h"
 #include <QTcpSocket>
-#include "src/menu/lobbymenu.h"
 
 Server* Server::SER = nullptr;
 
@@ -61,12 +57,10 @@ void Server::handlePacket() {
 		if (packet == "")
 			continue;
 		QString header = packet.split(":").first();
-		qDebug() << "Server::" + packet;
 		if (header == "connect") {
 			users.insert(sent, packet.split(":").at(1));
 		} else if (header == "updateLobbyMenu") {
-			sendPacket("updateLobbyMenu:" + QStringList(users.values()).join(":") +
-								 ";");
+			sendPacket("updateLobbyMenu", QStringList(users.values()));
 		}
 	}
 }
@@ -80,7 +74,18 @@ void Server::handleDisconnection() {
 }
 
 void Server::sendPacket(const QString& packet) {
-	foreach(QTcpSocket * socket, SER->sockets) { socket->write(packet.toUtf8()); }
+	if (SER != nullptr)
+		foreach(QTcpSocket * socket, SER->sockets) {
+			socket->write((packet + ";").toUtf8());
+		}
+}
+
+void Server::sendPacket(const QString& header, const QString& data) {
+	sendPacket(header + ":" + data);
+}
+
+void Server::sendPacket(const QString& header, const QStringList& data) {
+	sendPacket(header, data.join(":"));
 }
 
 void Server::forwardPacket(QTcpSocket* sentFrom, const QString& packet) {

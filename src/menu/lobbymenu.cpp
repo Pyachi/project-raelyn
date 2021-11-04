@@ -1,6 +1,5 @@
 #include "lobbymenu.h"
 #include <QGridLayout>
-#include <QDir>
 #include "src/network/connection.h"
 #include "mainmenu.h"
 
