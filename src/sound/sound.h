@@ -10,14 +10,15 @@ class Song;
 
 class Sound {
  public:
-	static void playSound(SFX, qreal);
-    static void playMusic(Song, int);
+  static void playSound(SFX, qreal);
+  static void playMusic(Song, int);
+  static void pauseMusic();
 
  private:
-    static QMediaPlayer *global_song;
-	static QQueue<QSoundEffect*>* queue;
-	static bool ready;
-	static void init();
+  static QMediaPlayer* global_song;
+  static QQueue<QSoundEffect*>* queue;
+  static bool ready;
+  static void init();
 };
 
 #endif  // SOUND_H

@@ -10,61 +10,61 @@
 MultiplayerMenu* MultiplayerMenu::MENU = nullptr;
 
 MultiplayerMenu::MultiplayerMenu()
-		: QDialog(),
-			ipForm("0.0.0.0"),
-			portForm("0"),
-			hostButton("Host"),
-			joinButton("Join"),
-			quitButton("Back") {
-	QGridLayout* layout = new QGridLayout;
-	setLayout(layout);
-	setFixedSize(200, 120);
+    : QDialog(),
+      ipForm("0.0.0.0"),
+      portForm("0"),
+      hostButton("Host"),
+      joinButton("Join"),
+      quitButton("Back") {
+  QGridLayout* layout = new QGridLayout;
+  setLayout(layout);
+  setFixedSize(200, 120);
 
-	ipForm.setValidator(new QRegExpValidator(
-			QRegExp("[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}")));
-	layout->addWidget(&ipForm, 1, 1, 1, 1);
+  ipForm.setValidator(new QRegExpValidator(
+      QRegExp("[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}")));
+  layout->addWidget(&ipForm, 1, 1, 1, 1);
 
-	portForm.setValidator(new QRegExpValidator(
-			QRegExp("^(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}"
-							"|655[0-2][0-9]|6553[0-5])$")));
-	layout->addWidget(&portForm, 1, 2, 1, 1);
+  portForm.setValidator(new QRegExpValidator(QRegExp(
+      "^(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}"
+      "|655[0-2][0-9]|6553[0-5])$")));
+  layout->addWidget(&portForm, 1, 2, 1, 1);
 
-	layout->addWidget(&hostButton, 2, 1, 1, 1);
-	connect(&hostButton, &QPushButton::clicked, this, &MultiplayerMenu::host);
+  layout->addWidget(&hostButton, 2, 1, 1, 1);
+  connect(&hostButton, &QPushButton::clicked, this, &MultiplayerMenu::host);
 
-	layout->addWidget(&joinButton, 2, 2, 1, 1);
-	connect(&joinButton, &QPushButton::clicked, this, &MultiplayerMenu::join);
+  layout->addWidget(&joinButton, 2, 2, 1, 1);
+  connect(&joinButton, &QPushButton::clicked, this, &MultiplayerMenu::join);
 
-	layout->addWidget(&quitButton, 3, 1, 1, -1);
-	connect(&quitButton, &QPushButton::clicked, this,
-					&MultiplayerMenu::returnToMenu);
+  layout->addWidget(&quitButton, 3, 1, 1, -1);
+  connect(
+      &quitButton, &QPushButton::clicked, this, &MultiplayerMenu::returnToMenu);
 }
 
 void MultiplayerMenu::openMenu() {
-	if (MENU == nullptr)
-		MENU = new MultiplayerMenu();
-	MENU->show();
+  if (MENU == nullptr)
+    MENU = new MultiplayerMenu();
+  MENU->show();
 }
 
 void MultiplayerMenu::host() {
 
-	if (!Server::setup(QString(portForm.text()).toUInt()))
-    {
-        Sound::playSound(SFX::SELECT_2, 1);
-		return;
-    }
+  if (!Server::setup(QString(portForm.text()).toUInt())) {
+    Sound::playSound(SFX::SELECT_2, 0.1);
+    return;
+  }
 
-    Sound::playSound(SFX::SELECT_1, 1);
-	close();
+  Sound::playSound(SFX::SELECT_1, 0.1);
+  close();
 }
 
 void MultiplayerMenu::join() {
-    Sound::playSound(SFX::SELECT_1, 1);
-	Connection* con = new Connection(ipForm.text(), QString(portForm.text()).toUInt());
+  Sound::playSound(SFX::SELECT_1, 0.1);
+  Connection* con =
+      new Connection(ipForm.text(), QString(portForm.text()).toUInt());
 }
 
 void MultiplayerMenu::returnToMenu() {
-	MainMenu::openMenu();
-    Sound::playSound(SFX::SELECT_2, 1);
-	close();
+  MainMenu::openMenu();
+  Sound::playSound(SFX::SELECT_2, 0.1);
+  close();
 }
