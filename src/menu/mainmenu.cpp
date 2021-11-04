@@ -36,12 +36,7 @@ MainMenu::MainMenu()
   connect(&quitButton, &QPushButton::clicked, this, &MainMenu::close);
 
   Sound::playMusic(Song::MENU_THEME, 100);
-  // QMediaPlayer* global_song = new QMediaPlayer;
-
-  //  global_song->stop();
-  //  global_song->setMedia(QUrl("qrc:/sounds/sounds/music_menu_theme.ogg"));
-  //  global_song->setVolume(100);
-  //  global_song->play();
+  Sound::setLoopMusic();
 }
 
 void MainMenu::openMenu() {

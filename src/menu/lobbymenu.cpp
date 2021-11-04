@@ -2,6 +2,7 @@
 #include <QGridLayout>
 #include "src/network/connection.h"
 #include "mainmenu.h"
+#include "src/resources.h"
 
 LobbyMenu* LobbyMenu::MENU = nullptr;
 
@@ -31,7 +32,9 @@ void LobbyMenu::leaveLobby() {
 	close();
 }
 
-void LobbyMenu::startGame() {}
+void LobbyMenu::startGame() {
+    Sound::pauseMusic();
+}
 
 void LobbyMenu::openMenu() {
 	if (MENU == nullptr)
