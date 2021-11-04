@@ -53,6 +53,7 @@ void MultiplayerMenu::host() {
     return;
   }
 
+	Server::viewServer();
   Sound::playSound(SFX::SELECT_1, 0.1);
   close();
 }
@@ -69,4 +70,9 @@ void MultiplayerMenu::returnToMenu() {
   MainMenu::openMenu();
   Sound::playSound(SFX::SELECT_2, 0.1);
   close();
+}
+
+void MultiplayerMenu::closeMenu() {
+	if (MENU != nullptr)
+		MENU->close();
 }

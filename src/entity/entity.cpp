@@ -1,11 +1,11 @@
 #include "entity.h"
-#include "src/texture.h"
-#include <QtMath>
 #include <QVector2D>
+#include <QtMath>
 #include "bullet.h"
+#include "src/texture.h"
 
 Entity::Entity(const Texture& texture, const QPointF& spawn)
-		: QGraphicsPixmapItem(Game::GAME->playableArea),
+		: QGraphicsPixmapItem(Game::getPlayableArea()),
 			cleanup(false),
 			timeAlive(0) {
 	setPixmap(QPixmap(texture.texture));
@@ -13,7 +13,7 @@ Entity::Entity(const Texture& texture, const QPointF& spawn)
 	setOffset(-boundingRect().center());
 	setPos(spawn);
 
-	Game::GAME->addEntity(this);
+	Game::addEntity(this);
 }
 
 void Entity::moveFoward(const double& distance) {
@@ -31,7 +31,9 @@ void Entity::moveTowardsPoint(const QPointF& point, const double& distance) {
 	moveBy(dir.x(), dir.y());
 }
 
-void Entity::rotate(const double& deg) { setRotation(rotation() + deg); }
+void Entity::rotate(const double& deg) {
+	setRotation(rotation() + deg);
+}
 
 Bullet* Entity::fireBullet(const Bullets& info,
 													 const QPointF& spawn,
@@ -58,21 +60,25 @@ double Entity::distanceSquared(Entity* entity) {
 }
 
 QPointF Entity::confineToPlayableArea(const QPointF& pos) {
-	return QPointF(qBound(Game::GAME->playableArea->boundingRect().left() -
+	return QPointF(qBound(Game::getPlayableArea()->boundingRect().left() -
 														boundingRect().left(),
 												pos.x(),
-												Game::GAME->playableArea->boundingRect().right() -
+												Game::getPlayableArea()->boundingRect().right() -
 														boundingRect().right()),
-								 qBound(Game::GAME->playableArea->boundingRect().top() -
+								 qBound(Game::getPlayableArea()->boundingRect().top() -
 														boundingRect().top(),
 												pos.y(),
-												Game::GAME->playableArea->boundingRect().bottom() -
+												Game::getPlayableArea()->boundingRect().bottom() -
 														boundingRect().bottom()));
 }
 
-bool Entity::isOnScreen() { return collidesWithItem(Game::GAME->playableArea); }
+bool Entity::isOnScreen() {
+	return collidesWithItem(Game::getPlayableArea());
+}
 
-bool Entity::cycle(const int& dur) { return cycle(dur, 0, 0); }
+bool Entity::cycle(const int& dur) {
+	return cycle(dur, 0, 0);
+}
 
 bool Entity::cycle(const int& dur, const int& time) {
 	return cycle(dur, time, time);

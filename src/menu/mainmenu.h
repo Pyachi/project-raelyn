@@ -7,6 +7,7 @@
 class MainMenu : public QDialog {
  public:
 	static void openMenu();
+	static void closeMenu();
 
  private:
 	MainMenu();

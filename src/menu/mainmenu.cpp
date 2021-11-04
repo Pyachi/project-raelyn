@@ -17,31 +17,21 @@ MainMenu::MainMenu()
   setFixedSize(200, 120);
 
   layout->addWidget(&singleplayerButton, 1, 1, 1, -1);
-  connect(&singleplayerButton,
-          &QPushButton::clicked,
-          this,
+	connect(&singleplayerButton, &QPushButton::clicked, this,
           &MainMenu::openSingleplayerMenu);
 
   layout->addWidget(&multiplayerButton, 2, 1, 1, -1);
-  connect(&multiplayerButton,
-          &QPushButton::clicked,
-          this,
+	connect(&multiplayerButton, &QPushButton::clicked, this,
           &MainMenu::openMultiplayerMenu);
 
   layout->addWidget(&optionsButton, 3, 1, 1, 1);
-  connect(
-      &optionsButton, &QPushButton::clicked, this, &MainMenu::openOptionsMenu);
+	connect(&optionsButton, &QPushButton::clicked, this,
+					&MainMenu::openOptionsMenu);
 
   layout->addWidget(&quitButton, 3, 2, 1, 1);
   connect(&quitButton, &QPushButton::clicked, this, &MainMenu::close);
 
   Sound::playMusic(Song::MENU_THEME, 100);
-  // QMediaPlayer* global_song = new QMediaPlayer;
-
-  //  global_song->stop();
-  //  global_song->setMedia(QUrl("qrc:/sounds/sounds/music_menu_theme.ogg"));
-  //  global_song->setVolume(100);
-  //  global_song->play();
 }
 
 void MainMenu::openMenu() {
@@ -62,4 +52,11 @@ void MainMenu::openMultiplayerMenu() {
   close();
 }
 
-void MainMenu::openOptionsMenu() { Sound::playSound(SFX::SELECT_1, 0.1); }
+void MainMenu::openOptionsMenu() {
+	Sound::playSound(SFX::SELECT_1, 0.1);
+}
+
+void MainMenu::closeMenu() {
+	if (MENU != nullptr)
+		MENU->close();
+}

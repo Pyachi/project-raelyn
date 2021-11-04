@@ -3,6 +3,7 @@
 #include "bullet.h"
 #include "enemy.h"
 #include "playerhitbox.h"
+#include "src/network/connection.h"
 #include "src/texture.h"
 
 Players::Players(const Texture& texture,
@@ -79,7 +80,7 @@ Player::Player(const Players& stats, const QPointF& spawn)
 			focusSpeed(stats.focusSpeed),
 			firingPattern(stats.firingPattern),
 			ai([](Player* player) {
-				QSet<int> keys = Game::GAME->getKeys();
+				QSet<int> keys = Game::getKeys();
 
 				player->firing = keys.contains(Qt::Key_Z);
 				player->focus = keys.contains(Qt::Key_Shift);
@@ -120,6 +121,10 @@ Player::Player(const Players& stats, const QPointF& spawn)
 					player->cleanup = true;
 					player->hitbox->cleanup = true;
 				}
+
+				Connection::sendPacket("playerLocation",
+															 QString::number(player->pos().x()) + ":" +
+																	 QString::number(player->pos().y()));
 			}),
 			hitbox(new PlayerHitbox(this)) {}
 

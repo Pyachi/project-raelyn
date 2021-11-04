@@ -8,10 +8,14 @@
 class Server : public QTcpServer {
  public:
 	static bool create(quint16);
+	static void viewServer();
 
-	static void sendPacket(const QString&);
-	static void sendPacket(const QString&, const QString&);
-	static void sendPacket(const QString&, const QStringList&);
+	static void sendPacket(const QString&, QTcpSocket* = nullptr);
+	static void sendPacket(const QStringList&, QTcpSocket* = nullptr);
+	static void sendPacket(const QString&, const QString&, QTcpSocket* = nullptr);
+	static void sendPacket(const QString&,
+												 const QStringList&,
+												 QTcpSocket* = nullptr);
 
  private:
 	Server();
@@ -26,11 +30,12 @@ class Server : public QTcpServer {
 	QLabel text;
 	QLabel connections;
 
-	void forwardPacket(QTcpSocket*, const QString&);
-
 	void handleConnection();
 	void handleDisconnection();
-	void handlePacket();
+
+	void receivePacket();
+	void handlePacket(QStringList&, QTcpSocket* = nullptr);
+	QList<QStringList> decodePacket(const QByteArray&);
 };
 
 #endif  // SERVER_H

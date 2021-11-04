@@ -2,6 +2,7 @@
 #include <QGridLayout>
 #include <QNetworkInterface>
 #include <QTcpSocket>
+#include "src/game/game.h"
 
 Server* Server::SER = nullptr;
 
@@ -17,7 +18,7 @@ bool Server::create(quint16 port) {
 	}
 
 	QString localhostIP;
-	foreach(const QHostAddress & address, QNetworkInterface::allAddresses()) {
+	foreach (const QHostAddress& address, QNetworkInterface::allAddresses()) {
 		if (address.protocol() == QAbstractSocket::IPv4Protocol &&
 				address.isLoopback() == false) {
 			localhostIP = address.toString();
@@ -25,8 +26,36 @@ bool Server::create(quint16 port) {
 	}
 
 	server->ip.setText(localhostIP + ":" + QString::number(server->serverPort()));
-	server->view.show();
 	return true;
+}
+
+void Server::viewServer() {
+	SER->view.show();
+}
+
+void Server::sendPacket(const QString& packet, QTcpSocket* sender) {
+	if (SER == nullptr)
+		return;
+	foreach (QTcpSocket* socket, SER->sockets) {
+		if (sender != socket)
+			socket->write((packet + ";").toUtf8());
+	}
+}
+
+void Server::sendPacket(const QStringList& packet, QTcpSocket* sender) {
+	sendPacket(packet.join(":"), sender);
+}
+
+void Server::sendPacket(const QString& header,
+												const QString& data,
+												QTcpSocket* sender) {
+	sendPacket(header + ":" + data, sender);
+}
+
+void Server::sendPacket(const QString& header,
+												const QStringList& data,
+												QTcpSocket* sender) {
+	sendPacket(header, data.join(":"), sender);
 }
 
 Server::Server()
@@ -44,25 +73,10 @@ Server::Server()
 void Server::handleConnection() {
 	QTcpSocket* socket = nextPendingConnection();
 	sockets.insert(socket);
-	connect(socket, &QTcpSocket::readyRead, this, &Server::handlePacket);
-	connect(
-			socket, &QTcpSocket::disconnected, this, &Server::handleDisconnection);
+	connect(socket, &QTcpSocket::readyRead, this, &Server::receivePacket);
+	connect(socket, &QTcpSocket::disconnected, this,
+					&Server::handleDisconnection);
 	connections.setNum(sockets.size());
-}
-
-void Server::handlePacket() {
-	QTcpSocket* sent = qobject_cast<QTcpSocket*>(sender());
-	QString data = QString(sent->readAll());
-	foreach(QString packet, data.split(";")) {
-		if (packet == "")
-			continue;
-		QString header = packet.split(":").first();
-		if (header == "connect") {
-			users.insert(sent, packet.split(":").at(1));
-		} else if (header == "updateLobbyMenu") {
-			sendPacket("updateLobbyMenu", QStringList(users.values()));
-		}
-	}
 }
 
 void Server::handleDisconnection() {
@@ -73,24 +87,29 @@ void Server::handleDisconnection() {
 	sendPacket("updateLobbyMenu:" + QStringList(users.values()).join(":") + ";");
 }
 
-void Server::sendPacket(const QString& packet) {
-	if (SER != nullptr)
-		foreach(QTcpSocket * socket, SER->sockets) {
-			socket->write((packet + ";").toUtf8());
-		}
-}
-
-void Server::sendPacket(const QString& header, const QString& data) {
-	sendPacket(header + ":" + data);
-}
-
-void Server::sendPacket(const QString& header, const QStringList& data) {
-	sendPacket(header, data.join(":"));
-}
-
-void Server::forwardPacket(QTcpSocket* sentFrom, const QString& packet) {
-	foreach(QTcpSocket * socket, sockets) {
-		if (socket != sentFrom)
-			socket->write(packet.toUtf8());
+void Server::receivePacket() {
+	QTcpSocket* sent = qobject_cast<QTcpSocket*>(sender());
+	foreach (QStringList packet, decodePacket(sent->readAll())) {
+		handlePacket(packet, sent);
 	}
+}
+
+void Server::handlePacket(QStringList& packet, QTcpSocket* sender) {
+	QString header = packet.first();
+	if (header == "connect") {
+		users.insert(sender, packet.at(1));
+	} else if (header == "updateLobbyMenu") {
+		sendPacket("updateLobbyMenu", QStringList(users.values()));
+	} else if (header == "startGame") {
+		sendPacket(packet);
+	} else if (header == "playerLocation") {
+		packet.append(users.value(sender));
+		sendPacket(packet, sender);
+	}
+}
+
+QList<QStringList> Server::decodePacket(const QByteArray& data) {
+	QList<QStringList> list;
+	foreach (QString packet, data.split(';')) { list.append(packet.split(':')); }
+	return list;
 }

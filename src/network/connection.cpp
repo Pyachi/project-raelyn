@@ -1,7 +1,9 @@
 #include "connection.h"
-#include <QNetworkProxy>
-#include "src/menu/lobbymenu.h"
 #include <QDir>
+#include <QNetworkProxy>
+#include "src/game/game.h"
+#include "src/menu/lobbymenu.h"
+#include "src/menu/singleplayermenu.h"
 
 Connection* Connection::CON = nullptr;
 
@@ -29,8 +31,13 @@ void Connection::disconnect() {
 }
 
 void Connection::sendPacket(const QString& packet) {
-	if (CON != nullptr)
-		CON->write((packet + ";").toUtf8());
+	if (CON == nullptr)
+		return;
+	CON->write((packet + ";").toUtf8());
+}
+
+void Connection::sendPacket(const QStringList& packet) {
+	sendPacket(packet.join(":"));
 }
 
 void Connection::sendPacket(const QString& header, const QString& data) {
@@ -41,21 +48,34 @@ void Connection::sendPacket(const QString& header, const QStringList& data) {
 	sendPacket(header, data.join(":"));
 }
 
-void Connection::handlePacket() {
-	QString data = QString(readAll());
-	foreach(QString packet, data.split(";")) {
-		if (packet == "")
-			continue;
-		QString header = packet.split(':').first();
-		if (header == "updateLobbyMenu") {
-			QStringList list = packet.split(':');
-			list.removeAt(0);
-			LobbyMenu::setPlayers(list);
-		}
+Connection::Connection() : QTcpSocket() {
+	setProxy(QNetworkProxy::NoProxy);
+	connect(this, &Connection::readyRead, this, &Connection::receivePacket);
+}
+
+void Connection::receivePacket() {
+	foreach (QStringList packet, decodePacket(readAll())) {
+		handlePacket(packet);
 	}
 }
 
-Connection::Connection() : QTcpSocket() {
-	setProxy(QNetworkProxy::NoProxy);
-	connect(this, &Connection::readyRead, this, &Connection::handlePacket);
+void Connection::handlePacket(QStringList& packet) {
+	QString header = packet.first();
+	if (header == "updateLobbyMenu") {
+		packet.removeAt(0);
+		LobbyMenu::setPlayers(packet);
+	} else if (header == "startGame") {
+		Game::create();
+		SingleplayerMenu::closeMenu();
+		LobbyMenu::closeMenu();
+	} else if (header == "playerLocation") {
+		Game::updatePlayerLocation(
+				packet.at(3), QPointF(packet.at(1).toFloat(), packet.at(2).toFloat()));
+	}
+}
+
+QList<QStringList> Connection::decodePacket(const QByteArray& data) {
+	QList<QStringList> list;
+	foreach (QString packet, data.split(';')) { list.append(packet.split(':')); }
+	return list;
 }

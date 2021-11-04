@@ -12,8 +12,8 @@ const Enemies Enemies::ENEMY1 = Enemies(
 		Texture::ENEMY1,
 		[](Enemy* enemy) {
 			if (enemy->cycle(5))
-				enemy->fireBulletCircle(
-						Bullets::FLOWER, QPointF(0, 0), 2, pow(enemy->timeAlive / 10.0, 2));
+				enemy->fireBulletCircle(Bullets::FLOWER, QPointF(0, 0), 2,
+																pow(enemy->timeAlive / 10.0, 2));
 		},
 		50);
 
@@ -37,13 +37,12 @@ void Enemy::tick() {
 	timeAlive++;
 	ai(this);
 	setPos(pos() + ((targetLoc - pos()) / 8));
-	foreach(Bullet * bullet, getHits()) {
+	foreach (Bullet* bullet, getHits()) {
 		Sound::playSound(SFX::EXPL_LIGHT_2, 0.1);
 		health--;
 		if (health == 0) {
 			for (int i = 0; i < 10; i++)
 				new Collectable(CollectableType::POWER, pos() + QPointF(0, 0));
-			Game::GAME->screenShake();
 			cleanup = true;
 		}
 		bullet->cleanup = true;

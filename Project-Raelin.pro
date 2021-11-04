@@ -20,9 +20,10 @@ SOURCES += \
     src/entity/collectable.cpp \
     src/entity/enemy.cpp \
     src/entity/entity.cpp \
+    src/entity/onlineplayer.cpp \
     src/entity/player.cpp \
     src/entity/playerhitbox.cpp \
-    src/game.cpp \
+    src/game/game.cpp \
     src/main.cpp \
     src/menu/lobbymenu.cpp \
     src/menu/mainmenu.cpp \
@@ -40,9 +41,10 @@ HEADERS += \
     src/entity/collectable.h \
     src/entity/enemy.h \
     src/entity/entity.h \
+    src/entity/onlineplayer.h \
     src/entity/player.h \
     src/entity/playerhitbox.h \
-    src/game.h \
+    src/game/game.h \
     src/menu/lobbymenu.h \
     src/menu/mainmenu.h \
     src/menu/multiplayermenu.h \

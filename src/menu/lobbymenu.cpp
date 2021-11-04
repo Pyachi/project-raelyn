@@ -1,7 +1,7 @@
 #include "lobbymenu.h"
 #include <QGridLayout>
-#include "src/network/connection.h"
 #include "mainmenu.h"
+#include "src/network/connection.h"
 
 LobbyMenu* LobbyMenu::MENU = nullptr;
 
@@ -22,7 +22,7 @@ LobbyMenu::LobbyMenu() : QDialog(), leaveButton("Leave"), startButton("Start") {
 
 void LobbyMenu::setPlayers(const QStringList& players) {
 	MENU->players.clear();
-	foreach(QString string, players) { MENU->players.addItem(string); }
+	foreach (QString string, players) { MENU->players.addItem(string); }
 }
 
 void LobbyMenu::leaveLobby() {
@@ -31,10 +31,17 @@ void LobbyMenu::leaveLobby() {
 	close();
 }
 
-void LobbyMenu::startGame() {}
+void LobbyMenu::startGame() {
+	Connection::sendPacket("startGame");
+}
 
 void LobbyMenu::openMenu() {
 	if (MENU == nullptr)
 		new LobbyMenu;
 	MENU->show();
+}
+
+void LobbyMenu::closeMenu() {
+	if (MENU != nullptr)
+		MENU->close();
 }
