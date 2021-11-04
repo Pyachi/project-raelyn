@@ -36,6 +36,7 @@ MainMenu::MainMenu()
   connect(&quitButton, &QPushButton::clicked, this, &MainMenu::close);
 
   Sound::playMusic(Song::MENU_THEME, 100);
+  Sound::setLoopMusic();
 }
 
 void MainMenu::openMenu() {
