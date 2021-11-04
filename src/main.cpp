@@ -6,8 +6,6 @@ int main(int argc, char* argv[]) {
 
 	srand(quint32(time(nullptr)));
 
-	//QDir::home().path().split('/').last()
-
 	MainMenu::openMenu();
 
 	return a.exec();

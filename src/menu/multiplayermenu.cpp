@@ -54,6 +54,7 @@ void MultiplayerMenu::host() {
 void MultiplayerMenu::join() {
 	if (Connection::create(ipForm.text(), portForm.text().toUShort())) {
 		LobbyMenu::openMenu();
+		Connection::sendPacket("updateLobbyMenu;");
 		close();
 	}
 }

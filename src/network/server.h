@@ -10,7 +10,7 @@
 class Server : public QTcpServer {
  public:
 	static bool create(quint16);
-	static Server* get();
+	static void sendPacket(const QString&);
 
  private:
 	Server();
@@ -18,15 +18,18 @@ class Server : public QTcpServer {
 	static Server* SER;
 
 	QSet<QTcpSocket*> sockets;
+	QMap<QTcpSocket*, QString> users;
 
 	QDialog view;
 	QLabel ip;
 	QLabel text;
 	QLabel connections;
 
+	void forwardPacket(QTcpSocket*, const QString&);
+
 	void handleConnection();
-	void handlePacket();
 	void handleDisconnection();
+	void handlePacket();
 };
 
 #endif  // SERVER_H

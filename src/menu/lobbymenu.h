@@ -3,17 +3,26 @@
 
 #include <QDialog>
 #include <QLabel>
+#include <QPushButton>
+#include <QListWidget>
 
 class LobbyMenu : public QDialog {
  public:
 	static void openMenu();
+
+	static void setPlayers(const QStringList&);
 
  private:
 	LobbyMenu();
 
 	static LobbyMenu* MENU;
 
-	QLabel text;
+	QListWidget players;
+	QPushButton leaveButton;
+	QPushButton startButton;
+
+	void leaveLobby();
+	void startGame();
 };
 
 #endif  // LOBBYMENU_H

@@ -5,6 +5,7 @@
 #include <QNetworkInterface>
 #include "src/menu/multiplayermenu.h"
 #include <QTcpSocket>
+#include "src/menu/lobbymenu.h"
 
 Server* Server::SER = nullptr;
 
@@ -32,12 +33,6 @@ bool Server::create(quint16 port) {
 	return true;
 }
 
-Server* Server::get() {
-	if (!SER)
-		create(0);
-	return SER;
-}
-
 Server::Server()
 		: QTcpServer(), view(), ip(), text("Players Connected:"), connections("0") {
 	QGridLayout* layout = new QGridLayout;
@@ -60,12 +55,37 @@ void Server::handleConnection() {
 }
 
 void Server::handlePacket() {
-	QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
-	qDebug() << socket->readAll();
+	QTcpSocket* sent = qobject_cast<QTcpSocket*>(sender());
+	QString data = QString(sent->readAll());
+	foreach(QString packet, data.split(";")) {
+		if (packet == "")
+			continue;
+		QString header = packet.split(":").first();
+		qDebug() << "Server::" + packet;
+		if (header == "connect") {
+			users.insert(sent, packet.split(":").at(1));
+		} else if (header == "updateLobbyMenu") {
+			sendPacket("updateLobbyMenu:" + QStringList(users.values()).join(":") +
+								 ";");
+		}
+	}
 }
 
 void Server::handleDisconnection() {
 	QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
 	sockets.remove(socket);
+	users.remove(socket);
 	connections.setNum(sockets.size());
+	sendPacket("updateLobbyMenu:" + QStringList(users.values()).join(":") + ";");
+}
+
+void Server::sendPacket(const QString& packet) {
+	foreach(QTcpSocket * socket, SER->sockets) { socket->write(packet.toUtf8()); }
+}
+
+void Server::forwardPacket(QTcpSocket* sentFrom, const QString& packet) {
+	foreach(QTcpSocket * socket, sockets) {
+		if (socket != sentFrom)
+			socket->write(packet.toUtf8());
+	}
 }
