@@ -32,10 +32,10 @@ Collectable::Collectable(const CollectableType& type, const QPointF& spawn)
 			onPickup(type.onPickup) {}
 
 const CollectableType CollectableType::POWER =
-        CollectableType(Texture::PLAYERHITBOX, [](Player* player) {
-        player->power++;
-        Sound::playSound(SFX::COLLECT_1, 1);
-        });
+		CollectableType(Texture::PLAYERHITBOX, [](Player* player) {
+			player->power++;
+			Sound::playSound(SFX::COLLECT_1, 1);
+		});
 
 void Collectable::tick() {
 	timeAlive++;
