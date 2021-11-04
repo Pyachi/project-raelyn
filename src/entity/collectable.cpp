@@ -2,8 +2,9 @@
 #include <QtMath>
 #include "bullet.h"
 #include "player.h"
-#include "playerhitbox.h"#include "src/texture.h"
+#include "playerhitbox.h"
 #include "src/resources.h"
+#include "src/texture.h"
 
 CollectableType::CollectableType(const Texture& texture,
 																 const EntityAI<Player>& onPickup)
