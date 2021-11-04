@@ -1,8 +1,10 @@
 #include "singleplayermenu.h"
 #include <QGridLayout>
 #include "mainmenu.h"
-#include "src/game.h"
 #include "src/entity/player.h"
+#include "src/game/game.h"
+#include "src/network/connection.h"
+#include "src/network/server.h"
 #include "src/resources.h"
 
 SingleplayerMenu* SingleplayerMenu::MENU = nullptr;
@@ -18,25 +20,25 @@ SingleplayerMenu::SingleplayerMenu()
   setFixedSize(200, 120);
 
   layout->addWidget(&characterButton, 1, 1, 1, -1);
-  connect(&characterButton,
-          &QPushButton::clicked,
-          this,
+	connect(&characterButton,
+					&QPushButton::clicked,
+					this,
           &SingleplayerMenu::changeCharacter);
 
   layout->addWidget(&difficultyButton, 2, 1, 1, -1);
-  connect(&difficultyButton,
-          &QPushButton::clicked,
-          this,
+	connect(&difficultyButton,
+					&QPushButton::clicked,
+					this,
           &SingleplayerMenu::changeDifficulty);
 
   layout->addWidget(&startButton, 3, 2, 1, 1);
-  connect(
-      &startButton, &QPushButton::clicked, this, &SingleplayerMenu::startGame);
+	connect(
+			&startButton, &QPushButton::clicked, this, &SingleplayerMenu::startGame);
 
   layout->addWidget(&quitButton, 3, 1, 1, 1);
-  connect(&quitButton,
-          &QPushButton::clicked,
-          this,
+	connect(&quitButton,
+					&QPushButton::clicked,
+					this,
           &SingleplayerMenu::returnToMenu);
 }
 
@@ -47,7 +49,6 @@ void SingleplayerMenu::openMenu() {
 }
 
 void SingleplayerMenu::changeCharacter() {
-
   Sound::playSound(SFX::SELECT_1, 0.1);
   if (characterButton.text().contains("Pyachi"))
     characterButton.setText("Character: Aeron");
@@ -64,14 +65,20 @@ void SingleplayerMenu::changeDifficulty() {
 }
 
 void SingleplayerMenu::startGame() {
-  Sound::pauseMusic();
-  Game* game = new Game();
-  game->show();
-  close();
+	if (!Server::create(1337))
+		return;
+	if (!Connection::create("127.0.0.1", 1337))
+		return;
+	Connection::sendPacket(Packet(PACKETPLAYINSTARTGAME));
 }
 
 void SingleplayerMenu::returnToMenu() {
   Sound::playSound(SFX::SELECT_2, 0.1);
   MainMenu::openMenu();
   close();
+}
+
+void SingleplayerMenu::closeMenu() {
+	if (MENU != nullptr)
+		MENU->close();
 }

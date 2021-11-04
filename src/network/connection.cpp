@@ -1,7 +1,9 @@
 #include "connection.h"
-#include <QNetworkProxy>
-#include "src/menu/lobbymenu.h"
 #include <QDir>
+#include <QNetworkProxy>
+#include "src/game/game.h"
+#include "src/menu/lobbymenu.h"
+#include "src/menu/singleplayermenu.h"
 
 Connection* Connection::CON = nullptr;
 
@@ -13,7 +15,9 @@ bool Connection::create(QString ip, quint16 port) {
 
 	con->connectToHost(ip, port);
 	if (con->waitForConnected()) {
-		con->sendPacket("connect", QDir::home().path().split("/").last());
+		con->sendPacket(
+				Packet(PACKETPLAYINCONNECT,
+							 QStringList() << QDir::home().path().split('/').last()));
 		return true;
 	} else {
 		CON->deleteLater();
@@ -28,34 +32,39 @@ void Connection::disconnect() {
 	CON = nullptr;
 }
 
-void Connection::sendPacket(const QString& packet) {
-	if (CON != nullptr)
-		CON->write((packet + ";").toUtf8());
-}
-
-void Connection::sendPacket(const QString& header, const QString& data) {
-	sendPacket(header + ":" + data);
-}
-
-void Connection::sendPacket(const QString& header, const QStringList& data) {
-	sendPacket(header, data.join(":"));
-}
-
-void Connection::handlePacket() {
-	QString data = QString(readAll());
-	foreach(QString packet, data.split(";")) {
-		if (packet == "")
-			continue;
-		QString header = packet.split(':').first();
-		if (header == "updateLobbyMenu") {
-			QStringList list = packet.split(':');
-			list.removeAt(0);
-			LobbyMenu::setPlayers(list);
-		}
-	}
+void Connection::sendPacket(const Packet& packet) {
+	if (CON == nullptr)
+		return;
+	CON->write(packet.encode());
 }
 
 Connection::Connection() : QTcpSocket() {
 	setProxy(QNetworkProxy::NoProxy);
-	connect(this, &Connection::readyRead, this, &Connection::handlePacket);
+	connect(this, &Connection::readyRead, this, &Connection::receivePacket);
+}
+
+void Connection::receivePacket() {
+	foreach(Packet packet, Packet::decode(readAll())) { handlePacket(packet); }
+}
+
+void Connection::handlePacket(const Packet& packet) {
+	Header header = packet.header;
+	switch (header) {
+		case PACKETPLAYOUTSTARTGAME:
+			Game::create();
+			SingleplayerMenu::closeMenu();
+			LobbyMenu::closeMenu();
+			break;
+		case PACKETPLAYOUTUPDATELOBBY:
+			LobbyMenu::setPlayers(packet.data);
+			break;
+		case PACKETPLAYOUTUPDATEPLAYER:
+			Game::updatePlayerLocation(
+					packet.data.at(2),
+					QPointF(packet.data.at(0).toDouble(), packet.data.at(1).toDouble()));
+			break;
+		default:
+			qDebug() << "ERROR: Received IN Packet!";
+			break;
+	}
 }

@@ -7,6 +7,7 @@
 class SingleplayerMenu : public QDialog {
  public:
 	static void openMenu();
+	static void closeMenu();
 
  private:
 	SingleplayerMenu();

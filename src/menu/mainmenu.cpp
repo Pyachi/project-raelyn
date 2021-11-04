@@ -17,20 +17,16 @@ MainMenu::MainMenu()
   setFixedSize(200, 120);
 
   layout->addWidget(&singleplayerButton, 1, 1, 1, -1);
-  connect(&singleplayerButton,
-          &QPushButton::clicked,
-          this,
+	connect(&singleplayerButton, &QPushButton::clicked, this,
           &MainMenu::openSingleplayerMenu);
 
   layout->addWidget(&multiplayerButton, 2, 1, 1, -1);
-  connect(&multiplayerButton,
-          &QPushButton::clicked,
-          this,
+	connect(&multiplayerButton, &QPushButton::clicked, this,
           &MainMenu::openMultiplayerMenu);
 
   layout->addWidget(&optionsButton, 3, 1, 1, 1);
-  connect(
-      &optionsButton, &QPushButton::clicked, this, &MainMenu::openOptionsMenu);
+	connect(&optionsButton, &QPushButton::clicked, this,
+					&MainMenu::openOptionsMenu);
 
   layout->addWidget(&quitButton, 3, 2, 1, 1);
   connect(&quitButton, &QPushButton::clicked, this, &MainMenu::close);
@@ -57,4 +53,11 @@ void MainMenu::openMultiplayerMenu() {
   close();
 }
 
-void MainMenu::openOptionsMenu() { Sound::playSound(SFX::SELECT_1, 0.1); }
+void MainMenu::openOptionsMenu() {
+	Sound::playSound(SFX::SELECT_1, 0.1);
+}
+
+void MainMenu::closeMenu() {
+	if (MENU != nullptr)
+		MENU->close();
+}

@@ -8,6 +8,7 @@
 class MultiplayerMenu : public QDialog {
  public:
 	static void openMenu();
+	static void closeMenu();
 
  private:
 	MultiplayerMenu();

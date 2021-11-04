@@ -1,6 +1,5 @@
 #include "lobbymenu.h"
 #include <QGridLayout>
-#include "src/network/connection.h"
 #include "mainmenu.h"
 #include "src/resources.h"
 
@@ -33,11 +32,16 @@ void LobbyMenu::leaveLobby() {
 }
 
 void LobbyMenu::startGame() {
-    Sound::pauseMusic();
+	Connection::sendPacket(Packet(PACKETPLAYINSTARTGAME));
 }
 
 void LobbyMenu::openMenu() {
 	if (MENU == nullptr)
 		new LobbyMenu;
 	MENU->show();
+}
+
+void LobbyMenu::closeMenu() {
+	if (MENU != nullptr)
+		MENU->close();
 }

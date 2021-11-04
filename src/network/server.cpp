@@ -2,6 +2,7 @@
 #include <QGridLayout>
 #include <QNetworkInterface>
 #include <QTcpSocket>
+#include "src/game/game.h"
 
 Server* Server::SER = nullptr;
 
@@ -25,8 +26,18 @@ bool Server::create(quint16 port) {
 	}
 
 	server->ip.setText(localhostIP + ":" + QString::number(server->serverPort()));
-	server->view.show();
 	return true;
+}
+
+void Server::viewServer() { SER->view.show(); }
+
+void Server::sendPacket(const Packet& packet, QTcpSocket* sender) {
+	if (SER == nullptr)
+		return;
+	foreach(QTcpSocket * socket, SER->sockets) {
+		if (sender != socket)
+			socket->write(packet.encode());
+	}
 }
 
 Server::Server()
@@ -44,25 +55,10 @@ Server::Server()
 void Server::handleConnection() {
 	QTcpSocket* socket = nextPendingConnection();
 	sockets.insert(socket);
-	connect(socket, &QTcpSocket::readyRead, this, &Server::handlePacket);
+	connect(socket, &QTcpSocket::readyRead, this, &Server::receivePacket);
 	connect(
 			socket, &QTcpSocket::disconnected, this, &Server::handleDisconnection);
 	connections.setNum(sockets.size());
-}
-
-void Server::handlePacket() {
-	QTcpSocket* sent = qobject_cast<QTcpSocket*>(sender());
-	QString data = QString(sent->readAll());
-	foreach(QString packet, data.split(";")) {
-		if (packet == "")
-			continue;
-		QString header = packet.split(":").first();
-		if (header == "connect") {
-			users.insert(sent, packet.split(":").at(1));
-		} else if (header == "updateLobbyMenu") {
-			sendPacket("updateLobbyMenu", QStringList(users.values()));
-		}
-	}
 }
 
 void Server::handleDisconnection() {
@@ -70,27 +66,37 @@ void Server::handleDisconnection() {
 	sockets.remove(socket);
 	users.remove(socket);
 	connections.setNum(sockets.size());
-	sendPacket("updateLobbyMenu:" + QStringList(users.values()).join(":") + ";");
+	sendPacket(Packet(PACKETPLAYOUTUPDATELOBBY, users.values()));
 }
 
-void Server::sendPacket(const QString& packet) {
-	if (SER != nullptr)
-		foreach(QTcpSocket * socket, SER->sockets) {
-			socket->write((packet + ";").toUtf8());
-		}
+void Server::receivePacket() {
+	QTcpSocket* sent = qobject_cast<QTcpSocket*>(sender());
+	foreach(Packet packet, Packet::decode(sent->readAll())) {
+		handlePacket(packet, sent);
+	}
 }
 
-void Server::sendPacket(const QString& header, const QString& data) {
-	sendPacket(header + ":" + data);
-}
-
-void Server::sendPacket(const QString& header, const QStringList& data) {
-	sendPacket(header, data.join(":"));
-}
-
-void Server::forwardPacket(QTcpSocket* sentFrom, const QString& packet) {
-	foreach(QTcpSocket * socket, sockets) {
-		if (socket != sentFrom)
-			socket->write(packet.toUtf8());
+void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
+	Header header = packet.header;
+	switch (header) {
+		case PACKETPLAYINCONNECT:
+			users.insert(sender, packet.data.at(0));
+			break;
+		case PACKETPLAYINDISCONNECT:
+			break;
+		case PACKETPLAYINUPDATELOBBY:
+			sendPacket(Packet(PACKETPLAYOUTUPDATELOBBY, users.values()));
+			break;
+		case PACKETPLAYINSTARTGAME:
+			sendPacket(Packet(PACKETPLAYOUTSTARTGAME));
+			break;
+		case PACKETPLAYINUPDATEPLAYER:
+			sendPacket(Packet(PACKETPLAYOUTUPDATEPLAYER,
+												QStringList(packet.data) << users.value(sender)),
+								 sender);
+			break;
+		default:
+			qDebug() << "ERROR: Received OUT Packet!";
+			break;
 	}
 }

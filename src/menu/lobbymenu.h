@@ -2,12 +2,13 @@
 #define LOBBYMENU_H
 
 #include <QDialog>
-#include <QPushButton>
 #include <QListWidget>
+#include <QPushButton>
 
 class LobbyMenu : public QDialog {
  public:
 	static void openMenu();
+	static void closeMenu();
 
 	static void setPlayers(const QStringList&);
 

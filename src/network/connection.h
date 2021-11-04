@@ -2,22 +2,22 @@
 #define CONNECTION_H
 
 #include <QTcpSocket>
+#include "packet.h"
 
 class Connection : public QTcpSocket {
  public:
 	static bool create(QString, quint16);
 	static void disconnect();
 
-	static void sendPacket(const QString&);
-	static void sendPacket(const QString&, const QString&);
-	static void sendPacket(const QString&, const QStringList&);
+	static void sendPacket(const Packet&);
 
  private:
 	Connection();
 
-	void handlePacket();
-
 	static Connection* CON;
+
+	void receivePacket();
+	void handlePacket(const Packet&);
 };
 
 #endif  // CONNECTION_H
