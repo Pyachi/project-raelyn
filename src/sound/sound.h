@@ -3,19 +3,20 @@
 
 #include <QQueue>
 #include <QSoundEffect>
+#include <QMediaPlayer>
 
 class SFX;
 class Song;
 
 class Sound {
  public:
-	static void playSound(SFX, qreal);
-	static void playMusic(Song);
+	static void playSound(const SFX&, qreal);
+	static void playMusic(const Song&, int);
+  static void pauseMusic();
 
  private:
-	static QQueue<QSoundEffect*>* queue;
-	static bool ready;
-	static void init();
+  static QMediaPlayer* global_song;
+  static QQueue<QSoundEffect*>* queue;
 };
 
 #endif  // SOUND_H

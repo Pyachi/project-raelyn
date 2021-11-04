@@ -36,5 +36,6 @@
         <file>sounds/sound_powerup_3.wav</file>
         <file>sounds/sound_select_1.wav</file>
         <file>sounds/sound_select_2.wav</file>
+        <file>sounds/music_menu_theme.ogg</file>
     </qresource>
 </RCC>

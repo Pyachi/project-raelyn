@@ -4,5 +4,6 @@
 #include "src/texture.h"
 #include "src/sound/sfx.h"
 #include "src/sound/sound.h"
+#include "src/sound/song.h"
 
-#endif // RESOURCES_H
+#endif  // RESOURCES_H

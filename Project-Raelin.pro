@@ -31,6 +31,7 @@ SOURCES += \
     src/network/connection.cpp \
     src/network/server.cpp \
     src/sound/sfx.cpp \
+    src/sound/song.cpp \
     src/sound/sound.cpp \
     src/texture.cpp
 
@@ -50,6 +51,7 @@ HEADERS += \
     src/network/server.h \
     src/resources.h \
     src/sound/sfx.h \
+    src/sound/song.h \
     src/sound/sound.h \
     src/texture.h
 
