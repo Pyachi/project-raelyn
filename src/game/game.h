@@ -22,6 +22,8 @@ class Game : public QGraphicsView {
 	static QSet<Entity*> getEntities();
 	static void addEntity(Entity*);
 	static QGraphicsPixmapItem* getPlayableArea();
+	static void addOnlinePlayer(const QString&);
+	static void removeOnlinePlayer(const QString&);
 	static void updatePlayerLocation(const QString&, const QPointF&);
 
  private:

@@ -16,9 +16,9 @@ const EntityAI<Enemy> MovementPatterns::LEFTRIGHTTEST = [](Enemy* enemy) {
 
 const EntityAI<Enemy> FiringPatterns::ENEMY1 = [](Enemy* enemy) {
 	if (enemy->cycle(50)) {
-		enemy->fireBulletArc(Bullets::BASIC8, QPointF(0, 0), 5, -30, 30);
-		enemy->fireBulletArc(Bullets::BASIC10, QPointF(0, 0), 5, -30, 30);
-		enemy->fireBulletArc(Bullets::BASIC12, QPointF(0, 0), 5, -30, 30);
+		enemy->fireBulletArc(Bullets::BASIC8, QPointF(0, 0), 4, -30, 30);
+		enemy->fireBulletArc(Bullets::BASIC10, QPointF(0, 0), 4, -30, 30);
+		enemy->fireBulletArc(Bullets::BASIC12, QPointF(0, 0), 4, -30, 30);
 	}
 };
 

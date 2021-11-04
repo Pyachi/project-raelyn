@@ -7,6 +7,7 @@
 #include "src/entity/onlineplayer.h"
 #include "src/entity/player.h"
 #include "src/texture.h"
+#include "src/network/connection.h"
 
 Game* Game::GAME = nullptr;
 
@@ -39,7 +40,7 @@ Game::Game() : QGraphicsView(), scene(0, 0, gameWidth, gameHeight) {
 
 	new Player(Players::PYACHI, QPointF(0, 200));
 	new Enemy(Texture::ENEMY1,
-						MovementPatterns::LEFTRIGHTTEST,
+						MovementPatterns::NONE,
 						FiringPatterns::ENEMY1,
 						50,
 						QPointF(0, -300));
@@ -48,10 +49,10 @@ Game::Game() : QGraphicsView(), scene(0, 0, gameWidth, gameHeight) {
 void Game::tick() {
 	foreach(Entity * entity, entities) {
 		entity->tick();
-		if (entity->cleanup) {
-			entities.remove(entity);
-			scene.removeItem(entity);
-		}
+		//		if (entity->cleanup) {
+		//			entities.remove(entity);
+		//			scene.removeItem(entity);
+		//		}
 	}
 }
 
@@ -59,6 +60,7 @@ void Game::create() {
 	if (GAME == nullptr)
 		GAME = new Game();
 	GAME->show();
+	Connection::sendPacket(Packet(PACKETPLAYINPLAYERSPAWN));
 }
 
 QSet<int> Game::getKeys() { return GAME->keys; }
@@ -80,8 +82,19 @@ void Game::keyReleaseEvent(QKeyEvent* e) {
 QGraphicsPixmapItem* Game::getPlayableArea() { return &GAME->playableArea; }
 
 void Game::updatePlayerLocation(const QString& user, const QPointF& loc) {
-	if (GAME->onlinePlayers.value(user) == nullptr) {
-		GAME->onlinePlayers.insert(user, new OnlinePlayer(Texture::PLAYER1, loc));
-	} else
-		GAME->onlinePlayers.value(user)->setPos(loc);
+	OnlinePlayer* player = GAME->onlinePlayers.value(user);
+	if (player != nullptr)
+		player->setPos(loc);
+}
+
+void Game::removeOnlinePlayer(const QString& user) {
+	OnlinePlayer* player = GAME->onlinePlayers.take(user);
+	if (player != nullptr)
+		player->cleanup = true;
+}
+
+void Game::addOnlinePlayer(const QString& user) {
+	OnlinePlayer* player = new OnlinePlayer(Texture::PLAYER1, QPointF(0, 0));
+	player->setOpacity(0.25);
+	GAME->onlinePlayers.insert(user, player);
 }

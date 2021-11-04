@@ -124,6 +124,7 @@ Player::Player(const Players& stats, const QPointF& spawn)
 				}
 
 				if (player->isHit()) {
+					Connection::sendPacket(PACKETPLAYINPLAYERDEATH);
 					player->cleanup = true;
 					player->hitbox->cleanup = true;
 				}

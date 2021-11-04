@@ -63,6 +63,12 @@ void Connection::handlePacket(const Packet& packet) {
 					packet.data.at(2),
 					QPointF(packet.data.at(0).toDouble(), packet.data.at(1).toDouble()));
 			break;
+		case PACKETPLAYOUTPLAYERDEATH:
+			Game::removeOnlinePlayer(packet.data.at(0));
+			break;
+		case PACKETPLAYOUTPLAYERSPAWN:
+			Game::addOnlinePlayer(packet.data.at(0));
+			break;
 		default:
 			qDebug() << "ERROR: Received IN Packet!";
 			break;

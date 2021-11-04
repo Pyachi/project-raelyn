@@ -88,11 +88,22 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
 			sendPacket(Packet(PACKETPLAYOUTUPDATELOBBY, users.values()));
 			break;
 		case PACKETPLAYINSTARTGAME:
+			pauseAccepting();
 			sendPacket(Packet(PACKETPLAYOUTSTARTGAME));
 			break;
 		case PACKETPLAYINUPDATEPLAYER:
 			sendPacket(Packet(PACKETPLAYOUTUPDATEPLAYER,
 												QStringList(packet.data) << users.value(sender)),
+								 sender);
+			break;
+		case PACKETPLAYINPLAYERDEATH:
+			sendPacket(Packet(PACKETPLAYOUTPLAYERDEATH,
+												QStringList() << users.value(sender)),
+								 sender);
+			break;
+		case PACKETPLAYINPLAYERSPAWN:
+			sendPacket(Packet(PACKETPLAYOUTPLAYERSPAWN,
+												QStringList() << users.value(sender)),
 								 sender);
 			break;
 		default:
