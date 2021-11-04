@@ -62,6 +62,18 @@ const Bullets Bullets::FLOWER =
 			bullet->moveFoward(20);
 		});
 
+const Bullets Bullets::BASIC8 =
+		Bullets(Texture::BULLETROUND,
+						[](Bullet* bullet) { bullet->moveFoward(8); });
+
+const Bullets Bullets::BASIC10 =
+		Bullets(Texture::BULLETROUND,
+						[](Bullet* bullet) { bullet->moveFoward(10); });
+
+const Bullets Bullets::BASIC12 =
+		Bullets(Texture::BULLETROUND,
+						[](Bullet* bullet) { bullet->moveFoward(12); });
+
 Bullet::Bullet(const Bullets& info,
 							 Entity* owner,
 							 const QPointF& spawn,

@@ -52,6 +52,20 @@ QList<Bullet*> Entity::fireBulletCircle(const Bullets& info,
 	return list;
 }
 
+QList<Bullet*> BaseEntity::fireBulletArc(const Bullets& info,
+																				 const QPointF& spawn,
+																				 int count,
+																				 double startRot,
+																				 double endRot) {
+	QList<Bullet*> list;
+	double rotation = startRot;
+	for (int i = 0; i < count; i++) {
+		list.append(new Bullet(info, this, pos() + spawn, rotation));
+		rotation += (endRot - startRot) / (count - 1);
+	}
+	return list;
+}
+
 double Entity::distanceSquared(Entity* entity) {
 	return pow(pos().x() - entity->pos().x(), 2) +
 				 pow(pos().y() - entity->pos().y(), 2);

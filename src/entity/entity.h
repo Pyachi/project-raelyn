@@ -27,6 +27,11 @@ class Entity : public QGraphicsPixmapItem {
 																	const QPointF&,
 																	const int&,
 																	const double& = 0);
+	QList<Bullet*> fireBulletArc(const Bullets&,
+															 const QPointF&,
+															 int,
+															 double,
+															 double);
 	template <class T>
 	T* getNearestEntity();
 
