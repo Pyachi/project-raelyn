@@ -31,9 +31,7 @@ void Entity::moveTowardsPoint(const QPointF& point, const double& distance) {
 	moveBy(dir.x(), dir.y());
 }
 
-void Entity::rotate(const double& deg) {
-	setRotation(rotation() + deg);
-}
+void Entity::rotate(const double& deg) { setRotation(rotation() + deg); }
 
 Bullet* Entity::fireBullet(const Bullets& info,
 													 const QPointF& spawn,
@@ -54,11 +52,11 @@ QList<Bullet*> Entity::fireBulletCircle(const Bullets& info,
 	return list;
 }
 
-QList<Bullet*> BaseEntity::fireBulletArc(const Bullets& info,
-																				 const QPointF& spawn,
-																				 int count,
-																				 double startRot,
-																				 double endRot) {
+QList<Bullet*> Entity::fireBulletArc(const Bullets& info,
+																		 const QPointF& spawn,
+																		 int count,
+																		 double startRot,
+																		 double endRot) {
 	QList<Bullet*> list;
 	double rotation = startRot;
 	for (int i = 0; i < count; i++) {
@@ -86,13 +84,9 @@ QPointF Entity::confineToPlayableArea(const QPointF& pos) {
 														boundingRect().bottom()));
 }
 
-bool Entity::isOnScreen() {
-	return collidesWithItem(Game::getPlayableArea());
-}
+bool Entity::isOnScreen() { return collidesWithItem(Game::getPlayableArea()); }
 
-bool Entity::cycle(const int& dur) {
-	return cycle(dur, 0, 0);
-}
+bool Entity::cycle(const int& dur) { return cycle(dur, 0, 0); }
 
 bool Entity::cycle(const int& dur, const int& time) {
 	return cycle(dur, time, time);

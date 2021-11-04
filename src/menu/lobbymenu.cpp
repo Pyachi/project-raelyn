@@ -2,6 +2,7 @@
 #include <QGridLayout>
 #include "mainmenu.h"
 #include "src/resources.h"
+#include "src/network/connection.h"
 
 LobbyMenu* LobbyMenu::MENU = nullptr;
 
