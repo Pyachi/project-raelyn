@@ -29,11 +29,11 @@ SingleplayerMenu::SingleplayerMenu()
           this,
           &SingleplayerMenu::changeDifficulty);
 
-  layout->addWidget(&startButton, 3, 1, 1, 1);
+  layout->addWidget(&startButton, 3, 2, 1, 1);
   connect(
       &startButton, &QPushButton::clicked, this, &SingleplayerMenu::startGame);
 
-  layout->addWidget(&quitButton, 3, 2, 1, 1);
+  layout->addWidget(&quitButton, 3, 1, 1, 1);
   connect(&quitButton,
           &QPushButton::clicked,
           this,
@@ -64,6 +64,7 @@ void SingleplayerMenu::changeDifficulty() {
 }
 
 void SingleplayerMenu::startGame() {
+  Sound::pauseMusic();
   Game* game = new Game();
   game->show();
   close();

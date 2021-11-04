@@ -35,7 +35,7 @@ Collectable::Collectable(const CollectableType& type, const QPointF& spawn)
 const CollectableType CollectableType::POWER =
 		CollectableType(Texture::PLAYERHITBOX, [](Player* player) {
 			player->power++;
-			Sound::playSound(SFX::COLLECT_1, 1);
+            Sound::playSound(SFX::COLLECT_3, 0.25);
 		});
 
 void Collectable::tick() {
