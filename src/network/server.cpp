@@ -92,7 +92,8 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
 			break;
 		case PACKETPLAYINUPDATEPLAYER:
 			sendPacket(Packet(PACKETPLAYOUTUPDATEPLAYER,
-												QStringList(packet.data) << users.value(sender)));
+												QStringList(packet.data) << users.value(sender)),
+								 sender);
 			break;
 		default:
 			qDebug() << "ERROR: Received OUT Packet!";
