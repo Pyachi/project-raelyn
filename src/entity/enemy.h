@@ -3,36 +3,25 @@
 
 #include "entity.h"
 
+class EnemyType;
 class Enemy;
 
-class MovementPatterns {
- public:
-	static const EntityAI<Enemy> NONE;
-	static const EntityAI<Enemy> LEFTRIGHTTEST;  // Demo
-};
-
-class FiringPatterns {
- public:
-	static const EntityAI<Enemy> ENEMY1;  // Demo
-};
+using EnemyAI = std::function<void(Enemy*)>;
 
 class Enemy : public Entity {
  public:
-	Enemy(const Texture&,
-				const EntityAI<Enemy>&,
-				const EntityAI<Enemy>&,
-				int,
-				const QPointF&);
-
-	int health;
-	QPointF targetLoc;
-
-	const QList<Bullet*> getHits();
+	QList<Bullet*> getHits();
 
  private:
-	const EntityAI<Enemy> movementAI;
-	const EntityAI<Enemy> firingAI;
+	Enemy(const EnemyType*, const QPointF&);
+
+	int health;
+
+	const EnemyAI ai;
+
 	void tick() override;
+
+	friend class EnemyType;
 };
 
 #endif  // ENEMY_H

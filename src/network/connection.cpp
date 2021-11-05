@@ -64,10 +64,10 @@ void Connection::handlePacket(const Packet& packet) {
 					QPointF(packet.data.at(0).toDouble(), packet.data.at(1).toDouble()));
 			break;
 		case PACKETPLAYOUTPLAYERDEATH:
-			Game::removeOnlinePlayer(packet.data.at(0));
+			Game::removePlayer(packet.data.at(0));
 			break;
 		case PACKETPLAYOUTPLAYERSPAWN:
-			Game::addOnlinePlayer(packet.data.at(0));
+			Game::addPlayer(PYACHI, packet.data.at(0));
 			break;
 		default:
 			qDebug() << "ERROR: Received IN Packet!";

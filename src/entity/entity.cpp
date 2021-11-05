@@ -2,21 +2,60 @@
 #include <QVector2D>
 #include <QtMath>
 #include "bullet.h"
-#include "src/texture.h"
+#include "assets.h"
+#include "src/ai/bulletinfo.h"
 
 Entity::Entity(const Texture& texture, const QPointF& spawn)
-		: QGraphicsPixmapItem(Game::getPlayableArea()),
-			cleanup(false),
-			timeAlive(0) {
+		: QGraphicsPixmapItem(Game::getPlayableArea()), age(0), cleanup(false) {
 	setPixmap(QPixmap(texture.texture));
 	setZValue(texture.zValue);
 	setOffset(-boundingRect().center());
 	setPos(spawn);
-
-	Game::addEntity(this);
 }
 
-void Entity::moveFoward(const double& distance) {
+void Entity::deleteLater() { cleanup = true; }
+
+int Entity::getAge() { return age; }
+
+bool Entity::readyToDelete() { return cleanup; }
+
+QList<Bullet*> Entity::fireBullet(BulletList pattern,
+																	double rot,
+																	const QPointF& loc) {
+	QList<Bullet*> list;
+	foreach(BulletInfo * info, pattern) {
+		list << info->spawn(this, pos() + loc, rot);
+	}
+	return list;
+}
+
+QList<Bullet*> Entity::fireBulletCircle(BulletList info,
+																				int count,
+																				double rot,
+																				const QPointF& loc) {
+	QList<Bullet*> list;
+	for (int i = 0; i < count; i++) {
+		list << fireBullet(info, rot, loc);
+		rot += 360 / count;
+	}
+	return list;
+}
+
+QList<Bullet*> Entity::fireBulletArc(BulletList info,
+																		 int count,
+																		 double startRot,
+																		 double endRot,
+																		 const QPointF& loc) {
+	QList<Bullet*> list;
+	double rot = startRot;
+	for (int i = 0; i < count; i++) {
+		list << fireBullet(info, rot, loc);
+		rot += (endRot - startRot) / (count - 1);
+	}
+	return list;
+}
+
+void Entity::moveFoward(double distance) {
 	double rot = qDegreesToRadians(rotation());
 	double dx = distance * -sin(rot);
 	double dy = distance * cos(rot);
@@ -24,47 +63,14 @@ void Entity::moveFoward(const double& distance) {
 	moveBy(dx, dy);
 }
 
-void Entity::moveTowardsPoint(const QPointF& point, const double& distance) {
+void Entity::moveTowardsPoint(const QPointF& point, double distance) {
 	QVector2D dir(point - pos());
 	dir.normalize();
 	dir *= distance;
 	moveBy(dir.x(), dir.y());
 }
 
-void Entity::rotate(const double& deg) { setRotation(rotation() + deg); }
-
-Bullet* Entity::fireBullet(const Bullets& info,
-													 const QPointF& spawn,
-													 const double& rotation) {
-	return new Bullet(info, this, pos() + spawn, rotation);
-}
-
-QList<Bullet*> Entity::fireBulletCircle(const Bullets& info,
-																				const QPointF& spawn,
-																				const int& count,
-																				const double& startRotation) {
-	QList<Bullet*> list;
-	double rotation = startRotation;
-	for (int i = 0; i < count; i++) {
-		list.append(new Bullet(info, this, pos() + spawn, rotation));
-		rotation += 360.0 / count;
-	}
-	return list;
-}
-
-QList<Bullet*> Entity::fireBulletArc(const Bullets& info,
-																		 const QPointF& spawn,
-																		 int count,
-																		 double startRot,
-																		 double endRot) {
-	QList<Bullet*> list;
-	double rotation = startRot;
-	for (int i = 0; i < count; i++) {
-		list.append(new Bullet(info, this, pos() + spawn, rotation));
-		rotation += (endRot - startRot) / (count - 1);
-	}
-	return list;
-}
+void Entity::rotate(double deg) { setRotation(rotation() + deg); }
 
 double Entity::distanceSquared(Entity* entity) {
 	return pow(pos().x() - entity->pos().x(), 2) +
@@ -86,12 +92,10 @@ QPointF Entity::confineToPlayableArea(const QPointF& pos) {
 
 bool Entity::isOnScreen() { return collidesWithItem(Game::getPlayableArea()); }
 
-bool Entity::cycle(const int& dur) { return cycle(dur, 0, 0); }
+bool Entity::cycle(int dur) { return cycle(dur, 0, 0); }
 
-bool Entity::cycle(const int& dur, const int& time) {
-	return cycle(dur, time, time);
-}
+bool Entity::cycle(int dur, int time) { return cycle(dur, time, time); }
 
-bool Entity::cycle(const int& dur, const int& low, const int& high) {
-	return (timeAlive % dur >= low && timeAlive % dur <= high);
+bool Entity::cycle(int dur, int low, int high) {
+	return (getAge() % dur >= low && getAge() % dur <= high);
 }

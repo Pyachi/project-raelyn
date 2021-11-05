@@ -4,13 +4,9 @@
 #include "entity.h"
 
 class PlayerHitbox : public Entity {
- public:
-	PlayerHitbox(Entity*);
-	Entity* owner;
-
- private:
-	const EntityAI<PlayerHitbox> ai;
+	PlayerHitbox();
 	void tick() override;
+	friend class Player;
 };
 
 #endif  // PLAYERHITBOX_H

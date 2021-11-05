@@ -16,11 +16,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/ai/bulletinfo.cpp \
+    src/ai/bulletpattern.cpp \
+    src/ai/bullettype.cpp \
+    src/ai/collectabletype.cpp \
+    src/ai/enemytype.cpp \
+    src/ai/playertype.cpp \
+    src/assets/sfx.cpp \
+    src/assets/song.cpp \
+    src/assets/sound.cpp \
+    src/assets/texture.cpp \
     src/entity/bullet.cpp \
     src/entity/collectable.cpp \
     src/entity/enemy.cpp \
     src/entity/entity.cpp \
-    src/entity/onlineplayer.cpp \
     src/entity/player.cpp \
     src/entity/playerhitbox.cpp \
     src/game/game.cpp \
@@ -31,18 +40,24 @@ SOURCES += \
     src/menu/singleplayermenu.cpp \
     src/network/connection.cpp \
     src/network/packet.cpp \
-    src/network/server.cpp \
-    src/sound/sfx.cpp \
-    src/sound/song.cpp \
-    src/sound/sound.cpp \
-    src/texture.cpp
+    src/network/server.cpp
 
 HEADERS += \
+    assets.h \
+    src/ai/bulletinfo.h \
+    src/ai/bulletpattern.h \
+    src/ai/bullettype.h \
+    src/ai/collectabletype.h \
+    src/ai/enemytype.h \
+    src/ai/playertype.h \
+    src/assets/sfx.h \
+    src/assets/song.h \
+    src/assets/sound.h \
+    src/assets/texture.h \
     src/entity/bullet.h \
     src/entity/collectable.h \
     src/entity/enemy.h \
     src/entity/entity.h \
-    src/entity/onlineplayer.h \
     src/entity/player.h \
     src/entity/playerhitbox.h \
     src/game/game.h \
@@ -52,12 +67,7 @@ HEADERS += \
     src/menu/singleplayermenu.h \
     src/network/connection.h \
     src/network/packet.h \
-    src/network/server.h \
-    src/resources.h \
-    src/sound/sfx.h \
-    src/sound/song.h \
-    src/sound/sound.h \
-    src/texture.h
+    src/network/server.h
 
 FORMS +=
 

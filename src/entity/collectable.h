@@ -3,31 +3,20 @@
 
 #include "entity.h"
 
-class Collectable;
+class CollectableType;
 class Player;
 
-class CollectableType {
- public:
-	static const CollectableType POWER;
-	static const CollectableType POINTS;
-	static const CollectableType HEALTH;
-	static const CollectableType BOMB;
-
-	const Texture& texture;
-	const EntityAI<Player> onPickup;
-
- private:
-	CollectableType(const Texture&, const EntityAI<Player>&);
-};
+using PlayerAI = std::function<void(Player*)>;
 
 class Collectable : public Entity {
- public:
-	Collectable(const CollectableType&, const QPointF&);
-
  private:
-	const EntityAI<Collectable> ai;
-	const EntityAI<Player> onPickup;
+	Collectable(const CollectableType*, const QPointF&);
+
+	const PlayerAI onPickup;
+
 	void tick() override;
+
+	friend class CollectableType;
 };
 
 #endif  // COLLECTABLE_H

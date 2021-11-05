@@ -1,12 +1,6 @@
 #include "playerhitbox.h"
-#include "src/texture.h"
+#include "assets.h"
 
-PlayerHitbox::PlayerHitbox(Entity* owner)
-		: Entity(Texture::PLAYERHITBOX, owner->pos()),
-			owner(owner),
-			ai([](PlayerHitbox* hitbox) { hitbox->setPos(hitbox->owner->pos()); }) {}
+PlayerHitbox::PlayerHitbox() : Entity(Texture::PLAYERHITBOX, QPointF(0, 0)) {}
 
-void PlayerHitbox::tick() {
-	timeAlive++;
-	ai(this);
-}
+void PlayerHitbox::tick() {}

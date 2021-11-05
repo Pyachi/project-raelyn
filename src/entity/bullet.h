@@ -3,35 +3,25 @@
 
 #include "entity.h"
 
-class Bullets {
- public:
-	static const Bullets PLAYERBASIC;
-	static const Bullets PLAYERHOMING;
+class Bullet;
 
-	static const Bullets BASIC8;
-	static const Bullets BASIC10;
-	static const Bullets BASIC12;
-	static const Bullets ACCELERATING;
-	static const Bullets SCREENWRAPTEST;
-	static const Bullets FLOWER;
-
-	const Texture& texture;
-	const EntityAI<Bullet> ai;
-
- private:
-	Bullets(const Texture&, const EntityAI<Bullet>&);
-};
+using BulletAI = std::function<void(Bullet*)>;
 
 class Bullet : public Entity {
  public:
-	Bullet(const Bullets&, Entity*, const QPointF&, double);
-
+	Entity* getOwner() const;
 	bool borderCheck;
-	Entity* owner;
 
  private:
-	const EntityAI<Bullet> ai;
+	Bullet(const BulletInfo*, Entity*, const QPointF&, double);
+
+	Entity* owner;
+
+	const BulletAI& ai;
+
 	void tick() override;
+
+	friend class BulletInfo;
 };
 
 #endif  // BULLET_H

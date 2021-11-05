@@ -4,10 +4,10 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsView>
 #include <QSet>
+#include "src/ai/playertype.h"
 
 class Entity;
-class Players;
-class OnlinePlayer;
+class Player;
 
 const int gameWidth = 1280;
 const int gameHeight = 720;
@@ -22,8 +22,8 @@ class Game : public QGraphicsView {
 	static QSet<Entity*> getEntities();
 	static void addEntity(Entity*);
 	static QGraphicsPixmapItem* getPlayableArea();
-	static void addOnlinePlayer(const QString&);
-	static void removeOnlinePlayer(const QString&);
+	static void addPlayer(PlayerType, const QString&);
+	static void removePlayer(const QString&);
 	static void updatePlayerLocation(const QString&, const QPointF&);
 
  private:
@@ -35,7 +35,7 @@ class Game : public QGraphicsView {
 	QGraphicsPixmapItem playableArea;
 	QGraphicsPixmapItem background;
 	QSet<Entity*> entities;
-	QMap<QString, OnlinePlayer*> onlinePlayers;
+	QMap<QString, Player*> players;
 	QSet<int> keys;
 
 	void tick();

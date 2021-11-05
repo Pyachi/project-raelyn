@@ -5,7 +5,7 @@
 #include "src/game/game.h"
 #include "src/network/connection.h"
 #include "src/network/server.h"
-#include "src/resources.h"
+#include "assets.h"
 
 SingleplayerMenu* SingleplayerMenu::MENU = nullptr;
 

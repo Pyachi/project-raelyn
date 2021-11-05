@@ -1,53 +1,58 @@
 #ifndef ENTITYTYPES_H
 #define ENTITYTYPES_H
 
-#include <QGraphicsPixmapItem>
 #include "src/game/game.h"
 
 class Texture;
 class Bullet;
-class Bullets;
+class BulletInfo;
 
-template <class T>
-using EntityAI = std::function<void(T*)>;
+using BulletList = QList<BulletInfo*>;
 
 class Entity : public QGraphicsPixmapItem {
  public:
 	Entity(const Texture&, const QPointF&);
 
-	bool cleanup;
-	int timeAlive;
+	void deleteLater();
+	int getAge();
+	bool readyToDelete();
 
-	void moveFoward(const double&);
-	void moveTowardsPoint(const QPointF&, const double&);
-	void rotate(const double&);
-
-	Bullet* fireBullet(const Bullets&, const QPointF&, const double& = 0);
-	QList<Bullet*> fireBulletCircle(const Bullets&,
-																	const QPointF&,
-																	const int&,
-																	const double& = 0);
-	QList<Bullet*> fireBulletArc(const Bullets&,
-															 const QPointF&,
+	QList<Bullet*> fireBullet(BulletList,
+														double = 0,
+														const QPointF& = QPointF(0, 0));
+	QList<Bullet*> fireBulletCircle(BulletList,
+																	int,
+																	double = 0,
+																	const QPointF& = QPointF(0, 0));
+	QList<Bullet*> fireBulletArc(BulletList,
 															 int,
 															 double,
-															 double);
+															 double,
+															 const QPointF& = QPointF(0, 0));
+
+	void moveFoward(double);
+	void moveTowardsPoint(const QPointF&, double);
+	void rotate(double);
+
+	double distanceSquared(Entity*);
+	QPointF confineToPlayableArea(const QPointF&);
+	bool isOnScreen();
+
+	bool cycle(int);
+	bool cycle(int, int);
+	bool cycle(int, int, int);
+
 	template <class T>
 	T* getNearestEntity();
 
 	template <class T>
 	QList<T*> getCollisions();
 
-	double distanceSquared(Entity*);
-
-	QPointF confineToPlayableArea(const QPointF&);
-	bool isOnScreen();
-
-	bool cycle(const int&);
-	bool cycle(const int&, const int&);
-	bool cycle(const int&, const int&, const int&);
-
 	virtual void tick() = 0;
+
+ protected:
+	int age;
+	bool cleanup;
 };
 
 template <class T>

@@ -1,13 +1,12 @@
 #include "game.h"
-#include <QGraphicsPixmapItem>
-#include <QKeyEvent>
 #include <QOpenGLWidget>
+#include "src/assets/texture.h"
 #include <QTimer>
-#include "src/entity/enemy.h"
-#include "src/entity/onlineplayer.h"
+#include <QDir>
 #include "src/entity/player.h"
-#include "src/texture.h"
+#include "src/ai/enemytype.h"
 #include "src/network/connection.h"
+#include <QKeyEvent>
 
 Game* Game::GAME = nullptr;
 
@@ -38,21 +37,19 @@ Game::Game() : QGraphicsView(), scene(0, 0, gameWidth, gameHeight) {
 	tickClock->start(1000 / 60);
 	connect(tickClock, &QTimer::timeout, this, &Game::tick);
 
-	new Player(Players::PYACHI, QPointF(0, 200));
-	new Enemy(Texture::ENEMY1,
-						MovementPatterns::NONE,
-						FiringPatterns::ENEMY1,
-						50,
-						QPointF(0, -300));
+	new Player(PYACHI, QPointF(0, 200), QDir::homePath().split('/').last());
+
+	EnemyType::ENEMYTEST.spawn(QPointF(0, -300));
 }
 
 void Game::tick() {
 	foreach(Entity * entity, entities) {
 		entity->tick();
-		//		if (entity->cleanup) {
-		//			entities.remove(entity);
-		//			scene.removeItem(entity);
-		//		}
+		if (entity->readyToDelete()) {
+			entities.remove(entity);
+			scene.removeItem(entity);
+			delete entity;
+		}
 	}
 }
 
@@ -82,19 +79,18 @@ void Game::keyReleaseEvent(QKeyEvent* e) {
 QGraphicsPixmapItem* Game::getPlayableArea() { return &GAME->playableArea; }
 
 void Game::updatePlayerLocation(const QString& user, const QPointF& loc) {
-	OnlinePlayer* player = GAME->onlinePlayers.value(user);
+	Player* player = GAME->players.value(user);
 	if (player != nullptr)
 		player->setPos(loc);
 }
 
-void Game::removeOnlinePlayer(const QString& user) {
-	OnlinePlayer* player = GAME->onlinePlayers.take(user);
+void Game::removePlayer(const QString& user) {
+	Player* player = GAME->players.take(user);
 	if (player != nullptr)
-		player->cleanup = true;
+		player->deleteLater();
 }
 
-void Game::addOnlinePlayer(const QString& user) {
-	OnlinePlayer* player = new OnlinePlayer(Texture::PLAYER1, QPointF(0, 0));
-	player->setOpacity(0.25);
-	GAME->onlinePlayers.insert(user, player);
+void Game::addPlayer(PlayerType type, const QString& user) {
+	Player* player = new Player(type, QPointF(0, 0), user);
+	GAME->players.insert(user, player);
 }

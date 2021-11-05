@@ -2,41 +2,26 @@
 #define PLAYER_H
 
 #include "entity.h"
-
-class Player;
-class PlayerHitbox;
-
-class Players {
- public:
-	static const Players PYACHI;
-	static const Players AERON;
-
-	const Texture& texture;
-	const EntityAI<Player> firingPattern;
-	const int speed;
-	const int focusSpeed;
-
- private:
-	Players(const Texture&, const EntityAI<Player>&, int, int);
-};
+#include "playerhitbox.h"
 
 class Player : public Entity {
  public:
-	Player(const Players&, const QPointF&);
+	Player(PlayerType, const QPointF&, const QString&);
 
+	bool isHit();
+	void setOnline();
+
+ private:
+	PlayerType type;
+	QString user;
 	bool firing;
 	bool focus;
 	int level;
 	int power;
+	bool online;
 
-	bool isHit();
+	PlayerHitbox hitbox;
 
- private:
-	const int normalSpeed;
-	const int focusSpeed;
-	const EntityAI<Player> firingPattern;
-	const EntityAI<Player> ai;
-	PlayerHitbox* hitbox;
 	void tick() override;
 };
 

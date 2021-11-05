@@ -6,7 +6,7 @@
 #include "mainmenu.h"
 #include "src/network/connection.h"
 #include "src/network/server.h"
-#include "src/resources.h"
+#include "assets.h"
 
 MultiplayerMenu* MultiplayerMenu::MENU = nullptr;
 
