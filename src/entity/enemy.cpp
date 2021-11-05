@@ -13,7 +13,7 @@ Enemy::Enemy(const EnemyType* info, const QPointF& spawn)
 QList<Bullet*> Enemy::getHits() {
 	QList<Bullet*> list;
 	foreach(Bullet * bullet, getCollisions<Bullet>()) {
-		if (dynamic_cast<Player*>(bullet->getOwner()))
+		if (dynamic_cast<Player*>(bullet->owner))
 			list.append(bullet);
 	}
 	return list;

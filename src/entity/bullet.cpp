@@ -7,14 +7,12 @@ Bullet::Bullet(const BulletInfo* info,
 							 const QPointF& spawn,
 							 double rotation)
 		: Entity(info->texture, spawn),
-			borderCheck(true),
 			owner(owner),
+			borderCheck(true),
 			ai(info->ai) {
 	setRotation(rotation);
 	Game::addEntity(this);
 }
-
-Entity* Bullet::getOwner() const { return owner; }
 
 void Bullet::tick() {
 	age++;

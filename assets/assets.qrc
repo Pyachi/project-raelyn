@@ -38,7 +38,4 @@
         <file>sounds/sound_select_2.wav</file>
         <file>sounds/music_menu_theme.ogg</file>
     </qresource>
-    <qresource prefix="/videos">
-        <file>videos/video_background_1.mp4</file>
-    </qresource>
 </RCC>

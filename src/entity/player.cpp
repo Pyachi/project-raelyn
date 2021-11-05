@@ -21,9 +21,10 @@ bool Player::isHit() {
 	if (hitbox.getCollisions<Enemy>().size() > 0)
 		return true;
 	else
-		foreach(Bullet * bullet, hitbox.getCollisions<Bullet>())
-	if (dynamic_cast<Enemy*>(bullet->getOwner()))
-		return true;
+		foreach(Bullet * bullet, hitbox.getCollisions<Bullet>()) {
+			if (dynamic_cast<Enemy*>(bullet->owner))
+				return true;
+		}
 	return false;
 }
 
@@ -77,6 +78,7 @@ void Player::tick() {
 	if (isHit()) {
 		Connection::sendPacket(PACKETPLAYINPLAYERDEATH);
 		deleteLater();
+		hitbox.scene()->removeItem(&hitbox);
 	}
 }
 

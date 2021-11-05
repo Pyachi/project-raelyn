@@ -9,13 +9,11 @@ using BulletAI = std::function<void(Bullet*)>;
 
 class Bullet : public Entity {
  public:
-	Entity* getOwner() const;
+	Entity* owner;
 	bool borderCheck;
 
  private:
 	Bullet(const BulletInfo*, Entity*, const QPointF&, double);
-
-	Entity* owner;
 
 	const BulletAI& ai;
 

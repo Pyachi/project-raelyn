@@ -48,7 +48,6 @@ void Game::tick() {
 		if (entity->readyToDelete()) {
 			entities.remove(entity);
 			scene.removeItem(entity);
-			delete entity;
 		}
 	}
 }
