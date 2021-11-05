@@ -7,15 +7,15 @@ database_API::database_API()
 
 QSqlDatabase database_API::start_connection(QString type, QString host, int port, QString name, QString user, QString pass)
 {
-    QSqlDatabase start = QSqlDatabase::addDatabase(type);
+    QSqlDatabase start = QSqlDatabase::addDatabase(type);       // starts the type of SQL database to be used (SQLite, MySQL)
 
-    start.setHostName(name);
+    start.setHostName(host);                                    // adds connection details to session
     start.setPort(port);
     start.setDatabaseName(name);
     start.setUserName(user);
     start.setPassword(pass);
 
-    if(!start.open())
+    if(!start.open())                                           // opens connection
     {
         qDebug() << start.lastError();
         qDebug() << "Error: Unable to connect to above error.";
@@ -24,21 +24,22 @@ QSqlDatabase database_API::start_connection(QString type, QString host, int port
     return start;
 }
 
-bool database_API::add_score(QSqlDatabase db, QString level, QString user, int score)
+bool database_API::add_score(QSqlDatabase db, QDateTime time, QString level, QString user, int score)
 {
     bool pass = true;
 
     QSqlQuery query;
-    QString querySTR = "INSERT INTO (Id, Level, User, Score) VALUES (";
+    QString querySTR = "INSERT INTO (Time, User, Level, Score) VALUES (";
 
-    // querySTR.append(Id);
-    querySTR.append(", ");
-    querySTR.append(level);
+    querySTR.append(time)
     querySTR.append(", ");
     querySTR.append(user);
     querySTR.append(", ");
-    querySTR.append(score);
+    querySTR.append(level);
+    querySTR.append(", ");
+    querySTR.append(score);    
     querySTR.append(");");
+
 
     if(!query.exec(querySTR))
     {
@@ -47,12 +48,13 @@ bool database_API::add_score(QSqlDatabase db, QString level, QString user, int s
         pass = false;
     }
 
+
     return pass;
 
 }
 
 
-Scoreboard database_API::get_scoreboard(QSqlDatabase db, QString level)
+Scoreboard database_API::get_scoreboard(QString level)
 {
     QSqlQuery query;
     QString querySTR = "SELECT * FROM ";
@@ -60,6 +62,7 @@ Scoreboard database_API::get_scoreboard(QSqlDatabase db, QString level)
     Scoreboard board;
 
     querySTR.append(level);
+    querySTR.append(";");
     if(!query.exec(querySTR))
     {
         qDebug() << db.lastError();
@@ -77,6 +80,12 @@ Scoreboard database_API::get_scoreboard(QSqlDatabase db, QString level)
 bool database_API::update_database(QString name, Scoreboard score)
 {
     bool pass = true;
+    Scoreboard data = get_scoreboard(name);
+
+    Scoreboard diff = data.Differences(&score);
+
+
+
 
 
     return pass;

@@ -3,6 +3,7 @@
 
 
 #include <qdebug.h>
+#include <QVector>
 
 
 class Scoreboard
@@ -10,6 +11,11 @@ class Scoreboard
 public:
     Scoreboard();
     bool Add_Score(QString level, QString user, int score);
+
+    Scoreboard Differences(Scoreboard* other);
+    void Order_Scores(QString key);
+    void Merge(Scoreboard* other);                  // later if needed
+    int Get_length();
 
 private:
     int length;
@@ -29,7 +35,10 @@ private:
     run* head;
     run* tail;
 
+
     void Show_Scoreboard();
+
+
 };
 
 #endif // SCOREBOARD_H
