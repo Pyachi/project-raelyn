@@ -13,4 +13,8 @@ void playSong(const QString& song, int volume) {
 	player.setVolume(volume);
 	player.play();
 }
+
+void stopSong() {
+	player.stop();
 }
+}  // namespace Music

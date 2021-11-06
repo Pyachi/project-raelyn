@@ -14,6 +14,7 @@ extern const QString LVL_3_BOSS;
 extern const QString CREDITS;
 
 extern void playSong(const QString&, int);
-};
+extern void stopSong();
+};  // namespace Music
 
 #endif  // MUSIC_H

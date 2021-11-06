@@ -2,8 +2,8 @@
 #include "src/assets/music.h"
 #include "src/assets/sfx.h"
 #include "src/assets/texture.h"
-#include "src/network/server.h"
 #include "src/network/connection.h"
+#include "src/network/server.h"
 #include "src/network/user.h"
 
 Menu* Menu::MENU = nullptr;
@@ -95,14 +95,13 @@ Menu::Menu()
 	lobbyLayout.addWidget(&backLobby, 3, 1, 1, -1);
 	connect(&startLobby, &QPushButton::clicked, this, &Menu::startGame);
 	connect(&backLobby, &QPushButton::clicked, this, &Menu::returnToMenu);
-
-	Music::playSong(Music::MENU, 100);
 }
 
 void Menu::openMenu() {
 	if (MENU == nullptr)
 		MENU = new Menu();
 	MENU->show();
+	Music::playSong(Music::MENU, 100);
 }
 
 void Menu::closeMenu() {
@@ -116,7 +115,7 @@ void Menu::updatePlayerCount(int size) {
 
 void Menu::updatePlayerList(const QStringList& list) {
 	MENU->players.clear();
-	foreach(QString string, list) { MENU->players.addItem(string); }
+	foreach (QString string, list) { MENU->players.addItem(string); }
 }
 
 void Menu::openSingleplayer() {
@@ -137,7 +136,9 @@ void Menu::openOptions() {
 	SFX::playSound(SFX::SELECT_1, 1);
 }
 
-void Menu::quitGame() { close(); }
+void Menu::quitGame() {
+	close();
+}
 
 void Menu::startGame() {
 	if (!Connection::exists()) {
@@ -150,6 +151,8 @@ void Menu::startGame() {
 }
 
 void Menu::returnToMenu() {
+	if (serverMenu.isVisible())
+		Music::playSong(Music::MENU, 100);
 	Connection::disconnect();
 	Server::disconnect();
 	mainMenu.show();
@@ -171,6 +174,7 @@ void Menu::hostServer() {
 	multiplayerMenu.hide();
 	serverMenu.show();
 	SFX::playSound(SFX::SELECT_1, 1);
+	Music::stopSong();
 }
 
 void Menu::joinServer() {

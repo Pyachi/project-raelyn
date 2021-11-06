@@ -2,6 +2,8 @@ QT       += core gui opengl network multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+QMAKE_LFLAGS += -no-pie
+
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
