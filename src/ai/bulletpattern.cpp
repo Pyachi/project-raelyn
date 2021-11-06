@@ -25,7 +25,6 @@ const BulletList FLOWERCIRCLE =
 
 const BulletList SPRAY =
 		BulletList()
-		<< BulletInfo(Textures::BULLETROUND, BulletType::ACCELERATING)
 		<< BulletInfo(Textures::BULLETROUND, BulletType::ACCELERATING, 5)
 		<< BulletInfo(Textures::BULLETROUND, BulletType::ACCELERATING, 10)
 		<< BulletInfo(Textures::BULLETROUND, BulletType::ACCELERATING, -5)

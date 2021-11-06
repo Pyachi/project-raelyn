@@ -21,9 +21,9 @@ const QString EXPL_MED_1("qrc:/soundeffects/sound_expl_med_1.wav");
 const QString EXPL_MED_2("qrc:/soundeffects/sound_expl_med_2.wav");
 const QString EXPL_MED_3("qrc:/soundeffects/sound_expl_med_3.wav");
 const QString EXPL_SUPERHEAVY_1(
-		"qrc:/soundeffects/sound_expl_superheavy_1.wav");
+    "qrc:/soundeffects/sound_expl_superheavy_1.wav");
 const QString EXPL_SUPERHEAVY_2(
-		"qrc:/soundeffects/sound_expl_superheavy_2.wav");
+    "qrc:/soundeffects/sound_expl_superheavy_2.wav");
 const QString HIT_1("qrc:/soundeffects/sound_hit_1.wav");
 const QString HIT_2("qrc:/soundeffects/sound_hit_2.wav");
 const QString HIT_3("qrc:/soundeffects/sound_hit_3.wav");
@@ -38,17 +38,17 @@ const QString SELECT_1("qrc:/soundeffects/sound_select_1.wav");
 const QString SELECT_2("qrc:/soundeffects/sound_select_2.wav");
 
 void playSound(const QString& sound, qreal volume) {
-	if (!queueSetup) {
-		for (int i = 0; i < 64; i++)
-			queue.push(new QSoundEffect);
-		queueSetup = true;
-	}
+  if (!queueSetup) {
+    for (int i = 0; i < 64; i++)
+      queue.push(new QSoundEffect);
+    queueSetup = true;
+  }
 
-	QSoundEffect* player = queue.front();
-	player->setSource(sound);
-	player->setVolume(volume);
-	player->play();
-	queue.push(player);
-	queue.pop();
+  QSoundEffect* player = queue.front();
+  player->setSource(sound);
+  player->setVolume(volume);
+  player->play();
+  queue.push(player);
+  queue.pop();
 }
 }  // namespace SFX

@@ -15,14 +15,13 @@ void Collectable::tick() {
 	if (getAge() < 10)
 		moveBy(20 * -sin(dir), 20 * cos(dir));
 	else {
-		Player* player = getNearestEntity<Player>();
-		if (player != nullptr &&
-				(player->distanceSquared(this) < 150 * 150 || player->pos().y() < -200))
+		Player* player = Game::getPlayer();
+		if (player->distanceSquared(this) < 150 * 150 || player->pos().y() < -200)
 			moveTowardsPoint(player->pos(), 15);
 		else
 			moveBy(0, getAge() / 30.0);
 		if (!getCollisions<PlayerHitbox>().isEmpty()) {
-			onPickup(getNearestEntity<Player>());
+			onPickup(Game::getPlayer());
 			deleteLater();
 		}
 	}

@@ -20,10 +20,11 @@ class Game : public QGraphicsView {
 	static void create();
 	static QSet<int> getKeys();
 	static QSet<Entity*> getEntities();
+	static Player* getPlayer();
 	static void addEntity(Entity*);
 	static QGraphicsPixmapItem* getPlayableArea();
-	static void addPlayer(PlayerType, const QString&);
-	static void removePlayer(const QString&);
+	static void addOnlinePlayer(PlayerType, const QString&);
+	static void removeOnlinePlayer(const QString&);
 	static void updatePlayerLocation(const QString&, const QPointF&);
 
  private:
@@ -34,9 +35,10 @@ class Game : public QGraphicsView {
 	QGraphicsScene scene;
 	QGraphicsPixmapItem playableArea;
 	QGraphicsPixmapItem background;
-	QSet<Entity*> entities;
 
-	QMap<QString, Player*> players;
+	Player* player;
+	QSet<Entity*> entities;
+	QMap<QString, Player*> onlinePlayers;
 
 	QSet<int> keys;
 

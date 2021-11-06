@@ -3,6 +3,7 @@
 
 #include <QTcpSocket>
 #include "packet.h"
+#include <QThread>
 
 class Connection : public QTcpSocket {
  public:
@@ -16,6 +17,7 @@ class Connection : public QTcpSocket {
 	Connection();
 
 	static Connection* CON;
+	static QThread* THREAD;
 
 	void receivePacket();
 	void handlePacket(const Packet&);

@@ -7,6 +7,7 @@
 #include "src/network/connection.h"
 #include <QKeyEvent>
 #include "src/network/user.h"
+#include "menu.h"
 
 Game* Game::GAME = nullptr;
 
@@ -37,7 +38,7 @@ Game::Game() : QGraphicsView(), scene(0, 0, gameWidth, gameHeight) {
 	tickClock->start(1000 / 60);
 	connect(tickClock, &QTimer::timeout, this, &Game::tick);
 
-	new Player(PYACHI, QPointF(0, 250), User::getName());
+	player = new Player(PYACHI, QPointF(0, 250), User::getName());
 
 	Enemies::ENEMYTEST.spawn(QPointF(0, -300));
 }
@@ -48,6 +49,15 @@ void Game::tick() {
 		if (entity->readyToDelete()) {
 			entities.remove(entity);
 			scene.removeItem(entity);
+		}
+	}
+	if (player != nullptr) {
+		player->tick();
+		if (player->readyToDelete()) {
+			close();
+			delete GAME;
+			GAME = nullptr;
+			Menu::openMenu();
 		}
 	}
 }
@@ -62,6 +72,8 @@ void Game::create() {
 QSet<int> Game::getKeys() { return GAME->keys; }
 
 QSet<Entity*> Game::getEntities() { return GAME->entities; }
+
+Player* Game::getPlayer() { return GAME->player; }
 
 void Game::addEntity(Entity* entity) { GAME->entities.insert(entity); }
 
@@ -78,18 +90,19 @@ void Game::keyReleaseEvent(QKeyEvent* e) {
 QGraphicsPixmapItem* Game::getPlayableArea() { return &GAME->playableArea; }
 
 void Game::updatePlayerLocation(const QString& user, const QPointF& loc) {
-	Player* player = GAME->players.value(user);
-	if (player != nullptr)
-		player->setPos(loc);
+	//	if (GAME->onlinePlayers.contains(user))
+	GAME->onlinePlayers[user]->setPos(loc);
 }
 
-void Game::removePlayer(const QString& user) {
-	Player* player = GAME->players.take(user);
+void Game::removeOnlinePlayer(const QString& user) {
+	Player* player = GAME->onlinePlayers.take(user);
 	if (player != nullptr)
 		player->deleteLater();
 }
 
-void Game::addPlayer(PlayerType type, const QString& user) {
+void Game::addOnlinePlayer(PlayerType type, const QString& user) {
 	Player* player = new Player(type, QPointF(0, 0), user);
-	GAME->players.insert(user, player);
+	player->setOpacity(0.25);
+	player->hitbox.hide();
+	GAME->onlinePlayers.insert(user, player);
 }

@@ -12,11 +12,7 @@ Player::Player(PlayerType type, const QPointF& spawn, const QString& user)
 			firing(false),
 			focus(false),
 			level(1),
-			power(0),
-			online(false),
-			hitbox() {
-	Game::addEntity(this);
-}
+			power(0) {}
 
 bool Player::isHit() {
 	if (hitbox.getCollisions<Enemy>().size() > 0)
@@ -30,8 +26,6 @@ bool Player::isHit() {
 }
 
 void Player::tick() {
-	if (online)
-		return;
 	age++;
 	QSet<int> keys = Game::getKeys();
 
@@ -82,5 +76,3 @@ void Player::tick() {
 		hitbox.scene()->removeItem(&hitbox);
 	}
 }
-
-void Player::setOnline() { online = true; }

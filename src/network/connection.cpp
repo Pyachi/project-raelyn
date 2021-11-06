@@ -5,16 +5,19 @@
 #include "src/menu.h"
 
 Connection* Connection::CON = nullptr;
+QThread* Connection::THREAD = nullptr;
 
 bool Connection::create(QString ip, quint16 port) {
 	if (CON != nullptr)
 		return false;
-	Connection::CON = new Connection;
-	Connection* con = Connection::CON;
+	CON = new Connection;
+	THREAD = new QThread;
 
-	con->connectToHost(ip, port);
-	if (con->waitForConnected()) {
-		con->sendPacket({PACKETPLAYINCONNECT, QStringList() << User::getName()});
+	//	CON->moveToThread(THREAD);
+
+	CON->connectToHost(ip, port);
+	if (CON->waitForConnected()) {
+		CON->sendPacket({PACKETPLAYINCONNECT, QStringList() << User::getName()});
 		return true;
 	} else {
 		CON->deleteLater();
@@ -64,10 +67,10 @@ void Connection::handlePacket(const Packet& packet) {
 					QPointF(packet.data.at(0).toDouble(), packet.data.at(1).toDouble()));
 			break;
 		case PACKETPLAYOUTPLAYERDEATH:
-			Game::removePlayer(packet.data.at(0));
+			Game::removeOnlinePlayer(packet.data.at(0));
 			break;
 		case PACKETPLAYOUTPLAYERSPAWN:
-			Game::addPlayer(PYACHI, packet.data.at(0));
+			Game::addOnlinePlayer(PYACHI, packet.data.at(0));
 			break;
 		default:
 			qDebug() << "ERROR: Received IN Packet!";

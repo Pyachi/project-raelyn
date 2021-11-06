@@ -9,7 +9,10 @@ class Player : public Entity {
 	Player(PlayerType, const QPointF&, const QString&);
 
 	bool isHit();
-	void setOnline();
+
+	void tick() override;
+
+	PlayerHitbox hitbox;
 
  private:
 	PlayerType type;
@@ -18,11 +21,6 @@ class Player : public Entity {
 	bool focus;
 	int level;
 	int power;
-	bool online;
-
-	PlayerHitbox hitbox;
-
-	void tick() override;
 };
 
 #endif  // PLAYER_H

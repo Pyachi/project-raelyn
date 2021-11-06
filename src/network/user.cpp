@@ -12,7 +12,7 @@ bool ipExists = false;
 
 const QString getName() {
 	if (!nameExists) {
-		name = (QDir::homePath().split('/').last() + "|" +
+		name = (QDir::homePath().split('/').last() + "#" +
 						QString::number((rand() % 9000) + 1000));
 		nameExists = true;
 	}
