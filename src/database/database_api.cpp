@@ -31,7 +31,7 @@ bool database_API::add_score(QSqlDatabase db, QDateTime time, QString level, QSt
     QSqlQuery query;
     QString querySTR = "INSERT INTO (Time, User, Level, Score) VALUES (";
 
-    querySTR.append(time)
+//    querySTR.append(time);
     querySTR.append(", ");
     querySTR.append(user);
     querySTR.append(", ");

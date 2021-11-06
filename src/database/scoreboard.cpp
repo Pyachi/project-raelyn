@@ -1,6 +1,4 @@
 #include "scoreboard.h"
-#include <QDialog>
-#include <QGridLayout>
 
 Scoreboard::Scoreboard()
 {
@@ -32,30 +30,36 @@ bool Scoreboard::Add_Score(QString level, QString user, int score)
 
 void Scoreboard::Order_Scores(QString key)
 {
-
     if(key == "Accending_Score")
     {
-        QVector<int> scores;
-        QVector<run*> addresses;
-        run* temp = head;
-        while(temp != nullptr)
+        int pass;
+        int middle;
+        run* temp = head->next;
+        run* start = head->next;
+        while(start != nullptr)
         {
-            scores.append(temp->score);
-            addresses.append(temp);
+            pass = temp->score;
+            while(temp->last != nullptr && pass < temp->last->score)
+            {
+                temp = temp->last;
+            }
+            middle = temp->score;
+            temp->score = start->score;
+            start->score = middle;
 
-
-
-
-
-            temp = temp->next;
+            start = start->next;
         }
     }
 }
 
 void Scoreboard::Show_Scoreboard()
 {
-    
-
+    run* temp = head;
+    while(temp != nullptr)
+    {
+        qDebug() << temp->score;
+        temp = temp->next;
+    }
 }
 
 Scoreboard Scoreboard::Differences(Scoreboard* other)

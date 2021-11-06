@@ -1,10 +1,8 @@
 #ifndef SCOREBOARD_H
 #define SCOREBOARD_H
 
-
 #include <qdebug.h>
 #include <QVector>
-
 
 class Scoreboard
 {
@@ -17,11 +15,10 @@ public:
     void Merge(Scoreboard* other);                  // later if needed
     int Get_length();
 
+    void Show_Scoreboard();
+
 private:
     int length;
-
-
-
 
     struct run
     {
@@ -34,11 +31,6 @@ private:
 
     run* head;
     run* tail;
-
-
-    void Show_Scoreboard();
-
-
 };
 
 #endif // SCOREBOARD_H

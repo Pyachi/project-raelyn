@@ -6,6 +6,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include "scoreboard.h"
+#include <QDateTime>
 
 class database_API
 {
