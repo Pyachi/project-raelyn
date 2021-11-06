@@ -9,7 +9,8 @@
 class Server : public QTcpServer {
  public:
 	static bool create(quint16);
-	static void viewServer();
+	static void disconnect();
+	static int getPort();
 
 	static void sendPacket(const Packet&, QTcpSocket* = nullptr);
 
@@ -20,11 +21,6 @@ class Server : public QTcpServer {
 
 	QSet<QTcpSocket*> sockets;
 	QMap<QTcpSocket*, QString> users;
-
-	QDialog view;
-	QLabel ip;
-	QLabel text;
-	QLabel connections;
 
 	void handleConnection();
 	void handleDisconnection();

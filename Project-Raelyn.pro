@@ -30,12 +30,9 @@ SOURCES += \
     src/entity/entity.cpp \
     src/entity/player.cpp \
     src/entity/playerhitbox.cpp \
-    src/game/game.cpp \
+    src/game.cpp \
     src/main.cpp \
-    src/menu/lobbymenu.cpp \
-    src/menu/mainmenu.cpp \
-    src/menu/multiplayermenu.cpp \
-    src/menu/singleplayermenu.cpp \
+    src/menu.cpp \
     src/network/connection.cpp \
     src/network/packet.cpp \
     src/network/server.cpp \
@@ -56,11 +53,8 @@ HEADERS += \
     src/entity/entity.h \
     src/entity/player.h \
     src/entity/playerhitbox.h \
-    src/game/game.h \
-    src/menu/lobbymenu.h \
-    src/menu/mainmenu.h \
-    src/menu/multiplayermenu.h \
-    src/menu/singleplayermenu.h \
+    src/game.h \
+    src/menu.h \
     src/network/connection.h \
     src/network/packet.h \
     src/network/server.h \

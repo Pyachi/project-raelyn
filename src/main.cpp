@@ -1,13 +1,13 @@
 #include <QApplication>
 #include "game/game.h"
-#include "menu/mainmenu.h"
+#include "menu/menu.h"
 
 int main(int argc, char* argv[]) {
 	QApplication a(argc, argv);
 
 	srand(quint32(time(nullptr)));
 
-	MainMenu::openMenu();
+	Menu::openMenu();
 
 	return a.exec();
 }

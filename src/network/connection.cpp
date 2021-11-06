@@ -1,9 +1,8 @@
 #include "connection.h"
 #include <QNetworkProxy>
-#include "src/game/game.h"
-#include "src/menu/lobbymenu.h"
-#include "src/menu/singleplayermenu.h"
+#include "src/game.h"
 #include "user.h"
+#include "src/menu.h"
 
 Connection* Connection::CON = nullptr;
 
@@ -24,7 +23,11 @@ bool Connection::create(QString ip, quint16 port) {
 	}
 }
 
+bool Connection::exists() { return CON != nullptr; }
+
 void Connection::disconnect() {
+	if (CON == nullptr)
+		return;
 	CON->disconnectFromHost();
 	CON->deleteLater();
 	CON = nullptr;
@@ -50,11 +53,10 @@ void Connection::handlePacket(const Packet& packet) {
 	switch (header) {
 		case PACKETPLAYOUTSTARTGAME:
 			Game::create();
-			SingleplayerMenu::closeMenu();
-			LobbyMenu::closeMenu();
+			Menu::closeMenu();
 			break;
 		case PACKETPLAYOUTUPDATELOBBY:
-			LobbyMenu::setPlayers(packet.data);
+			Menu::updatePlayerList(packet.data);
 			break;
 		case PACKETPLAYOUTUPDATEPLAYER:
 			Game::updatePlayerLocation(
