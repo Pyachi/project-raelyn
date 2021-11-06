@@ -1,6 +1,5 @@
 #include <QApplication>
-#include "game/game.h"
-#include "menu/menu.h"
+#include "menu.h"
 
 int main(int argc, char* argv[]) {
 	QApplication a(argc, argv);

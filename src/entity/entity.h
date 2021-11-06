@@ -1,7 +1,7 @@
 #ifndef ENTITYTYPES_H
 #define ENTITYTYPES_H
 
-#include "src/game/game.h"
+#include "src/game.h"
 
 class Texture;
 class Bullet;
@@ -59,7 +59,7 @@ template <class T>
 T* Entity::getNearestEntity() {
 	T* closest = nullptr;
 	double closestDis = 99999999;
-	foreach(Entity * baseEntity, Game::getEntities()) {
+	foreach (Entity* baseEntity, Game::getEntities()) {
 		if (T* entity = dynamic_cast<T*>(baseEntity)) {
 			double distance = distanceSquared(entity);
 			if (distance < closestDis) {
@@ -74,7 +74,7 @@ T* Entity::getNearestEntity() {
 template <class T>
 QList<T*> Entity::getCollisions() {
 	QList<T*> list;
-	foreach(QGraphicsItem * item, collidingItems()) {
+	foreach (QGraphicsItem* item, collidingItems()) {
 		if (T* entity = dynamic_cast<T*>(item))
 			list.append(entity);
 	}

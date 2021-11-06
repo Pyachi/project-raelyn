@@ -2,9 +2,9 @@
 #include <QGridLayout>
 #include <QNetworkInterface>
 #include <QTcpSocket>
-#include "src/game/game.h"
+#include "src/game.h"
+#include "src/menu.h"
 #include "user.h"
-#include "src/menu/menu.h"
 
 Server* Server::SER = nullptr;
 
@@ -38,7 +38,7 @@ int Server::getPort() {
 void Server::sendPacket(const Packet& packet, QTcpSocket* sender) {
 	if (SER == nullptr)
 		return;
-	foreach(QTcpSocket * socket, SER->sockets) {
+	foreach (QTcpSocket* socket, SER->sockets) {
 		if (sender != socket)
 			socket->write(packet.encode());
 	}
@@ -52,8 +52,8 @@ void Server::handleConnection() {
 	QTcpSocket* socket = nextPendingConnection();
 	sockets.insert(socket);
 	connect(socket, &QTcpSocket::readyRead, this, &Server::receivePacket);
-	connect(
-			socket, &QTcpSocket::disconnected, this, &Server::handleDisconnection);
+	connect(socket, &QTcpSocket::disconnected, this,
+					&Server::handleDisconnection);
 	Menu::updatePlayerCount(sockets.size());
 }
 
@@ -67,7 +67,7 @@ void Server::handleDisconnection() {
 
 void Server::receivePacket() {
 	QTcpSocket* sent = qobject_cast<QTcpSocket*>(sender());
-	foreach(Packet packet, Packet::decode(sent->readAll())) {
+	foreach (Packet packet, Packet::decode(sent->readAll())) {
 		handlePacket(packet, sent);
 	}
 }
