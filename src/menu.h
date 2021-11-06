@@ -50,7 +50,9 @@ class Menu : public QDialog {
 
 	// Multiplayer
 	QLineEdit ipForm;
+	QRegExpValidator ipValidator;
 	QLineEdit portForm;
+	QRegExpValidator portValidator;
 	QPushButton host;
 	QPushButton join;
 	QPushButton backMultiplayer;

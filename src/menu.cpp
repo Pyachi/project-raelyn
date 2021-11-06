@@ -18,7 +18,11 @@ Menu::Menu()
 			start("Start Game"),
 			backSingleplayer("Return to Menu"),
 			ipForm("127.0.0.1"),
+			ipValidator(QRegExp("[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}")),
 			portForm("1337"),
+			portValidator(QRegExp(
+					"^(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|"
+					"655[0-2][0-9]|6553[0-5])$")),
 			host("Host"),
 			join("Join"),
 			backMultiplayer("Return to Menu"),
@@ -72,6 +76,8 @@ Menu::Menu()
 	connect(&host, &QPushButton::clicked, this, &Menu::hostServer);
 	connect(&join, &QPushButton::clicked, this, &Menu::joinServer);
 	connect(&backMultiplayer, &QPushButton::clicked, this, &Menu::returnToMenu);
+	ipForm.setValidator(&ipValidator);
+	portForm.setValidator(&portValidator);
 
 	optionsMenu.setLayout(&optionsLayout);
 	optionsLayout.addWidget(&backOptions, 1, 1, 1, -1);
