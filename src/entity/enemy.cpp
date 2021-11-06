@@ -5,7 +5,7 @@
 #include "src/entity/player.h"
 #include "src/ai/collectabletype.h"
 
-Enemy::Enemy(const EnemyType* info, const QPointF& spawn)
+Enemy::Enemy(const EnemyInfo* info, const QPointF& spawn)
 		: Entity(info->texture, spawn), health(info->health), ai(info->ai) {
 	Game::addEntity(this);
 }
@@ -27,7 +27,7 @@ void Enemy::tick() {
 		health--;
 		if (health == 0) {
 			for (int i = 0; i < 10; i++)
-				CollectableType::POWER.spawn(pos());
+				Collectables::POWER.spawn(pos());
 			deleteLater();
 		}
 		bullet->deleteLater();

@@ -22,7 +22,7 @@ QList<Packet> Packet::decode(const QByteArray& fullPacket) {
 		Header header = static_cast<Header>(segments.takeFirst().toInt());
 		QStringList data;
 		foreach(QByteArray segment, segments) { data.append(segment); }
-		list.append(Packet(header, data));
+		list.append({header, data});
 	}
 	return list;
 }

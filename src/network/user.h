@@ -4,7 +4,7 @@
 #include <QString>
 
 namespace User {
-extern const QString name;
+extern const QString getName();
 extern const QString getIp();
 };
 

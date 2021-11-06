@@ -6,6 +6,7 @@
 #include "src/ai/enemytype.h"
 #include "src/network/connection.h"
 #include <QKeyEvent>
+#include "src/network/user.h"
 
 Game* Game::GAME = nullptr;
 
@@ -35,6 +36,10 @@ Game::Game() : QGraphicsView(), scene(0, 0, gameWidth, gameHeight) {
 	QTimer* tickClock = new QTimer();
 	tickClock->start(1000 / 60);
 	connect(tickClock, &QTimer::timeout, this, &Game::tick);
+
+	new Player(PYACHI, QPointF(0, 250), User::getName());
+
+	Enemies::ENEMYTEST.spawn(QPointF(0, -300));
 }
 
 void Game::tick() {
@@ -51,7 +56,7 @@ void Game::create() {
 	if (GAME == nullptr)
 		GAME = new Game();
 	GAME->show();
-	Connection::sendPacket(Packet(PACKETPLAYINPLAYERSPAWN));
+	Connection::sendPacket(PACKETPLAYINPLAYERSPAWN);
 }
 
 QSet<int> Game::getKeys() { return GAME->keys; }

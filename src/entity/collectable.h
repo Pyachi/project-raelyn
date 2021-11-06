@@ -3,20 +3,20 @@
 
 #include "entity.h"
 
-class CollectableType;
+class CollectableInfo;
 class Player;
 
 using PlayerAI = std::function<void(Player*)>;
 
 class Collectable : public Entity {
  private:
-	Collectable(const CollectableType*, const QPointF&);
+	Collectable(const CollectableInfo*, const QPointF&);
 
 	const PlayerAI onPickup;
 
 	void tick() override;
 
-	friend class CollectableType;
+	friend class CollectableInfo;
 };
 
 #endif  // COLLECTABLE_H

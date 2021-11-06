@@ -24,14 +24,14 @@ const PlayerAI PlayerInfo::getShootingPattern(PlayerType type,
 					if (focus)
 						return [](Player* player) {
 							foreach(Bullet * bullet,
-											player->fireBullet(BulletPattern::PLAYER_BASIC)) {
+											player->fireBullet(BulletPatterns::PLAYER_BASIC)) {
 								bullet->setOpacity(0.25);
 							}
 						};
 					else
 						return [](Player* player) {
 							foreach(Bullet * bullet,
-											player->fireBullet(BulletPattern::PLAYER_BASIC)) {
+											player->fireBullet(BulletPatterns::PLAYER_BASIC)) {
 								bullet->setOpacity(0.25);
 							}
 						};

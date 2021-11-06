@@ -3,7 +3,7 @@
 #include <QtMath>
 #include "bullet.h"
 #include "src/assets/texture.h"
-#include "src/ai/bulletinfo.h"
+#include "src/ai/bullettype.h"
 
 Entity::Entity(const Texture& texture, const QPointF& spawn)
 		: QGraphicsPixmapItem(Game::getPlayableArea()), age(0), cleanup(false) {
@@ -23,8 +23,8 @@ QList<Bullet*> Entity::fireBullet(BulletList pattern,
 																	double rot,
 																	const QPointF& loc) {
 	QList<Bullet*> list;
-	foreach(BulletInfo * info, pattern) {
-		list << info->spawn(this, pos() + loc, rot);
+	foreach(BulletInfo info, pattern) {
+		list << info.spawn(this, pos() + loc, rot);
 	}
 	return list;
 }

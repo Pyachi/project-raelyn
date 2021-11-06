@@ -4,7 +4,7 @@
 #include "playerhitbox.h"
 #include "src/ai/collectabletype.h"
 
-Collectable::Collectable(const CollectableType* type, const QPointF& spawn)
+Collectable::Collectable(const CollectableInfo* type, const QPointF& spawn)
 		: Entity(type->texture, spawn), onPickup(type->onPickup) {
 	Game::addEntity(this);
 }

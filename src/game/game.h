@@ -35,7 +35,9 @@ class Game : public QGraphicsView {
 	QGraphicsPixmapItem playableArea;
 	QGraphicsPixmapItem background;
 	QSet<Entity*> entities;
+
 	QMap<QString, Player*> players;
+
 	QSet<int> keys;
 
 	void tick();

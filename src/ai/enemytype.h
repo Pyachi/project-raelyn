@@ -9,18 +9,16 @@ class Enemy;
 
 using EnemyAI = std::function<void(Enemy*)>;
 
-class EnemyType {
- public:
-	static const EnemyType ENEMYTEST;
-
+struct EnemyInfo {
 	const Texture& texture;
 	const EnemyAI ai;
 	const int health;
 
 	Enemy* spawn(const QPointF&) const;
-
- private:
-	EnemyType(const Texture&, const EnemyAI&, int = 50);
 };
+
+namespace Enemies {
+extern const EnemyInfo ENEMYTEST;
+}
 
 #endif  // ENEMIES_H

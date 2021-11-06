@@ -7,7 +7,7 @@ class Texture;
 class Bullet;
 class BulletInfo;
 
-using BulletList = QList<BulletInfo*>;
+using BulletList = std::vector<BulletInfo>;
 
 class Entity : public QGraphicsPixmapItem {
  public:

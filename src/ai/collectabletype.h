@@ -10,20 +10,18 @@ class Collectable;
 
 using PlayerAI = std::function<void(Player*)>;
 
-class CollectableType {
- public:
-	static const CollectableType POWER;
-	static const CollectableType POINTS;
-	static const CollectableType HEALTH;
-	static const CollectableType BOMB;
-
+struct CollectableInfo {
 	const Texture& texture;
 	const PlayerAI onPickup;
 
 	Collectable* spawn(const QPointF&) const;
-
- private:
-	CollectableType(const Texture&, const PlayerAI&);
 };
+
+namespace Collectables {
+extern const CollectableInfo POWER;
+extern const CollectableInfo POINTS;
+extern const CollectableInfo HEALTH;
+extern const CollectableInfo BOMB;
+}
 
 #endif  // COLLECTABLES_H

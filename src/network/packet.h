@@ -22,8 +22,7 @@ enum Header {
 	PACKETPLAYOUTPLAYERSPAWN,
 };
 
-class Packet {
- public:
+struct Packet {
 	Packet(const Header&, const QStringList& = QStringList());
 
 	Header header;

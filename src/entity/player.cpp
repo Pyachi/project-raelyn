@@ -22,7 +22,7 @@ bool Player::isHit() {
 	if (hitbox.getCollisions<Enemy>().size() > 0)
 		return true;
 	else
-		foreach (Bullet* bullet, hitbox.getCollisions<Bullet>()) {
+		foreach(Bullet * bullet, hitbox.getCollisions<Bullet>()) {
 			if (dynamic_cast<Enemy*>(bullet->owner))
 				return true;
 		}
@@ -64,9 +64,9 @@ void Player::tick() {
 	}
 	if (dx != 0 || dy != 0) {
 		setPos(confineToPlayableArea(pos() + QPointF(dx, dy)));
-		Connection::sendPacket(Packet(PACKETPLAYINUPDATEPLAYER,
-																	QStringList() << QString::number(pos().x())
-																								<< QString::number(pos().y())));
+		Connection::sendPacket({PACKETPLAYINUPDATEPLAYER,
+														QStringList() << QString::number(pos().x())
+																					<< QString::number(pos().y())});
 	}
 
 	if (power >= 100) {
@@ -83,6 +83,4 @@ void Player::tick() {
 	}
 }
 
-void Player::setOnline() {
-	online = true;
-}
+void Player::setOnline() { online = true; }

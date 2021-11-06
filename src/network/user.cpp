@@ -2,16 +2,34 @@
 #include <QDir>
 #include <QNetworkInterface>
 
-const QString User::name = QDir::homePath().split('/').last() + "|" +
-													 QString::number((rand() % 9000) + 1000);
+namespace User {
+namespace {
+QString name;
+QString ip;
+bool nameExists = false;
+bool ipExists = false;
+}
 
-const QString User::getIp() {
-	QString localIPAddress;
-	foreach(const QHostAddress & address, QNetworkInterface::allAddresses()) {
-		if (address.protocol() == QAbstractSocket::IPv4Protocol &&
-				address.isLoopback() == false) {
-			localIPAddress = address.toString();
-		}
+const QString getName() {
+	if (!nameExists) {
+		name = (QDir::homePath().split('/').last() + "|" +
+						QString::number((rand() % 9000) + 1000));
+		nameExists = true;
 	}
-	return localIPAddress;
+	return name;
+}
+
+const QString getIp() {
+	if (!ipExists) {
+		foreach(const QHostAddress & address, QNetworkInterface::allAddresses()) {
+			if (address.protocol() == QAbstractSocket::IPv4Protocol &&
+					address.isLoopback() == false) {
+				ip = address.toString();
+				break;
+			}
+		}
+		ipExists = true;
+	}
+	return ip;
+}
 }

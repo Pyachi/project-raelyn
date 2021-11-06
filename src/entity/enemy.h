@@ -3,7 +3,7 @@
 
 #include "entity.h"
 
-class EnemyType;
+class EnemyInfo;
 class Enemy;
 
 using EnemyAI = std::function<void(Enemy*)>;
@@ -13,7 +13,7 @@ class Enemy : public Entity {
 	QList<Bullet*> getHits();
 
  private:
-	Enemy(const EnemyType*, const QPointF&);
+	Enemy(const EnemyInfo*, const QPointF&);
 
 	int health;
 
@@ -21,7 +21,7 @@ class Enemy : public Entity {
 
 	void tick() override;
 
-	friend class EnemyType;
+	friend class EnemyInfo;
 };
 
 #endif  // ENEMY_H

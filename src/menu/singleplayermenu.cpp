@@ -69,7 +69,7 @@ void SingleplayerMenu::startGame() {
 		return;
 	if (!Connection::create("127.0.0.1", 1337))
 		return;
-	Connection::sendPacket(Packet(PACKETPLAYINSTARTGAME));
+	Connection::sendPacket(PACKETPLAYINSTARTGAME);
 }
 
 void SingleplayerMenu::returnToMenu() {

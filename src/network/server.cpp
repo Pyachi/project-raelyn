@@ -60,7 +60,7 @@ void Server::handleDisconnection() {
 	sockets.remove(socket);
 	users.remove(socket);
 	connections.setNum(sockets.size());
-	sendPacket(Packet(PACKETPLAYOUTUPDATELOBBY, users.values()));
+	sendPacket({PACKETPLAYOUTUPDATELOBBY, users.values()});
 }
 
 void Server::receivePacket() {
@@ -79,26 +79,26 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
 		case PACKETPLAYINDISCONNECT:
 			break;
 		case PACKETPLAYINUPDATELOBBY:
-			sendPacket(Packet(PACKETPLAYOUTUPDATELOBBY, users.values()));
+			sendPacket({PACKETPLAYOUTUPDATELOBBY, users.values()});
 			break;
 		case PACKETPLAYINSTARTGAME:
 			pauseAccepting();
-			sendPacket(Packet(PACKETPLAYOUTSTARTGAME));
+			sendPacket(PACKETPLAYOUTSTARTGAME);
 			break;
 		case PACKETPLAYINUPDATEPLAYER:
-			sendPacket(Packet(PACKETPLAYOUTUPDATEPLAYER,
-												QStringList(packet.data) << users.value(sender)),
+			sendPacket({PACKETPLAYOUTUPDATEPLAYER, QStringList(packet.data)
+																								 << users.value(sender)},
 								 sender);
 			break;
 		case PACKETPLAYINPLAYERDEATH:
-			sendPacket(Packet(PACKETPLAYOUTPLAYERDEATH,
-												QStringList() << users.value(sender)),
-								 sender);
+			sendPacket(
+					{PACKETPLAYOUTPLAYERDEATH, QStringList() << users.value(sender)},
+					sender);
 			break;
 		case PACKETPLAYINPLAYERSPAWN:
-			sendPacket(Packet(PACKETPLAYOUTPLAYERSPAWN,
-												QStringList() << users.value(sender)),
-								 sender);
+			sendPacket(
+					{PACKETPLAYOUTPLAYERSPAWN, QStringList() << users.value(sender)},
+					sender);
 			break;
 		default:
 			qDebug() << "ERROR: Received OUT Packet!";

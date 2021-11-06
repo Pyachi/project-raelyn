@@ -1,5 +1,5 @@
 #include "bullet.h"
-#include "src/ai/bulletinfo.h"
+#include "src/ai/bullettype.h"
 
 Bullet::Bullet(const BulletInfo* info,
 							 Entity* owner,

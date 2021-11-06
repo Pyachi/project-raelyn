@@ -15,7 +15,7 @@ bool Connection::create(QString ip, quint16 port) {
 
 	con->connectToHost(ip, port);
 	if (con->waitForConnected()) {
-		con->sendPacket(Packet(PACKETPLAYINCONNECT, QStringList() << User::name));
+		con->sendPacket({PACKETPLAYINCONNECT, QStringList() << User::getName()});
 		return true;
 	} else {
 		CON->deleteLater();

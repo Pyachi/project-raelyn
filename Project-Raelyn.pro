@@ -16,7 +16,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/ai/bulletinfo.cpp \
     src/ai/bulletpattern.cpp \
     src/ai/bullettype.cpp \
     src/ai/collectabletype.cpp \
@@ -43,7 +42,6 @@ SOURCES += \
     src/network/user.cpp
 
 HEADERS += \
-    src/ai/bulletinfo.h \
     src/ai/bulletpattern.h \
     src/ai/bullettype.h \
     src/ai/collectabletype.h \

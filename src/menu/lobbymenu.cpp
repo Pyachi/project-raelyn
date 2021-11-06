@@ -31,9 +31,7 @@ void LobbyMenu::leaveLobby() {
 	close();
 }
 
-void LobbyMenu::startGame() {
-	Connection::sendPacket(Packet(PACKETPLAYINSTARTGAME));
-}
+void LobbyMenu::startGame() { Connection::sendPacket(PACKETPLAYINSTARTGAME); }
 
 void LobbyMenu::openMenu() {
 	if (MENU == nullptr)
