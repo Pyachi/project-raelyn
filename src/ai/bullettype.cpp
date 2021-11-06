@@ -1,7 +1,8 @@
 #include "bullettype.h"
+#include <QVector2D>
+#include <QtMath>
 #include "src/entity/bullet.h"
 #include "src/entity/enemy.h"
-#include <QVector2D>
 
 const BulletAI BulletType::PLAYERBASIC = [](Bullet* bullet) {
 	bullet->moveBy(0, -40);

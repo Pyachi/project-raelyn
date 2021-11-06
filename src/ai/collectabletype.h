@@ -2,6 +2,7 @@
 #define COLLECTABLES_H
 
 #include <QPointF>
+#include <functional>
 
 class Texture;
 class Player;

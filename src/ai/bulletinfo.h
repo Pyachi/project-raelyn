@@ -2,6 +2,7 @@
 #define BULLETINFO_H
 
 #include <QPointF>
+#include <functional>
 
 class Texture;
 class Bullet;

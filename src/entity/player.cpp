@@ -1,8 +1,9 @@
 #include "player.h"
-#include "enemy.h"
+#include <QtMath>
 #include "bullet.h"
-#include "src/network/connection.h"
+#include "enemy.h"
 #include "src/ai/playertype.h"
+#include "src/network/connection.h"
 
 Player::Player(PlayerType type, const QPointF& spawn, const QString& user)
 		: Entity(PlayerInfo::getTexture(type), spawn),
@@ -21,7 +22,7 @@ bool Player::isHit() {
 	if (hitbox.getCollisions<Enemy>().size() > 0)
 		return true;
 	else
-		foreach(Bullet * bullet, hitbox.getCollisions<Bullet>()) {
+		foreach (Bullet* bullet, hitbox.getCollisions<Bullet>()) {
 			if (dynamic_cast<Enemy*>(bullet->owner))
 				return true;
 		}
@@ -82,4 +83,6 @@ void Player::tick() {
 	}
 }
 
-void Player::setOnline() { online = true; }
+void Player::setOnline() {
+	online = true;
+}

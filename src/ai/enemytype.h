@@ -2,6 +2,7 @@
 #define ENEMIES_H
 
 #include <QPointF>
+#include <functional>
 
 class Texture;
 class Enemy;
