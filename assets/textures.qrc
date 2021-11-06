@@ -7,5 +7,6 @@
         <file>textures/player.png</file>
         <file>textures/player_bullet.png</file>
         <file>textures/player_hitbox.png</file>
+        <file>textures/title.png</file>
     </qresource>
 </RCC>

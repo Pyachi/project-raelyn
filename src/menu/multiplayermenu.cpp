@@ -4,9 +4,9 @@
 #include <QTcpSocket>
 #include "lobbymenu.h"
 #include "mainmenu.h"
+#include "src/assets/sfx.h"
 #include "src/network/connection.h"
 #include "src/network/server.h"
-#include "src/assets/sfx.h"
 
 MultiplayerMenu* MultiplayerMenu::MENU = nullptr;
 
@@ -25,9 +25,9 @@ MultiplayerMenu::MultiplayerMenu()
       QRegExp("[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}")));
   layout->addWidget(&ipForm, 1, 1, 1, 1);
 
-	portForm.setValidator(new QRegExpValidator(QRegExp(
-			"^(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}"
-			"|655[0-2][0-9]|6553[0-5])$")));
+	portForm.setValidator(new QRegExpValidator(
+			QRegExp("^(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}"
+							"|655[0-2][0-9]|6553[0-5])$")));
   layout->addWidget(&portForm, 1, 2, 1, 1);
 
   layout->addWidget(&hostButton, 2, 1, 1, 1);
@@ -37,8 +37,10 @@ MultiplayerMenu::MultiplayerMenu()
   connect(&joinButton, &QPushButton::clicked, this, &MultiplayerMenu::join);
 
   layout->addWidget(&quitButton, 3, 1, 1, -1);
-	connect(
-			&quitButton, &QPushButton::clicked, this, &MultiplayerMenu::returnToMenu);
+	connect(&quitButton, &QPushButton::clicked, this,
+					&MultiplayerMenu::returnToMenu);
+
+	setWindowFlags(Qt::FramelessWindowHint);
 }
 
 void MultiplayerMenu::openMenu() {
@@ -49,12 +51,12 @@ void MultiplayerMenu::openMenu() {
 
 void MultiplayerMenu::host() {
 	if (!Server::create(portForm.text().toUShort())) {
-		SFX::playSound(SFX::SELECT_2, 0.1);
+		SFX::playSound(SFX::SELECT_2, 1);
     return;
   }
 
 	Server::viewServer();
-	SFX::playSound(SFX::SELECT_1, 0.1);
+	SFX::playSound(SFX::SELECT_1, 1);
   close();
 }
 
@@ -68,7 +70,7 @@ void MultiplayerMenu::join() {
 
 void MultiplayerMenu::returnToMenu() {
   MainMenu::openMenu();
-	SFX::playSound(SFX::SELECT_2, 0.1);
+	SFX::playSound(SFX::SELECT_2, 1);
   close();
 }
 

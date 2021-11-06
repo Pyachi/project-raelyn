@@ -8,4 +8,5 @@ const Texture PLAYERBULLETBASIC{":/textures/player_bullet.png", 2};
 const Texture BULLETROUND{":/textures/bulletRound.png", 2};
 const Texture BULLETELLIPSE{":/textures/bulletEllipse.png", 2};
 const Texture BACKGROUND{":/textures/background.png", 5};
-}
+const Texture TITLE{":/textures/title.png", 0};
+}  // namespace Textures

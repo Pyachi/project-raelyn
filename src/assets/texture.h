@@ -19,6 +19,7 @@ extern const Texture PLAYERBULLETBASIC;
 extern const Texture BULLETROUND;
 extern const Texture BULLETELLIPSE;
 extern const Texture BACKGROUND;
-}
+extern const Texture TITLE;
+}  // namespace Textures
 
 #endif  // TEXTURES_H

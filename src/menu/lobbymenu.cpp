@@ -16,13 +16,15 @@ LobbyMenu::LobbyMenu() : QDialog(), leaveButton("Leave"), startButton("Start") {
 	layout->addWidget(&startButton, 3, 1, 1, 1);
 	layout->addWidget(&leaveButton, 3, 2, 1, 1);
 
+	setWindowFlags(Qt::FramelessWindowHint);
+
 	connect(&startButton, &QPushButton::clicked, this, &LobbyMenu::startGame);
 	connect(&leaveButton, &QPushButton::clicked, this, &LobbyMenu::leaveLobby);
 }
 
 void LobbyMenu::setPlayers(const QStringList& players) {
 	MENU->players.clear();
-	foreach(QString string, players) { MENU->players.addItem(string); }
+	foreach (QString string, players) { MENU->players.addItem(string); }
 }
 
 void LobbyMenu::leaveLobby() {
@@ -31,7 +33,9 @@ void LobbyMenu::leaveLobby() {
 	close();
 }
 
-void LobbyMenu::startGame() { Connection::sendPacket(PACKETPLAYINSTARTGAME); }
+void LobbyMenu::startGame() {
+	Connection::sendPacket(PACKETPLAYINSTARTGAME);
+}
 
 void LobbyMenu::openMenu() {
 	if (MENU == nullptr)

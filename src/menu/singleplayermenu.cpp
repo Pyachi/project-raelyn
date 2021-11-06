@@ -1,11 +1,11 @@
 #include "singleplayermenu.h"
 #include <QGridLayout>
 #include "mainmenu.h"
+#include "src/assets/sfx.h"
 #include "src/entity/player.h"
 #include "src/game/game.h"
 #include "src/network/connection.h"
 #include "src/network/server.h"
-#include "src/assets/sfx.h"
 
 SingleplayerMenu* SingleplayerMenu::MENU = nullptr;
 
@@ -20,26 +20,22 @@ SingleplayerMenu::SingleplayerMenu()
   setFixedSize(200, 120);
 
   layout->addWidget(&characterButton, 1, 1, 1, -1);
-	connect(&characterButton,
-					&QPushButton::clicked,
-					this,
+	connect(&characterButton, &QPushButton::clicked, this,
           &SingleplayerMenu::changeCharacter);
 
   layout->addWidget(&difficultyButton, 2, 1, 1, -1);
-	connect(&difficultyButton,
-					&QPushButton::clicked,
-					this,
+	connect(&difficultyButton, &QPushButton::clicked, this,
           &SingleplayerMenu::changeDifficulty);
 
   layout->addWidget(&startButton, 3, 2, 1, 1);
-	connect(
-			&startButton, &QPushButton::clicked, this, &SingleplayerMenu::startGame);
+	connect(&startButton, &QPushButton::clicked, this,
+					&SingleplayerMenu::startGame);
 
   layout->addWidget(&quitButton, 3, 1, 1, 1);
-	connect(&quitButton,
-					&QPushButton::clicked,
-					this,
+	connect(&quitButton, &QPushButton::clicked, this,
           &SingleplayerMenu::returnToMenu);
+
+	setWindowFlags(Qt::FramelessWindowHint);
 }
 
 void SingleplayerMenu::openMenu() {
@@ -49,7 +45,7 @@ void SingleplayerMenu::openMenu() {
 }
 
 void SingleplayerMenu::changeCharacter() {
-	SFX::playSound(SFX::SELECT_1, 0.1);
+	SFX::playSound(SFX::SELECT_1, 1);
   if (characterButton.text().contains("Pyachi"))
     characterButton.setText("Character: Aeron");
   else
@@ -57,7 +53,7 @@ void SingleplayerMenu::changeCharacter() {
 }
 
 void SingleplayerMenu::changeDifficulty() {
-	SFX::playSound(SFX::SELECT_1, 0.1);
+	SFX::playSound(SFX::SELECT_1, 1);
   if (difficultyButton.text().contains("Normal"))
     difficultyButton.setText("Difficulty: Hard");
   else
@@ -73,7 +69,7 @@ void SingleplayerMenu::startGame() {
 }
 
 void SingleplayerMenu::returnToMenu() {
-	SFX::playSound(SFX::SELECT_2, 0.1);
+	SFX::playSound(SFX::SELECT_2, 1);
   MainMenu::openMenu();
   close();
 }

@@ -23,12 +23,14 @@ bool Server::create(quint16 port) {
 	return true;
 }
 
-void Server::viewServer() { SER->view.show(); }
+void Server::viewServer() {
+	SER->view.show();
+}
 
 void Server::sendPacket(const Packet& packet, QTcpSocket* sender) {
 	if (SER == nullptr)
 		return;
-	foreach(QTcpSocket * socket, SER->sockets) {
+	foreach (QTcpSocket* socket, SER->sockets) {
 		if (sender != socket)
 			socket->write(packet.encode());
 	}
@@ -43,6 +45,8 @@ Server::Server()
 	layout->addWidget(&text, 2, 1, 1, 1);
 	layout->addWidget(&connections, 2, 2, 1, 1);
 
+	view.setWindowFlags(Qt::FramelessWindowHint);
+
 	connect(this, &Server::newConnection, this, &Server::handleConnection);
 }
 
@@ -50,8 +54,8 @@ void Server::handleConnection() {
 	QTcpSocket* socket = nextPendingConnection();
 	sockets.insert(socket);
 	connect(socket, &QTcpSocket::readyRead, this, &Server::receivePacket);
-	connect(
-			socket, &QTcpSocket::disconnected, this, &Server::handleDisconnection);
+	connect(socket, &QTcpSocket::disconnected, this,
+					&Server::handleDisconnection);
 	connections.setNum(sockets.size());
 }
 
@@ -65,7 +69,7 @@ void Server::handleDisconnection() {
 
 void Server::receivePacket() {
 	QTcpSocket* sent = qobject_cast<QTcpSocket*>(sender());
-	foreach(Packet packet, Packet::decode(sent->readAll())) {
+	foreach (Packet packet, Packet::decode(sent->readAll())) {
 		handlePacket(packet, sent);
 	}
 }
