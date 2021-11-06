@@ -1,6 +1,6 @@
 #include "playerhitbox.h"
-#include "assets.h"
+#include "src/assets/texture.h"
 
-PlayerHitbox::PlayerHitbox() : Entity(Texture::PLAYERHITBOX, QPointF(0, 0)) {}
+PlayerHitbox::PlayerHitbox() : Entity(Textures::PLAYERHITBOX, QPointF(0, 0)) {}
 
 void PlayerHitbox::tick() {}

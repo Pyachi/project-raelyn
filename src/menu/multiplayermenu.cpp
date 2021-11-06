@@ -6,7 +6,7 @@
 #include "mainmenu.h"
 #include "src/network/connection.h"
 #include "src/network/server.h"
-#include "assets.h"
+#include "src/assets/sfx.h"
 
 MultiplayerMenu* MultiplayerMenu::MENU = nullptr;
 
@@ -49,12 +49,12 @@ void MultiplayerMenu::openMenu() {
 
 void MultiplayerMenu::host() {
 	if (!Server::create(portForm.text().toUShort())) {
-    Sound::playSound(SFX::SELECT_2, 0.1);
+		SFX::playSound(SFX::SELECT_2, 0.1);
     return;
   }
 
 	Server::viewServer();
-  Sound::playSound(SFX::SELECT_1, 0.1);
+	SFX::playSound(SFX::SELECT_1, 0.1);
   close();
 }
 
@@ -68,7 +68,7 @@ void MultiplayerMenu::join() {
 
 void MultiplayerMenu::returnToMenu() {
   MainMenu::openMenu();
-  Sound::playSound(SFX::SELECT_2, 0.1);
+	SFX::playSound(SFX::SELECT_2, 0.1);
   close();
 }
 

@@ -1,7 +1,7 @@
 #include "enemy.h"
 #include "src/ai/enemytype.h"
 #include "src/entity/bullet.h"
-#include "assets.h"
+#include "src/assets/sfx.h"
 #include "src/entity/player.h"
 #include "src/ai/collectabletype.h"
 
@@ -23,7 +23,7 @@ void Enemy::tick() {
 	age++;
 	ai(this);
 	foreach(Bullet * bullet, getHits()) {
-		Sound::playSound(SFX::EXPL_LIGHT_2, 0.1);
+		SFX::playSound(SFX::EXPL_LIGHT_2, 0.1);
 		health--;
 		if (health == 0) {
 			for (int i = 0; i < 10; i++)

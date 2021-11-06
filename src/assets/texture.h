@@ -3,21 +3,22 @@
 
 #include <QString>
 
-class Texture {
- public:
-	static const Texture PLAYERHITBOX;
-	static const Texture PLAYER1;
-	static const Texture ENEMY1;
-	static const Texture PLAYERBULLETBASIC;
-	static const Texture BULLETROUND;
-	static const Texture BULLETELLIPSE;
-	static const Texture BACKGROUND;
-
+struct Texture {
 	const QString texture;
 	const int zValue;
-
- private:
-	Texture(const QString&, int);
 };
+
+namespace Textures {
+extern const Texture PLAYERHITBOX;
+extern const Texture PYACHI;
+extern const Texture AERON;
+extern const Texture DAESCH;
+extern const Texture ANEKHANDA;
+extern const Texture ENEMY1;
+extern const Texture PLAYERBULLETBASIC;
+extern const Texture BULLETROUND;
+extern const Texture BULLETELLIPSE;
+extern const Texture BACKGROUND;
+}
 
 #endif  // TEXTURES_H

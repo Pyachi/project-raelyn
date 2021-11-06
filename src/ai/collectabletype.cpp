@@ -1,6 +1,7 @@
 #include "collectabletype.h"
 #include "src/entity/collectable.h"
-#include "assets.h"
+#include "src/assets/texture.h"
+#include "src/assets/sfx.h"
 #include "src/entity/player.h"
 
 CollectableType::CollectableType(const Texture& texture,
@@ -12,5 +13,5 @@ Collectable* CollectableType::spawn(const QPointF& loc) const {
 }
 
 const CollectableType CollectableType::POWER = CollectableType(
-		Texture::PLAYERHITBOX,
-		[](Player* player) { Sound::playSound(SFX::COLLECT_3, 0.25); });
+		Textures::PLAYERHITBOX,
+		[](Player* player) { SFX::playSound(SFX::COLLECT_3, 0.25); });

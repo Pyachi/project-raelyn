@@ -2,7 +2,7 @@
 #include <QVector2D>
 #include <QtMath>
 #include "bullet.h"
-#include "assets.h"
+#include "src/assets/texture.h"
 #include "src/ai/bulletinfo.h"
 
 Entity::Entity(const Texture& texture, const QPointF& spawn)

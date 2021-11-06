@@ -22,9 +22,8 @@ SOURCES += \
     src/ai/collectabletype.cpp \
     src/ai/enemytype.cpp \
     src/ai/playertype.cpp \
+    src/assets/music.cpp \
     src/assets/sfx.cpp \
-    src/assets/song.cpp \
-    src/assets/sound.cpp \
     src/assets/texture.cpp \
     src/entity/bullet.cpp \
     src/entity/collectable.cpp \
@@ -40,19 +39,18 @@ SOURCES += \
     src/menu/singleplayermenu.cpp \
     src/network/connection.cpp \
     src/network/packet.cpp \
-    src/network/server.cpp
+    src/network/server.cpp \
+    src/network/user.cpp
 
 HEADERS += \
-    assets.h \
     src/ai/bulletinfo.h \
     src/ai/bulletpattern.h \
     src/ai/bullettype.h \
     src/ai/collectabletype.h \
     src/ai/enemytype.h \
     src/ai/playertype.h \
+    src/assets/music.h \
     src/assets/sfx.h \
-    src/assets/song.h \
-    src/assets/sound.h \
     src/assets/texture.h \
     src/entity/bullet.h \
     src/entity/collectable.h \
@@ -67,7 +65,8 @@ HEADERS += \
     src/menu/singleplayermenu.h \
     src/network/connection.h \
     src/network/packet.h \
-    src/network/server.h
+    src/network/server.h \
+    src/network/user.h
 
 FORMS +=
 
@@ -77,4 +76,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    assets/assets.qrc
+    assets/music.qrc \
+    assets/soundeffects.qrc \
+    assets/textures.qrc

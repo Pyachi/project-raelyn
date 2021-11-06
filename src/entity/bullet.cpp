@@ -1,5 +1,4 @@
 #include "bullet.h"
-#include "assets.h"
 #include "src/ai/bulletinfo.h"
 
 Bullet::Bullet(const BulletInfo* info,

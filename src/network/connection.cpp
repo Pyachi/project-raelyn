@@ -1,9 +1,9 @@
 #include "connection.h"
-#include <QDir>
 #include <QNetworkProxy>
 #include "src/game/game.h"
 #include "src/menu/lobbymenu.h"
 #include "src/menu/singleplayermenu.h"
+#include "user.h"
 
 Connection* Connection::CON = nullptr;
 
@@ -15,9 +15,7 @@ bool Connection::create(QString ip, quint16 port) {
 
 	con->connectToHost(ip, port);
 	if (con->waitForConnected()) {
-		con->sendPacket(
-				Packet(PACKETPLAYINCONNECT,
-							 QStringList() << QDir::home().path().split('/').last()));
+		con->sendPacket(Packet(PACKETPLAYINCONNECT, QStringList() << User::name));
 		return true;
 	} else {
 		CON->deleteLater();

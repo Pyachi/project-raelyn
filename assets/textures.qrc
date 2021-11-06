@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>textures/background.png</file>
+        <file>textures/bulletEllipse.png</file>
+        <file>textures/bulletRound.png</file>
+        <file>textures/enemy.png</file>
+        <file>textures/player.png</file>
+        <file>textures/player_bullet.png</file>
+        <file>textures/player_hitbox.png</file>
+    </qresource>
+</RCC>

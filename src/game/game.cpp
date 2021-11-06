@@ -2,7 +2,6 @@
 #include <QOpenGLWidget>
 #include "src/assets/texture.h"
 #include <QTimer>
-#include <QDir>
 #include "src/entity/player.h"
 #include "src/ai/enemytype.h"
 #include "src/network/connection.h"
@@ -17,9 +16,9 @@ Game::Game() : QGraphicsView(), scene(0, 0, gameWidth, gameHeight) {
 	setInteractive(false);
 	setViewport(new QOpenGLWidget);
 
-	QPixmap backgroundPixmap(Texture::BACKGROUND.texture);
+	QPixmap backgroundPixmap(Textures::BACKGROUND.texture);
 	background.setPixmap(backgroundPixmap);
-	background.setZValue(Texture::BACKGROUND.zValue);
+	background.setZValue(Textures::BACKGROUND.zValue);
 	scene.addItem(&background);
 
 	QPixmap playableAreaPixmap(gameHeight - (playBorder * 2),
@@ -36,10 +35,6 @@ Game::Game() : QGraphicsView(), scene(0, 0, gameWidth, gameHeight) {
 	QTimer* tickClock = new QTimer();
 	tickClock->start(1000 / 60);
 	connect(tickClock, &QTimer::timeout, this, &Game::tick);
-
-	new Player(PYACHI, QPointF(0, 200), QDir::homePath().split('/').last());
-
-	EnemyType::ENEMYTEST.spawn(QPointF(0, -300));
 }
 
 void Game::tick() {

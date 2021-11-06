@@ -3,6 +3,7 @@
 #include <QNetworkInterface>
 #include <QTcpSocket>
 #include "src/game/game.h"
+#include "user.h"
 
 Server* Server::SER = nullptr;
 
@@ -17,15 +18,8 @@ bool Server::create(quint16 port) {
 		return false;
 	}
 
-	QString localhostIP;
-	foreach(const QHostAddress & address, QNetworkInterface::allAddresses()) {
-		if (address.protocol() == QAbstractSocket::IPv4Protocol &&
-				address.isLoopback() == false) {
-			localhostIP = address.toString();
-		}
-	}
-
-	server->ip.setText(localhostIP + ":" + QString::number(server->serverPort()));
+	server->ip.setText(User::getIp() + ":" +
+										 QString::number(server->serverPort()));
 	return true;
 }
 

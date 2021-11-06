@@ -1,8 +1,8 @@
 #include "playertype.h"
-#include "assets.h"
 #include "src/entity/bullet.h"
 #include "src/entity/player.h"
 #include "bulletpattern.h"
+#include "src/assets/texture.h"
 
 const Texture& PlayerInfo::getTexture(PlayerType type) {
 	switch (type) {
@@ -10,7 +10,7 @@ const Texture& PlayerInfo::getTexture(PlayerType type) {
 		case AERON:
 		case DAESCH:
 		case ANEKHANDA:
-			return Texture::PLAYER1;
+			return Textures::PYACHI;
 	}
 }
 

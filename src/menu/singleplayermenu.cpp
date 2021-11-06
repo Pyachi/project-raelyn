@@ -5,7 +5,7 @@
 #include "src/game/game.h"
 #include "src/network/connection.h"
 #include "src/network/server.h"
-#include "assets.h"
+#include "src/assets/sfx.h"
 
 SingleplayerMenu* SingleplayerMenu::MENU = nullptr;
 
@@ -49,7 +49,7 @@ void SingleplayerMenu::openMenu() {
 }
 
 void SingleplayerMenu::changeCharacter() {
-  Sound::playSound(SFX::SELECT_1, 0.1);
+	SFX::playSound(SFX::SELECT_1, 0.1);
   if (characterButton.text().contains("Pyachi"))
     characterButton.setText("Character: Aeron");
   else
@@ -57,7 +57,7 @@ void SingleplayerMenu::changeCharacter() {
 }
 
 void SingleplayerMenu::changeDifficulty() {
-  Sound::playSound(SFX::SELECT_1, 0.1);
+	SFX::playSound(SFX::SELECT_1, 0.1);
   if (difficultyButton.text().contains("Normal"))
     difficultyButton.setText("Difficulty: Hard");
   else
@@ -73,7 +73,7 @@ void SingleplayerMenu::startGame() {
 }
 
 void SingleplayerMenu::returnToMenu() {
-  Sound::playSound(SFX::SELECT_2, 0.1);
+	SFX::playSound(SFX::SELECT_2, 0.1);
   MainMenu::openMenu();
   close();
 }

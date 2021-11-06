@@ -2,7 +2,8 @@
 #include <QGridLayout>
 #include "multiplayermenu.h"
 #include "singleplayermenu.h"
-#include "assets.h"
+#include "src/assets/music.h"
+#include "src/assets/sfx.h"
 
 MainMenu* MainMenu::MENU = nullptr;
 
@@ -35,8 +36,7 @@ MainMenu::MainMenu()
   layout->addWidget(&quitButton, 3, 2, 1, 1);
   connect(&quitButton, &QPushButton::clicked, this, &MainMenu::close);
 
-  Sound::playMusic(Song::MENU_THEME, 100);
-  Sound::setLoopMusic();
+	Music::playSong(Music::MENU, 100);
 }
 
 void MainMenu::openMenu() {
@@ -47,17 +47,17 @@ void MainMenu::openMenu() {
 
 void MainMenu::openSingleplayerMenu() {
   SingleplayerMenu::openMenu();
-  Sound::playSound(SFX::SELECT_1, 0.1);
+	SFX::playSound(SFX::SELECT_1, 0.1);
   close();
 }
 
 void MainMenu::openMultiplayerMenu() {
   MultiplayerMenu::openMenu();
-  Sound::playSound(SFX::SELECT_1, 0.1);
+	SFX::playSound(SFX::SELECT_1, 0.1);
   close();
 }
 
-void MainMenu::openOptionsMenu() { Sound::playSound(SFX::SELECT_1, 0.1); }
+void MainMenu::openOptionsMenu() { SFX::playSound(SFX::SELECT_1, 0.1); }
 
 void MainMenu::closeMenu() {
 	if (MENU != nullptr)
