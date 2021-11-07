@@ -34,6 +34,8 @@ Menu::Menu()
 	setLayout(&layout);
 	setWindowFlags(Qt::FramelessWindowHint);
 
+	setFixedSize(0, 0);
+
 	title.setPixmap(QPixmap(Textures::TITLE.texture));
 	layout.addWidget(&title, 1, 1, 1, -1);
 	layout.addWidget(&mainMenu, 2, 1, 1, -1);
