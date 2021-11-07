@@ -21,7 +21,7 @@ const QString getName() {
 
 const QString getIp() {
 	if (!ipExists) {
-		foreach(const QHostAddress & address, QNetworkInterface::allAddresses()) {
+		for (const QHostAddress& address : QNetworkInterface::allAddresses()) {
 			if (address.protocol() == QAbstractSocket::IPv4Protocol &&
 					address.isLoopback() == false) {
 				ip = address.toString();

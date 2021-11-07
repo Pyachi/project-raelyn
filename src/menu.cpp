@@ -115,7 +115,8 @@ void Menu::updatePlayerCount(int size) {
 
 void Menu::updatePlayerList(const QStringList& list) {
 	MENU->players.clear();
-	foreach (QString string, list) { MENU->players.addItem(string); }
+	for (QString string : list)
+		MENU->players.addItem(string);
 }
 
 void Menu::openSingleplayer() {
@@ -136,9 +137,7 @@ void Menu::openOptions() {
 	SFX::playSound(SFX::SELECT_1, 1);
 }
 
-void Menu::quitGame() {
-	close();
-}
+void Menu::quitGame() { close(); }
 
 void Menu::startGame() {
 	if (!Connection::exists()) {

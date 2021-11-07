@@ -3,25 +3,20 @@
 
 #include "entity.h"
 
-class EnemyInfo;
-class Enemy;
-
-using EnemyAI = std::function<void(Enemy*)>;
+struct EnemyInfo;
 
 class Enemy : public Entity {
  public:
-	QList<Bullet*> getHits();
-
- private:
-	Enemy(const EnemyInfo*, const QPointF&);
-
 	int health;
 
-	const EnemyAI ai;
+ private:
+	Enemy(const EnemyInfo&);
+
+	const AI<Enemy> ai;
 
 	void tick() override;
 
-	friend class EnemyInfo;
+	friend struct EnemyInfo;
 };
 
 #endif  // ENEMY_H

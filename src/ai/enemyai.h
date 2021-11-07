@@ -1,17 +1,15 @@
 #ifndef ENEMIES_H
 #define ENEMIES_H
 
+#include "alias.h"
+#include "src/assets/texture.h"
 #include <QPointF>
-#include <functional>
 
-class Texture;
 class Enemy;
-
-using EnemyAI = std::function<void(Enemy*)>;
 
 struct EnemyInfo {
 	const Texture& texture;
-	const EnemyAI ai;
+	const AI<Enemy> ai;
 	const int health;
 
 	Enemy* spawn(const QPointF&) const;

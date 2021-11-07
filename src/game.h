@@ -1,10 +1,12 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <QGraphicsPixmapItem>
 #include <QGraphicsView>
+#include <QGraphicsPixmapItem>
+#include <QTimer>
+#include <QOpenGLWidget>
+#include "alias.h"
 #include <QSet>
-#include "src/ai/playertype.h"
 
 class Entity;
 class Player;
@@ -19,26 +21,25 @@ class Game : public QGraphicsView {
  public:
 	static void create();
 	static QSet<int> getKeys();
-	static QSet<Entity*> getEntities();
+	static List<Entity*> getEntities();
 	static Player* getPlayer();
+	static QGraphicsPixmapItem& getPlayableArea();
 	static void addEntity(Entity*);
-	static QGraphicsPixmapItem* getPlayableArea();
-	static void addOnlinePlayer(PlayerType, const QString&);
-	static void removeOnlinePlayer(const QString&);
-	static void updatePlayerLocation(const QString&, const QPointF&);
 
  private:
 	Game();
 
 	static Game* GAME;
 
+	QTimer timer;
+	QOpenGLWidget openGL;
 	QGraphicsScene scene;
 	QGraphicsPixmapItem playableArea;
 	QGraphicsPixmapItem background;
 
 	Player* player;
-	QSet<Entity*> entities;
-	QMap<QString, Player*> onlinePlayers;
+	List<Entity*> entities;
+	Map<QString, Player*> onlinePlayers;
 
 	QSet<int> keys;
 

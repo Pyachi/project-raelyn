@@ -2,7 +2,8 @@ QT       += core gui opengl network multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-QMAKE_LFLAGS += -no-pie
+# For compiling in Ubuntu
+#QMAKE_LFLAGS += -no-pie
 
 CONFIG += c++11
 
@@ -18,11 +19,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/ai/bulletai.cpp \
     src/ai/bulletpattern.cpp \
-    src/ai/bullettype.cpp \
-    src/ai/collectabletype.cpp \
-    src/ai/enemytype.cpp \
-    src/ai/playertype.cpp \
+    src/ai/collectableai.cpp \
+    src/ai/enemyai.cpp \
+    src/ai/playerai.cpp \
     src/assets/music.cpp \
     src/assets/sfx.cpp \
     src/assets/texture.cpp \
@@ -41,11 +42,12 @@ SOURCES += \
     src/network/user.cpp
 
 HEADERS += \
+    alias.h \
+    src/ai/bulletai.h \
     src/ai/bulletpattern.h \
-    src/ai/bullettype.h \
-    src/ai/collectabletype.h \
-    src/ai/enemytype.h \
-    src/ai/playertype.h \
+    src/ai/collectableai.h \
+    src/ai/enemyai.h \
+    src/ai/playerai.h \
     src/assets/music.h \
     src/assets/sfx.h \
     src/assets/texture.h \

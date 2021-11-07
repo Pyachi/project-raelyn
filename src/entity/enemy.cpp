@@ -1,28 +1,23 @@
 #include "enemy.h"
-#include "src/ai/enemytype.h"
-#include "src/entity/bullet.h"
+#include "bullet.h"
+#include "player.h"
 #include "src/assets/sfx.h"
-#include "src/entity/player.h"
-#include "src/ai/collectabletype.h"
+#include "src/ai/enemyai.h"
+#include "src/ai/collectableai.h"
 
-Enemy::Enemy(const EnemyInfo* info, const QPointF& spawn)
-		: Entity(info->texture, spawn), health(info->health), ai(info->ai) {
-	Game::addEntity(this);
-}
-
-QList<Bullet*> Enemy::getHits() {
-	QList<Bullet*> list;
-	foreach(Bullet * bullet, getCollisions<Bullet>()) {
-		if (dynamic_cast<Player*>(bullet->owner))
-			list.append(bullet);
-	}
-	return list;
-}
+Enemy::Enemy(const EnemyInfo& info)
+		: Entity(ENEMY, info.texture), health(info.health), ai(info.ai) {}
 
 void Enemy::tick() {
 	age++;
 	ai(this);
-	foreach(Bullet * bullet, getHits()) {
+	List<Bullet*> bullets;
+	for (Entity* entity : getCollisions(BULLET)) {
+		Bullet* bullet = dynamic_cast<Bullet*>(entity);
+		if (bullet->ownerType == PLAYER)
+			bullets.push_back(bullet);
+	}
+	for (Bullet* bullet : bullets) {
 		SFX::playSound(SFX::EXPL_LIGHT_2, 0.1);
 		health--;
 		if (health == 0) {

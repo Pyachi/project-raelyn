@@ -1,18 +1,16 @@
 #ifndef COLLECTABLES_H
 #define COLLECTABLES_H
 
+#include "alias.h"
+#include "src/assets/texture.h"
 #include <QPointF>
-#include <functional>
 
-class Texture;
-class Player;
 class Collectable;
-
-using PlayerAI = std::function<void(Player*)>;
+class Player;
 
 struct CollectableInfo {
 	const Texture& texture;
-	const PlayerAI onPickup;
+	const AI<Player> onPickup;
 
 	Collectable* spawn(const QPointF&) const;
 };

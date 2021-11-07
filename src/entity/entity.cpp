@@ -1,16 +1,19 @@
 #include "entity.h"
-#include <QVector2D>
-#include <QtMath>
-#include "bullet.h"
+#include "src/game.h"
 #include "src/assets/texture.h"
-#include "src/ai/bullettype.h"
+#include "src/ai/bulletpattern.h"
+#include "src/ai/bulletai.h"
+#include <QtMath>
+#include <QVector2D>
 
-Entity::Entity(const Texture& texture, const QPointF& spawn)
-		: QGraphicsPixmapItem(Game::getPlayableArea()), age(0), cleanup(false) {
+Entity::Entity(EntityType type, const Texture& texture)
+		: QGraphicsPixmapItem(&Game::getPlayableArea()),
+			type(type),
+			age(0),
+			cleanup(false) {
 	setPixmap(QPixmap(texture.texture));
 	setZValue(texture.zValue);
 	setOffset(-boundingRect().center());
-	setPos(spawn);
 }
 
 void Entity::deleteLater() { cleanup = true; }
@@ -18,42 +21,6 @@ void Entity::deleteLater() { cleanup = true; }
 int Entity::getAge() { return age; }
 
 bool Entity::readyToDelete() { return cleanup; }
-
-QList<Bullet*> Entity::fireBullet(BulletList pattern,
-																	double rot,
-																	const QPointF& loc) {
-	QList<Bullet*> list;
-	foreach(BulletInfo info, pattern) {
-		list << info.spawn(this, pos() + loc, rot);
-	}
-	return list;
-}
-
-QList<Bullet*> Entity::fireBulletCircle(BulletList info,
-																				int count,
-																				double rot,
-																				const QPointF& loc) {
-	QList<Bullet*> list;
-	for (int i = 0; i < count; i++) {
-		list << fireBullet(info, rot, loc);
-		rot += 360 / count;
-	}
-	return list;
-}
-
-QList<Bullet*> Entity::fireBulletArc(BulletList info,
-																		 int count,
-																		 double startRot,
-																		 double endRot,
-																		 const QPointF& loc) {
-	QList<Bullet*> list;
-	double rot = startRot;
-	for (int i = 0; i < count; i++) {
-		list << fireBullet(info, rot, loc);
-		rot += (endRot - startRot) / (count - 1);
-	}
-	return list;
-}
 
 void Entity::moveFoward(double distance) {
 	double rot = qDegreesToRadians(rotation());
@@ -72,25 +39,34 @@ void Entity::moveTowardsPoint(const QPointF& point, double distance) {
 
 void Entity::rotate(double deg) { setRotation(rotation() + deg); }
 
-double Entity::distanceSquared(Entity* entity) {
-	return pow(pos().x() - entity->pos().x(), 2) +
-				 pow(pos().y() - entity->pos().y(), 2);
+List<Bullet*> Entity::fireBullets(const List<BulletInfo>& pattern,
+																	double rot,
+																	const QPointF& loc) {
+	List<Bullet*> list;
+	for (const BulletInfo& info : pattern)
+		list.push_back(info.spawn(this, rot, loc));
+	return list;
+}
+
+double Entity::distanceSquared(const Entity& entity) {
+	return pow(pos().x() - entity.pos().x(), 2) +
+				 pow(pos().y() - entity.pos().y(), 2);
 }
 
 QPointF Entity::confineToPlayableArea(const QPointF& pos) {
-	return QPointF(qBound(Game::getPlayableArea()->boundingRect().left() -
+	return QPointF(qBound(Game::getPlayableArea().boundingRect().left() -
 														boundingRect().left(),
 												pos.x(),
-												Game::getPlayableArea()->boundingRect().right() -
+												Game::getPlayableArea().boundingRect().right() -
 														boundingRect().right()),
-								 qBound(Game::getPlayableArea()->boundingRect().top() -
+								 qBound(Game::getPlayableArea().boundingRect().top() -
 														boundingRect().top(),
 												pos.y(),
-												Game::getPlayableArea()->boundingRect().bottom() -
+												Game::getPlayableArea().boundingRect().bottom() -
 														boundingRect().bottom()));
 }
 
-bool Entity::isOnScreen() { return collidesWithItem(Game::getPlayableArea()); }
+bool Entity::isOnScreen() { return collidesWithItem(&Game::getPlayableArea()); }
 
 bool Entity::cycle(int dur) { return cycle(dur, 0, 0); }
 
@@ -98,4 +74,27 @@ bool Entity::cycle(int dur, int time) { return cycle(dur, time, time); }
 
 bool Entity::cycle(int dur, int low, int high) {
 	return (getAge() % dur >= low && getAge() % dur <= high);
+}
+
+Entity* Entity::getNearestEntity(EntityType type) {
+	Entity* closest = nullptr;
+	double closestDistance = 99999999;
+	for (Entity* entity : Game::getEntities()) {
+		if (entity->type == type &&
+				entity->distanceSquared(*this) < closestDistance) {
+			closest = entity;
+			closestDistance = entity->distanceSquared(*this);
+		}
+	}
+	return closest;
+}
+
+List<Entity*> Entity::getCollisions(EntityType type) {
+	List<Entity*> list;
+	for (QGraphicsItem* item : collidingItems()) {
+		if (Entity* entity = dynamic_cast<Entity*>(item))
+			if (entity->type == type)
+				list.push_back(entity);
+	}
+	return list;
 }

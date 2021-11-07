@@ -1,17 +1,11 @@
 #include "bullet.h"
-#include "src/ai/bullettype.h"
+#include "src/ai/bulletai.h"
 
-Bullet::Bullet(const BulletInfo* info,
-							 Entity* owner,
-							 const QPointF& spawn,
-							 double rotation)
-		: Entity(info->texture, spawn),
-			owner(owner),
+Bullet::Bullet(const BulletInfo* info, const Entity* owner)
+		: Entity(BULLET, info->texture),
+			ownerType(owner->type),
 			borderCheck(true),
-			ai(info->ai) {
-	setRotation(rotation);
-	Game::addEntity(this);
-}
+			ai(info->ai) {}
 
 void Bullet::tick() {
 	age++;

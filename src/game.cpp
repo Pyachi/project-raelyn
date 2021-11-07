@@ -1,13 +1,12 @@
 #include "game.h"
-#include <QOpenGLWidget>
+#include "src/ai/playerai.h"
+#include "src/ai/enemyai.h"
 #include "src/assets/texture.h"
-#include <QTimer>
-#include "src/entity/player.h"
-#include "src/ai/enemytype.h"
-#include "src/network/connection.h"
-#include <QKeyEvent>
 #include "src/network/user.h"
+#include "src/network/connection.h"
+#include "src/entity/player.h"
 #include "menu.h"
+#include <QKeyEvent>
 
 Game* Game::GAME = nullptr;
 
@@ -16,7 +15,7 @@ Game::Game() : QGraphicsView(), scene(0, 0, gameWidth, gameHeight) {
 	setScene(&scene);
 
 	setInteractive(false);
-	setViewport(new QOpenGLWidget);
+	setViewport(&openGL);
 
 	QPixmap backgroundPixmap(Textures::BACKGROUND.texture);
 	background.setPixmap(backgroundPixmap);
@@ -34,11 +33,10 @@ Game::Game() : QGraphicsView(), scene(0, 0, gameWidth, gameHeight) {
 
 	setFixedSize(gameWidth + 2, gameHeight + 2);
 
-	QTimer* tickClock = new QTimer();
-	tickClock->start(1000 / 60);
-	connect(tickClock, &QTimer::timeout, this, &Game::tick);
+	timer.start(1000 / 60);
+	connect(&timer, &QTimer::timeout, this, &Game::tick);
 
-	player = new Player(PYACHI, QPointF(0, 250), User::getName());
+	player = new Player(PYACHI, User::getName());
 
 	Enemies::ENEMYTEST.spawn(QPointF(0, -300));
 }
@@ -51,14 +49,12 @@ void Game::tick() {
 			scene.removeItem(entity);
 		}
 	}
-	if (player != nullptr) {
-		player->tick();
-		if (player->readyToDelete()) {
-			close();
-			delete GAME;
-			GAME = nullptr;
-			Menu::openMenu();
-		}
+	player->tick();
+	if (player->readyToDelete()) {
+		close();
+		delete GAME;
+		GAME = nullptr;
+		Menu::openMenu();
 	}
 }
 
@@ -71,11 +67,9 @@ void Game::create() {
 
 QSet<int> Game::getKeys() { return GAME->keys; }
 
-QSet<Entity*> Game::getEntities() { return GAME->entities; }
+List<Entity*> Game::getEntities() { return GAME->entities; }
 
 Player* Game::getPlayer() { return GAME->player; }
-
-void Game::addEntity(Entity* entity) { GAME->entities.insert(entity); }
 
 void Game::keyPressEvent(QKeyEvent* e) {
 	keys.insert(e->key());
@@ -87,22 +81,6 @@ void Game::keyReleaseEvent(QKeyEvent* e) {
 	QGraphicsView::keyReleaseEvent(e);
 }
 
-QGraphicsPixmapItem* Game::getPlayableArea() { return &GAME->playableArea; }
+QGraphicsPixmapItem& Game::getPlayableArea() { return GAME->playableArea; }
 
-void Game::updatePlayerLocation(const QString& user, const QPointF& loc) {
-	//	if (GAME->onlinePlayers.contains(user))
-	GAME->onlinePlayers[user]->setPos(loc);
-}
-
-void Game::removeOnlinePlayer(const QString& user) {
-	Player* player = GAME->onlinePlayers.take(user);
-	if (player != nullptr)
-		player->deleteLater();
-}
-
-void Game::addOnlinePlayer(PlayerType type, const QString& user) {
-	Player* player = new Player(type, QPointF(0, 0), user);
-	player->setOpacity(0.25);
-	player->hitbox.hide();
-	GAME->onlinePlayers.insert(user, player);
-}
+void Game::addEntity(Entity* entity) { GAME->entities.push_back(entity); }

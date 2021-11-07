@@ -1,29 +1,18 @@
 #include "player.h"
-#include <QtMath>
-#include "bullet.h"
 #include "enemy.h"
-#include "src/ai/playertype.h"
+#include "bullet.h"
+#include "src/game.h"
+#include "src/assets/texture.h"
 #include "src/network/connection.h"
 
-Player::Player(PlayerType type, const QPointF& spawn, const QString& user)
-		: Entity(PlayerInfo::getTexture(type), spawn),
-			type(type),
+Player::Player(PlayerType type, const QString& user)
+		: Entity(PLAYER, PlayerInfo::getTexture(type)),
+			playerType(type),
 			user(user),
 			firing(false),
 			focus(false),
 			level(1),
 			power(0) {}
-
-bool Player::isHit() {
-	if (hitbox.getCollisions<Enemy>().size() > 0)
-		return true;
-	else
-		foreach(Bullet * bullet, hitbox.getCollisions<Bullet>()) {
-			if (dynamic_cast<Enemy*>(bullet->owner))
-				return true;
-		}
-	return false;
-}
 
 void Player::tick() {
 	age++;
@@ -39,11 +28,11 @@ void Player::tick() {
 	hitbox.setPos(pos());
 
 	if (firing)
-		PlayerInfo::getShootingPattern(type, level, focus)(this);
+		PlayerInfo::getShootingPattern(playerType, level, focus)(this);
 
 	int dx = 0, dy = 0;
-	int speed =
-			focus ? PlayerInfo::getFocusSpeed(type) : PlayerInfo::getSpeed(type);
+	int speed = focus ? PlayerInfo::getFocusSpeed(playerType)
+										: PlayerInfo::getSpeed(playerType);
 	if (keys.contains(Qt::Key_Right))
 		dx += speed;
 	if (keys.contains(Qt::Key_Left))
@@ -70,7 +59,14 @@ void Player::tick() {
 		power = 0;
 	}
 
-	if (isHit()) {
+	List<Bullet*> bullets;
+	for (Entity* entity : hitbox.getCollisions(BULLET)) {
+		Bullet* bullet = dynamic_cast<Bullet*>(entity);
+		if (bullet->ownerType == ENEMY)
+			bullets.push_back(bullet);
+	}
+
+	if (!bullets.empty()) {
 		Connection::sendPacket(PACKETPLAYINPLAYERDEATH);
 		deleteLater();
 		hitbox.scene()->removeItem(&hitbox);

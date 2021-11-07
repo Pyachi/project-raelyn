@@ -3,23 +3,21 @@
 
 #include "entity.h"
 
-class Bullet;
-
-using BulletAI = std::function<void(Bullet*)>;
+struct BulletInfo;
 
 class Bullet : public Entity {
  public:
-	Entity* owner;
+	EntityType ownerType;
 	bool borderCheck;
 
  private:
-	Bullet(const BulletInfo*, Entity*, const QPointF&, double);
+	Bullet(const BulletInfo*, const Entity*);
 
-	const BulletAI& ai;
+	const AI<Bullet>& ai;
 
 	void tick() override;
 
-	friend class BulletInfo;
+	friend struct BulletInfo;
 };
 
 #endif  // BULLET_H

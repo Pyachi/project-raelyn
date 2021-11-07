@@ -3,19 +3,18 @@
 
 #include "entity.h"
 #include "playerhitbox.h"
+#include "src/ai/playerai.h"
 
 class Player : public Entity {
  public:
-	Player(PlayerType, const QPointF&, const QString&);
-
-	bool isHit();
+	Player(PlayerType, const QString&);
 
 	void tick() override;
 
 	PlayerHitbox hitbox;
 
  private:
-	PlayerType type;
+	PlayerType playerType;
 	QString user;
 	bool firing;
 	bool focus;

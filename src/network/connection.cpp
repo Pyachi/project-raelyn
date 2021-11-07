@@ -3,23 +3,23 @@
 #include "src/game.h"
 #include "user.h"
 #include "src/menu.h"
+#include <thread>
+#include <future>
 
 Connection* Connection::CON = nullptr;
-QThread* Connection::THREAD = nullptr;
 
 bool Connection::create(QString ip, quint16 port) {
 	if (CON != nullptr)
 		return false;
 	CON = new Connection;
-	THREAD = new QThread;
-
-	//	CON->moveToThread(THREAD);
 
 	CON->connectToHost(ip, port);
 	if (CON->waitForConnected()) {
 		CON->sendPacket({PACKETPLAYINCONNECT, QStringList() << User::getName()});
 		return true;
 	} else {
+		//		CON->runAsync = false;
+		//		CON->asyncThread.join();
 		CON->deleteLater();
 		CON = nullptr;
 		return false;
@@ -32,6 +32,8 @@ void Connection::disconnect() {
 	if (CON == nullptr)
 		return;
 	CON->disconnectFromHost();
+	//	CON->runAsync = false;
+	//	CON->asyncThread.join();
 	CON->deleteLater();
 	CON = nullptr;
 }
@@ -48,10 +50,12 @@ Connection::Connection() : QTcpSocket() {
 }
 
 void Connection::receivePacket() {
-	foreach(Packet packet, Packet::decode(readAll())) { handlePacket(packet); }
+	for (Packet packet : Packet::decode(readAll()))
+		handlePacket(packet);
 }
 
 void Connection::handlePacket(const Packet& packet) {
+
 	Header header = packet.header;
 	switch (header) {
 		case PACKETPLAYOUTSTARTGAME:
@@ -62,15 +66,17 @@ void Connection::handlePacket(const Packet& packet) {
 			Menu::updatePlayerList(packet.data);
 			break;
 		case PACKETPLAYOUTUPDATEPLAYER:
-			Game::updatePlayerLocation(
-					packet.data.at(2),
-					QPointF(packet.data.at(0).toDouble(), packet.data.at(1).toDouble()));
+			//      Game::updatePlayerLocation(
+			//          packet.data.at(2),
+			//          QPointF(packet.data.at(0).toDouble(),
+			// packet.data.at(1).toDouble()));
 			break;
 		case PACKETPLAYOUTPLAYERDEATH:
-			Game::removeOnlinePlayer(packet.data.at(0));
+			//			Game::removeOnlinePlayer(packet.data.at(0));
 			break;
 		case PACKETPLAYOUTPLAYERSPAWN:
-			Game::addOnlinePlayer(PYACHI, packet.data.at(0));
+			//			Game::addOnlinePlayer(PYACHI,
+			// packet.data.at(0));
 			break;
 		default:
 			qDebug() << "ERROR: Received IN Packet!";

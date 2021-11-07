@@ -5,7 +5,7 @@ Packet::Packet(const Header& header, const QStringList& data)
 
 QByteArray Packet::encode() const {
 	QByteArray packet = QByteArray::number(header);
-	foreach(QString segment, data) {
+	for (QString segment : data) {
 		packet += ':';
 		packet += segment;
 	}
@@ -15,13 +15,14 @@ QByteArray Packet::encode() const {
 
 QList<Packet> Packet::decode(const QByteArray& fullPacket) {
 	QList<Packet> list;
-	foreach(QByteArray packet, fullPacket.split(';')) {
+	for (QByteArray packet : fullPacket.split(';')) {
 		if (packet.isEmpty())
 			continue;
 		QList<QByteArray> segments = packet.split(':');
 		Header header = static_cast<Header>(segments.takeFirst().toInt());
 		QStringList data;
-		foreach(QByteArray segment, segments) { data.append(segment); }
+		for (QByteArray segment : segments)
+			data.append(segment);
 		list.append({header, data});
 	}
 	return list;

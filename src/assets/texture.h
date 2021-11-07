@@ -4,8 +4,8 @@
 #include <QString>
 
 struct Texture {
-	const QString texture;
-	const int zValue;
+  const QString texture;
+  const int zValue;
 };
 
 namespace Textures {

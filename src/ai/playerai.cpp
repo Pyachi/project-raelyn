@@ -1,7 +1,7 @@
-#include "playertype.h"
-#include "src/entity/bullet.h"
-#include "src/entity/player.h"
+#include "playerai.h"
 #include "bulletpattern.h"
+#include "src/entity/player.h"
+#include "src/entity/bullet.h"
 #include "src/assets/texture.h"
 
 const Texture& PlayerInfo::getTexture(PlayerType type) {
@@ -14,27 +14,21 @@ const Texture& PlayerInfo::getTexture(PlayerType type) {
 	}
 }
 
-const PlayerAI PlayerInfo::getShootingPattern(PlayerType type,
-																							int level,
-																							bool focus) {
+const AI<Player> PlayerInfo::getShootingPattern(PlayerType type,
+																								int level,
+																								bool focus) {
 	switch (type) {
 		case PYACHI:
 			switch (level) {
 				case 1:
 					if (focus)
 						return [](Player* player) {
-							foreach(Bullet * bullet,
-											player->fireBullet(BulletPatterns::PLAYER_BASIC)) {
+							for (Bullet* bullet :
+									 player->fireBullets(BulletPatterns::PLAYER_HOMING))
 								bullet->setOpacity(0.25);
-							}
 						};
 					else
-						return [](Player* player) {
-							foreach(Bullet * bullet,
-											player->fireBullet(BulletPatterns::PLAYER_BASIC)) {
-								bullet->setOpacity(0.25);
-							}
-						};
+						return [](Player* player) {};
 				case 2:
 					if (focus)
 						return [](Player* player) {};

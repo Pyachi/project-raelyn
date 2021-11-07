@@ -38,7 +38,7 @@ int Server::getPort() {
 void Server::sendPacket(const Packet& packet, QTcpSocket* sender) {
 	if (SER == nullptr)
 		return;
-	foreach (QTcpSocket* socket, SER->sockets) {
+	for (QTcpSocket* socket : SER->sockets) {
 		if (sender != socket)
 			socket->write(packet.encode());
 	}
@@ -52,8 +52,8 @@ void Server::handleConnection() {
 	QTcpSocket* socket = nextPendingConnection();
 	sockets.insert(socket);
 	connect(socket, &QTcpSocket::readyRead, this, &Server::receivePacket);
-	connect(socket, &QTcpSocket::disconnected, this,
-					&Server::handleDisconnection);
+	connect(
+			socket, &QTcpSocket::disconnected, this, &Server::handleDisconnection);
 	Menu::updatePlayerCount(sockets.size());
 }
 
@@ -67,9 +67,8 @@ void Server::handleDisconnection() {
 
 void Server::receivePacket() {
 	QTcpSocket* sent = qobject_cast<QTcpSocket*>(sender());
-	foreach (Packet packet, Packet::decode(sent->readAll())) {
+	for (Packet packet : Packet::decode(sent->readAll()))
 		handlePacket(packet, sent);
-	}
 }
 
 void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
