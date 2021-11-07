@@ -44,6 +44,7 @@ class Game : public QGraphicsView {
 	Player* player;
 	List<Entity*> entities;
 	Map<QString, Player*> onlinePlayers;
+	List<std::function<void(void)> > onlineQueue;
 
 	QSet<int> keys;
 

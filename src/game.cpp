@@ -56,6 +56,10 @@ void Game::tick() {
 		GAME = nullptr;
 		Menu::openMenu();
 	}
+	if (!onlineQueue.empty()) {
+		onlineQueue.front()();
+		onlineQueue.pop_front();
+	}
 }
 
 void Game::create() {
@@ -86,7 +90,9 @@ QGraphicsPixmapItem& Game::getPlayableArea() { return GAME->playableArea; }
 void Game::addEntity(Entity* entity) { GAME->entities.push_back(entity); }
 
 void Game::updatePlayerLocation(const QString& user, const QPointF& loc) {
-	GAME->onlinePlayers.at(user)->setPos(loc);
+	GAME->onlineQueue.push_back([user, loc]() {
+		GAME->onlinePlayers.at(user)->setPos(loc);
+	});
 }
 
 void Game::removeOnlinePlayer(const QString& user) {
@@ -95,6 +101,8 @@ void Game::removeOnlinePlayer(const QString& user) {
 }
 
 void Game::addOnlinePlayer(PlayerType type, const QString& user) {
-	GAME->onlinePlayers.insert(
-			std::pair<QString, Player*>(user, new Player(type, user)));
+	Player* player = new Player(type, user);
+	player->setOpacity(0.25);
+	player->hitbox.hide();
+	GAME->onlinePlayers.insert(std::pair<QString, Player*>(user, player));
 }
