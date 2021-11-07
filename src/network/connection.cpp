@@ -66,17 +66,15 @@ void Connection::handlePacket(const Packet& packet) {
 			Menu::updatePlayerList(packet.data);
 			break;
 		case PACKETPLAYOUTUPDATEPLAYER:
-			//      Game::updatePlayerLocation(
-			//          packet.data.at(2),
-			//          QPointF(packet.data.at(0).toDouble(),
-			// packet.data.at(1).toDouble()));
+			Game::updatePlayerLocation(
+					packet.data.at(2),
+					QPointF(packet.data.at(0).toDouble(), packet.data.at(1).toDouble()));
 			break;
 		case PACKETPLAYOUTPLAYERDEATH:
-			//			Game::removeOnlinePlayer(packet.data.at(0));
+			Game::removeOnlinePlayer(packet.data.at(0));
 			break;
 		case PACKETPLAYOUTPLAYERSPAWN:
-			//			Game::addOnlinePlayer(PYACHI,
-			// packet.data.at(0));
+			Game::addOnlinePlayer(PYACHI, packet.data.at(0));
 			break;
 		default:
 			qDebug() << "ERROR: Received IN Packet!";

@@ -84,3 +84,17 @@ void Game::keyReleaseEvent(QKeyEvent* e) {
 QGraphicsPixmapItem& Game::getPlayableArea() { return GAME->playableArea; }
 
 void Game::addEntity(Entity* entity) { GAME->entities.push_back(entity); }
+
+void Game::updatePlayerLocation(const QString& user, const QPointF& loc) {
+	GAME->onlinePlayers.at(user)->setPos(loc);
+}
+
+void Game::removeOnlinePlayer(const QString& user) {
+	GAME->onlinePlayers.at(user)->deleteLater();
+	GAME->onlinePlayers.erase(user);
+}
+
+void Game::addOnlinePlayer(PlayerType type, const QString& user) {
+	GAME->onlinePlayers.insert(
+			std::pair<QString, Player*>(user, new Player(type, user)));
+}

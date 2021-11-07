@@ -7,6 +7,7 @@
 #include <QOpenGLWidget>
 #include "alias.h"
 #include <QSet>
+#include "src/ai/playerai.h"
 
 class Entity;
 class Player;
@@ -25,6 +26,9 @@ class Game : public QGraphicsView {
 	static Player* getPlayer();
 	static QGraphicsPixmapItem& getPlayableArea();
 	static void addEntity(Entity*);
+	static void updatePlayerLocation(const QString&, const QPointF&);
+	static void removeOnlinePlayer(const QString&);
+	static void addOnlinePlayer(PlayerType, const QString&);
 
  private:
 	Game();
