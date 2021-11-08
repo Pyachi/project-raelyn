@@ -90,9 +90,11 @@ List<Bullet*> Player::fireBullets(const List<BulletInfo>& pattern,
 																	double rot,
 																	const QPointF& loc) {
 	List<Bullet*> list = Entity::fireBullets(pattern, rot, loc);
-	if (type == ONLINEPLAYER)
-		for (Bullet* bullet : list) {
+
+	for (Bullet* bullet : list) {
+		bullet->setOpacity(0.25);
+		if (type == ONLINEPLAYER)
 			bullet->damage = 0;
-		}
+	}
 	return list;
 }

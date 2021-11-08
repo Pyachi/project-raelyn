@@ -1,7 +1,7 @@
 #include "enemy.h"
 #include "bullet.h"
 #include "player.h"
-#include "src/game.h"
+#include "src/framework/game.h"
 #include "src/assets/sfx.h"
 #include "src/ai/enemyai.h"
 #include "src/ai/collectableai.h"
@@ -38,7 +38,7 @@ void Enemy::tick() {
 void Enemy::kill() {
 	if (cleanup)
 		return;
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 1000; i++)
 		Collectables::POWER.spawn(pos());
 	deleteLater();
 }

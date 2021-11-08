@@ -35,7 +35,7 @@ Game::Game() : QGraphicsView(), scene(0, 0, gameWidth, gameHeight) {
 	setFixedSize(gameWidth + 2, gameHeight + 2);
 
 	timer.start(1000 / 60);
-	connect(&timer, &QTimer::timeout, this, &Game::tick);
+	connect(&timer, &QTimer::timeout, [this]() { this->tick(); });
 
 	new Player(PYACHI, User::getName(), User::getUUID());
 }

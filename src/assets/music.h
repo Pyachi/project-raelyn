@@ -3,17 +3,20 @@
 
 #include <QString>
 
-namespace Music {
-extern const QString MENU;
-extern const QString LVL_1;
-extern const QString LVL_1_BOSS;
-extern const QString LVL_2;
-extern const QString LVL_2_BOSS;
-extern const QString LVL_3;
-extern const QString LVL_3_BOSS;
-extern const QString CREDITS;
+enum Song {
+	MENU,      // 0
+	LVL1,      // 1
+	LVL2,      // 2
+	LVL3,      // 3
+	LVL1BOSS,  // 4
+	LVL2BOSS,  // 5
+	LVL3BOSS,  // 6
+	CREDITS    // 7
+};
 
-extern void playSong(const QString&, int);
+namespace Music {
+extern const QString fromSong(Song);
+extern void playSong(Song, int);
 extern void stopSong();
 };  // namespace Music
 

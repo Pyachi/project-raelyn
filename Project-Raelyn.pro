@@ -33,9 +33,10 @@ SOURCES += \
     src/entity/entity.cpp \
     src/entity/player.cpp \
     src/entity/playerhitbox.cpp \
-    src/game.cpp \
+    src/framework/game.cpp \
+    src/framework/level.cpp \
+    src/framework/menu.cpp \
     src/main.cpp \
-    src/menu.cpp \
     src/network/connection.cpp \
     src/network/packet.cpp \
     src/network/server.cpp \
@@ -58,8 +59,9 @@ HEADERS += \
     src/entity/entity.h \
     src/entity/player.h \
     src/entity/playerhitbox.h \
-    src/game.h \
-    src/menu.h \
+    src/framework/game.h \
+    src/framework/level.h \
+    src/framework/menu.h \
     src/network/connection.h \
     src/network/packet.h \
     src/network/server.h \
@@ -74,6 +76,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    assets/levels.qrc \
     assets/music.qrc \
     assets/soundeffects.qrc \
     assets/textures.qrc

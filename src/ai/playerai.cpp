@@ -58,12 +58,12 @@ const AI<Player> getShootingPattern(PlayerType type, int level, bool focus) {
 				case 1:
 					if (focus)
 						return [](Player* player) {
-							for (Bullet* bullet :
-									 player->fireBullets(BulletPatterns::PLAYER_HOMING))
-								bullet->setOpacity(0.25);
+							player->fireBullets(BulletPatterns::PLAYER_HOMING);
 						};
 					else
-						return [](Player* player) {};
+						return [](Player* player) {
+							player->fireBullets(BulletPatterns::PLAYER_BASIC);
+						};
 				case 2:
 					if (focus)
 						return [](Player* player) {};

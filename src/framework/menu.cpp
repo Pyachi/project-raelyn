@@ -104,7 +104,7 @@ void Menu::openMenu() {
 	if (MENU == nullptr)
 		MENU = new Menu();
 	MENU->show();
-	Music::playSong(Music::MENU, 100);
+	Music::playSong(Song::MENU, 100);
 }
 
 void Menu::closeMenu() {
@@ -154,7 +154,7 @@ void Menu::startGame() {
 
 void Menu::returnToMenu() {
 	if (serverMenu.isVisible())
-		Music::playSong(Music::MENU, 100);
+		Music::playSong(Song::MENU, 100);
 	Connection::disconnect();
 	Server::disconnect();
 	mainMenu.show();

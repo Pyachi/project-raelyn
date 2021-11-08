@@ -2,8 +2,9 @@
 #include "user.h"
 #include "packet.h"
 #include "uuid.h"
-#include "src/game.h"
-#include "src/menu.h"
+#include "src/framework/game.h"
+#include "src/framework/menu.h"
+#include "src/framework/level.h"
 #include "src/ai/enemyai.h"
 #include <QGridLayout>
 #include <QNetworkInterface>
@@ -90,10 +91,7 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
 		case PACKETPLAYINSTARTGAME:
 			pauseAccepting();
 			sendPacket(PACKETPLAYOUTSTARTGAME);
-			sendPacket({PACKETPLAYOUTSPAWNENEMY,
-									QStringList() << UUID().toString()
-																<< QString::number(ENEMYTEST) << "0"
-																<< "-300"});
+			Level::LVL1.start();
 			break;
 		case PACKETPLAYINUPDATEPLAYER:
 			sendPacket({PACKETPLAYOUTUPDATEPLAYER,

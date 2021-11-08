@@ -1,9 +1,12 @@
 #include "sfx.h"
-#include <QSound>
+#include "alias.h"
 #include <QSoundEffect>
-#include <queue>
 
 namespace SFX {
+namespace {
+List<QSoundEffect*> queue;
+bool queueSetup = false;
+}
 const QString COLLECT_1("qrc:/soundeffects/sound_collect_1.wav");
 const QString COLLECT_2("qrc:/soundeffects/sound_collect_2.wav");
 const QString COLLECT_3("qrc:/soundeffects/sound_collect_3.wav");
@@ -35,11 +38,17 @@ const QString SELECT_1("qrc:/soundeffects/sound_select_1.wav");
 const QString SELECT_2("qrc:/soundeffects/sound_select_2.wav");
 
 void playSound(const QString& sound, qreal volume) {
-	QSoundEffect* player = new QSoundEffect;
+	if (!queueSetup) {
+		for (int i = 0; i < 128; i++)
+			queue.push_back(new QSoundEffect);
+		queueSetup = true;
+	}
+	QSoundEffect* player = queue.front();
+	queue.pop_front();
+	player->stop();
 	player->setSource(sound);
 	player->setVolume(volume);
 	player->play();
-	player->connect(player, &QSoundEffect::playingChanged, player,
-									&QSoundEffect::deleteLater);
+	queue.push_back(player);
 }
 }  // namespace SFX
