@@ -30,12 +30,10 @@ void Player::tick() {
 
 	if (firing) {
 		PlayerInfo::getShootingPattern(playerType, level, focus)(this);
-		Connection::sendPacket({PACKETPLAYINFIREBULLETS,
-														QStringList() << QString::number(pos().x())
-																					<< QString::number(pos().y())
-																					<< PlayerInfo::getName(playerType)
-																					<< QString::number(level)
-																					<< QString::number(focus)});
+		Connection::sendPacket(
+				{PACKETPLAYINFIREBULLETS, QStringList() << QString::number(playerType)
+																								<< QString::number(level)
+																								<< QString::number(focus)});
 	}
 
 	int dx = 0, dy = 0;

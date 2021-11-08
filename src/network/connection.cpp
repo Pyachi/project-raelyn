@@ -23,9 +23,7 @@ bool Connection::create(QString ip, quint16 port) {
 	}
 }
 
-bool Connection::exists() {
-	return CON != nullptr;
-}
+bool Connection::exists() { return CON != nullptr; }
 
 void Connection::disconnect() {
 	if (CON == nullptr)
@@ -63,9 +61,8 @@ void Connection::handlePacket(const Packet& packet) {
 			break;
 		case PACKETPLAYOUTUPDATEPLAYER:
 			Game::queueEvent([packet]() {
-				Game::GAME->onlinePlayers.at(packet.data.at(2))
-						->setPos(QPointF(packet.data.at(0).toDouble(),
-														 packet.data.at(1).toDouble()));
+				Game::GAME->onlinePlayers.at(packet.data.at(2))->setPos(QPointF(
+						packet.data.at(0).toDouble(), packet.data.at(1).toDouble()));
 			});
 			break;
 		case PACKETPLAYOUTPLAYERDEATH:
@@ -76,16 +73,20 @@ void Connection::handlePacket(const Packet& packet) {
 				Player* player = new Player(PYACHI, packet.data.at(0));
 				player->setOpacity(0.25);
 				player->hitbox.hide();
-				Game::GAME->onlinePlayers.insert(
-						std::pair<QString, Player*>(packet.data.at(0), player));
+				Game::GAME->onlinePlayers[packet.data.at(0)] = player;
 			});
 			break;
 		case PACKETPLAYOUTFIREBULLETS:
 			Game::queueEvent([packet]() {
-				PlayerInfo::getShootingPattern(packet.data.at(3), packet.data.at(4),
-																			 packet.data.at(5))
-			}) default : qDebug()
-									 << "ERROR: Received IN Packet!";
+				PlayerInfo::getShootingPattern(
+						static_cast<PlayerType>(packet.data.at(1).toInt()),
+						packet.data.at(2).toInt(),
+						packet.data.at(3).toInt())(
+						Game::GAME->onlinePlayers.at(packet.data.at(0)));
+			});
+			break;
+		default:
+			qDebug() << "ERROR: Received IN Packet!";
 			break;
 	}
 }

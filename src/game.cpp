@@ -42,7 +42,7 @@ Game::Game() : QGraphicsView(), scene(0, 0, gameWidth, gameHeight) {
 }
 
 void Game::tick() {
-	foreach (Entity* entity, entities) {
+	foreach(Entity * entity, entities) {
 		entity->tick();
 		if (entity->readyToDelete()) {
 			entities.remove(entity);
@@ -50,7 +50,7 @@ void Game::tick() {
 		}
 	}
 	player->tick();
-	if (!eventQueue.empty()) {
+	while (!eventQueue.empty()) {
 		eventQueue.front()();
 		eventQueue.pop_front();
 	}
@@ -63,17 +63,11 @@ void Game::create() {
 	Connection::sendPacket(PACKETPLAYINPLAYERSPAWN);
 }
 
-QSet<int> Game::getKeys() {
-	return GAME->keys;
-}
+QSet<int> Game::getKeys() { return GAME->keys; }
 
-List<Entity*> Game::getEntities() {
-	return GAME->entities;
-}
+List<Entity*> Game::getEntities() { return GAME->entities; }
 
-Player* Game::getPlayer() {
-	return GAME->player;
-}
+Player* Game::getPlayer() { return GAME->player; }
 
 void Game::keyPressEvent(QKeyEvent* e) {
 	keys.insert(e->key());
@@ -85,13 +79,9 @@ void Game::keyReleaseEvent(QKeyEvent* e) {
 	QGraphicsView::keyReleaseEvent(e);
 }
 
-QGraphicsPixmapItem& Game::getPlayableArea() {
-	return GAME->playableArea;
-}
+QGraphicsPixmapItem& Game::getPlayableArea() { return GAME->playableArea; }
 
-void Game::addEntity(Entity* entity) {
-	GAME->entities.push_back(entity);
-}
+void Game::addEntity(Entity* entity) { GAME->entities.push_back(entity); }
 
 void Game::queueEvent(std::function<void(void)> func) {
 	GAME->eventQueue.push_back(func);

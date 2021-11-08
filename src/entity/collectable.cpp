@@ -5,6 +5,7 @@
 #include "src/ai/collectableai.h"
 #include "bullet.h"
 #include <QtMath>
+#include <QDebug>
 
 Collectable::Collectable(const CollectableInfo& info)
 		: Entity(COLLECTABLE, info.texture), onPickup(info.onPickup) {}
@@ -20,7 +21,7 @@ void Collectable::tick() {
 			moveTowardsPoint(player->pos(), 15);
 		else
 			moveBy(0, getAge() / 30.0);
-		if (collidesWithItem(&player->hitbox)) {
+		if (collidesWithItem(player)) {
 			onPickup(player);
 			deleteLater();
 		}
