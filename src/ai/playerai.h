@@ -14,9 +14,10 @@ enum PlayerType {
 	ANEKHANDA
 };
 
-namespace PlayerInfo {
-extern const QString getName(PlayerType);
+namespace Players {
 extern PlayerType fromName(const QString&);
+extern PlayerType fromInt(int);
+extern const QString getName(PlayerType);
 extern const Texture& getTexture(PlayerType);
 extern const AI<Player> getShootingPattern(PlayerType, int, bool);
 extern int getSpeed(PlayerType);

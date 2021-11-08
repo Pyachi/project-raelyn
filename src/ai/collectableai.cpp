@@ -1,11 +1,11 @@
 #include "collectableai.h"
+#include "src/game.h"
 #include "src/assets/sfx.h"
 #include "src/entity/collectable.h"
 
 Collectable* CollectableInfo::spawn(const QPointF& loc) const {
 	Collectable* collectable = new Collectable(*this);
 	collectable->setPos(loc);
-	Game::addEntity(collectable);
 	return collectable;
 }
 

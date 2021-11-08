@@ -4,7 +4,9 @@
 #include <QDialog>
 #include <QLabel>
 #include <QTcpServer>
-#include "packet.h"
+
+class Packet;
+class UUID;
 
 class Server : public QTcpServer {
  public:
@@ -20,7 +22,8 @@ class Server : public QTcpServer {
 	static Server* SER;
 
 	QSet<QTcpSocket*> sockets;
-	QMap<QTcpSocket*, QString> users;
+	QMap<QTcpSocket*, UUID> users;
+	QMap<QTcpSocket*, QString> names;
 
 	void handleConnection();
 	void handleDisconnection();

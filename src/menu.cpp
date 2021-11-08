@@ -5,6 +5,7 @@
 #include "src/network/connection.h"
 #include "src/network/server.h"
 #include "src/network/user.h"
+#include "src/network/packet.h"
 
 Menu* Menu::MENU = nullptr;
 

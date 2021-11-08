@@ -1,4 +1,5 @@
 #include "entity.h"
+#include "bullet.h"
 #include "src/game.h"
 #include "src/assets/texture.h"
 #include "src/ai/bulletpattern.h"
@@ -7,8 +8,12 @@
 #include <QVector2D>
 
 Entity::Entity(EntityType type, const Texture& texture)
+		: Entity(type, texture, UUID()) {}
+
+Entity::Entity(EntityType type, const Texture& texture, UUID id)
 		: QGraphicsPixmapItem(&Game::getPlayableArea()),
 			type(type),
+			id(id),
 			age(0),
 			cleanup(false) {
 	setPixmap(QPixmap(texture.texture));

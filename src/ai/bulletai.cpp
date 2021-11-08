@@ -1,8 +1,16 @@
 #include "bulletai.h"
+#include "src/game.h"
 #include "src/entity/bullet.h"
 #include "src/entity/enemy.h"
 #include <QVector2D>
 #include <QtMath>
+
+BulletInfo::BulletInfo(const Texture& texture,
+											 const AI<Bullet>& ai,
+											 double rot,
+											 const QPointF& loc,
+											 int damage)
+		: texture(texture), ai(ai), relRot(rot), relLoc(loc), damage(damage) {}
 
 Bullet* BulletInfo::spawn(const Entity* owner,
 													double rot,
@@ -10,7 +18,6 @@ Bullet* BulletInfo::spawn(const Entity* owner,
 	Bullet* bullet = new Bullet(this, owner);
 	bullet->setRotation(owner->rotation() + rot + relRot);
 	bullet->setPos(owner->pos() + loc + relLoc);
-	Game::addEntity(bullet);
 	return bullet;
 }
 

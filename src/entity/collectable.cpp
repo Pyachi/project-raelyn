@@ -1,14 +1,17 @@
 #include "collectable.h"
 #include "player.h"
 #include "enemy.h"
+#include "bullet.h"
 #include "src/game.h"
 #include "src/ai/collectableai.h"
-#include "bullet.h"
+#include "src/network/user.h"
 #include <QtMath>
 #include <QDebug>
 
 Collectable::Collectable(const CollectableInfo& info)
-		: Entity(COLLECTABLE, info.texture), onPickup(info.onPickup) {}
+		: Entity(COLLECTABLE, info.texture), onPickup(info.onPickup) {
+	Game::addEntity(this);
+}
 
 void Collectable::tick() {
 	age++;

@@ -1,4 +1,5 @@
 #include "user.h"
+#include "uuid.h"
 #include <QDir>
 #include <QNetworkInterface>
 
@@ -6,8 +7,10 @@ namespace User {
 namespace {
 QString name;
 QString ip;
+UUID id;
 bool nameExists = false;
 bool ipExists = false;
+bool uuidExists = false;
 }
 
 const QString getName() {
@@ -31,5 +34,13 @@ const QString getIp() {
 		ipExists = true;
 	}
 	return ip;
+}
+
+const UUID getUUID() {
+	if (!uuidExists) {
+		id = UUID();
+		uuidExists = true;
+	}
+	return id;
 }
 }

@@ -8,6 +8,7 @@
 #include <QTimer>
 #include "alias.h"
 #include "src/ai/playerai.h"
+#include "src/network/uuid.h"
 
 class Entity;
 class Player;
@@ -22,8 +23,8 @@ class Game : public QGraphicsView {
  public:
 	static void create();
 	static QSet<int> getKeys();
-	static List<Entity*> getEntities();
 	static Player* getPlayer();
+	static QMap<UUID, Entity*> getEntities();
 	static QGraphicsPixmapItem& getPlayableArea();
 	static void addEntity(Entity*);
 	static void queueEvent(std::function<void(void)>);
@@ -39,9 +40,7 @@ class Game : public QGraphicsView {
 	QGraphicsPixmapItem playableArea;
 	QGraphicsPixmapItem background;
 
-	Player* player;
-	List<Entity*> entities;
-	Map<QString, Player*> onlinePlayers;
+	QMap<UUID, Entity*> entities;
 	List<std::function<void(void)> > eventQueue;
 
 	QSet<int> keys;

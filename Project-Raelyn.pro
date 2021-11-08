@@ -39,7 +39,8 @@ SOURCES += \
     src/network/connection.cpp \
     src/network/packet.cpp \
     src/network/server.cpp \
-    src/network/user.cpp
+    src/network/user.cpp \
+    src/network/uuid.cpp
 
 HEADERS += \
     alias.h \
@@ -62,7 +63,8 @@ HEADERS += \
     src/network/connection.h \
     src/network/packet.h \
     src/network/server.h \
-    src/network/user.h
+    src/network/user.h \
+    src/network/uuid.h
 
 FORMS +=
 

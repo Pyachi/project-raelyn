@@ -1,5 +1,4 @@
 #include "game.h"
-#include <QKeyEvent>
 #include "menu.h"
 #include "src/ai/enemyai.h"
 #include "src/ai/playerai.h"
@@ -7,6 +6,8 @@
 #include "src/entity/player.h"
 #include "src/network/connection.h"
 #include "src/network/user.h"
+#include "src/network/packet.h"
+#include <QKeyEvent>
 
 Game* Game::GAME = nullptr;
 
@@ -36,23 +37,22 @@ Game::Game() : QGraphicsView(), scene(0, 0, gameWidth, gameHeight) {
 	timer.start(1000 / 60);
 	connect(&timer, &QTimer::timeout, this, &Game::tick);
 
-	player = new Player(PYACHI, User::getName());
-
-	Enemies::ENEMYTEST.spawn(QPointF(0, -300));
+	new Player(PYACHI, User::getName(), User::getUUID());
 }
 
 void Game::tick() {
-	foreach(Entity * entity, entities) {
+	for (Entity* entity : entities.values()) {
 		entity->tick();
-		if (entity->readyToDelete()) {
-			entities.remove(entity);
-			scene.removeItem(entity);
-		}
 	}
-	player->tick();
 	while (!eventQueue.empty()) {
 		eventQueue.front()();
 		eventQueue.pop_front();
+	}
+	foreach(Entity * entity, entities.values()) {
+		if (entity->readyToDelete()) {
+			entities.remove(entity->id);
+			scene.removeItem(entity);
+		}
 	}
 }
 
@@ -60,14 +60,13 @@ void Game::create() {
 	if (GAME == nullptr)
 		GAME = new Game();
 	GAME->show();
-	Connection::sendPacket(PACKETPLAYINPLAYERSPAWN);
+	Connection::sendPacket(
+			{PACKETPLAYINPLAYERSPAWN, QStringList() << QString::number(PYACHI)});
 }
 
 QSet<int> Game::getKeys() { return GAME->keys; }
 
-List<Entity*> Game::getEntities() { return GAME->entities; }
-
-Player* Game::getPlayer() { return GAME->player; }
+QMap<UUID, Entity*> Game::getEntities() { return GAME->entities; }
 
 void Game::keyPressEvent(QKeyEvent* e) {
 	keys.insert(e->key());
@@ -81,8 +80,14 @@ void Game::keyReleaseEvent(QKeyEvent* e) {
 
 QGraphicsPixmapItem& Game::getPlayableArea() { return GAME->playableArea; }
 
-void Game::addEntity(Entity* entity) { GAME->entities.push_back(entity); }
+void Game::addEntity(Entity* entity) {
+	GAME->entities.insert(entity->id, entity);
+}
 
 void Game::queueEvent(std::function<void(void)> func) {
 	GAME->eventQueue.push_back(func);
+}
+
+Player* Game::getPlayer() {
+	return dynamic_cast<Player*>(GAME->entities[User::getUUID()]);
 }

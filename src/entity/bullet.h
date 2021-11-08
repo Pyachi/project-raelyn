@@ -9,6 +9,7 @@ class Bullet : public Entity {
  public:
 	EntityType ownerType;
 	bool borderCheck;
+	int damage;
 
  private:
 	Bullet(const BulletInfo*, const Entity*);

@@ -9,10 +9,16 @@ class Bullet;
 class Entity;
 
 struct BulletInfo {
+	BulletInfo(const Texture&,
+						 const AI<Bullet>&,
+						 double = 0,
+						 const QPointF& = QPointF(0, 0),
+						 int = 1);
 	const Texture& texture;
 	const AI<Bullet>& ai;
 	double relRot;
 	QPointF relLoc;
+	int damage;
 
 	Bullet* spawn(const Entity*,
 								double = 0,

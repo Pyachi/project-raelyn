@@ -1,21 +1,29 @@
 #include "player.h"
-#include <QtMath>
 #include "bullet.h"
 #include "enemy.h"
-#include "src/assets/texture.h"
 #include "src/game.h"
+#include "src/assets/texture.h"
 #include "src/network/connection.h"
+#include "src/network/packet.h"
+#include <QtMath>
 
-Player::Player(PlayerType type, const QString& user)
-		: Entity(PLAYER, PlayerInfo::getTexture(type)),
-			playerType(type),
+Player::Player(PlayerType playerType,
+							 const QString& user,
+							 UUID id,
+							 EntityType type)
+		: Entity(type, Players::getTexture(playerType), id),
+			playerType(playerType),
 			user(user),
 			firing(false),
 			focus(false),
 			level(1),
-			power(0) {}
+			power(0) {
+	Game::addEntity(this);
+}
 
 void Player::tick() {
+	if (type != PLAYER)
+		return;
 	age++;
 	QSet<int> keys = Game::getKeys();
 
@@ -29,16 +37,15 @@ void Player::tick() {
 	hitbox.setPos(pos());
 
 	if (firing) {
-		PlayerInfo::getShootingPattern(playerType, level, focus)(this);
+		Players::getShootingPattern(playerType, level, focus)(this);
 		Connection::sendPacket(
-				{PACKETPLAYINFIREBULLETS, QStringList() << QString::number(playerType)
-																								<< QString::number(level)
+				{PACKETPLAYINFIREBULLETS, QStringList() << QString::number(level)
 																								<< QString::number(focus)});
 	}
 
 	int dx = 0, dy = 0;
-	int speed = focus ? PlayerInfo::getFocusSpeed(playerType)
-										: PlayerInfo::getSpeed(playerType);
+	int speed = focus ? Players::getFocusSpeed(playerType)
+										: Players::getSpeed(playerType);
 	if (keys.contains(Qt::Key_Right))
 		dx += speed;
 	if (keys.contains(Qt::Key_Left))
@@ -72,9 +79,20 @@ void Player::tick() {
 			bullets.push_back(bullet);
 	}
 
-	if (!bullets.empty()) {
-		Connection::sendPacket(PACKETPLAYINPLAYERDEATH);
-		deleteLater();
-		hitbox.scene()->removeItem(&hitbox);
-	}
+	//  if (!bullets.empty()) {
+	//    Connection::sendPacket(PACKETPLAYINPLAYERDEATH);
+	//    deleteLater();
+	//    hitbox.scene()->removeItem(&hitbox);
+	//  }
+}
+
+List<Bullet*> Player::fireBullets(const List<BulletInfo>& pattern,
+																	double rot,
+																	const QPointF& loc) {
+	List<Bullet*> list = Entity::fireBullets(pattern, rot, loc);
+	if (type == ONLINEPLAYER)
+		for (Bullet* bullet : list) {
+			bullet->damage = 0;
+		}
+	return list;
 }

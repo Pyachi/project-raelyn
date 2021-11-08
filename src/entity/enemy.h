@@ -9,8 +9,10 @@ class Enemy : public Entity {
  public:
 	int health;
 
+	void kill();
+
  private:
-	Enemy(const EnemyInfo&);
+	Enemy(const EnemyInfo&, UUID);
 
 	const AI<Enemy> ai;
 

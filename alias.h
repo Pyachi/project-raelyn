@@ -6,15 +6,10 @@
 #include <queue>
 #include <map>
 #include <functional>
+#include <QDebug>
 
 template <class T>
 using List = std::list<T>;
-
-template <class T>
-using Queue = std::queue<T>;
-
-template <class T, class V>
-using Map = std::map<T, V>;
 
 template <class T>
 using AI = std::function<void(T*)>;

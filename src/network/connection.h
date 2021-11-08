@@ -2,9 +2,8 @@
 #define CONNECTION_H
 
 #include <QTcpSocket>
-#include "packet.h"
-#include <thread>
-#include <queue>
+
+class Packet;
 
 class Connection : public QTcpSocket {
  public:

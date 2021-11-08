@@ -7,14 +7,18 @@
 
 class Player : public Entity {
  public:
-	Player(PlayerType, const QString&);
+	Player(PlayerType, const QString&, UUID, EntityType = PLAYER);
 
 	void tick() override;
 
 	PlayerHitbox hitbox;
+	const PlayerType playerType;
+
+	List<Bullet*> fireBullets(const List<BulletInfo>&,
+														double = 0,
+														const QPointF& = QPointF(0, 0));
 
  private:
-	PlayerType playerType;
 	QString user;
 	bool firing;
 	bool focus;

@@ -4,7 +4,8 @@
 #include "src/entity/bullet.h"
 #include "src/entity/player.h"
 
-const QString PlayerInfo::getName(PlayerType type) {
+namespace Players {
+const QString getName(PlayerType type) {
 	switch (type) {
 		case PYACHI:
 			return "Pyachi";
@@ -17,7 +18,30 @@ const QString PlayerInfo::getName(PlayerType type) {
 	}
 }
 
-const Texture& PlayerInfo::getTexture(PlayerType type) {
+PlayerType fromName(const QString& name) {
+	if (name == "Aeron")
+		return AERON;
+	if (name == "Daesch")
+		return DAESCH;
+	if (name == "Anekhanda")
+		return ANEKHANDA;
+	return PYACHI;
+}
+
+PlayerType fromInt(int i) {
+	switch (i) {
+		case 1:
+			return AERON;
+		case 2:
+			return DAESCH;
+		case 3:
+			return ANEKHANDA;
+		default:
+			return PYACHI;
+	}
+}
+
+const Texture& getTexture(PlayerType type) {
 	switch (type) {
 		case PYACHI:
 		case AERON:
@@ -27,9 +51,7 @@ const Texture& PlayerInfo::getTexture(PlayerType type) {
 	}
 }
 
-const AI<Player> PlayerInfo::getShootingPattern(PlayerType type,
-																								int level,
-																								bool focus) {
+const AI<Player> getShootingPattern(PlayerType type, int level, bool focus) {
 	switch (type) {
 		case PYACHI:
 			switch (level) {
@@ -130,7 +152,7 @@ const AI<Player> PlayerInfo::getShootingPattern(PlayerType type,
 	}
 }
 
-int PlayerInfo::getSpeed(PlayerType type) {
+int getSpeed(PlayerType type) {
 	switch (type) {
 		case PYACHI:
 			return 10;
@@ -143,7 +165,7 @@ int PlayerInfo::getSpeed(PlayerType type) {
 	}
 }
 
-int PlayerInfo::getFocusSpeed(PlayerType type) {
+int getFocusSpeed(PlayerType type) {
 	switch (type) {
 		case PYACHI:
 			return 3;
@@ -154,4 +176,5 @@ int PlayerInfo::getFocusSpeed(PlayerType type) {
 		case ANEKHANDA:
 			return 6;
 	}
+}
 }

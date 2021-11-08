@@ -1,10 +1,13 @@
 #include "server.h"
+#include "user.h"
+#include "packet.h"
+#include "uuid.h"
+#include "src/game.h"
+#include "src/menu.h"
+#include "src/ai/enemyai.h"
 #include <QGridLayout>
 #include <QNetworkInterface>
 #include <QTcpSocket>
-#include "src/game.h"
-#include "src/menu.h"
-#include "user.h"
 
 Server* Server::SER = nullptr;
 
@@ -61,8 +64,9 @@ void Server::handleDisconnection() {
 	QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
 	sockets.remove(socket);
 	users.remove(socket);
+	names.remove(socket);
 	Menu::updatePlayerCount(sockets.size());
-	sendPacket({PACKETPLAYOUTUPDATELOBBY, users.values()});
+	sendPacket({PACKETPLAYOUTUPDATELOBBY, names.values()});
 }
 
 void Server::receivePacket() {
@@ -75,36 +79,45 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
 	Header header = packet.header;
 	switch (header) {
 		case PACKETPLAYINCONNECT:
-			users.insert(sender, packet.data.at(0));
+			users.insert(sender, UUID::fromString(packet.data.at(0)));
+			names.insert(sender, packet.data.at(1));
 			break;
 		case PACKETPLAYINDISCONNECT:
 			break;
 		case PACKETPLAYINUPDATELOBBY:
-			sendPacket({PACKETPLAYOUTUPDATELOBBY, users.values()});
+			sendPacket({PACKETPLAYOUTUPDATELOBBY, names.values()});
 			break;
 		case PACKETPLAYINSTARTGAME:
 			pauseAccepting();
 			sendPacket(PACKETPLAYOUTSTARTGAME);
+			sendPacket({PACKETPLAYOUTSPAWNENEMY,
+									QStringList() << UUID().toString()
+																<< QString::number(ENEMYTEST) << "0"
+																<< "-300"});
 			break;
 		case PACKETPLAYINUPDATEPLAYER:
-			sendPacket({PACKETPLAYOUTUPDATEPLAYER, QStringList(packet.data)
-																								 << users.value(sender)},
+			sendPacket({PACKETPLAYOUTUPDATEPLAYER,
+									QStringList() << users[sender].toString() << packet.data},
 								 sender);
 			break;
 		case PACKETPLAYINPLAYERDEATH:
 			sendPacket(
-					{PACKETPLAYOUTPLAYERDEATH, QStringList() << users.value(sender)},
+					{PACKETPLAYOUTPLAYERDEATH, QStringList() << users[sender].toString()},
 					sender);
 			break;
 		case PACKETPLAYINPLAYERSPAWN:
-			sendPacket(
-					{PACKETPLAYOUTPLAYERSPAWN, QStringList() << users.value(sender)},
-					sender);
+			sendPacket({PACKETPLAYOUTPLAYERSPAWN,
+									QStringList() << users[sender].toString() << names[sender]
+																<< packet.data},
+								 sender);
 			break;
 		case PACKETPLAYINFIREBULLETS:
-			sendPacket({PACKETPLAYOUTFIREBULLETS, QStringList() << users.value(sender)
-																													<< packet.data},
+			sendPacket({PACKETPLAYOUTFIREBULLETS,
+									QStringList() << users[sender].toString() << packet.data},
 								 sender);
+			break;
+		case PACKETPLAYINENEMYDEATH:
+			sendPacket({PACKETPLAYOUTENEMYDEATH, packet.data}, sender);
 			break;
 		default:
 			qDebug() << "ERROR: Received OUT Packet!";
