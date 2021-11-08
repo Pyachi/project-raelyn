@@ -1,5 +1,5 @@
 #include "collectableai.h"
-#include "src/game.h"
+#include "src/framework/game.h"
 #include "src/assets/sfx.h"
 #include "src/entity/collectable.h"
 

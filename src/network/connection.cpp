@@ -60,6 +60,7 @@ void Connection::handlePacket(const Packet& packet) {
 		case PACKETPLAYOUTSTARTGAME:
 			Game::create();
 			Menu::closeMenu();
+			new Player(User::character, User::getName(), User::getUUID());
 			break;
 		case PACKETPLAYOUTUPDATELOBBY:
 			Menu::updatePlayerList(packet.data);

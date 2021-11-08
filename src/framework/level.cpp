@@ -5,22 +5,21 @@
 #include "src/assets/music.h"
 #include <QFile>
 
-Level::Level(const QString& level) {
-
+Level::Level(const QString& path) : path(path) {
 	timer.connect(&timer, &QTimer::timeout, [this]() { this->iterate(); });
 }
 
 Level Level::LVL1(":/levels/lvl1.txt");
-Level Level::LVL2(":/levels/lvl2");
-Level Level::LVL3(":/levels/lvl3");
+Level Level::LVL2(":/levels/lvl2.txt");
+Level Level::LVL3(":/levels/lvl3.txt");
 
 void Level::start() {
-	QFile file(":/levels/lvl1.txt");
+	QFile file(path);
 	if (!file.open(QIODevice::ReadOnly))
 		qDebug() << file.errorString();
 	QTextStream in(&file);
 	while (!in.atEnd())
-		instructions.push_back(in.readLine());
+		instructions.push_back(in.readLine().split('/').at(0));
 	timer.start(1000 / 20);
 }
 

@@ -1,5 +1,5 @@
 #include "bullet.h"
-#include "src/game.h"
+#include "src/framework/game.h"
 #include "src/ai/bulletai.h"
 
 Bullet::Bullet(const BulletInfo* info, const Entity* owner)

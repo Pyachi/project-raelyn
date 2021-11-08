@@ -1,6 +1,6 @@
 #include "enemyai.h"
 #include "bulletpattern.h"
-#include "src/game.h"
+#include "src/framework/game.h"
 #include "src/entity/enemy.h"
 
 Enemy* EnemyInfo::spawn(const QPointF& loc, UUID id) const {

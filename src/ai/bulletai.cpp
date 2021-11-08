@@ -1,5 +1,5 @@
 #include "bulletai.h"
-#include "src/game.h"
+#include "src/framework/game.h"
 #include "src/entity/bullet.h"
 #include "src/entity/enemy.h"
 #include <QVector2D>

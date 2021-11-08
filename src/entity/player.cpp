@@ -1,7 +1,7 @@
 #include "player.h"
 #include "bullet.h"
 #include "enemy.h"
-#include "src/game.h"
+#include "src/framework/game.h"
 #include "src/assets/texture.h"
 #include "src/network/connection.h"
 #include "src/network/packet.h"

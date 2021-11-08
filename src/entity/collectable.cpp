@@ -2,7 +2,7 @@
 #include "player.h"
 #include "enemy.h"
 #include "bullet.h"
-#include "src/game.h"
+#include "src/framework/game.h"
 #include "src/ai/collectableai.h"
 #include "src/network/user.h"
 #include <QtMath>

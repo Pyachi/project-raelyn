@@ -36,8 +36,6 @@ Game::Game() : QGraphicsView(), scene(0, 0, gameWidth, gameHeight) {
 
 	timer.start(1000 / 60);
 	connect(&timer, &QTimer::timeout, [this]() { this->tick(); });
-
-	new Player(PYACHI, User::getName(), User::getUUID());
 }
 
 void Game::tick() {
@@ -60,8 +58,8 @@ void Game::create() {
 	if (GAME == nullptr)
 		GAME = new Game();
 	GAME->show();
-	Connection::sendPacket(
-			{PACKETPLAYINPLAYERSPAWN, QStringList() << QString::number(PYACHI)});
+	Connection::sendPacket({PACKETPLAYINPLAYERSPAWN,
+													QStringList() << QString::number(User::character)});
 }
 
 QSet<int> Game::getKeys() { return GAME->keys; }

@@ -38,7 +38,7 @@ void Enemy::tick() {
 void Enemy::kill() {
 	if (cleanup)
 		return;
-	for (int i = 0; i < 1000; i++)
+	for (int i = 0; i < 100; i++)
 		Collectables::POWER.spawn(pos());
 	deleteLater();
 }

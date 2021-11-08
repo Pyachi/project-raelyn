@@ -1,6 +1,6 @@
 #include "entity.h"
 #include "bullet.h"
-#include "src/game.h"
+#include "src/framework/game.h"
 #include "src/assets/texture.h"
 #include "src/ai/bulletpattern.h"
 #include "src/ai/bulletai.h"

@@ -7,6 +7,7 @@
 #include <QLineEdit>
 #include <QLabel>
 #include <QListWidget>
+#include "src/ai/playerai.h"
 
 class Menu : public QDialog {
  public:
@@ -44,7 +45,7 @@ class Menu : public QDialog {
 	QPushButton quit;
 
 	// Singleplayer
-	QPushButton player;
+	QPushButton playerSingle;
 	QPushButton start;
 	QPushButton backSingleplayer;
 
@@ -67,6 +68,7 @@ class Menu : public QDialog {
 
 	// Lobby
 	QListWidget players;
+	QPushButton playerLobby;
 	QPushButton startLobby;
 	QPushButton backLobby;
 

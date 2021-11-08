@@ -58,7 +58,7 @@ const AI<Player> getShootingPattern(PlayerType type, int level, bool focus) {
 				case 1:
 					if (focus)
 						return [](Player* player) {
-							player->fireBullets(BulletPatterns::PLAYER_HOMING);
+							player->fireBullets(BulletPatterns::PLAYER_BASIC);
 						};
 					else
 						return [](Player* player) {
@@ -84,9 +84,13 @@ const AI<Player> getShootingPattern(PlayerType type, int level, bool focus) {
 			switch (level) {
 				case 1:
 					if (focus)
-						return [](Player* player) {};
+						return [](Player* player) {
+							player->fireBullets(BulletPatterns::PLAYER_HOMING);
+						};
 					else
-						return [](Player* player) {};
+						return [](Player* player) {
+							player->fireBullets(BulletPatterns::PLAYER_HOMING);
+						};
 				case 2:
 					if (focus)
 						return [](Player* player) {};
@@ -107,9 +111,13 @@ const AI<Player> getShootingPattern(PlayerType type, int level, bool focus) {
 			switch (level) {
 				case 1:
 					if (focus)
-						return [](Player* player) {};
+						return [](Player* player) {
+							player->fireBullets(BulletPatterns::FLOWERCIRCLE);
+						};
 					else
-						return [](Player* player) {};
+						return [](Player* player) {
+							player->fireBullets(BulletPatterns::FLOWERCIRCLE);
+						};
 				case 2:
 					if (focus)
 						return [](Player* player) {};
@@ -130,9 +138,13 @@ const AI<Player> getShootingPattern(PlayerType type, int level, bool focus) {
 			switch (level) {
 				case 1:
 					if (focus)
-						return [](Player* player) {};
+						return [](Player* player) {
+							player->fireBullets(BulletPatterns::SPRAY);
+						};
 					else
-						return [](Player* player) {};
+						return [](Player* player) {
+							player->fireBullets(BulletPatterns::SPRAY);
+						};
 				case 2:
 					if (focus)
 						return [](Player* player) {};

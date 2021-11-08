@@ -13,6 +13,8 @@ bool ipExists = false;
 bool uuidExists = false;
 }
 
+PlayerType character = PYACHI;
+
 const QString getName() {
 	if (!nameExists) {
 		name = (QDir::homePath().split('/').last() + "#" +

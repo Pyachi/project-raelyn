@@ -15,7 +15,7 @@ Menu::Menu()
 			multiplayer("Multiplayer"),
 			options("Options"),
 			quit("Quit"),
-			player("Character: Pyachi"),
+			playerSingle("Character: Pyachi"),
 			start("Start Game"),
 			backSingleplayer("Return to Menu"),
 			ipForm("127.0.0.1"),
@@ -30,6 +30,7 @@ Menu::Menu()
 			backOptions("Return to Menu"),
 			playerCount("Players Connected: 0"),
 			backServer("Return to Menu"),
+			playerLobby("Character: Pyachi"),
 			startLobby("Start Game"),
 			backLobby("Return to Menu") {
 	setLayout(&layout);
@@ -63,10 +64,10 @@ Menu::Menu()
 	connect(&quit, &QPushButton::clicked, this, &Menu::quitGame);
 
 	singleplayerMenu.setLayout(&singleplayerLayout);
-	singleplayerLayout.addWidget(&player, 1, 1, 1, -1);
+	singleplayerLayout.addWidget(&playerSingle, 1, 1, 1, -1);
 	singleplayerLayout.addWidget(&start, 2, 1, 1, -1);
 	singleplayerLayout.addWidget(&backSingleplayer, 3, 1, 1, -1);
-	connect(&player, &QPushButton::clicked, this, &Menu::changeCharacter);
+	connect(&playerSingle, &QPushButton::clicked, this, &Menu::changeCharacter);
 	connect(&start, &QPushButton::clicked, this, &Menu::startGame);
 	connect(&backSingleplayer, &QPushButton::clicked, this, &Menu::returnToMenu);
 
@@ -94,8 +95,10 @@ Menu::Menu()
 
 	lobbyMenu.setLayout(&lobbyLayout);
 	lobbyLayout.addWidget(&players, 1, 1, 1, -1);
-	lobbyLayout.addWidget(&startLobby, 2, 1, 1, -1);
-	lobbyLayout.addWidget(&backLobby, 3, 1, 1, -1);
+	lobbyLayout.addWidget(&playerLobby, 2, 1, 1, -1);
+	lobbyLayout.addWidget(&startLobby, 3, 1, 1, -1);
+	lobbyLayout.addWidget(&backLobby, 4, 1, 1, -1);
+	connect(&playerLobby, &QPushButton::clicked, this, &Menu::changeCharacter);
 	connect(&startLobby, &QPushButton::clicked, this, &Menu::startGame);
 	connect(&backLobby, &QPushButton::clicked, this, &Menu::returnToMenu);
 }
@@ -189,4 +192,27 @@ void Menu::joinServer() {
 		SFX::playSound(SFX::SELECT_2, 1);
 }
 
-void Menu::changeCharacter() {}
+void Menu::changeCharacter() {
+	switch (User::character) {
+		case PYACHI:
+			User::character = AERON;
+			playerSingle.setText("Character: Aeron");
+			playerLobby.setText("Character: Aeron");
+			break;
+		case AERON:
+			User::character = DAESCH;
+			playerSingle.setText("Character: Daesch");
+			playerLobby.setText("Character: Daesch");
+			break;
+		case DAESCH:
+			User::character = ANEKHANDA;
+			playerSingle.setText("Character: Anekhanda");
+			playerLobby.setText("Character: Anekhanda");
+			break;
+		case ANEKHANDA:
+			User::character = PYACHI;
+			playerSingle.setText("Character: Pyachi");
+			playerLobby.setText("Character: Pyachi");
+			break;
+	}
+}
