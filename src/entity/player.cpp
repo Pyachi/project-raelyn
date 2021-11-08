@@ -1,8 +1,9 @@
 #include "player.h"
-#include "enemy.h"
+#include <QtMath>
 #include "bullet.h"
-#include "src/game.h"
+#include "enemy.h"
 #include "src/assets/texture.h"
+#include "src/game.h"
 #include "src/network/connection.h"
 
 Player::Player(PlayerType type, const QString& user)
@@ -27,8 +28,15 @@ void Player::tick() {
 		hitbox.setZValue(-1);
 	hitbox.setPos(pos());
 
-	if (firing)
+	if (firing) {
 		PlayerInfo::getShootingPattern(playerType, level, focus)(this);
+		Connection::sendPacket({PACKETPLAYINFIREBULLETS,
+														QStringList() << QString::number(pos().x())
+																					<< QString::number(pos().y())
+																					<< PlayerInfo::getName(playerType)
+																					<< QString::number(level)
+																					<< QString::number(focus)});
+	}
 
 	int dx = 0, dy = 0;
 	int speed = focus ? PlayerInfo::getFocusSpeed(playerType)

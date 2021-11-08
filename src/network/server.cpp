@@ -52,8 +52,8 @@ void Server::handleConnection() {
 	QTcpSocket* socket = nextPendingConnection();
 	sockets.insert(socket);
 	connect(socket, &QTcpSocket::readyRead, this, &Server::receivePacket);
-	connect(
-			socket, &QTcpSocket::disconnected, this, &Server::handleDisconnection);
+	connect(socket, &QTcpSocket::disconnected, this,
+					&Server::handleDisconnection);
 	Menu::updatePlayerCount(sockets.size());
 }
 
@@ -101,6 +101,10 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
 					{PACKETPLAYOUTPLAYERSPAWN, QStringList() << users.value(sender)},
 					sender);
 			break;
+		case PACKETPLAYINFIREBULLETS:
+			sendPacket({PACKETPLAYOUTFIREBULLETS,
+									QStringList() << users.value(sender) << packet.data},
+								 sender);
 		default:
 			qDebug() << "ERROR: Received OUT Packet!";
 			break;

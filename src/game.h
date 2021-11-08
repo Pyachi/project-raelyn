@@ -1,12 +1,12 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <QGraphicsView>
 #include <QGraphicsPixmapItem>
-#include <QTimer>
+#include <QGraphicsView>
 #include <QOpenGLWidget>
-#include "alias.h"
 #include <QSet>
+#include <QTimer>
+#include "alias.h"
 #include "src/ai/playerai.h"
 
 class Entity;
@@ -26,9 +26,7 @@ class Game : public QGraphicsView {
 	static Player* getPlayer();
 	static QGraphicsPixmapItem& getPlayableArea();
 	static void addEntity(Entity*);
-	static void updatePlayerLocation(const QString&, const QPointF&);
-	static void removeOnlinePlayer(const QString&);
-	static void addOnlinePlayer(PlayerType, const QString&);
+	static void queueEvent(std::function<void(void)>);
 
  private:
 	Game();
@@ -44,7 +42,7 @@ class Game : public QGraphicsView {
 	Player* player;
 	List<Entity*> entities;
 	Map<QString, Player*> onlinePlayers;
-	List<std::function<void(void)> > onlineQueue;
+	List<std::function<void(void)> > eventQueue;
 
 	QSet<int> keys;
 
@@ -52,6 +50,8 @@ class Game : public QGraphicsView {
 
 	void keyPressEvent(QKeyEvent* e);
 	void keyReleaseEvent(QKeyEvent* e);
+
+	friend class Connection;
 };
 
 #endif  // SCENE_H

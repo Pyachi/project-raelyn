@@ -1,8 +1,21 @@
 #include "playerai.h"
 #include "bulletpattern.h"
-#include "src/entity/player.h"
-#include "src/entity/bullet.h"
 #include "src/assets/texture.h"
+#include "src/entity/bullet.h"
+#include "src/entity/player.h"
+
+const QString PlayerInfo::getName(PlayerType type) {
+	switch (type) {
+		case PYACHI:
+			return "Pyachi";
+		case AERON:
+			return "Aeron";
+		case DAESCH:
+			return "Daesch";
+		case ANEKHANDA:
+			return "Anekhanda";
+	}
+}
 
 const Texture& PlayerInfo::getTexture(PlayerType type) {
 	switch (type) {
