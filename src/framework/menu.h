@@ -63,6 +63,7 @@ class Menu : public QDialog {
 	QSlider soundSlider;
 	QLabel musicLabel;
 	QSlider musicSlider;
+	QPushButton keys;
 	QPushButton backOptions;
 
 	// Server

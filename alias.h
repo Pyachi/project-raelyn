@@ -12,6 +12,9 @@ template <class T>
 using List = std::list<T>;
 
 template <class T>
+using Array = std::vector<T>;
+
+template <class T>
 using AI = std::function<void(T*)>;
 
 #endif  // ALIAS_H

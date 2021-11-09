@@ -6,6 +6,7 @@
 #include "src/framework/game.h"
 #include "src/network/connection.h"
 #include "src/network/packet.h"
+#include "src/network/user.h"
 
 EntityPlayer::EntityPlayer(PlayerType playerType,
 													 const QString& user,
@@ -27,8 +28,8 @@ void EntityPlayer::tick() {
 	age++;
 	QSet<int> keys = Game::getKeys();
 
-	firing = keys.contains(Qt::Key_Z);
-	focus = keys.contains(Qt::Key_Shift);
+	firing = keys.contains(User::getKeyShoot());
+	focus = keys.contains(User::getKeyFocus());
 
 	if (focus)
 		hitbox.setZValue(4);
@@ -39,20 +40,20 @@ void EntityPlayer::tick() {
 	if (firing) {
 		Players::getShootingPattern(playerType, level, focus)(this);
 		Connection::sendPacket(
-				{PACKETPLAYINFIREBULLETS,
-				 QStringList() << QString::number(level) << QString::number(focus)});
+				{PACKETPLAYINFIREBULLETS, QStringList() << QString::number(level)
+																								<< QString::number(focus)});
 	}
 
 	int dx = 0, dy = 0;
 	int speed = focus ? Players::getFocusSpeed(playerType)
 										: Players::getSpeed(playerType);
-	if (keys.contains(Qt::Key_Right))
+	if (keys.contains(User::getKeyRight()))
 		dx += speed;
-	if (keys.contains(Qt::Key_Left))
+	if (keys.contains(User::getKeyLeft()))
 		dx -= speed;
-	if (keys.contains(Qt::Key_Down))
+	if (keys.contains(User::getKeyDown()))
 		dy += speed;
-	if (keys.contains(Qt::Key_Up))
+	if (keys.contains(User::getKeyUp()))
 		dy -= speed;
 	if (dx != 0 && dy != 0) {
 		dx /= sqrt(2);

@@ -31,6 +31,7 @@ Menu::Menu()
 			soundSlider(Qt::Horizontal),
 			musicLabel("Music Volume:"),
 			musicSlider(Qt::Horizontal),
+			keys("Controls: Traditional"),
 			backOptions("Return to Menu"),
 			playerCount("Players Connected: 0"),
 			backServer("Return to Menu"),
@@ -96,13 +97,29 @@ Menu::Menu()
 	optionsLayout.addWidget(&musicSlider, 4, 1, 1, -1);
 	musicSlider.setMaximum(5);
 	musicSlider.setValue(5);
-	optionsLayout.addWidget(&backOptions, 5, 1, 1, -1);
+	optionsLayout.addWidget(&keys, 5, 1, 1, -1);
+	optionsLayout.addWidget(&backOptions, 6, 1, 1, -1);
 	connect(&soundSlider, &QSlider::valueChanged, [this]() {
 		SFX::volume = this->soundSlider.value() / 5.0;
 		SFX::playSound(SoundEffect::COLLECT_2);
 	});
 	connect(&musicSlider, &QSlider::valueChanged, [this]() {
 		Music::changeVolume(this->musicSlider.value() * 20);
+	});
+	connect(&keys, &QPushButton::pressed, [this]() {
+		if (User::getKeyUp() == Qt::Key_Up) {
+			keys.setText("Controls: WASD");
+			User::keys = {Qt::Key_W, Qt::Key_A, Qt::Key_S, Qt::Key_D,
+										Qt::Key_L, Qt::Key_K, Qt::Key_J};
+		} else if (User::getKeyUp() == Qt::Key_W) {
+			keys.setText("Controls: IJKL");
+			User::keys = {Qt::Key_I, Qt::Key_J, Qt::Key_K, Qt::Key_L,
+										Qt::Key_A, Qt::Key_S, Qt::Key_D};
+		} else if (User::getKeyUp() == Qt::Key_I) {
+			keys.setText("Controls: Traditional");
+			User::keys = {Qt::Key_Up,    Qt::Key_Left, Qt::Key_Down, Qt::Key_Right,
+										Qt::Key_Shift, Qt::Key_Z,    Qt::Key_X};
+		}
 	});
 	connect(&backOptions, &QPushButton::clicked, this, &Menu::returnToMenu);
 

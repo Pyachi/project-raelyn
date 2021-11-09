@@ -15,6 +15,31 @@ bool uuidExists = false;
 
 PlayerType character = PYACHI;
 
+Array<int> keys = {Qt::Key_Up,    Qt::Key_Left, Qt::Key_Down, Qt::Key_Right,
+									 Qt::Key_Shift, Qt::Key_Z,    Qt::Key_X};
+
+int getKeyUp() {
+	return keys[0];
+};
+int getKeyLeft() {
+	return keys[1];
+};
+int getKeyDown() {
+	return keys[2];
+};
+int getKeyRight() {
+	return keys[3];
+};
+int getKeyFocus() {
+	return keys[4];
+};
+int getKeyShoot() {
+	return keys[5];
+};
+int getKeyBomb() {
+	return keys[6];
+};
+
 const QString getName() {
 	if (!nameExists) {
 		name = (QDir::homePath().split('/').last() + "#" +
