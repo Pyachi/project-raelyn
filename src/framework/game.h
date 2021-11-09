@@ -11,11 +11,11 @@
 #include <QGridLayout>
 #include <QPushButton>
 #include "alias.h"
-#include "src/ai/playerai.h"
+#include "src/ai/player.h"
 #include "src/network/uuid.h"
 
 class Entity;
-class Player;
+class EntityPlayer;
 
 const int gameWidth = 1280;
 const int gameHeight = 720;
@@ -27,7 +27,7 @@ class Game : public QGraphicsView {
  public:
 	static void create();
 	static QSet<int> getKeys();
-	static Player* getPlayer();
+	static EntityPlayer* getPlayer();
 	static QMap<UUID, Entity*> getEntities();
 	static QGraphicsPixmapItem& getPlayableArea();
 	static void addEntity(Entity*);

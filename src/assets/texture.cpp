@@ -1,12 +1,28 @@
 #include "texture.h"
 
-namespace Textures {
-const Texture PLAYERHITBOX{":/textures/player_hitbox.png", 4};
-const Texture PYACHI{":/textures/player.png", 3};
-const Texture ENEMY1{":/textures/enemy.png", 3};
-const Texture PLAYERBULLETBASIC{":/textures/player_bullet.png", 2};
-const Texture BULLETROUND{":/textures/bulletRound.png", 2};
-const Texture BULLETELLIPSE{":/textures/bulletEllipse.png", 2};
-const Texture BACKGROUND{":/textures/background.png", 5};
-const Texture TITLE{":/textures/title.png", 0};
-}  // namespace Textures
+const Texture Texture::get(Tex texture) {
+	switch (texture) {
+		case TEXHITBOX:
+			return {":/textures/player_hitbox.png", 4};
+		case TEXPYACHI:
+			return {":/textures/player.png", 3};
+		case TEXAERON:
+			return {":/textures/player.png", 3};
+		case TEXDAESCH:
+			return {":/textures/player.png", 3};
+		case TEXANEKHANDA:
+			return {":/textures/player.png", 3};
+		case TEXENEMY1:
+			return {":/textures/enemy.png", 3};
+		case TEXPLAYERBULLET:
+			return {":/textures/player_bullet.png", 2};
+		case TEXBULLETROUND:
+			return {":/textures/bulletRound.png", 2};
+		case TEXBULLETELLIPSE:
+			return {":/textures/bulletEllipse.png", 2};
+		case BACKGROUND:
+			return {":/textures/background.png", 5};
+		case TITLE:
+			return {":/textures/title.png", 0};
+	}
+}

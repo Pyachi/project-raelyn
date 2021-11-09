@@ -5,7 +5,7 @@
 #include "src/framework/game.h"
 #include "src/framework/menu.h"
 #include "src/framework/level.h"
-#include "src/ai/enemyai.h"
+#include "src/ai/enemy.h"
 #include <QGridLayout>
 #include <QNetworkInterface>
 #include <QTcpSocket>

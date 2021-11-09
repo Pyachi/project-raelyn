@@ -6,31 +6,31 @@ namespace Music {
 namespace {
 QMediaPlaylist playlist;
 QMediaPlayer player;
-}
+int volume = 100;
+}  // namespace
 
 const QString get(Song song) {
 	switch (song) {
-		case Song::MENU:
+		case MENU:
 			return "qrc:/music/music_menu_theme.ogg";
-		case Song::LVL1:
-		//      return LVL1;
-		case Song::LVL2:
-		//      return LVL2;
-		case Song::LVL3:
-		//      return LVL3;
-		case Song::LVL1BOSS:
-		//      return LVL1BOSS;
-		case Song::LVL2BOSS:
-		//      return LVL2BOSS;
-		case Song::LVL3BOSS:
-		//      return LVL3BOSS;
-		case Song::CREDITS:
-			//      return CREDITS;
+		case LVL1:
+			return "qrc:/music/music_menu_theme.ogg";
+		case LVL2:
+			return "qrc:/music/music_menu_theme.ogg";
+		case LVL3:
+			return "qrc:/music/music_menu_theme.ogg";
+		case LVL1BOSS:
+			return "qrc:/music/music_menu_theme.ogg";
+		case LVL2BOSS:
+			return "qrc:/music/music_menu_theme.ogg";
+		case LVL3BOSS:
+			return "qrc:/music/music_menu_theme.ogg";
+		case CREDITS:
 			return "qrc:/music/music_menu_theme.ogg";
 	}
 }
 
-void playSong(Song song, int volume) {
+void playSong(Song song) {
 	playlist.clear();
 	playlist.addMedia(QUrl(get(song)));
 	playlist.setPlaybackMode(QMediaPlaylist::Loop);
@@ -40,5 +40,12 @@ void playSong(Song song, int volume) {
 	player.play();
 }
 
-void stopSong() { player.stop(); }
+void changeVolume(int vol) {
+	volume = vol;
+	player.setVolume(volume);
+}
+
+void stopSong() {
+	player.stop();
+}
 }  // namespace Music

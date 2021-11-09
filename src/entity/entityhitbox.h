@@ -3,10 +3,10 @@
 
 #include "entity.h"
 
-class PlayerHitbox : public Entity {
-	PlayerHitbox();
+class EntityHitbox : public Entity {
+	EntityHitbox();
 	void tick() override;
-	friend class Player;
+	friend class EntityPlayer;
 };
 
 #endif  // PLAYERHITBOX_H

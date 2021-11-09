@@ -1,7 +1,7 @@
 #include "user.h"
-#include "uuid.h"
 #include <QDir>
 #include <QNetworkInterface>
+#include "uuid.h"
 
 namespace User {
 namespace {
@@ -11,7 +11,7 @@ UUID id;
 bool nameExists = false;
 bool ipExists = false;
 bool uuidExists = false;
-}
+}  // namespace
 
 PlayerType character = PYACHI;
 
@@ -45,4 +45,4 @@ const UUID getUUID() {
 	}
 	return id;
 }
-}
+}  // namespace User

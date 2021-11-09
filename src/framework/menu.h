@@ -2,12 +2,12 @@
 #define MAINMENU_H
 
 #include <QDialog>
-#include <QPushButton>
 #include <QGridLayout>
-#include <QLineEdit>
 #include <QLabel>
+#include <QLineEdit>
 #include <QListWidget>
-#include "src/ai/playerai.h"
+#include <QPushButton>
+#include "src/ai/player.h"
 
 class Menu : public QDialog {
  public:
@@ -59,6 +59,10 @@ class Menu : public QDialog {
 	QPushButton backMultiplayer;
 
 	// Options
+	QLabel soundLabel;
+	QSlider soundSlider;
+	QLabel musicLabel;
+	QSlider musicSlider;
 	QPushButton backOptions;
 
 	// Server

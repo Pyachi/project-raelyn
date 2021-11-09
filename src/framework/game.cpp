@@ -1,13 +1,13 @@
 #include "game.h"
-#include "menu.h"
-#include "src/ai/enemyai.h"
-#include "src/ai/playerai.h"
-#include "src/assets/texture.h"
-#include "src/entity/player.h"
-#include "src/network/connection.h"
-#include "src/network/user.h"
-#include "src/network/packet.h"
 #include <QKeyEvent>
+#include "menu.h"
+#include "src/ai/enemy.h"
+#include "src/ai/player.h"
+#include "src/assets/texture.h"
+#include "src/entity/entityplayer.h"
+#include "src/network/connection.h"
+#include "src/network/packet.h"
+#include "src/network/user.h"
 
 Game* Game::GAME = nullptr;
 
@@ -22,9 +22,9 @@ Game::Game()
 	setInteractive(false);
 	setViewport(&openGL);
 
-	QPixmap backgroundPixmap(Textures::BACKGROUND.texture);
+	QPixmap backgroundPixmap(Texture::get(BACKGROUND).texture);
 	background.setPixmap(backgroundPixmap);
-	background.setZValue(Textures::BACKGROUND.zValue);
+	background.setZValue(Texture::get(BACKGROUND).zValue);
 	scene.addItem(&background);
 
 	QPixmap playableAreaPixmap(gameHeight - (playBorder * 2),
@@ -53,7 +53,7 @@ Game::Game()
 }
 
 Game::~Game() {
-	foreach(Entity * entity, entities.values()) {
+	foreach (Entity* entity, entities.values()) {
 		GAME = nullptr;
 		entities.remove(entity->id);
 		scene.removeItem(entity);
@@ -71,7 +71,7 @@ void Game::tick() {
 		eventQueue.front()();
 		eventQueue.pop_front();
 	}
-	foreach(Entity * entity, entities.values()) {
+	foreach (Entity* entity, entities.values()) {
 		if (entity->readyToDelete()) {
 			entities.remove(entity->id);
 			scene.removeItem(entity);
@@ -98,11 +98,17 @@ void Game::keyReleaseEvent(QKeyEvent* e) {
 	QGraphicsView::keyReleaseEvent(e);
 }
 
-QGraphicsPixmapItem& Game::getPlayableArea() { return GAME->playableArea; }
+QGraphicsPixmapItem& Game::getPlayableArea() {
+	return GAME->playableArea;
+}
 
-QSet<int> Game::getKeys() { return GAME->keys; }
+QSet<int> Game::getKeys() {
+	return GAME->keys;
+}
 
-QMap<UUID, Entity*> Game::getEntities() { return GAME->entities; }
+QMap<UUID, Entity*> Game::getEntities() {
+	return GAME->entities;
+}
 
 void Game::addEntity(Entity* entity) {
 	GAME->entities.insert(entity->id, entity);
@@ -112,6 +118,6 @@ void Game::queueEvent(std::function<void(void)> func) {
 	GAME->eventQueue.push_back(func);
 }
 
-Player* Game::getPlayer() {
-	return dynamic_cast<Player*>(GAME->entities[User::getUUID()]);
+EntityPlayer* Game::getPlayer() {
+	return dynamic_cast<EntityPlayer*>(GAME->entities[User::getUUID()]);
 }

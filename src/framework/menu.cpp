@@ -3,9 +3,9 @@
 #include "src/assets/sfx.h"
 #include "src/assets/texture.h"
 #include "src/network/connection.h"
+#include "src/network/packet.h"
 #include "src/network/server.h"
 #include "src/network/user.h"
-#include "src/network/packet.h"
 
 Menu* Menu::MENU = nullptr;
 
@@ -27,6 +27,10 @@ Menu::Menu()
 			host("Host"),
 			join("Join"),
 			backMultiplayer("Return to Menu"),
+			soundLabel("Sound Volume:"),
+			soundSlider(Qt::Horizontal),
+			musicLabel("Music Volume:"),
+			musicSlider(Qt::Horizontal),
 			backOptions("Return to Menu"),
 			playerCount("Players Connected: 0"),
 			backServer("Return to Menu"),
@@ -38,7 +42,7 @@ Menu::Menu()
 
 	setFixedSize(0, 0);
 
-	title.setPixmap(QPixmap(Textures::TITLE.texture));
+	title.setPixmap(QPixmap(Texture::get(TITLE).texture));
 	layout.addWidget(&title, 1, 1, 1, -1);
 	layout.addWidget(&mainMenu, 2, 1, 1, -1);
 	layout.addWidget(&singleplayerMenu, 2, 1, 1, -1);
@@ -84,7 +88,19 @@ Menu::Menu()
 	portForm.setValidator(&portValidator);
 
 	optionsMenu.setLayout(&optionsLayout);
-	optionsLayout.addWidget(&backOptions, 1, 1, 1, -1);
+	optionsLayout.addWidget(&soundLabel, 1, 1, 1, -1);
+	optionsLayout.addWidget(&soundSlider, 2, 1, 1, -1);
+	soundSlider.setValue(99);
+	optionsLayout.addWidget(&musicLabel, 3, 1, 1, -1);
+	optionsLayout.addWidget(&musicSlider, 4, 1, 1, -1);
+	musicSlider.setValue(99);
+	optionsLayout.addWidget(&backOptions, 5, 1, 1, -1);
+	connect(&soundSlider, &QSlider::valueChanged, [this]() {
+		SFX::volume = this->soundSlider.value() / 100.0;
+		SFX::playSound(COLLECT_1);
+	});
+	connect(&musicSlider, &QSlider::valueChanged,
+					[this]() { Music::changeVolume(this->musicSlider.value()); });
 	connect(&backOptions, &QPushButton::clicked, this, &Menu::returnToMenu);
 
 	serverMenu.setLayout(&serverLayout);
@@ -108,7 +124,7 @@ void Menu::openMenu() {
 		MENU = new Menu();
 	MENU->show();
 	MENU->returnToMenu();
-	Music::playSong(Song::MENU, 100);
+	Music::playSong(Song::MENU);
 }
 
 void Menu::closeMenu() {
@@ -129,28 +145,30 @@ void Menu::updatePlayerList(const QStringList& list) {
 void Menu::openSingleplayer() {
 	mainMenu.hide();
 	singleplayerMenu.show();
-	SFX::playSound(SFX::SELECT_1, 1);
+	SFX::playSound(SELECT_1, 1);
 }
 
 void Menu::openMultiplayer() {
 	mainMenu.hide();
 	lobbyMenu.hide();
 	multiplayerMenu.show();
-	SFX::playSound(SFX::SELECT_1, 1);
+	SFX::playSound(SELECT_1, 1);
 }
 
 void Menu::openOptions() {
 	mainMenu.hide();
 	optionsMenu.show();
-	SFX::playSound(SFX::SELECT_1, 1);
+	SFX::playSound(SELECT_1, 1);
 }
 
-void Menu::quitGame() { close(); }
+void Menu::quitGame() {
+	close();
+}
 
 void Menu::startGame() {
 	if (!Connection::exists()) {
 		if (!Server::create(1337) || !Connection::create("127.0.0.1", 1337)) {
-			SFX::playSound(SFX::SELECT_2, 1);
+			SFX::playSound(SELECT_2, 1);
 			return;
 		}
 	}
@@ -159,7 +177,7 @@ void Menu::startGame() {
 
 void Menu::returnToMenu() {
 	if (serverMenu.isVisible())
-		Music::playSong(Song::MENU, 100);
+		Music::playSong(Song::MENU);
 	Connection::disconnect();
 	Server::disconnect();
 	mainMenu.show();
@@ -168,19 +186,19 @@ void Menu::returnToMenu() {
 	optionsMenu.hide();
 	lobbyMenu.hide();
 	serverMenu.hide();
-	SFX::playSound(SFX::SELECT_2, 1);
+	SFX::playSound(SELECT_2, 1);
 }
 
 void Menu::hostServer() {
 	if (!Server::create(portForm.text().toUShort())) {
-		SFX::playSound(SFX::SELECT_2, 1);
+		SFX::playSound(SELECT_2, 1);
 		return;
 	}
 	connectionInfo.setText(User::getIp() + ":" +
 												 QString::number(Server::getPort()));
 	multiplayerMenu.hide();
 	serverMenu.show();
-	SFX::playSound(SFX::SELECT_1, 1);
+	SFX::playSound(SELECT_1, 1);
 	Music::stopSong();
 }
 
@@ -189,9 +207,9 @@ void Menu::joinServer() {
 		lobbyMenu.show();
 		multiplayerMenu.hide();
 		Connection::sendPacket(PACKETPLAYINUPDATELOBBY);
-		SFX::playSound(SFX::SELECT_1, 1);
+		SFX::playSound(SELECT_1, 1);
 	} else
-		SFX::playSound(SFX::SELECT_2, 1);
+		SFX::playSound(SELECT_2, 1);
 }
 
 void Menu::changeCharacter() {

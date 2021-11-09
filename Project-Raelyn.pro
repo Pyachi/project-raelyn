@@ -19,20 +19,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/ai/bulletai.cpp \
+    src/ai/bullet.cpp \
     src/ai/bulletpattern.cpp \
-    src/ai/collectableai.cpp \
-    src/ai/enemyai.cpp \
-    src/ai/playerai.cpp \
+    src/ai/collectable.cpp \
+    src/ai/enemy.cpp \
+    src/ai/player.cpp \
     src/assets/music.cpp \
     src/assets/sfx.cpp \
     src/assets/texture.cpp \
-    src/entity/bullet.cpp \
-    src/entity/collectable.cpp \
-    src/entity/enemy.cpp \
     src/entity/entity.cpp \
-    src/entity/player.cpp \
-    src/entity/playerhitbox.cpp \
+    src/entity/entitybullet.cpp \
+    src/entity/entitycollectable.cpp \
+    src/entity/entityenemy.cpp \
+    src/entity/entityhitbox.cpp \
+    src/entity/entityplayer.cpp \
     src/framework/game.cpp \
     src/framework/level.cpp \
     src/framework/menu.cpp \
@@ -45,20 +45,20 @@ SOURCES += \
 
 HEADERS += \
     alias.h \
-    src/ai/bulletai.h \
+    src/ai/bullet.h \
     src/ai/bulletpattern.h \
-    src/ai/collectableai.h \
-    src/ai/enemyai.h \
-    src/ai/playerai.h \
+    src/ai/collectable.h \
+    src/ai/enemy.h \
+    src/ai/player.h \
     src/assets/music.h \
     src/assets/sfx.h \
     src/assets/texture.h \
-    src/entity/bullet.h \
-    src/entity/collectable.h \
-    src/entity/enemy.h \
     src/entity/entity.h \
-    src/entity/player.h \
-    src/entity/playerhitbox.h \
+    src/entity/entitybullet.h \
+    src/entity/entitycollectable.h \
+    src/entity/entityenemy.h \
+    src/entity/entityhitbox.h \
+    src/entity/entityplayer.h \
     src/framework/game.h \
     src/framework/level.h \
     src/framework/menu.h \

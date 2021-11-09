@@ -3,25 +3,18 @@
 
 #include <QGraphicsPixmapItem>
 #include "alias.h"
+#include "src/assets/texture.h"
 #include "src/network/uuid.h"
 
-class Texture;
-class Bullet;
+class EntityBullet;
 struct BulletInfo;
 
-enum EntityType {
-	ENEMY,
-	BULLET,
-	PLAYER,
-	ONLINEPLAYER,
-	PLAYERHITBOX,
-	COLLECTABLE
-};
+enum EntityType { ENEMY, BULLET, PLAYER, ONLINEPLAYER, HITBOX, COLLECTABLE };
 
 class Entity : public QGraphicsPixmapItem {
  public:
-	Entity(EntityType, const Texture&);
-	Entity(EntityType, const Texture&, UUID);
+	Entity(EntityType, Tex);
+	Entity(EntityType, Tex, UUID);
 
 	void deleteLater();
 	int getAge();
@@ -41,9 +34,9 @@ class Entity : public QGraphicsPixmapItem {
 	void moveFoward(double);
 	void moveTowardsPoint(const QPointF&, double);
 	void rotate(double);
-	List<Bullet*> fireBullets(const List<BulletInfo>&,
-														double = 0,
-														const QPointF& = QPointF(0, 0));
+	List<EntityBullet*> fireBullets(const List<BulletInfo>&,
+																	double = 0,
+																	const QPointF& = QPointF(0, 0));
 	Entity* getNearestEntity(EntityType);
 	List<Entity*> getCollisions(EntityType);
 	double distanceSquared(const Entity&);

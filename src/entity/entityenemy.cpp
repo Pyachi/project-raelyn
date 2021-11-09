@@ -1,29 +1,29 @@
-#include "enemy.h"
-#include "bullet.h"
-#include "player.h"
-#include "src/framework/game.h"
+#include "entityenemy.h"
+#include "entitybullet.h"
+#include "entityplayer.h"
+#include "src/ai/collectable.h"
+#include "src/ai/enemy.h"
 #include "src/assets/sfx.h"
-#include "src/ai/enemyai.h"
-#include "src/ai/collectableai.h"
+#include "src/framework/game.h"
 #include "src/network/connection.h"
 #include "src/network/packet.h"
 
-Enemy::Enemy(const EnemyInfo& info, UUID id)
-		: Entity(ENEMY, info.texture, id), health(info.health), ai(info.ai) {
+EntityEnemy::EntityEnemy(Tex tex, UUID id, int health, AI<EntityEnemy> ai)
+		: Entity(ENEMY, tex, id), health(health), ai(ai) {
 	Game::addEntity(this);
 }
 
-void Enemy::tick() {
+void EntityEnemy::tick() {
 	age++;
 	ai(this);
-	List<Bullet*> bullets;
+	List<EntityBullet*> bullets;
 	for (Entity* entity : getCollisions(BULLET)) {
-		Bullet* bullet = dynamic_cast<Bullet*>(entity);
+		EntityBullet* bullet = dynamic_cast<EntityBullet*>(entity);
 		if (bullet->ownerType == PLAYER || bullet->ownerType == ONLINEPLAYER)
 			bullets.push_back(bullet);
 	}
-	for (Bullet* bullet : bullets) {
-		SFX::playSound(SFX::EXPL_LIGHT_2, 0.1);
+	for (EntityBullet* bullet : bullets) {
+		SFX::playSound(EXPL_LIGHT_2, 0.1);
 		health -= bullet->damage;
 		bullet->deleteLater();
 		if (health <= 0) {
@@ -35,10 +35,10 @@ void Enemy::tick() {
 	}
 }
 
-void Enemy::kill() {
+void EntityEnemy::kill() {
 	if (cleanup)
 		return;
 	for (int i = 0; i < (rand() % 5) + 8; i++)
-		Collectables::POWER.spawn(pos());
+		Collectables::spawn(POWER, pos());
 	deleteLater();
 }

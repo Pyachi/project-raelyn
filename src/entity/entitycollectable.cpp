@@ -1,25 +1,25 @@
-#include "collectable.h"
-#include "player.h"
-#include "enemy.h"
-#include "bullet.h"
-#include "src/framework/game.h"
-#include "src/ai/collectableai.h"
-#include "src/network/user.h"
-#include <QtMath>
+#include "entitycollectable.h"
 #include <QDebug>
+#include <QtMath>
+#include "entitybullet.h"
+#include "entityenemy.h"
+#include "entityplayer.h"
+#include "src/ai/collectable.h"
+#include "src/framework/game.h"
+#include "src/network/user.h"
 
-Collectable::Collectable(const CollectableInfo& info)
-		: Entity(COLLECTABLE, info.texture), onPickup(info.onPickup) {
+EntityCollectable::EntityCollectable(Tex tex, AI<EntityPlayer> ai)
+		: Entity(COLLECTABLE, tex), ai(ai) {
 	Game::addEntity(this);
 }
 
-void Collectable::tick() {
+void EntityCollectable::tick() {
 	age++;
 	int dir = rand() % 360;
 	if (getAge() < 10)
 		moveBy(20 * -sin(dir), 20 * cos(dir));
 	else {
-		Player* player = Game::getPlayer();
+		EntityPlayer* player = Game::getPlayer();
 		if (player->distanceSquared(*this) < 150 * 150 || player->pos().y() < -200)
 			moveTowardsPoint(player->pos(), 15);
 		else
@@ -27,7 +27,7 @@ void Collectable::tick() {
 		if (!isOnScreen() && pos().y() > 0)
 			deleteLater();
 		if (collidesWithItem(player)) {
-			onPickup(player);
+			ai(player);
 			deleteLater();
 		}
 	}

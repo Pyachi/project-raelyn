@@ -15,8 +15,9 @@ enum Song {
 };
 
 namespace Music {
-extern const QString fromSong(Song);
-extern void playSong(Song, int);
+extern const QString get(Song);
+extern void playSong(Song);
+extern void changeVolume(int);
 extern void stopSong();
 };  // namespace Music
 

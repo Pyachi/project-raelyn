@@ -1,13 +1,13 @@
-#include "player.h"
-#include "bullet.h"
-#include "enemy.h"
+#include "entityplayer.h"
+#include "entitybullet.h"
+#include "entityenemy.h"
 #include "src/framework/game.h"
 #include "src/assets/texture.h"
 #include "src/network/connection.h"
 #include "src/network/packet.h"
 #include <QtMath>
 
-Player::Player(PlayerType playerType,
+EntityPlayer::EntityPlayer(PlayerType playerType,
 							 const QString& user,
 							 UUID id,
 							 EntityType type)
@@ -21,7 +21,7 @@ Player::Player(PlayerType playerType,
 	Game::addEntity(this);
 }
 
-void Player::tick() {
+void EntityPlayer::tick() {
 	if (type != PLAYER)
 		return;
 	age++;
@@ -72,9 +72,9 @@ void Player::tick() {
 		power = 0;
 	}
 
-	List<Bullet*> bullets;
+	List<EntityBullet*> bullets;
 	for (Entity* entity : hitbox.getCollisions(BULLET)) {
-		Bullet* bullet = dynamic_cast<Bullet*>(entity);
+		EntityBullet* bullet = dynamic_cast<EntityBullet*>(entity);
 		if (bullet->ownerType == ENEMY)
 			bullets.push_back(bullet);
 	}
@@ -86,12 +86,12 @@ void Player::tick() {
 	//  }
 }
 
-List<Bullet*> Player::fireBullets(const List<BulletInfo>& pattern,
+List<EntityBullet*> EntityPlayer::fireBullets(const List<BulletInfo>& pattern,
 																	double rot,
 																	const QPointF& loc) {
-	List<Bullet*> list = Entity::fireBullets(pattern, rot, loc);
+	List<EntityBullet*> list = Entity::fireBullets(pattern, rot, loc);
 
-	for (Bullet* bullet : list) {
+	for (EntityBullet* bullet : list) {
 		bullet->setOpacity(0.25);
 		if (type == ONLINEPLAYER)
 			bullet->damage = 0;

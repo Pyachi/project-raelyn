@@ -5,20 +5,18 @@
 
 struct EnemyInfo;
 
-class Enemy : public Entity {
+class EntityEnemy : public Entity {
  public:
+	EntityEnemy(Tex, UUID, int, AI<EntityEnemy>);
+
 	int health;
 
 	void kill();
 
  private:
-	Enemy(const EnemyInfo&, UUID);
-
-	const AI<Enemy> ai;
+	const AI<EntityEnemy> ai;
 
 	void tick() override;
-
-	friend struct EnemyInfo;
 };
 
 #endif  // ENEMY_H

@@ -1,9 +1,9 @@
 #include "level.h"
-#include "src/network/server.h"
-#include "src/network/packet.h"
-#include "src/network/uuid.h"
-#include "src/assets/music.h"
 #include <QFile>
+#include "src/assets/music.h"
+#include "src/network/packet.h"
+#include "src/network/server.h"
+#include "src/network/uuid.h"
 
 Level::Level(const QString& path) : path(path) {
 	timer.connect(&timer, &QTimer::timeout, [this]() { this->iterate(); });
@@ -41,7 +41,7 @@ void Level::iterate() {
 													QStringList() << UUID().toString() << list.at(1)
 																				<< list.at(2) << list.at(3)});
 		} else if (opCode == "PLAY") {
-			Music::playSong(static_cast<Song>(list.at(1).toInt()), 1);
+			Music::playSong(static_cast<Song>(list.at(1).toInt()));
 		} else if (opCode == "PAUSE") {
 			waitTimer = 999;
 			return;

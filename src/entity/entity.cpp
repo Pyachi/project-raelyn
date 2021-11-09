@@ -1,31 +1,36 @@
 #include "entity.h"
-#include "bullet.h"
-#include "src/framework/game.h"
-#include "src/assets/texture.h"
-#include "src/ai/bulletpattern.h"
-#include "src/ai/bulletai.h"
-#include <QtMath>
 #include <QVector2D>
+#include <QtMath>
+#include "entitybullet.h"
+#include "src/ai/bullet.h"
+#include "src/ai/bulletpattern.h"
+#include "src/assets/texture.h"
+#include "src/framework/game.h"
 
-Entity::Entity(EntityType type, const Texture& texture)
-		: Entity(type, texture, UUID()) {}
+Entity::Entity(EntityType type, Tex tex) : Entity(type, tex, UUID()) {}
 
-Entity::Entity(EntityType type, const Texture& texture, UUID id)
+Entity::Entity(EntityType type, Tex tex, UUID id)
 		: QGraphicsPixmapItem(&Game::getPlayableArea()),
 			type(type),
 			id(id),
 			age(0),
 			cleanup(false) {
-	setPixmap(QPixmap(texture.texture));
-	setZValue(texture.zValue);
+	setPixmap(QPixmap(Texture::get(tex).texture));
+	setZValue(Texture::get(tex).zValue);
 	setOffset(-boundingRect().center());
 }
 
-void Entity::deleteLater() { cleanup = true; }
+void Entity::deleteLater() {
+	cleanup = true;
+}
 
-int Entity::getAge() { return age; }
+int Entity::getAge() {
+	return age;
+}
 
-bool Entity::readyToDelete() { return cleanup; }
+bool Entity::readyToDelete() {
+	return cleanup;
+}
 
 void Entity::moveFoward(double distance) {
 	double rot = qDegreesToRadians(rotation());
@@ -42,12 +47,14 @@ void Entity::moveTowardsPoint(const QPointF& point, double distance) {
 	moveBy(dir.x(), dir.y());
 }
 
-void Entity::rotate(double deg) { setRotation(rotation() + deg); }
+void Entity::rotate(double deg) {
+	setRotation(rotation() + deg);
+}
 
-List<Bullet*> Entity::fireBullets(const List<BulletInfo>& pattern,
-																	double rot,
-																	const QPointF& loc) {
-	List<Bullet*> list;
+List<EntityBullet*> Entity::fireBullets(const List<BulletInfo>& pattern,
+																				double rot,
+																				const QPointF& loc) {
+	List<EntityBullet*> list;
 	for (const BulletInfo& info : pattern)
 		list.push_back(info.spawn(this, rot, loc));
 	return list;
@@ -71,11 +78,17 @@ QPointF Entity::confineToPlayableArea(const QPointF& pos) {
 														boundingRect().bottom()));
 }
 
-bool Entity::isOnScreen() { return collidesWithItem(&Game::getPlayableArea()); }
+bool Entity::isOnScreen() {
+	return collidesWithItem(&Game::getPlayableArea());
+}
 
-bool Entity::cycle(int dur) { return cycle(dur, 0, 0); }
+bool Entity::cycle(int dur) {
+	return cycle(dur, 0, 0);
+}
 
-bool Entity::cycle(int dur, int time) { return cycle(dur, time, time); }
+bool Entity::cycle(int dur, int time) {
+	return cycle(dur, time, time);
+}
 
 bool Entity::cycle(int dur, int low, int high) {
 	return (getAge() % dur >= low && getAge() % dur <= high);
