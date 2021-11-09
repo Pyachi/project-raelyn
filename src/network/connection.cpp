@@ -28,9 +28,7 @@ bool Connection::create(QString ip, quint16 port) {
 	}
 }
 
-bool Connection::exists() {
-	return CON != nullptr;
-}
+bool Connection::exists() { return CON != nullptr; }
 
 void Connection::disconnect() {
 	if (CON == nullptr)
@@ -93,7 +91,8 @@ void Connection::handlePacket(const Packet& packet) {
 				EntityPlayer* player =
 						new EntityPlayer(static_cast<PlayerType>(packet.data.at(2).toInt()),
 														 packet.data.at(1),
-														 UUID::fromString(packet.data.at(0)), ONLINEPLAYER);
+														 UUID::fromString(packet.data.at(0)),
+														 ONLINEPLAYER);
 				player->setOpacity(0.25);
 				player->hitbox.hide();
 			});
@@ -118,8 +117,7 @@ void Connection::handlePacket(const Packet& packet) {
 		case PACKETPLAYOUTENEMYDEATH:
 			Game::queueEvent([packet]() {
 				dynamic_cast<EntityEnemy*>(
-						Game::GAME->entities[UUID::fromString(packet.data.at(0))])
-						->kill();
+						Game::GAME->entities[UUID::fromString(packet.data.at(0))])->kill();
 			});
 			break;
 		default:

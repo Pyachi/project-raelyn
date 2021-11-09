@@ -10,7 +10,7 @@
 Menu* Menu::MENU = nullptr;
 
 Menu::Menu()
-    : QDialog(),
+		: QDialog(),
 			singleplayer("Singleplayer"),
 			multiplayer("Multiplayer"),
 			options("Options"),
@@ -101,8 +101,9 @@ Menu::Menu()
 		SFX::volume = this->soundSlider.value() / 5.0;
 		SFX::playSound(SoundEffect::COLLECT_2);
 	});
-	connect(&musicSlider, &QSlider::valueChanged,
-					[this]() { Music::changeVolume(this->musicSlider.value() * 20); });
+	connect(&musicSlider, &QSlider::valueChanged, [this]() {
+		Music::changeVolume(this->musicSlider.value() * 20);
+	});
 	connect(&backOptions, &QPushButton::clicked, this, &Menu::returnToMenu);
 
 	serverMenu.setLayout(&serverLayout);
@@ -163,9 +164,7 @@ void Menu::openOptions() {
 	SFX::playSound(SELECT_1, 1);
 }
 
-void Menu::quitGame() {
-	close();
-}
+void Menu::quitGame() { close(); }
 
 void Menu::startGame() {
 	if (!Connection::exists()) {
