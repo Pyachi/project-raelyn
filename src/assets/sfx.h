@@ -36,7 +36,7 @@ enum SoundEffect {
 namespace SFX {
 extern double volume;
 extern const QString get(SoundEffect);
-extern void playSound(SoundEffect, double = 0);
+extern void playSound(SoundEffect, double = 1);
 };  // namespace SFX
 
 #endif  // SFX_H

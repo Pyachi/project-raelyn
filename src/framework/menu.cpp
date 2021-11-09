@@ -90,17 +90,19 @@ Menu::Menu()
 	optionsMenu.setLayout(&optionsLayout);
 	optionsLayout.addWidget(&soundLabel, 1, 1, 1, -1);
 	optionsLayout.addWidget(&soundSlider, 2, 1, 1, -1);
-	soundSlider.setValue(99);
+	soundSlider.setMaximum(5);
+	soundSlider.setValue(5);
 	optionsLayout.addWidget(&musicLabel, 3, 1, 1, -1);
 	optionsLayout.addWidget(&musicSlider, 4, 1, 1, -1);
-	musicSlider.setValue(99);
+	musicSlider.setMaximum(5);
+	musicSlider.setValue(5);
 	optionsLayout.addWidget(&backOptions, 5, 1, 1, -1);
 	connect(&soundSlider, &QSlider::valueChanged, [this]() {
-		SFX::volume = this->soundSlider.value() / 100.0;
-		SFX::playSound(COLLECT_1);
+		SFX::volume = this->soundSlider.value() / 5.0;
+		SFX::playSound(SoundEffect::COLLECT_2);
 	});
 	connect(&musicSlider, &QSlider::valueChanged,
-					[this]() { Music::changeVolume(this->musicSlider.value()); });
+					[this]() { Music::changeVolume(this->musicSlider.value() * 20); });
 	connect(&backOptions, &QPushButton::clicked, this, &Menu::returnToMenu);
 
 	serverMenu.setLayout(&serverLayout);
@@ -176,6 +178,8 @@ void Menu::startGame() {
 }
 
 void Menu::returnToMenu() {
+	if (!mainMenu.isVisible())
+		SFX::playSound(SELECT_2);
 	if (serverMenu.isVisible())
 		Music::playSong(Song::MENU);
 	Connection::disconnect();
@@ -186,7 +190,6 @@ void Menu::returnToMenu() {
 	optionsMenu.hide();
 	lobbyMenu.hide();
 	serverMenu.hide();
-	SFX::playSound(SELECT_2, 1);
 }
 
 void Menu::hostServer() {
