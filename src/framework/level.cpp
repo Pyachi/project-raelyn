@@ -29,22 +29,37 @@ void Level::iterate() {
 		return;
 	}
 	while (!instructions.empty()) {
-		QString instruction = instructions.front();
+		QString instruction;
+		instruction = instructions.front();
 		instructions.pop_front();
-		QStringList list = instruction.split(':');
-		QString opCode = list.at(0);
+		QStringList args = instruction.split(':');
+		QString opCode = args.at(0);
 		if (opCode == "WAIT") {
-			waitTimer = list.at(1).toInt();
+			waitTimer = args.at(1).toInt();
 			return;
 		} else if (opCode == "SPAWN") {
 			Server::sendPacket({PACKETPLAYOUTSPAWNENEMY,
-													QStringList() << UUID().toString() << list.at(1)
-																				<< list.at(2) << list.at(3)});
+													QStringList() << UUID().toString() << args.at(1)
+																				<< args.at(2) << args.at(3)});
 		} else if (opCode == "PLAY") {
-			Music::playSong(static_cast<Song>(list.at(1).toInt()));
+			Music::playSong(static_cast<Song>(args.at(1).toInt()));
 		} else if (opCode == "PAUSE") {
 			waitTimer = 999;
 			return;
+		} else if (opCode == "STARTLOOP") {
+			int loopCount = args.at(1).toInt();
+			QStringList loopInstructions;
+			while (opCode != "ENDLOOP") {
+				instruction = instructions.front();
+				instructions.pop_front();
+				args = instruction.split(':');
+				opCode = args.at(0);
+				loopInstructions.push_back(instruction);
+			}
+			QStringList loop;
+			for (int i = 0; i < loopCount; i++)
+				loop << loopInstructions;
+			instructions = loop << instructions;
 		}
 	}
 }

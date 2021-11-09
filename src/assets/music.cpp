@@ -4,8 +4,9 @@
 
 namespace Music {
 namespace {
-QMediaPlaylist playlist;
-QMediaPlayer player;
+QMediaPlaylist* playlist;
+QMediaPlayer* player;
+bool init = false;
 int volume = 100;
 }  // namespace
 
@@ -31,21 +32,24 @@ const QString get(Song song) {
 }
 
 void playSong(Song song) {
-	playlist.clear();
-	playlist.addMedia(QUrl(get(song)));
-	playlist.setPlaybackMode(QMediaPlaylist::Loop);
-	player.stop();
-	player.setPlaylist(&playlist);
-	player.setVolume(volume);
-	player.play();
+	if (!init) {
+		playlist = new QMediaPlaylist;
+		player = new QMediaPlayer;
+		init = true;
+	}
+	playlist->clear();
+	playlist->addMedia(QUrl(get(song)));
+	playlist->setPlaybackMode(QMediaPlaylist::Loop);
+	player->stop();
+	player->setPlaylist(playlist);
+	player->setVolume(volume);
+	player->play();
 }
 
 void changeVolume(int vol) {
 	volume = vol;
-	player.setVolume(volume);
+	player->setVolume(volume);
 }
 
-void stopSong() {
-	player.stop();
-}
+void stopSong() { player->stop(); }
 }  // namespace Music

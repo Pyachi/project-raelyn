@@ -70,7 +70,7 @@ const QString get(SoundEffect sfx) {
 
 void playSound(SoundEffect sfx, double vol) {
 	if (!queueSetup) {
-		for (int i = 0; i < 128; i++)
+		for (int i = 0; i < 32; i++)
 			queue.push_back(new QSoundEffect);
 		queueSetup = true;
 	}

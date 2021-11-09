@@ -17,7 +17,7 @@ class Level : public QObject {
 	Level(const QString&);
 
 	const QString path;
-	List<QString> instructions;
+	QStringList instructions;
 	QTimer timer;
 	int waitTimer;
 
