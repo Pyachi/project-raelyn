@@ -14,9 +14,7 @@ class EntityPlayer : public Entity {
 	EntityHitbox hitbox;
 	const PlayerType playerType;
 
-	List<EntityBullet*> fireBullets(const List<BulletInfo>&,
-																	double = 0,
-																	const QPointF& = QPointF(0, 0));
+	List<EntityBullet*> fireBullets(Pattern, double = 0, const QPointF& = {0, 0});
 
  private:
 	QString user;

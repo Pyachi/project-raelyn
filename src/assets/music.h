@@ -3,16 +3,7 @@
 
 #include <QString>
 
-enum Song {
-	MENU,      // 0
-	LVL1,      // 1
-	LVL2,      // 2
-	LVL3,      // 3
-	LVL1BOSS,  // 4
-	LVL2BOSS,  // 5
-	LVL3BOSS,  // 6
-	CREDITS    // 7
-};
+enum Song { MENU, LVL1, LVL2, LVL3, LVL1BOSS, LVL2BOSS, LVL3BOSS, CREDITS };
 
 namespace Music {
 extern const QString get(Song);

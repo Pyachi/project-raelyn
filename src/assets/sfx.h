@@ -4,33 +4,33 @@
 #include <QString>
 
 enum SoundEffect {
-	COLLECT_1,          // 0
-	COLLECT_2,          // 1
-	COLLECT_3,          // 2
-	EXPL_HEAVY_1,       // 3
-	EXPL_HEAVY_2,       // 4
-	EXPL_HEAVY_3,       // 5
-	EXPL_HEAVY_4,       // 6
-	EXPL_LIGHT_1,       // 7
-	EXPL_LIGHT_2,       // 8
-	EXPL_LIGHT_3,       // 9
-	EXPL_MED_1,         // 10
-	EXPL_MED_2,         // 11
-	EXPL_MED_3,         // 12
-	EXPL_SUPERHEAVY_1,  // 13
-	EXPL_SUPERHEAVY_2,  // 14
-	HIT_1,              // 15
-	HIT_2,              // 16
-	HIT_3,              // 17
-	LASER_1,            // 18
-	MISSILE_1,          // 19
-	MISSILE_2,          // 20
-	MISSILE_3,          // 21
-	POWERUP_1,          // 22
-	POWERUP_2,          // 23
-	POWERUP_3,          // 24
-	SELECT_1,           // 25
-	SELECT_2,           // 26
+	COLLECT_1,
+	COLLECT_2,
+	COLLECT_3,
+	EXPL_HEAVY_1,
+	EXPL_HEAVY_2,
+	EXPL_HEAVY_3,
+	EXPL_HEAVY_4,
+	EXPL_LIGHT_1,
+	EXPL_LIGHT_2,
+	EXPL_LIGHT_3,
+	EXPL_MED_1,
+	EXPL_MED_2,
+	EXPL_MED_3,
+	EXPL_SUPERHEAVY_1,
+	EXPL_SUPERHEAVY_2,
+	HIT_1,
+	HIT_2,
+	HIT_3,
+	LASER_1,
+	MISSILE_1,
+	MISSILE_2,
+	MISSILE_3,
+	POWERUP_1,
+	POWERUP_2,
+	POWERUP_3,
+	SELECT_1,
+	SELECT_2
 };
 
 namespace SFX {

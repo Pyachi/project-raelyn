@@ -6,25 +6,25 @@
 #include "src/assets/texture.h"
 #include "src/entity/entity.h"
 
-class EntityBullet;
-
 enum BulletAI {
-	PLAYERBASIC,
-	PLAYERHOMING,
-	BASIC8,
-	BASIC10,
-	BASIC12,
-	ACCELERATING,
-	SCREENWRAPTEST,
-	FLOWER,
+	AI_PLAYERBASIC,
+	AI_PLAYERHOMING,
+	AI_BASIC8,
+	AI_BASIC10,
+	AI_BASIC12,
+	AI_ACCELERATING,
+	AI_SCREENWRAPTEST,
+	AI_FLOWER
 };
 
+class EntityBullet;
+
+namespace Bullets {
+extern AI<EntityBullet> get(BulletAI);
+}
+
 struct BulletInfo {
-	BulletInfo(Tex,
-						 BulletAI,
-						 double = 0,
-						 const QPointF& = QPointF(0, 0),
-						 int = 1);
+	BulletInfo(Tex, BulletAI, double = 0, const QPointF& = {0, 0}, int = 1);
 	const Tex texture;
 	const BulletAI ai;
 	const double relRot;
@@ -33,11 +33,7 @@ struct BulletInfo {
 
 	EntityBullet* spawn(const Entity* owner,
 											double = 0,
-											const QPointF& = QPointF(0, 0)) const;
+											const QPointF& = {0, 0}) const;
 };
-
-namespace Bullets {
-extern AI<EntityBullet> get(BulletAI);
-}
 
 #endif  // BULLETS_H

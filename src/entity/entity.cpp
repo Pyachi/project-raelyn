@@ -51,11 +51,11 @@ void Entity::rotate(double deg) {
 	setRotation(rotation() + deg);
 }
 
-List<EntityBullet*> Entity::fireBullets(const List<BulletInfo>& pattern,
+List<EntityBullet*> Entity::fireBullets(Pattern pattern,
 																				double rot,
 																				const QPointF& loc) {
 	List<EntityBullet*> list;
-	for (const BulletInfo& info : pattern)
+	for (BulletInfo info : Patterns::get(pattern))
 		list.push_back(info.spawn(this, rot, loc));
 	return list;
 }

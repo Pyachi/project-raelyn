@@ -79,8 +79,7 @@ void Connection::handlePacket(const Packet& packet) {
 		case PACKETPLAYOUTUPDATEPLAYER:
 			Game::queueEvent([packet]() {
 				Game::GAME->entities[UUID::fromString(packet.data.at(0))]->setPos(
-						QPointF(packet.data.at(1).toDouble(),
-										packet.data.at(2).toDouble()));
+						{packet.data.at(1).toDouble(), packet.data.at(2).toDouble()});
 			});
 			break;
 		case PACKETPLAYOUTPLAYERDEATH:

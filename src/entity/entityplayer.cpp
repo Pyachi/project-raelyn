@@ -1,16 +1,16 @@
 #include "entityplayer.h"
+#include <QtMath>
 #include "entitybullet.h"
 #include "entityenemy.h"
-#include "src/framework/game.h"
 #include "src/assets/texture.h"
+#include "src/framework/game.h"
 #include "src/network/connection.h"
 #include "src/network/packet.h"
-#include <QtMath>
 
 EntityPlayer::EntityPlayer(PlayerType playerType,
-							 const QString& user,
-							 UUID id,
-							 EntityType type)
+													 const QString& user,
+													 UUID id,
+													 EntityType type)
 		: Entity(type, Players::getTexture(playerType), id),
 			playerType(playerType),
 			user(user),
@@ -39,8 +39,8 @@ void EntityPlayer::tick() {
 	if (firing) {
 		Players::getShootingPattern(playerType, level, focus)(this);
 		Connection::sendPacket(
-				{PACKETPLAYINFIREBULLETS, QStringList() << QString::number(level)
-																								<< QString::number(focus)});
+				{PACKETPLAYINFIREBULLETS,
+				 QStringList() << QString::number(level) << QString::number(focus)});
 	}
 
 	int dx = 0, dy = 0;
@@ -86,9 +86,9 @@ void EntityPlayer::tick() {
 	//  }
 }
 
-List<EntityBullet*> EntityPlayer::fireBullets(const List<BulletInfo>& pattern,
-																	double rot,
-																	const QPointF& loc) {
+List<EntityBullet*> EntityPlayer::fireBullets(Pattern pattern,
+																							double rot,
+																							const QPointF& loc) {
 	List<EntityBullet*> list = Entity::fireBullets(pattern, rot, loc);
 
 	for (EntityBullet* bullet : list) {

@@ -14,7 +14,7 @@ enum Tex {
 	TEXBULLETROUND,
 	TEXBULLETELLIPSE,
 	BACKGROUND,
-	TITLE,
+	TITLE
 };
 
 struct Texture {

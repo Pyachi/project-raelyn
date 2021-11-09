@@ -3,11 +3,11 @@
 
 #include <QGraphicsPixmapItem>
 #include "alias.h"
+#include "src/ai/bulletpattern.h"
 #include "src/assets/texture.h"
 #include "src/network/uuid.h"
 
 class EntityBullet;
-struct BulletInfo;
 
 enum EntityType { ENEMY, BULLET, PLAYER, ONLINEPLAYER, HITBOX, COLLECTABLE };
 
@@ -34,9 +34,7 @@ class Entity : public QGraphicsPixmapItem {
 	void moveFoward(double);
 	void moveTowardsPoint(const QPointF&, double);
 	void rotate(double);
-	List<EntityBullet*> fireBullets(const List<BulletInfo>&,
-																	double = 0,
-																	const QPointF& = QPointF(0, 0));
+	List<EntityBullet*> fireBullets(Pattern, double = 0, const QPointF& = {0, 0});
 	Entity* getNearestEntity(EntityType);
 	List<Entity*> getCollisions(EntityType);
 	double distanceSquared(const Entity&);

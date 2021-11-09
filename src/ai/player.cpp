@@ -24,14 +24,15 @@ const AI<EntityPlayer> getShootingPattern(PlayerType type,
 	switch (type) {
 		case PYACHI:
 			switch (level) {
+				default:
 				case 1:
 					if (focus)
 						return [](EntityPlayer* player) {
-							player->fireBullets(BulletPatterns::PLAYER_BASIC);
+							player->fireBullets(PATTERN_PLAYERBASICX5C);
 						};
 					else
 						return [](EntityPlayer* player) {
-							player->fireBullets(BulletPatterns::PLAYER_BASIC);
+							player->fireBullets(PATTERN_PLAYERBASIC);
 						};
 				case 2:
 					if (focus)
@@ -51,15 +52,12 @@ const AI<EntityPlayer> getShootingPattern(PlayerType type,
 			}
 		case AERON:
 			switch (level) {
+				default:
 				case 1:
 					if (focus)
-						return [](EntityPlayer* player) {
-							player->fireBullets(BulletPatterns::PLAYER_HOMING);
-						};
+						return [](EntityPlayer* player) {};
 					else
-						return [](EntityPlayer* player) {
-							player->fireBullets(BulletPatterns::PLAYER_HOMING);
-						};
+						return [](EntityPlayer* player) {};
 				case 2:
 					if (focus)
 						return [](EntityPlayer* player) {};
@@ -78,15 +76,12 @@ const AI<EntityPlayer> getShootingPattern(PlayerType type,
 			}
 		case DAESCH:
 			switch (level) {
+				default:
 				case 1:
 					if (focus)
-						return [](EntityPlayer* player) {
-							player->fireBullets(BulletPatterns::FLOWERCIRCLE);
-						};
+						return [](EntityPlayer* player) {};
 					else
-						return [](EntityPlayer* player) {
-							player->fireBullets(BulletPatterns::FLOWERCIRCLE);
-						};
+						return [](EntityPlayer* player) {};
 				case 2:
 					if (focus)
 						return [](EntityPlayer* player) {};
@@ -105,15 +100,12 @@ const AI<EntityPlayer> getShootingPattern(PlayerType type,
 			}
 		case ANEKHANDA:
 			switch (level) {
+				default:
 				case 1:
 					if (focus)
-						return [](EntityPlayer* player) {
-							player->fireBullets(BulletPatterns::SPRAY);
-						};
+						return [](EntityPlayer* player) {};
 					else
-						return [](EntityPlayer* player) {
-							player->fireBullets(BulletPatterns::SPRAY);
-						};
+						return [](EntityPlayer* player) {};
 				case 2:
 					if (focus)
 						return [](EntityPlayer* player) {};

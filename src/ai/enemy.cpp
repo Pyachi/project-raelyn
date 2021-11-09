@@ -10,7 +10,7 @@ EntityEnemy* spawn(Enemy enemy, UUID uuid, const QPointF& loc) {
 		case ENEMYTEST:
 			entity = new EntityEnemy(TEXENEMY1, uuid, 50, [](EntityEnemy* enemy) {
 				if (enemy->cycle(50))
-					enemy->fireBullets(BulletPatterns::SPRAY);
+					enemy->fireBullets(PATTERN_SHOTGUN10X5);
 			});
 	}
 	entity->setPos(loc);

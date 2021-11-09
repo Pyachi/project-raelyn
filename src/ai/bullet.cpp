@@ -5,29 +5,13 @@
 #include "src/entity/entityenemy.h"
 #include "src/framework/game.h"
 
-BulletInfo::BulletInfo(Tex texture,
-											 BulletAI ai,
-											 double rot,
-											 const QPointF& loc,
-											 int damage)
-		: texture(texture), ai(ai), relRot(rot), relLoc(loc), damage(damage) {}
-
-EntityBullet* BulletInfo::spawn(const Entity* owner,
-																double rot,
-																const QPointF& loc) const {
-	EntityBullet* bullet =
-			new EntityBullet(texture, Bullets::get(ai), owner->type, damage);
-	bullet->setRotation(owner->rotation() + rot + relRot);
-	bullet->setPos(owner->pos() + loc + relLoc);
-	return bullet;
-}
-
 namespace Bullets {
 AI<EntityBullet> get(BulletAI ai) {
 	switch (ai) {
-		case PLAYERBASIC:
+		case AI_PLAYERBASIC:
 			return [](EntityBullet* bullet) { bullet->moveBy(0, -40); };
-		case PLAYERHOMING:
+
+		case AI_PLAYERHOMING:
 			return [](EntityBullet* bullet) {
 				bullet->rotate(20);
 				if (bullet->getNearestEntity(ENEMY) == nullptr) {
@@ -40,17 +24,22 @@ AI<EntityBullet> get(BulletAI ai) {
 				dir *= 20;
 				bullet->setPos(bullet->pos() + dir.toPointF());
 			};
-		case BASIC8:
+
+		case AI_BASIC8:
 			return [](EntityBullet* bullet) { bullet->moveFoward(8); };
-		case BASIC10:
+
+		case AI_BASIC10:
 			return [](EntityBullet* bullet) { bullet->moveFoward(10); };
-		case BASIC12:
+
+		case AI_BASIC12:
 			return [](EntityBullet* bullet) { bullet->moveFoward(12); };
-		case ACCELERATING:
+
+		case AI_ACCELERATING:
 			return [](EntityBullet* bullet) {
 				bullet->moveFoward(pow(bullet->getAge(), 3) / 100000);
 			};
-		case SCREENWRAPTEST:
+
+		case AI_SCREENWRAPTEST:
 			return [](EntityBullet* bullet) {
 				if (bullet->getAge() == 1)
 					bullet->borderCheck = false;
@@ -70,7 +59,8 @@ AI<EntityBullet> get(BulletAI ai) {
 						bullet->moveBy(0, -690);
 				}
 			};
-		case FLOWER:
+
+		case AI_FLOWER:
 			return [](EntityBullet* bullet) {
 				if (bullet->getAge() == 1)
 					bullet->borderCheck = false;
@@ -83,3 +73,20 @@ AI<EntityBullet> get(BulletAI ai) {
 	}
 }
 }  // namespace Bullets
+
+BulletInfo::BulletInfo(Tex texture,
+											 BulletAI ai,
+											 double rot,
+											 const QPointF& loc,
+											 int damage)
+		: texture(texture), ai(ai), relRot(rot), relLoc(loc), damage(damage) {}
+
+EntityBullet* BulletInfo::spawn(const Entity* owner,
+																double rot,
+																const QPointF& loc) const {
+	EntityBullet* bullet =
+			new EntityBullet(texture, Bullets::get(ai), owner->type, damage);
+	bullet->setRotation(owner->rotation() + rot + relRot);
+	bullet->setPos(owner->pos() + loc + relLoc);
+	return bullet;
+}
