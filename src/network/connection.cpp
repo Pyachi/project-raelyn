@@ -116,8 +116,11 @@ void Connection::handlePacket(const Packet& packet) {
 			break;
 		case PACKETPLAYOUTENEMYDEATH:
 			Game::queueEvent([packet]() {
-				dynamic_cast<EntityEnemy*>(
-						Game::GAME->entities[UUID::fromString(packet.data.at(0))])->kill();
+				Entity* entity =
+						Game::GAME->entities[UUID::fromString(packet.data.at(0))];
+				if (entity == nullptr)
+					return;
+				dynamic_cast<EntityEnemy*>(entity)->kill();
 			});
 			break;
 		default:
