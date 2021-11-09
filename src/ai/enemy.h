@@ -3,7 +3,10 @@
 
 #include <QPointF>
 
-enum Enemy { ENEMYTEST };
+enum Enemy {
+	ENEMY_ENEMYTEST1,  // ADD NEW ENEMIES HERE
+	ENEMY_ENEMYTEST2,
+};
 
 class EntityEnemy;
 class UUID;
