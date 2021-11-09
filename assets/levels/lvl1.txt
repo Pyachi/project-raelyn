@@ -1,7 +1,50 @@
-WAIT:30        
-SPAWN:0:0:-300
-WAIT:30
-SPAWN:1:100:-300
-WAIT:30
-SPAWN:1:-100:-300
+//WAVE 1************************************
+//STRING 1**********************************************
+
+STARTLOOP:5
+SPAWN:5:-390:-130
+WAIT:20
+ENDLOOP
+WAIT:40
+
+STARTLOOP:5
+SPAWN:6:390:-130
+WAIT:20
+ENDLOOP
+
+WAIT:60
+//STRING 2***************************************************
+SPAWN:2:-390:-390
+SPAWN:3:390:-50
+SPAWN:4:-120:-390	//enter tanky simp
+WAIT:20
+SPAWN:2:-390:-390
+SPAWN:3:390:-50
+WAIT:20
+SPAWN:2:-390:-390
+SPAWN:3:390:-50
+WAIT:20
+SPAWN:2:-390:-390
+SPAWN:3:390:-50
+WAIT:20
+SPAWN:2:-390:-390
+SPAWN:3:390:-50
+SPAWN:4:120:-390
+WAIT:20
+SPAWN:2:-390:-390
+SPAWN:3:390:-50
+WAIT:20
+SPAWN:2:-390:-390
+SPAWN:3:390:-50
+WAIT:20
+SPAWN:2:-390:-390
+SPAWN:3:390:-50
+WAIT:20
+SPAWN:2:-390:-390
+SPAWN:3:390:-50
+WAIT:20
+SPAWN:2:-390:-390
+SPAWN:3:390:-50
+WAIT:40
 PAUSE
+//STRING******************************************************
