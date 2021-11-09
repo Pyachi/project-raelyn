@@ -18,7 +18,6 @@ class Connection : public QTcpSocket {
 
 	static Connection* CON;
 
-	void receivePacket();
 	void handlePacket(const Packet&);
 };
 

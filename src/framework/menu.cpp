@@ -107,6 +107,7 @@ void Menu::openMenu() {
 	if (MENU == nullptr)
 		MENU = new Menu();
 	MENU->show();
+	MENU->returnToMenu();
 	Music::playSong(Song::MENU, 100);
 }
 

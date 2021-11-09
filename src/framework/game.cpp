@@ -11,7 +11,11 @@
 
 Game* Game::GAME = nullptr;
 
-Game::Game() : QGraphicsView(), scene(0, 0, gameWidth, gameHeight) {
+Game::Game()
+		: QGraphicsView(),
+			scene(0, 0, gameWidth, gameHeight),
+			menuButton("Return to Menu"),
+			paused(false) {
 	GAME = this;
 	setScene(&scene);
 
@@ -32,13 +36,34 @@ Game::Game() : QGraphicsView(), scene(0, 0, gameWidth, gameHeight) {
 											playBorder + playableArea.boundingRect().height() / 2);
 	scene.addItem(&playableArea);
 
+	popup.setLayout(&popupLayout);
+	popup.setModal(true);
+	popupLayout.addWidget(&popupText, 1, 1, 1, -1);
+	popupLayout.addWidget(&menuButton, 2, 1, 1, -1);
+	connect(&menuButton, &QPushButton::clicked, [this]() {
+		Menu::openMenu();
+		close();
+		delete this;
+	});
+
 	setFixedSize(gameWidth + 2, gameHeight + 2);
 
 	timer.start(1000 / 60);
 	connect(&timer, &QTimer::timeout, [this]() { this->tick(); });
 }
 
+Game::~Game() {
+	foreach(Entity * entity, entities.values()) {
+		GAME = nullptr;
+		entities.remove(entity->id);
+		scene.removeItem(entity);
+		delete entity;
+	}
+}
+
 void Game::tick() {
+	if (paused)
+		return;
 	for (Entity* entity : entities.values()) {
 		entity->tick();
 	}
@@ -50,6 +75,7 @@ void Game::tick() {
 		if (entity->readyToDelete()) {
 			entities.remove(entity->id);
 			scene.removeItem(entity);
+			delete entity;
 		}
 	}
 }
@@ -62,10 +88,6 @@ void Game::create() {
 													QStringList() << QString::number(User::character)});
 }
 
-QSet<int> Game::getKeys() { return GAME->keys; }
-
-QMap<UUID, Entity*> Game::getEntities() { return GAME->entities; }
-
 void Game::keyPressEvent(QKeyEvent* e) {
 	keys.insert(e->key());
 	QGraphicsView::keyPressEvent(e);
@@ -77,6 +99,10 @@ void Game::keyReleaseEvent(QKeyEvent* e) {
 }
 
 QGraphicsPixmapItem& Game::getPlayableArea() { return GAME->playableArea; }
+
+QSet<int> Game::getKeys() { return GAME->keys; }
+
+QMap<UUID, Entity*> Game::getEntities() { return GAME->entities; }
 
 void Game::addEntity(Entity* entity) {
 	GAME->entities.insert(entity->id, entity);

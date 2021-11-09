@@ -46,12 +46,17 @@ void Connection::sendPacket(const Packet& packet) {
 
 Connection::Connection() : QTcpSocket() {
 	setProxy(QNetworkProxy::NoProxy);
-	connect(this, &Connection::readyRead, this, &Connection::receivePacket);
-}
-
-void Connection::receivePacket() {
-	for (Packet packet : Packet::decode(readAll()))
-		handlePacket(packet);
+	connect(this, &Connection::readyRead, [this]() {
+		for (Packet packet : Packet::decode(readAll()))
+			handlePacket(packet);
+	});
+	connect(this, &Connection::stateChanged, [this]() {
+		if (this->state() == UnconnectedState) {
+			Game::GAME->paused = true;
+			Game::GAME->popupText.setText("ERROR: Disconnected from Server!");
+			Game::GAME->popup.show();
+		}
+	});
 }
 
 void Connection::handlePacket(const Packet& packet) {
@@ -73,7 +78,10 @@ void Connection::handlePacket(const Packet& packet) {
 			});
 			break;
 		case PACKETPLAYOUTPLAYERDEATH:
-			// This is broken will fix later :)
+			Game::queueEvent([packet]() {
+				Game::GAME->entities[UUID::fromString(packet.data.at(0))]
+						->deleteLater();
+			});
 			break;
 		case PACKETPLAYOUTPLAYERSPAWN:
 			Game::queueEvent([packet]() {

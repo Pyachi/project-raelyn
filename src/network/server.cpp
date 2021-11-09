@@ -63,6 +63,9 @@ void Server::handleConnection() {
 
 void Server::handleDisconnection() {
 	QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
+	sendPacket({PACKETPLAYOUTPLAYERDEATH, QStringList()
+																						<< users.value(socket).toString()},
+						 socket);
 	sockets.remove(socket);
 	users.remove(socket);
 	names.remove(socket);
@@ -82,8 +85,6 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
 		case PACKETPLAYINCONNECT:
 			users.insert(sender, UUID::fromString(packet.data.at(0)));
 			names.insert(sender, packet.data.at(1));
-			break;
-		case PACKETPLAYINDISCONNECT:
 			break;
 		case PACKETPLAYINUPDATELOBBY:
 			sendPacket({PACKETPLAYOUTUPDATELOBBY, names.values()});

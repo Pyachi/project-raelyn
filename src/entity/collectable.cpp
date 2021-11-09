@@ -24,6 +24,8 @@ void Collectable::tick() {
 			moveTowardsPoint(player->pos(), 15);
 		else
 			moveBy(0, getAge() / 30.0);
+		if (!isOnScreen() && pos().y() > 0)
+			deleteLater();
 		if (collidesWithItem(player)) {
 			onPickup(player);
 			deleteLater();

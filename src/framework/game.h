@@ -6,6 +6,10 @@
 #include <QOpenGLWidget>
 #include <QSet>
 #include <QTimer>
+#include <QDialog>
+#include <QLabel>
+#include <QGridLayout>
+#include <QPushButton>
 #include "alias.h"
 #include "src/ai/playerai.h"
 #include "src/network/uuid.h"
@@ -31,6 +35,7 @@ class Game : public QGraphicsView {
 
  private:
 	Game();
+	~Game();
 
 	static Game* GAME;
 
@@ -39,7 +44,12 @@ class Game : public QGraphicsView {
 	QGraphicsScene scene;
 	QGraphicsPixmapItem playableArea;
 	QGraphicsPixmapItem background;
+	QDialog popup;
+	QLabel popupText;
+	QGridLayout popupLayout;
+	QPushButton menuButton;
 
+	bool paused;
 	QMap<UUID, Entity*> entities;
 	List<std::function<void(void)> > eventQueue;
 
