@@ -134,6 +134,7 @@ void Menu::openSingleplayer() {
 
 void Menu::openMultiplayer() {
 	mainMenu.hide();
+	lobbyMenu.hide();
 	multiplayerMenu.show();
 	SFX::playSound(SFX::SELECT_1, 1);
 }

@@ -52,6 +52,10 @@ Connection::Connection() : QTcpSocket() {
 	});
 	connect(this, &Connection::stateChanged, [this]() {
 		if (this->state() == UnconnectedState) {
+			if (Game::GAME == nullptr) {
+				Menu::MENU->openMultiplayer();
+				return;
+			}
 			Game::GAME->paused = true;
 			Game::GAME->popupText.setText("ERROR: Disconnected from Server!");
 			Game::GAME->popup.show();

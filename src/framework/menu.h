@@ -81,6 +81,8 @@ class Menu : public QDialog {
 	void hostServer();
 	void joinServer();
 	void changeCharacter();
+
+	friend class Connection;
 };
 
 #endif  // MAINMENU_H
