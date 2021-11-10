@@ -12,21 +12,21 @@ int volume = 100;
 
 const QString get(Song song) {
 	switch (song) {
-		case MENU:
+		case SONG_MENU:
 			return "qrc:/music/music_menu_theme.ogg";
-		case LVL1:
+		case SONG_LVL1:
 			return "qrc:/music/music_menu_theme.ogg";
-		case LVL2:
+		case SONG_LVL2:
 			return "qrc:/music/music_lvl2_theme.ogg";
-		case LVL3:
+		case SONG_LVL3:
 			return "qrc:/music/music_menu_theme.ogg";
-		case LVL1BOSS:
+		case SONG_BOSS1:
 			return "qrc:/music/music_lvl1_boss.ogg";
-		case LVL2BOSS:
+		case SONG_BOSS2:
 			return "qrc:/music/music_lvl2_boss.ogg";
-		case LVL3BOSS:
+		case SONG_BOSS3:
 			return "qrc:/music/music_menu_theme.ogg";
-		case CREDITS:
+		case SONG_CREDITS:
 			return "qrc:/music/music_menu_theme.ogg";
 	}
 }

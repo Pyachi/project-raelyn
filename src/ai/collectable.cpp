@@ -10,22 +10,22 @@ EntityCollectable* spawn(Collectable collectable, const QPointF& loc) {
 		case POWER:
 			entity = new EntityCollectable(
 					TEXTURE_COLLECTABLE_POWER,
-					[](EntityPlayer* player) { SFX::playSound(COLLECT_3, 0.25); });
+					[](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 0.25); });
 			break;
 		case POINTS:
 			entity = new EntityCollectable(
 					TEXTURE_COLLECTABLE_POINTS,
-					[](EntityPlayer* player) { SFX::playSound(COLLECT_3, 0.25); });
+					[](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 0.25); });
 			break;
 		case HEALTH:
 			entity = new EntityCollectable(
 					TEXTURE_COLLECTABLE_POINTS,
-					[](EntityPlayer* player) { SFX::playSound(COLLECT_3, 0.25); });
+					[](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 0.25); });
 			break;
 		case BOMB:
 			entity = new EntityCollectable(
 					TEXTURE_COLLECTABLE_POINTS,
-					[](EntityPlayer* player) { SFX::playSound(COLLECT_3, 0.25); });
+					[](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 0.25); });
 			break;
 	}
 	entity->setPos(loc);

@@ -4,14 +4,14 @@
 #include <QString>
 
 enum Song {
-	MENU,
-	LVL1,
-	LVL2,
-	LVL3,
-	LVL1BOSS,
-	LVL2BOSS,
-	LVL3BOSS,
-	CREDITS
+	SONG_MENU,
+	SONG_LVL1,
+	SONG_LVL2,
+	SONG_LVL3,
+	SONG_BOSS1,
+	SONG_BOSS2,
+	SONG_BOSS3,
+	SONG_CREDITS
 };
 
 namespace Music {

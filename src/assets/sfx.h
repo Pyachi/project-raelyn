@@ -3,43 +3,43 @@
 
 #include <QString>
 
-enum SoundEffect {
-	COLLECT_1,
-	COLLECT_2,
-	COLLECT_3,
-	EXPL_HEAVY_1,
-	EXPL_HEAVY_2,
-	EXPL_HEAVY_3,
-	EXPL_HEAVY_4,
-	EXPL_LIGHT_1,
-	EXPL_LIGHT_2,
-	EXPL_LIGHT_3,
-	EXPL_MED_1,
-	EXPL_MED_2,
-	EXPL_MED_3,
-	EXPL_SUPERHEAVY_1,
-	EXPL_SUPERHEAVY_2,
-	HIT_1,
-	HIT_2,
-	HIT_3,
-	LASER_1,
-	MISSILE_1,
-	MISSILE_2,
-	MISSILE_3,
-	POWERUP_1,
-	POWERUP_2,
-	POWERUP_3,
-	SELECT_1,
-    SELECT_2,
-    JOIN,
-    LEAVE,
-    DISCONNECT
+enum Sound {
+	SFX_COLLECT1,
+	SFX_COLLECT2,
+	SFX_COLLECT3,
+	SFX_EXPL_HEAVY1,
+	SFX_EXPL_HEAVY2,
+	SFX_EXPL_HEAVY3,
+	SFX_EXPL_HEAVY4,
+	SFX_EXPL_LIGHT1,
+	SFX_EXPL_LIGHT2,
+	SFX_EXPL_LIGHT3,
+	SFX_EXPL_MED1,
+	SFX_EXPL_MED2,
+	SFX_EXPL_MED3,
+	SFX_EXPL_SUPERHEAVY1,
+	SFX_EXPL_SUPERHEAVY2,
+	SFX_HIT1,
+	SFX_HIT2,
+	SFX_HIT3,
+	SFX_LASER1,
+	SFX_MISSILE1,
+	SFX_MISSILE2,
+	SFX_MISSILE3,
+	SFX_POWERUP1,
+	SFX_POWERUP2,
+	SFX_POWERUP3,
+	SFX_SELECT1,
+	SFX_SELECT2,
+	SFX_CONNECT,
+	SFX_DISCONNECT,
+	SFX_ERROR
 };
 
 namespace SFX {
 extern double volume;
-extern const QString get(SoundEffect);
-extern void playSound(SoundEffect, double = 1);
+extern const QString get(Sound);
+extern void playSound(Sound, double = 1);
 };  // namespace SFX
 
 #endif  // SFX_H

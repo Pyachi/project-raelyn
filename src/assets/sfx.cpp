@@ -9,72 +9,72 @@ bool queueSetup = false;
 }  // namespace
 double volume = 1;
 
-const QString get(SoundEffect sfx) {
+const QString get(Sound sfx) {
 	switch (sfx) {
-		case COLLECT_1:
+		case SFX_COLLECT1:
 			return "qrc:/soundeffects/sound_collect_1.wav";
-		case COLLECT_2:
+		case SFX_COLLECT2:
 			return "qrc:/soundeffects/sound_collect_2.wav";
-		case COLLECT_3:
+		case SFX_COLLECT3:
 			return "qrc:/soundeffects/sound_collect_3.wav";
-		case EXPL_HEAVY_1:
+		case SFX_EXPL_HEAVY1:
 			return "qrc:/soundeffects/sound_expl_heavy_1.wav";
-		case EXPL_HEAVY_2:
+		case SFX_EXPL_HEAVY2:
 			return "qrc:/soundeffects/sound_expl_heavy_2.wav";
-		case EXPL_HEAVY_3:
+		case SFX_EXPL_HEAVY3:
 			return "qrc:/soundeffects/sound_expl_heavy_3.wav";
-		case EXPL_HEAVY_4:
+		case SFX_EXPL_HEAVY4:
 			return "qrc:/soundeffects/sound_expl_heavy_4.wav";
-		case EXPL_LIGHT_1:
+		case SFX_EXPL_LIGHT1:
 			return "qrc:/soundeffects/sound_expl_light_1.wav";
-		case EXPL_LIGHT_2:
+		case SFX_EXPL_LIGHT2:
 			return "qrc:/soundeffects/sound_expl_light_2.wav";
-		case EXPL_LIGHT_3:
+		case SFX_EXPL_LIGHT3:
 			return "qrc:/soundeffects/sound_expl_light_3.wav";
-		case EXPL_MED_1:
+		case SFX_EXPL_MED1:
 			return "qrc:/soundeffects/sound_expl_med_1.wav";
-		case EXPL_MED_2:
+		case SFX_EXPL_MED2:
 			return "qrc:/soundeffects/sound_expl_med_2.wav";
-		case EXPL_MED_3:
+		case SFX_EXPL_MED3:
 			return "qrc:/soundeffects/sound_expl_med_3.wav";
-		case EXPL_SUPERHEAVY_1:
+		case SFX_EXPL_SUPERHEAVY1:
 			return "qrc:/soundeffects/sound_expl_superheavy_1.wav";
-		case EXPL_SUPERHEAVY_2:
+		case SFX_EXPL_SUPERHEAVY2:
 			return "qrc:/soundeffects/sound_expl_superheavy_2.wav";
-		case HIT_1:
+		case SFX_HIT1:
 			return "qrc:/soundeffects/sound_hit_1.wav";
-		case HIT_2:
+		case SFX_HIT2:
 			return "qrc:/soundeffects/sound_hit_2.wav";
-		case HIT_3:
+		case SFX_HIT3:
 			return "qrc:/soundeffects/sound_hit_3.wav";
-		case LASER_1:
+		case SFX_LASER1:
 			return "qrc:/soundeffects/sound_laser_1.wav";
-		case MISSILE_1:
+		case SFX_MISSILE1:
 			return "qrc:/soundeffects/sound_missile_1.wav";
-		case MISSILE_2:
+		case SFX_MISSILE2:
 			return "qrc:/soundeffects/sound_missile_2.wav";
-		case MISSILE_3:
+		case SFX_MISSILE3:
 			return "qrc:/soundeffects/sound_missile_3.wav";
-		case POWERUP_1:
+		case SFX_POWERUP1:
 			return "qrc:/soundeffects/sound_powerup_1.wav";
-		case POWERUP_2:
+		case SFX_POWERUP2:
 			return "qrc:/soundeffects/sound_powerup_2.wav";
-		case POWERUP_3:
+		case SFX_POWERUP3:
 			return "qrc:/soundeffects/sound_powerup_3.wav";
-		case SELECT_1:
+		case SFX_SELECT1:
 			return "qrc:/soundeffects/sound_select_1.wav";
-		case SELECT_2:
+		case SFX_SELECT2:
 			return "qrc:/soundeffects/sound_select_2.wav";
-        case JOIN:
+        case SFX_CONNECT:
             return "qrc:/soundeffects/sound_join.wav";
-        case LEAVE:
+        case SFX_DISCONNECT:
             return "qrc:/soundeffects/sound_leave.wav";
-        case DISCONNECT:
+        case SFX_ERROR:
             return "qrc:/soundeffects/sound_disconnect.wav";
 	}
 }
 
-void playSound(SoundEffect sfx, double vol) {
+void playSound(Sound sfx, double vol) {
 	if (!queueSetup) {
 		for (int i = 0; i < 32; i++)
 			queue.push_back(new QSoundEffect);

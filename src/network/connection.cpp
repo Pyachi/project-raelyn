@@ -25,7 +25,7 @@ bool Connection::create(QString ip, quint16 port) {
 			if (CON->state() == UnconnectedState) {
 				Menu::MENU->lobbyMenu.hide();
 				Menu::MENU->multiplayerMenu.show();
-				SFX::playSound(LEAVE);
+				SFX::playSound(SFX_DISCONNECT);
 				disconnect();
 				if (Game::GAME == nullptr)
 					return;
@@ -76,11 +76,11 @@ void Connection::handlePacket(const Packet& packet) {
 			break;
 		case PACKETPLAYOUTPLAYERJOIN:
 			Menu::updatePlayerList(packet.data);
-			SFX::playSound(JOIN);
+			SFX::playSound(SFX_CONNECT);
 			break;
 		case PACKETPLAYOUTPLAYERLEAVE:
 			Menu::updatePlayerList(packet.data);
-			SFX::playSound(LEAVE);
+			SFX::playSound(SFX_DISCONNECT);
 			break;
 		case PACKETPLAYOUTUPDATEPLAYER:
 			Game::queueEvent([packet]() {

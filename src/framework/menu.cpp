@@ -67,17 +67,17 @@ Menu::Menu(void)
 	connect(&singleplayer, &QPushButton::clicked, [this]() {
 		mainMenu.hide();
 		singleplayerMenu.show();
-		SFX::playSound(SELECT_1);
+		SFX::playSound(SFX_SELECT1);
 	});
 	connect(&multiplayer, &QPushButton::clicked, [this]() {
 		mainMenu.hide();
 		multiplayerMenu.show();
-		SFX::playSound(SELECT_1);
+		SFX::playSound(SFX_SELECT1);
 	});
 	connect(&options, &QPushButton::clicked, [this]() {
 		mainMenu.hide();
 		optionsMenu.show();
-		SFX::playSound(SELECT_1);
+		SFX::playSound(SFX_SELECT1);
 	});
 	connect(&quit, &QPushButton::clicked, [this]() { close(); });
 	//************************************************************
@@ -117,7 +117,7 @@ Menu::Menu(void)
 	connect(&backSingleplayer, &QPushButton::clicked, [this]() {
 		singleplayerMenu.hide();
 		mainMenu.show();
-		SFX::playSound(SELECT_2);
+		SFX::playSound(SFX_SELECT2);
 	});
 	//************************************************************
 	multiplayerMenu.setLayout(&multiplayerLayout);
@@ -128,14 +128,14 @@ Menu::Menu(void)
 	multiplayerLayout.addWidget(&backMultiplayer, 3, 1, 1, -1);
 	connect(&host, &QPushButton::clicked, [this]() {
 		if (!Server::create(portForm.text().toUShort())) {
-			SFX::playSound(SELECT_2, 1);
+			SFX::playSound(SFX_SELECT2, 1);
 			return;
 		}
 		connectionInfo.setText(User::getIp() + ":" +
 													 QString::number(Server::getPort()));
 		multiplayerMenu.hide();
 		serverMenu.show();
-		SFX::playSound(SELECT_1, 1);
+		SFX::playSound(SFX_SELECT1, 1);
 		Music::stopSong();
 	});
 	connect(&join, &QPushButton::clicked, [this]() {
@@ -143,14 +143,14 @@ Menu::Menu(void)
 			lobbyMenu.show();
 			multiplayerMenu.hide();
 			Connection::sendPacket(PACKETPLAYINPLAYERJOIN);
-			SFX::playSound(JOIN, 1);
+			SFX::playSound(SFX_CONNECT, 1);
 		} else
-			SFX::playSound(SELECT_2, 1);
+			SFX::playSound(SFX_SELECT2, 1);
 	});
 	connect(&backMultiplayer, &QPushButton::clicked, [this]() {
 		multiplayerMenu.hide();
 		mainMenu.show();
-		SFX::playSound(SELECT_2);
+		SFX::playSound(SFX_SELECT2);
 	});
 	ipForm.setValidator(&ipValidator);
 	portForm.setValidator(&portValidator);
@@ -168,7 +168,7 @@ Menu::Menu(void)
 	optionsLayout.addWidget(&backOptions, 6, 1, 1, -1);
 	connect(&soundSlider, &QSlider::valueChanged, [this]() {
 		SFX::volume = this->soundSlider.value() / 5.0;
-		SFX::playSound(COLLECT_2);
+		SFX::playSound(SFX_COLLECT2);
 	});
 	connect(&musicSlider, &QSlider::valueChanged, [this]() {
 		Music::changeVolume(this->musicSlider.value() * 20);
@@ -191,7 +191,7 @@ Menu::Menu(void)
 	connect(&backOptions, &QPushButton::clicked, [this]() {
 		optionsMenu.hide();
 		mainMenu.show();
-		SFX::playSound(SELECT_2);
+		SFX::playSound(SFX_SELECT2);
 	});
 	//************************************************************
 	serverMenu.setLayout(&serverLayout);
@@ -199,9 +199,11 @@ Menu::Menu(void)
 	serverLayout.addWidget(&playerCount, 2, 1, 1, -1);
 	serverLayout.addWidget(&backServer, 3, 1, 1, -1);
 	connect(&backServer, &QPushButton::clicked, [this]() {
+		Server::disconnect();
 		serverMenu.hide();
 		multiplayerMenu.show();
-		SFX::playSound(SELECT_2);
+		SFX::playSound(SFX_SELECT2);
+		Music::playSong(SONG_MENU);
 	});
 	//************************************************************
 	lobbyMenu.setLayout(&lobbyLayout);
@@ -240,7 +242,7 @@ Menu::Menu(void)
 		Connection::disconnect();
 		lobbyMenu.hide();
 		multiplayerMenu.show();
-		SFX::playSound(LEAVE);
+		SFX::playSound(SFX_DISCONNECT);
 	});
 }
 
@@ -248,7 +250,7 @@ void Menu::openMenu(void) {
 	if (MENU == nullptr)
 		MENU = new Menu();
 	MENU->show();
-	Music::playSong(Song::MENU);
+	Music::playSong(SONG_MENU);
 }
 
 void Menu::closeMenu(void) {
