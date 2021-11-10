@@ -142,7 +142,7 @@ Menu::Menu(void)
 		if (Connection::create(ipForm.text(), portForm.text().toUShort())) {
 			lobbyMenu.show();
 			multiplayerMenu.hide();
-			Connection::sendPacket(PACKETPLAYOUTPLAYERJOIN);
+			Connection::sendPacket(PACKETPLAYINPLAYERJOIN);
 			SFX::playSound(JOIN, 1);
 		} else
 			SFX::playSound(SELECT_2, 1);
@@ -237,6 +237,7 @@ Menu::Menu(void)
 		Connection::sendPacket(PACKETPLAYINSTARTGAME);
 	});
 	connect(&backLobby, &QPushButton::clicked, [this]() {
+		Connection::disconnect();
 		lobbyMenu.hide();
 		multiplayerMenu.show();
 		SFX::playSound(LEAVE);

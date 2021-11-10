@@ -23,14 +23,12 @@ bool Connection::create(QString ip, quint16 port) {
 																							<< User::getName()});
 		CON->connect(CON, &Connection::stateChanged, []() {
 			if (CON->state() == UnconnectedState) {
-				if (Game::GAME == nullptr) {
-					Menu::MENU->openMenu();
-					Menu::MENU->multiplayerMenu.show();
-					Menu::MENU->lobbyMenu.hide();
-					CON->deleteLater();
-					CON = nullptr;
+				Menu::MENU->lobbyMenu.hide();
+				Menu::MENU->multiplayerMenu.show();
+				SFX::playSound(LEAVE);
+				disconnect();
+				if (Game::GAME == nullptr)
 					return;
-				}
 				Game::GAME->paused = true;
 				Game::GAME->popupText.setText("ERROR: Disconnected from Server!");
 				Game::GAME->popup.show();
@@ -44,9 +42,7 @@ bool Connection::create(QString ip, quint16 port) {
 	}
 }
 
-bool Connection::exists(void) {
-	return CON != nullptr;
-}
+bool Connection::exists(void) { return CON != nullptr; }
 
 void Connection::disconnect(void) {
 	if (CON == nullptr)
@@ -103,7 +99,8 @@ void Connection::handlePacket(const Packet& packet) {
 				EntityPlayer* player =
 						new EntityPlayer(static_cast<PlayerType>(packet.data.at(2).toInt()),
 														 packet.data.at(1),
-														 UUID::fromString(packet.data.at(0)), ONLINEPLAYER);
+														 UUID::fromString(packet.data.at(0)),
+														 ONLINEPLAYER);
 				player->setOpacity(0.25);
 				player->hitbox.hide();
 			});
