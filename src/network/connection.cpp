@@ -6,6 +6,7 @@
 #include "src/entity/entityplayer.h"
 #include "src/framework/game.h"
 #include "src/framework/menu.h"
+#include "src/assets/sfx.h"
 #include "user.h"
 
 Connection* Connection::CON = nullptr;
@@ -53,7 +54,9 @@ Connection::Connection(void) : QTcpSocket() {
 	connect(this, &Connection::stateChanged, [this]() {
 		if (this->state() == UnconnectedState) {
 			if (Game::GAME == nullptr) {
-				Menu::MENU->openMultiplayer();
+				Menu::MENU->openMenu();
+				Menu::MENU->multiplayerMenu.show();
+				Menu::MENU->lobbyMenu.hide();
 				return;
 			}
 			Game::GAME->paused = true;
@@ -71,8 +74,13 @@ void Connection::handlePacket(const Packet& packet) {
 			Menu::closeMenu();
 			new EntityPlayer(User::character, User::getName(), User::getUUID());
 			break;
-		case PACKETPLAYOUTUPDATELOBBY:
+		case PACKETPLAYOUTPLAYERJOIN:
 			Menu::updatePlayerList(packet.data);
+			SFX::playSound(JOIN);
+			break;
+		case PACKETPLAYOUTPLAYERLEAVE:
+			Menu::updatePlayerList(packet.data);
+			SFX::playSound(LEAVE);
 			break;
 		case PACKETPLAYOUTUPDATEPLAYER:
 			Game::queueEvent([packet]() {

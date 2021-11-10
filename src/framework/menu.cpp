@@ -58,36 +58,103 @@ Menu::Menu(void)
 	lobbyMenu.hide();
 	serverMenu.hide();
 
+	//************************************************************
 	mainMenu.setLayout(&mainLayout);
 	mainLayout.addWidget(&singleplayer, 1, 1, 1, -1);
 	mainLayout.addWidget(&multiplayer, 2, 1, 1, -1);
 	mainLayout.addWidget(&options, 3, 1, 1, 1);
 	mainLayout.addWidget(&quit, 3, 2, 1, 1);
-	connect(&singleplayer, &QPushButton::clicked, this, &Menu::openSingleplayer);
-	connect(&multiplayer, &QPushButton::clicked, this, &Menu::openMultiplayer);
-	connect(&options, &QPushButton::clicked, this, &Menu::openOptions);
-	connect(&quit, &QPushButton::clicked, this, &Menu::quitGame);
-
+	connect(&singleplayer, &QPushButton::clicked, [this]() {
+		mainMenu.hide();
+		singleplayerMenu.show();
+		SFX::playSound(SELECT_1);
+	});
+	connect(&multiplayer, &QPushButton::clicked, [this]() {
+		mainMenu.hide();
+		multiplayerMenu.show();
+		SFX::playSound(SELECT_1);
+	});
+	connect(&options, &QPushButton::clicked, [this]() {
+		mainMenu.hide();
+		optionsMenu.show();
+		SFX::playSound(SELECT_1);
+	});
+	connect(&quit, &QPushButton::clicked, [this]() { close(); });
+	//************************************************************
 	singleplayerMenu.setLayout(&singleplayerLayout);
 	singleplayerLayout.addWidget(&playerSingle, 1, 1, 1, -1);
 	singleplayerLayout.addWidget(&start, 2, 1, 1, -1);
 	singleplayerLayout.addWidget(&backSingleplayer, 3, 1, 1, -1);
-	connect(&playerSingle, &QPushButton::clicked, this, &Menu::changeCharacter);
-	connect(&start, &QPushButton::clicked, this, &Menu::startGame);
-	connect(&backSingleplayer, &QPushButton::clicked, this, &Menu::returnToMenu);
-
+	connect(&playerSingle, &QPushButton::clicked, [this]() {
+		switch (User::character) {
+			case PYACHI:
+				User::character = AERON;
+				playerSingle.setText("Character: Aeron");
+				playerLobby.setText("Character: Aeron");
+				break;
+			case AERON:
+				User::character = DAESCH;
+				playerSingle.setText("Character: Daesch");
+				playerLobby.setText("Character: Daesch");
+				break;
+			case DAESCH:
+				User::character = ANEKHANDA;
+				playerSingle.setText("Character: Anekhanda");
+				playerLobby.setText("Character: Anekhanda");
+				break;
+			case ANEKHANDA:
+				User::character = PYACHI;
+				playerSingle.setText("Character: Pyachi");
+				playerLobby.setText("Character: Pyachi");
+				break;
+		}
+	});
+	connect(&start, &QPushButton::clicked, []() {
+		Server::create(0);
+		Connection::create("127.0.0.1", Server::getPort());
+		Server::sendPacket(PACKETPLAYOUTSTARTGAME);
+	});
+	connect(&backSingleplayer, &QPushButton::clicked, [this]() {
+		singleplayerMenu.hide();
+		mainMenu.show();
+		SFX::playSound(SELECT_2);
+	});
+	//************************************************************
 	multiplayerMenu.setLayout(&multiplayerLayout);
 	multiplayerLayout.addWidget(&ipForm, 1, 1, 1, 1);
 	multiplayerLayout.addWidget(&portForm, 1, 2, 1, 1);
 	multiplayerLayout.addWidget(&host, 2, 1, 1, 1);
 	multiplayerLayout.addWidget(&join, 2, 2, 1, 1);
 	multiplayerLayout.addWidget(&backMultiplayer, 3, 1, 1, -1);
-	connect(&host, &QPushButton::clicked, this, &Menu::hostServer);
-	connect(&join, &QPushButton::clicked, this, &Menu::joinServer);
-	connect(&backMultiplayer, &QPushButton::clicked, this, &Menu::returnToMenu);
+	connect(&host, &QPushButton::clicked, [this]() {
+		if (!Server::create(portForm.text().toUShort())) {
+			SFX::playSound(SELECT_2, 1);
+			return;
+		}
+		connectionInfo.setText(User::getIp() + ":" +
+													 QString::number(Server::getPort()));
+		multiplayerMenu.hide();
+		serverMenu.show();
+		SFX::playSound(SELECT_1, 1);
+		Music::stopSong();
+	});
+	connect(&join, &QPushButton::clicked, [this]() {
+		if (Connection::create(ipForm.text(), portForm.text().toUShort())) {
+			lobbyMenu.show();
+			multiplayerMenu.hide();
+			Connection::sendPacket(PACKETPLAYOUTPLAYERJOIN);
+			SFX::playSound(JOIN, 1);
+		} else
+			SFX::playSound(SELECT_2, 1);
+	});
+	connect(&backMultiplayer, &QPushButton::clicked, [this]() {
+		multiplayerMenu.hide();
+		mainMenu.show();
+		SFX::playSound(SELECT_2);
+	});
 	ipForm.setValidator(&ipValidator);
 	portForm.setValidator(&portValidator);
-
+	//************************************************************
 	optionsMenu.setLayout(&optionsLayout);
 	optionsLayout.addWidget(&soundLabel, 1, 1, 1, -1);
 	optionsLayout.addWidget(&soundSlider, 2, 1, 1, -1);
@@ -101,7 +168,7 @@ Menu::Menu(void)
 	optionsLayout.addWidget(&backOptions, 6, 1, 1, -1);
 	connect(&soundSlider, &QSlider::valueChanged, [this]() {
 		SFX::volume = this->soundSlider.value() / 5.0;
-		SFX::playSound(SoundEffect::COLLECT_2);
+		SFX::playSound(COLLECT_2);
 	});
 	connect(&musicSlider, &QSlider::valueChanged, [this]() {
 		Music::changeVolume(this->musicSlider.value() * 20);
@@ -121,29 +188,65 @@ Menu::Menu(void)
 										Qt::Key_Shift, Qt::Key_Z,    Qt::Key_X};
 		}
 	});
-	connect(&backOptions, &QPushButton::clicked, this, &Menu::returnToMenu);
-
+	connect(&backOptions, &QPushButton::clicked, [this]() {
+		optionsMenu.hide();
+		mainMenu.show();
+		SFX::playSound(SELECT_2);
+	});
+	//************************************************************
 	serverMenu.setLayout(&serverLayout);
 	serverLayout.addWidget(&connectionInfo, 1, 1, 1, -1);
 	serverLayout.addWidget(&playerCount, 2, 1, 1, -1);
 	serverLayout.addWidget(&backServer, 3, 1, 1, -1);
-	connect(&backServer, &QPushButton::clicked, this, &Menu::returnToMenu);
-
+	connect(&backServer, &QPushButton::clicked, [this]() {
+		serverMenu.hide();
+		multiplayerMenu.show();
+		SFX::playSound(SELECT_2);
+	});
+	//************************************************************
 	lobbyMenu.setLayout(&lobbyLayout);
 	lobbyLayout.addWidget(&players, 1, 1, 1, -1);
 	lobbyLayout.addWidget(&playerLobby, 2, 1, 1, -1);
 	lobbyLayout.addWidget(&startLobby, 3, 1, 1, -1);
 	lobbyLayout.addWidget(&backLobby, 4, 1, 1, -1);
-	connect(&playerLobby, &QPushButton::clicked, this, &Menu::changeCharacter);
-	connect(&startLobby, &QPushButton::clicked, this, &Menu::startGame);
-	connect(&backLobby, &QPushButton::clicked, this, &Menu::returnToMenu);
+	connect(&playerLobby, &QPushButton::clicked, [this]() {
+		switch (User::character) {
+			case PYACHI:
+				User::character = AERON;
+				playerSingle.setText("Character: Aeron");
+				playerLobby.setText("Character: Aeron");
+				break;
+			case AERON:
+				User::character = DAESCH;
+				playerSingle.setText("Character: Daesch");
+				playerLobby.setText("Character: Daesch");
+				break;
+			case DAESCH:
+				User::character = ANEKHANDA;
+				playerSingle.setText("Character: Anekhanda");
+				playerLobby.setText("Character: Anekhanda");
+				break;
+			case ANEKHANDA:
+				User::character = PYACHI;
+				playerSingle.setText("Character: Pyachi");
+				playerLobby.setText("Character: Pyachi");
+				break;
+		}
+	});
+	connect(&startLobby, &QPushButton::clicked, []() {
+		Connection::sendPacket(PACKETPLAYINSTARTGAME);
+	});
+	connect(&backLobby, &QPushButton::clicked, [this]() {
+		lobbyMenu.hide();
+		multiplayerMenu.show();
+		SFX::playSound(LEAVE);
+	});
 }
 
 void Menu::openMenu(void) {
 	if (MENU == nullptr)
 		MENU = new Menu();
 	MENU->show();
-	MENU->returnToMenu();
 	Music::playSong(Song::MENU);
 }
 
@@ -160,98 +263,4 @@ void Menu::updatePlayerList(const QStringList& list) {
 	MENU->players.clear();
 	for (QString string : list)
 		MENU->players.addItem(string);
-}
-
-void Menu::openSingleplayer(void) {
-	mainMenu.hide();
-	singleplayerMenu.show();
-	SFX::playSound(SELECT_1, 1);
-}
-
-void Menu::openMultiplayer(void) {
-	mainMenu.hide();
-	lobbyMenu.hide();
-	multiplayerMenu.show();
-	SFX::playSound(SELECT_1, 1);
-}
-
-void Menu::openOptions(void) {
-	mainMenu.hide();
-	optionsMenu.show();
-	SFX::playSound(SELECT_1, 1);
-}
-
-void Menu::quitGame(void) { close(); }
-
-void Menu::startGame(void) {
-	if (!Connection::exists()) {
-		if (!Server::create(1337) || !Connection::create("127.0.0.1", 1337)) {
-			SFX::playSound(SELECT_2, 1);
-			return;
-		}
-	}
-	Connection::sendPacket(PACKETPLAYINSTARTGAME);
-}
-
-void Menu::returnToMenu(void) {
-	if (!mainMenu.isVisible())
-		SFX::playSound(SELECT_2);
-	if (serverMenu.isVisible())
-		Music::playSong(Song::MENU);
-	Connection::disconnect();
-	Server::disconnect();
-	mainMenu.show();
-	singleplayerMenu.hide();
-	multiplayerMenu.hide();
-	optionsMenu.hide();
-	lobbyMenu.hide();
-	serverMenu.hide();
-}
-
-void Menu::hostServer(void) {
-	if (!Server::create(portForm.text().toUShort())) {
-		SFX::playSound(SELECT_2, 1);
-		return;
-	}
-	connectionInfo.setText(User::getIp() + ":" +
-												 QString::number(Server::getPort()));
-	multiplayerMenu.hide();
-	serverMenu.show();
-	SFX::playSound(SELECT_1, 1);
-	Music::stopSong();
-}
-
-void Menu::joinServer(void) {
-	if (Connection::create(ipForm.text(), portForm.text().toUShort())) {
-		lobbyMenu.show();
-		multiplayerMenu.hide();
-		Connection::sendPacket(PACKETPLAYINUPDATELOBBY);
-		SFX::playSound(SELECT_1, 1);
-	} else
-		SFX::playSound(SELECT_2, 1);
-}
-
-void Menu::changeCharacter(void) {
-	switch (User::character) {
-		case PYACHI:
-			User::character = AERON;
-			playerSingle.setText("Character: Aeron");
-			playerLobby.setText("Character: Aeron");
-			break;
-		case AERON:
-			User::character = DAESCH;
-			playerSingle.setText("Character: Daesch");
-			playerLobby.setText("Character: Daesch");
-			break;
-		case DAESCH:
-			User::character = ANEKHANDA;
-			playerSingle.setText("Character: Anekhanda");
-			playerLobby.setText("Character: Anekhanda");
-			break;
-		case ANEKHANDA:
-			User::character = PYACHI;
-			playerSingle.setText("Character: Pyachi");
-			playerLobby.setText("Character: Pyachi");
-			break;
-	}
 }

@@ -33,7 +33,7 @@ void Server::disconnect(void) {
 	SER = nullptr;
 }
 
-int Server::getPort(void) {
+unsigned short Server::getPort(void) {
 	if (SER == nullptr)
 		return 0;
 	return SER->serverPort();
@@ -70,7 +70,7 @@ void Server::handleDisconnection(void) {
 	users.remove(socket);
 	names.remove(socket);
 	Menu::updatePlayerCount(sockets.size());
-	sendPacket({PACKETPLAYOUTUPDATELOBBY, names.values()});
+	sendPacket({PACKETPLAYOUTPLAYERLEAVE, names.values()});
 }
 
 void Server::receivePacket(void) {
@@ -86,8 +86,8 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
 			users.insert(sender, UUID::fromString(packet.data.at(0)));
 			names.insert(sender, packet.data.at(1));
 			break;
-		case PACKETPLAYINUPDATELOBBY:
-			sendPacket({PACKETPLAYOUTUPDATELOBBY, names.values()});
+		case PACKETPLAYINPLAYERJOIN:
+			sendPacket({PACKETPLAYOUTPLAYERJOIN, names.values()});
 			break;
 		case PACKETPLAYINSTARTGAME:
 			pauseAccepting();

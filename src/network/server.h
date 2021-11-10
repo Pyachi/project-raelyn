@@ -12,7 +12,7 @@ class Server : public QTcpServer {
  public:
 	static bool create(quint16);
 	static void disconnect(void);
-	static int getPort(void);
+	static unsigned short getPort(void);
 
 	static void sendPacket(const Packet&, QTcpSocket* = nullptr);
 

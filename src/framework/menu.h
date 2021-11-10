@@ -77,16 +77,6 @@ class Menu : public QDialog {
 	QPushButton startLobby;
 	QPushButton backLobby;
 
-	void openSingleplayer(void);
-	void openMultiplayer(void);
-	void openOptions(void);
-	void quitGame(void);
-	void startGame(void);
-	void returnToMenu(void);
-	void hostServer(void);
-	void joinServer(void);
-	void changeCharacter(void);
-
 	friend class Connection;
 };
 
