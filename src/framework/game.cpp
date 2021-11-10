@@ -67,10 +67,10 @@ void Game::tick(void) {
   for (Entity* entity : entities.values()) {
     entity->tick();
   }
-  while (!eventQueue.empty()) {
-    eventQueue.front()();
-    eventQueue.pop_front();
-  }
+	while (!eventQueue.empty()) {
+		eventQueue.front()();
+		eventQueue.pop_front();
+	}
   foreach(Entity * entity, entities.values()) {
     if (entity->readyToDelete()) {
       entities.remove(entity->id);
