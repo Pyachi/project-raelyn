@@ -2,10 +2,10 @@
 #define PLAYERTYPE_H
 
 #include <QString>
-#include "util.h"
 #include "src/assets/texture.h"
+#include "util.h"
 
-enum PlayerType { PYACHI, AERON, DAESCH, ANEKHANDA };
+enum PlayerType { PYACHI, AERON, PRYSMA, ANEKHANDA };
 
 class EntityPlayer;
 

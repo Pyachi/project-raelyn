@@ -27,7 +27,6 @@ class Server : public QTcpServer {
 
 	void handleConnection(void);
 	void handleDisconnection(void);
-
 	void receivePacket(void);
 	void handlePacket(const Packet&, QTcpSocket* = nullptr);
 };

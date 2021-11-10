@@ -1,14 +1,14 @@
 #include "server.h"
-#include "user.h"
-#include "packet.h"
-#include "uuid.h"
-#include "src/framework/game.h"
-#include "src/framework/menu.h"
-#include "src/framework/level.h"
-#include "src/ai/enemy.h"
 #include <QGridLayout>
 #include <QNetworkInterface>
 #include <QTcpSocket>
+#include "packet.h"
+#include "src/ai/enemy.h"
+#include "src/framework/game.h"
+#include "src/framework/level.h"
+#include "src/framework/menu.h"
+#include "user.h"
+#include "uuid.h"
 
 Server* Server::SER = nullptr;
 
@@ -55,8 +55,8 @@ void Server::handleConnection(void) {
 	QTcpSocket* socket = nextPendingConnection();
 	sockets.insert(socket);
 	connect(socket, &QTcpSocket::readyRead, this, &Server::receivePacket);
-	connect(
-			socket, &QTcpSocket::disconnected, this, &Server::handleDisconnection);
+	connect(socket, &QTcpSocket::disconnected, this,
+					&Server::handleDisconnection);
 	Menu::updatePlayerCount(sockets.size());
 }
 
@@ -89,7 +89,7 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
 			sendPacket({PACKETPLAYOUTPLAYERJOIN, names.values()});
 			break;
 		case PACKETPLAYINSTARTGAME:
-			pauseAccepting();
+			close();
 			sendPacket(PACKETPLAYOUTSTARTGAME);
 			Level::LVL1.start();
 			break;

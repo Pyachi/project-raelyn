@@ -93,11 +93,11 @@ Menu::Menu(void)
 				playerLobby.setText("Character: Aeron");
 				break;
 			case AERON:
-				User::character = DAESCH;
-				playerSingle.setText("Character: Daesch");
-				playerLobby.setText("Character: Daesch");
+				User::character = PRYSMA;
+				playerSingle.setText("Character: Prysma");
+				playerLobby.setText("Character: Prysma");
 				break;
-			case DAESCH:
+			case PRYSMA:
 				User::character = ANEKHANDA;
 				playerSingle.setText("Character: Anekhanda");
 				playerLobby.setText("Character: Anekhanda");
@@ -112,7 +112,7 @@ Menu::Menu(void)
 	connect(&start, &QPushButton::clicked, []() {
 		Server::create(0);
 		Connection::create("127.0.0.1", Server::getPort());
-		Server::sendPacket(PACKETPLAYOUTSTARTGAME);
+		Connection::sendPacket(PACKETPLAYINSTARTGAME);
 	});
 	connect(&backSingleplayer, &QPushButton::clicked, [this]() {
 		singleplayerMenu.hide();
@@ -170,9 +170,8 @@ Menu::Menu(void)
 		SFX::volume = this->soundSlider.value() / 5.0;
 		SFX::playSound(SFX_COLLECT2);
 	});
-	connect(&musicSlider, &QSlider::valueChanged, [this]() {
-		Music::changeVolume(this->musicSlider.value() * 20);
-	});
+	connect(&musicSlider, &QSlider::valueChanged,
+					[this]() { Music::changeVolume(this->musicSlider.value() * 20); });
 	connect(&keys, &QPushButton::pressed, [this]() {
 		if (User::getKeyUp() == Qt::Key_Up) {
 			keys.setText("Controls: WASD");
@@ -186,6 +185,7 @@ Menu::Menu(void)
 			keys.setText("Controls: Traditional");
 			User::keys = {Qt::Key_Up,    Qt::Key_Left, Qt::Key_Down, Qt::Key_Right,
 										Qt::Key_Shift, Qt::Key_Z,    Qt::Key_X};
+			SFX::playSound(SFX_SELECT1);
 		}
 	});
 	connect(&backOptions, &QPushButton::clicked, [this]() {
@@ -219,11 +219,11 @@ Menu::Menu(void)
 				playerLobby.setText("Character: Aeron");
 				break;
 			case AERON:
-				User::character = DAESCH;
-				playerSingle.setText("Character: Daesch");
-				playerLobby.setText("Character: Daesch");
+				User::character = PRYSMA;
+				playerSingle.setText("Character: Prysma");
+				playerLobby.setText("Character: Prysma");
 				break;
-			case DAESCH:
+			case PRYSMA:
 				User::character = ANEKHANDA;
 				playerSingle.setText("Character: Anekhanda");
 				playerLobby.setText("Character: Anekhanda");
@@ -235,9 +235,8 @@ Menu::Menu(void)
 				break;
 		}
 	});
-	connect(&startLobby, &QPushButton::clicked, []() {
-		Connection::sendPacket(PACKETPLAYINSTARTGAME);
-	});
+	connect(&startLobby, &QPushButton::clicked,
+					[]() { Connection::sendPacket(PACKETPLAYINSTARTGAME); });
 	connect(&backLobby, &QPushButton::clicked, [this]() {
 		Connection::destruct();
 		lobbyMenu.hide();

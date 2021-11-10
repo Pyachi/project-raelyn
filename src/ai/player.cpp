@@ -11,7 +11,7 @@ Texture getTexture(PlayerType type) {
 			return TEXTURE_PLAYERTEMP;
 		case AERON:
 			return TEXTURE_PLAYERTEMP;
-		case DAESCH:
+		case PRYSMA:
 			return TEXTURE_PLAYERTEMP;
 		case ANEKHANDA:
 			return TEXTURE_PLAYERTEMP;
@@ -33,58 +33,39 @@ const AI<EntityPlayer> getShootingPattern(PlayerType type,
 									default:
 									case 0:
 										player->fireBullets(PATTERN_PLAYERHOMINGX2C,
-																				TEXTURE_BULLET_STAR_RED,
-																				0,
-																				{0, 0},
-																				5);
+																				TEXTURE_BULLET_STAR_RED, 0, {0, 0}, 5);
 										break;
 									case 1:
 										player->fireBullets(PATTERN_PLAYERHOMINGX2C,
-																				TEXTURE_BULLET_STAR_ORANGE,
-																				0,
-																				{0, 0},
+																				TEXTURE_BULLET_STAR_ORANGE, 0, {0, 0},
 																				5);
 										break;
 									case 2:
 										player->fireBullets(PATTERN_PLAYERHOMINGX2C,
-																				TEXTURE_BULLET_STAR_YELLOW,
-																				0,
-																				{0, 0},
+																				TEXTURE_BULLET_STAR_YELLOW, 0, {0, 0},
 																				5);
 										break;
 									case 3:
 										player->fireBullets(PATTERN_PLAYERHOMINGX2C,
-																				TEXTURE_BULLET_STAR_GREEN,
-																				0,
-																				{0, 0},
+																				TEXTURE_BULLET_STAR_GREEN, 0, {0, 0},
 																				5);
 										break;
 									case 4:
 										player->fireBullets(PATTERN_PLAYERHOMINGX2C,
-																				TEXTURE_BULLET_STAR_AQUA,
-																				0,
-																				{0, 0},
-																				5);
+																				TEXTURE_BULLET_STAR_AQUA, 0, {0, 0}, 5);
 										break;
 									case 5:
 										player->fireBullets(PATTERN_PLAYERHOMINGX2C,
-																				TEXTURE_BULLET_STAR_BLUE,
-																				0,
-																				{0, 0},
-																				5);
+																				TEXTURE_BULLET_STAR_BLUE, 0, {0, 0}, 5);
 										break;
 									case 6:
 										player->fireBullets(PATTERN_PLAYERHOMINGX2C,
-																				TEXTURE_BULLET_STAR_PURPLE,
-																				0,
-																				{0, 0},
+																				TEXTURE_BULLET_STAR_PURPLE, 0, {0, 0},
 																				5);
 										break;
 									case 7:
 										player->fireBullets(PATTERN_PLAYERHOMINGX2C,
-																				TEXTURE_BULLET_STAR_MAGENTA,
-																				0,
-																				{0, 0},
+																				TEXTURE_BULLET_STAR_MAGENTA, 0, {0, 0},
 																				5);
 										break;
 								}
@@ -134,7 +115,7 @@ const AI<EntityPlayer> getShootingPattern(PlayerType type,
 					else
 						return [](EntityPlayer* player) {};
 			}
-		case DAESCH:
+		case PRYSMA:
 			switch (level) {
 				default:
 				case 1:
@@ -191,7 +172,7 @@ int getSpeed(PlayerType type) {
 			return 10;
 		case AERON:
 			return 12;
-		case DAESCH:
+		case PRYSMA:
 			return 15;
 		case ANEKHANDA:
 			return 8;
@@ -204,7 +185,7 @@ int getFocusSpeed(PlayerType type) {
 			return 3;
 		case AERON:
 			return 5;
-		case DAESCH:
+		case PRYSMA:
 			return 8;
 		case ANEKHANDA:
 			return 6;
