@@ -37,7 +37,7 @@ void Server::destruct(void) {
 unsigned short Server::getPort(void) {
 	if (SER == nullptr)
 		return 0;
-	return SER->getPort();
+	return SER->serverPort();
 }
 
 void Server::sendPacket(const Packet& packet, QTcpSocket* sender) {
@@ -58,8 +58,8 @@ void Server::handleConnection(void) {
 	QTcpSocket* socket = nextPendingConnection();
 	sockets.insert(socket);
 	connect(socket, &QTcpSocket::readyRead, this, &Server::receivePacket);
-	connect(socket, &QTcpSocket::disconnected, this,
-					&Server::handleDisconnection);
+	connect(
+			socket, &QTcpSocket::disconnected, this, &Server::handleDisconnection);
 	Menu::MENU->playerCount.setText("Players Connected: " +
 																	QString::number(sockets.size()));
 }
@@ -77,8 +77,7 @@ void Server::handleDisconnection(void) {
 	sendPacket({PACKETPLAYOUTPLAYERLEAVE, names.values()});
 	if (sockets.size() == 0 && !isListening()) {
 		Menu::MENU->serverStatus.setText("Status: In Lobby");
-		//		listen(QHostAddress::Any,
-		//Menu::MENU->portForm.text().toUShort());
+		listen(QHostAddress::Any, Menu::MENU->portForm.text().toUShort());
 	}
 }
 
