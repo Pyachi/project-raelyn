@@ -41,6 +41,10 @@ List<BulletInfo> get(Pattern pattern) {
       return BulletInfo{TEXPLAYERBULLET, AI_PLAYERHOMING, 0, {-25, -25}}
       << BulletInfo{TEXPLAYERBULLET, AI_PLAYERHOMING, 0, {25, -25}};
 
+    case PATTERN_SINGLE8:
+      return BulletInfo{TEXBULLETROUND, AI_BASIC8}
+      << BulletInfo{TEXBULLETROUND, AI_BASIC8, 0};
+
     case PATTERN_SHOTGUN8X3:
       return BulletInfo{TEXBULLETROUND, AI_BASIC8}
       << BulletInfo{TEXBULLETROUND, AI_BASIC8, 20}

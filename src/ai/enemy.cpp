@@ -29,12 +29,14 @@ EntityEnemy* spawn(Enemy enemy, UUID uuid, const QPointF& loc) {
       entity = new EntityEnemy(TEXENEMY1, uuid, 5, [](EntityEnemy* enemy) {
         if (enemy->cycle(1800, 1, 150))
           enemy->moveBy(2, 2);
-        else if (enemy->cycle(1800, 151, 250))
+        else if (enemy->cycle(1800, 181, 240))
           enemy->moveBy(1, 0);
-        else if (enemy->cycle(1800, 251, 800))
-          enemy->moveBy(1, -1);
+        else if (enemy->cycle(1800, 271, 800))
+          enemy->moveBy(0, -1);
 
-        if (enemy->cycle(1800, 200))
+        if (enemy->getAge() == 180)
+          enemy->fireBullets(PATTERN_SHOTGUN8X3);
+        if (enemy->getAge() == 270)
           enemy->fireBullets(PATTERN_SHOTGUN8X3);
 
         if (enemy->getAge() == 930)  // 15 seconds plus off screen
@@ -45,15 +47,16 @@ EntityEnemy* spawn(Enemy enemy, UUID uuid, const QPointF& loc) {
     case ENEMY_SIMPLESHOTGUN_TOP_RIGHT:
       entity = new EntityEnemy(TEXENEMY1, uuid, 15, [](EntityEnemy* enemy) {
         if (enemy->cycle(1800, 1, 150))
-          enemy->moveBy(-2, -2);
-        else if (enemy->cycle(1800, 151, 250))
+          enemy->moveBy(-2, 2);
+        else if (enemy->cycle(1800, 181, 240))
           enemy->moveBy(-1, 0);
-        else if (enemy->cycle(1800, 251, 800))
-          enemy->moveBy(-1, 1);
+        else if (enemy->cycle(1800, 271, 800))
+          enemy->moveBy(0, -1);
 
-        if (enemy->cycle(1800, 200))
+        if (enemy->getAge() == 180)
           enemy->fireBullets(PATTERN_SHOTGUN8X3);
-
+        if (enemy->getAge() == 270)
+          enemy->fireBullets(PATTERN_SHOTGUN8X3);
         if (enemy->getAge() == 930)  // 15 seconds plus off screen
           enemy->deleteLater();
       });
@@ -77,7 +80,7 @@ EntityEnemy* spawn(Enemy enemy, UUID uuid, const QPointF& loc) {
           enemy->moveBy(0, -3);
 
         if (enemy->cycle(350, 175))
-          enemy->fireBullets(PATTERN_SHOTGUN8X5);
+          enemy->fireBullets(PATTERN_TRIPLESHOTGUNX3);
 
         if (enemy->getAge() == 1900)  // 15 seconds plus off screen
           enemy->deleteLater();
@@ -85,20 +88,19 @@ EntityEnemy* spawn(Enemy enemy, UUID uuid, const QPointF& loc) {
       break;
     //****************************************************************************************
     case ENEMY_SIMPLESHOTGUN_MID_LEFT_UP:
-      entity = new EntityEnemy(TEXENEMY1, uuid, 15, [](EntityEnemy* enemy) {
+      entity = new EntityEnemy(TEXENEMY1, uuid, 40, [](EntityEnemy* enemy) {
         if (enemy->cycle(1800, 1, 120))
-          enemy->moveBy(2.5, 0);
+          enemy->moveBy(5, 0);
         if (enemy->cycle(1800, 160, 240))
           enemy->moveBy(0, -2);
         if (enemy->cycle(1800, 280, 900))
           enemy->moveBy(-2.75, -2.75);
 
-        if (enemy->getAge() == 159) {
-          enemy->fireBullets(PATTERN_SHOTGUN8X3, 180);
+        if (enemy->getAge() == 155) {
           enemy->fireBullets(PATTERN_SHOTGUN8X3);
         }
-        if (enemy->getAge() == 279)
-          enemy->fireBullets(PATTERN_SHOTGUN8X3);
+        if (enemy->getAge() == 275)
+          enemy->fireBullets(PATTERN_SHOTGUN8X5);
 
         if (enemy->getAge() == 900)  // 15 seconds plus off screen
           enemy->deleteLater();
@@ -106,18 +108,18 @@ EntityEnemy* spawn(Enemy enemy, UUID uuid, const QPointF& loc) {
       break;
     //***************************************************************************************
     case ENEMY_SIMPLESHOTGUN_MID_RIGHT_UP:
-      entity = new EntityEnemy(TEXENEMY1, uuid, 15, [](EntityEnemy* enemy) {
+      entity = new EntityEnemy(TEXENEMY1, uuid, 40, [](EntityEnemy* enemy) {
         if (enemy->cycle(1800, 1, 120))
-          enemy->moveBy(-2.5, 0);
-        if (enemy->cycle(1800, 130, 240))
-          enemy->moveBy(2.5, 0);
-        if (enemy->cycle(1800, 250, 900))
+          enemy->moveBy(-5, 0);
+        if (enemy->cycle(1800, 160, 240))
+          enemy->moveBy(0, -2);
+        if (enemy->cycle(1800, 280, 900))
           enemy->moveBy(2.75, -2.75);
 
-        if (enemy->getAge() == 125)
+        if (enemy->getAge() == 155)
           enemy->fireBullets(PATTERN_SHOTGUN8X3);
-        if (enemy->getAge() == 245)
-          enemy->fireBullets(PATTERN_SHOTGUN8X3);
+        if (enemy->getAge() == 275)
+          enemy->fireBullets(PATTERN_SHOTGUN8X5);
 
         if (enemy->getAge() == 900)  // 15 seconds plus off screen
           enemy->deleteLater();
