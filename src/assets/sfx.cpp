@@ -65,6 +65,12 @@ const QString get(SoundEffect sfx) {
 			return "qrc:/soundeffects/sound_select_1.wav";
 		case SELECT_2:
 			return "qrc:/soundeffects/sound_select_2.wav";
+        case JOIN:
+            return "qrc:/soundeffects/sound_join.wav";
+        case LEAVE:
+            return "qrc:/soundeffects/sound_leave.wav";
+        case DISCONNECT:
+            return "qrc:/soundeffects/sound_disconnect.wav";
 	}
 }
 

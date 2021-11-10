@@ -30,7 +30,10 @@ enum SoundEffect {
 	POWERUP_2,
 	POWERUP_3,
 	SELECT_1,
-	SELECT_2
+    SELECT_2,
+    JOIN,
+    LEAVE,
+    DISCONNECT
 };
 
 namespace SFX {

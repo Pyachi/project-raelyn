@@ -27,5 +27,8 @@
         <file>soundeffects/sound_powerup_3.wav</file>
         <file>soundeffects/sound_select_1.wav</file>
         <file>soundeffects/sound_select_2.wav</file>
+        <file>soundeffects/sound_disconnect.wav</file>
+        <file>soundeffects/sound_join.wav</file>
+        <file>soundeffects/sound_leave.wav</file>
     </qresource>
 </RCC>
