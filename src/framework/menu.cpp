@@ -23,7 +23,7 @@ Menu::Menu()
 			portForm("1337"),
 			portValidator(QRegExp(
 					"^(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|"
-					"655[0-2][0-9]|6553[0-5])$")),
+					"655[0-2][0-9]|6553[0-5])")),
 			host("Host"),
 			join("Join"),
 			backMultiplayer("Return to Menu"),
