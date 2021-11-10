@@ -20,7 +20,7 @@ template <class T>
 using AI = std::function<void(T*)>;
 
 namespace Random {
-int getInt();
+int getInt(void);
 }
 
 #endif  // ALIAS_H

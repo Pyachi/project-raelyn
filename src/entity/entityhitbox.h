@@ -4,8 +4,8 @@
 #include "entity.h"
 
 class EntityHitbox : public Entity {
-	EntityHitbox();
-	void tick() override;
+	EntityHitbox(void);
+	void tick(void) override;
 	friend class EntityPlayer;
 };
 

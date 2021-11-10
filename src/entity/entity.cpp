@@ -20,17 +20,11 @@ Entity::Entity(EntityType type, Tex tex, UUID id)
 	setOffset(-boundingRect().center());
 }
 
-void Entity::deleteLater() {
-	cleanup = true;
-}
+void Entity::deleteLater() { cleanup = true; }
 
-int Entity::getAge() {
-	return age;
-}
+int Entity::getAge() { return age; }
 
-bool Entity::readyToDelete() {
-	return cleanup;
-}
+bool Entity::readyToDelete() { return cleanup; }
 
 void Entity::moveFoward(double distance) {
 	double rot = qDegreesToRadians(rotation());
@@ -47,9 +41,7 @@ void Entity::moveTowardsPoint(const QPointF& point, double distance) {
 	moveBy(dir.x(), dir.y());
 }
 
-void Entity::rotate(double deg) {
-	setRotation(rotation() + deg);
-}
+void Entity::rotate(double deg) { setRotation(rotation() + deg); }
 
 List<EntityBullet*> Entity::fireBullets(Pattern pattern,
 																				double rot,
@@ -78,17 +70,13 @@ QPointF Entity::confineToPlayableArea(const QPointF& pos) {
 														boundingRect().bottom()));
 }
 
-bool Entity::isOnScreen() {
+bool Entity::isOnScreen(void) {
 	return collidesWithItem(&Game::getPlayableArea());
 }
 
-bool Entity::cycle(int dur) {
-	return cycle(dur, 0, 0);
-}
+bool Entity::cycle(int dur) { return cycle(dur, 0, 0); }
 
-bool Entity::cycle(int dur, int time) {
-	return cycle(dur, time, time);
-}
+bool Entity::cycle(int dur, int time) { return cycle(dur, time, time); }
 
 bool Entity::cycle(int dur, int low, int high) {
 	return (getAge() % dur >= low && getAge() % dur <= high);

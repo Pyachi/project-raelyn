@@ -9,18 +9,25 @@
 
 class EntityBullet;
 
-enum EntityType { ENEMY, BULLET, PLAYER, ONLINEPLAYER, HITBOX, COLLECTABLE };
+enum EntityType {
+	ENEMY,
+	BULLET,
+	PLAYER,
+	ONLINEPLAYER,
+	HITBOX,
+	COLLECTABLE
+};
 
 class Entity : public QGraphicsPixmapItem {
  public:
 	Entity(EntityType, Tex);
 	Entity(EntityType, Tex, UUID);
 
-	void deleteLater();
-	int getAge();
-	bool readyToDelete();
+	void deleteLater(void);
+	int getAge(void);
+	bool readyToDelete(void);
 
-	virtual void tick() = 0;
+	virtual void tick(void) = 0;
 
 	const EntityType type;
 	const UUID id;
@@ -39,7 +46,7 @@ class Entity : public QGraphicsPixmapItem {
 	List<Entity*> getCollisions(EntityType);
 	double distanceSquared(const Entity&);
 	QPointF confineToPlayableArea(const QPointF&);
-	bool isOnScreen();
+	bool isOnScreen(void);
 	bool cycle(int);
 	bool cycle(int, int);
 	bool cycle(int, int, int);

@@ -18,29 +18,29 @@ PlayerType character = PYACHI;
 Array<int> keys = {Qt::Key_Up,    Qt::Key_Left, Qt::Key_Down, Qt::Key_Right,
 									 Qt::Key_Shift, Qt::Key_Z,    Qt::Key_X};
 
-int getKeyUp() {
+int getKeyUp(void) {
 	return keys[0];
 };
-int getKeyLeft() {
+int getKeyLeft(void) {
 	return keys[1];
 };
-int getKeyDown() {
+int getKeyDown(void) {
 	return keys[2];
 };
-int getKeyRight() {
+int getKeyRight(void) {
 	return keys[3];
 };
-int getKeyFocus() {
+int getKeyFocus(void) {
 	return keys[4];
 };
-int getKeyShoot() {
+int getKeyShoot(void) {
 	return keys[5];
 };
-int getKeyBomb() {
+int getKeyBomb(void) {
 	return keys[6];
 };
 
-const QString getName() {
+const QString getName(void) {
 	if (!nameExists) {
 		name = (QDir::homePath().split('/').last() + "#" +
 						QString::number((Random::getInt() % 9000) + 1000));
@@ -49,7 +49,7 @@ const QString getName() {
 	return name;
 }
 
-const QString getIp() {
+const QString getIp(void) {
 	if (!ipExists) {
 		for (const QHostAddress& address : QNetworkInterface::allAddresses()) {
 			if (address.protocol() == QAbstractSocket::IPv4Protocol &&
@@ -63,7 +63,7 @@ const QString getIp() {
 	return ip;
 }
 
-const UUID getUUID() {
+const UUID getUUID(void) {
 	if (!uuidExists) {
 		id = UUID();
 		uuidExists = true;

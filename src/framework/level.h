@@ -7,7 +7,7 @@
 
 class Level : public QObject {
  public:
-	void start();
+	void start(void);
 
 	static Level LVL1;
 	static Level LVL2;
@@ -21,7 +21,7 @@ class Level : public QObject {
 	QTimer timer;
 	int waitTimer;
 
-	void iterate();
+	void iterate(void);
 };
 
 #endif  // LEVEL_H

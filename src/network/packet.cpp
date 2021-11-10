@@ -3,7 +3,7 @@
 Packet::Packet(const Header& header, const QStringList& data)
 		: header(header), data(data) {}
 
-QByteArray Packet::encode() const {
+QByteArray Packet::encode(void) const {
 	QByteArray packet = QByteArray::number(header);
 	for (QString segment : data) {
 		packet += ':';

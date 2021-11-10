@@ -11,12 +11,12 @@ class EntityEnemy : public Entity {
 
 	int health;
 
-	void kill();
+	void kill(void);
 
  private:
 	const AI<EntityEnemy> ai;
 
-	void tick() override;
+	void tick(void) override;
 };
 
 #endif  // ENEMY_H

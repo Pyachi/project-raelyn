@@ -28,9 +28,9 @@ bool Connection::create(QString ip, quint16 port) {
 	}
 }
 
-bool Connection::exists() { return CON != nullptr; }
+bool Connection::exists(void) { return CON != nullptr; }
 
-void Connection::disconnect() {
+void Connection::disconnect(void) {
 	if (CON == nullptr)
 		return;
 	CON->disconnectFromHost();
@@ -44,7 +44,7 @@ void Connection::sendPacket(const Packet& packet) {
 	CON->write(packet.encode());
 }
 
-Connection::Connection() : QTcpSocket() {
+Connection::Connection(void) : QTcpSocket() {
 	setProxy(QNetworkProxy::NoProxy);
 	connect(this, &Connection::readyRead, [this]() {
 		for (Packet packet : Packet::decode(readAll()))

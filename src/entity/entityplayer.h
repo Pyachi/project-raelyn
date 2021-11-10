@@ -9,7 +9,7 @@ class EntityPlayer : public Entity {
  public:
 	EntityPlayer(PlayerType, const QString&, UUID, EntityType = PLAYER);
 
-	void tick() override;
+	void tick(void) override;
 
 	EntityHitbox hitbox;
 	const PlayerType playerType;

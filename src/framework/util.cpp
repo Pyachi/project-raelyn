@@ -7,7 +7,7 @@ std::mt19937 randGen(static_cast<unsigned long>(std::chrono::steady_clock::now()
 																										.count()));
 }
 
-int getInt() {
+int getInt(void) {
 	int i = static_cast<int>(randGen());
 	return i < 0 ? -i : i;
 }

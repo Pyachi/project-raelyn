@@ -22,7 +22,7 @@ EntityPlayer::EntityPlayer(PlayerType playerType,
 	Game::addEntity(this);
 }
 
-void EntityPlayer::tick() {
+void EntityPlayer::tick(void) {
 	if (type != PLAYER)
 		return;
 	age++;

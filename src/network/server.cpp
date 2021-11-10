@@ -25,7 +25,7 @@ bool Server::create(quint16 port) {
 	return true;
 }
 
-void Server::disconnect() {
+void Server::disconnect(void) {
 	if (SER == nullptr)
 		return;
 	SER->close();
@@ -33,7 +33,7 @@ void Server::disconnect() {
 	SER = nullptr;
 }
 
-int Server::getPort() {
+int Server::getPort(void) {
 	if (SER == nullptr)
 		return 0;
 	return SER->serverPort();
@@ -48,11 +48,11 @@ void Server::sendPacket(const Packet& packet, QTcpSocket* sender) {
 	}
 }
 
-Server::Server() : QTcpServer() {
+Server::Server(void) : QTcpServer() {
 	connect(this, &Server::newConnection, this, &Server::handleConnection);
 }
 
-void Server::handleConnection() {
+void Server::handleConnection(void) {
 	QTcpSocket* socket = nextPendingConnection();
 	sockets.insert(socket);
 	connect(socket, &QTcpSocket::readyRead, this, &Server::receivePacket);
@@ -61,7 +61,7 @@ void Server::handleConnection() {
 	Menu::updatePlayerCount(sockets.size());
 }
 
-void Server::handleDisconnection() {
+void Server::handleDisconnection(void) {
 	QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
 	sendPacket({PACKETPLAYOUTPLAYERDEATH, QStringList()
 																						<< users.value(socket).toString()},
@@ -73,7 +73,7 @@ void Server::handleDisconnection() {
 	sendPacket({PACKETPLAYOUTUPDATELOBBY, names.values()});
 }
 
-void Server::receivePacket() {
+void Server::receivePacket(void) {
 	QTcpSocket* sent = qobject_cast<QTcpSocket*>(sender());
 	for (Packet packet : Packet::decode(sent->readAll()))
 		handlePacket(packet, sent);

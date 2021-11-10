@@ -11,7 +11,7 @@
 
 Game* Game::GAME = nullptr;
 
-Game::Game()
+Game::Game(void)
     : QGraphicsView(),
       scene(0, 0, gameWidth, gameHeight),
       menuButton("Return to Menu"),
@@ -52,7 +52,7 @@ Game::Game()
   connect(&timer, &QTimer::timeout, [this]() { this->tick(); });
 }
 
-Game::~Game() {
+Game::~Game(void) {
   foreach(Entity * entity, entities.values()) {
     GAME = nullptr;
     entities.remove(entity->id);
@@ -61,7 +61,7 @@ Game::~Game() {
   }
 }
 
-void Game::tick() {
+void Game::tick(void) {
   if (paused)
     return;
   for (Entity* entity : entities.values()) {
@@ -80,7 +80,7 @@ void Game::tick() {
   }
 }
 
-void Game::create() {
+void Game::create(void) {
   if (GAME == nullptr)
     GAME = new Game();
   GAME->show();
@@ -98,11 +98,11 @@ void Game::keyReleaseEvent(QKeyEvent* e) {
   QGraphicsView::keyReleaseEvent(e);
 }
 
-QGraphicsPixmapItem& Game::getPlayableArea() { return GAME->playableArea; }
+QGraphicsPixmapItem& Game::getPlayableArea(void) { return GAME->playableArea; }
 
-QSet<int> Game::getKeys() { return GAME->keys; }
+QSet<int> Game::getKeys(void) { return GAME->keys; }
 
-QMap<UUID, Entity*> Game::getEntities() { return GAME->entities; }
+QMap<UUID, Entity*> Game::getEntities(void) { return GAME->entities; }
 
 void Game::addEntity(Entity* entity) {
   GAME->entities.insert(entity->id, entity);
@@ -114,6 +114,6 @@ void Game::queueEvent(std::function<void(void)> func) {
   GAME->eventQueue.push_back(func);
 }
 
-EntityPlayer* Game::getPlayer() {
+EntityPlayer* Game::getPlayer(void) {
   return dynamic_cast<EntityPlayer*>(GAME->entities[User::getUUID()]);
 }

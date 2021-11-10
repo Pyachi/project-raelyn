@@ -12,7 +12,7 @@ class EntityCollectable : public Entity {
  private:
 	const AI<EntityPlayer> ai;
 
-	void tick() override;
+	void tick(void) override;
 };
 
 #endif  // COLLECTABLE_H

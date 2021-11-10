@@ -2,7 +2,7 @@
 #include "util.h"
 #include <QStringList>
 
-UUID::UUID()
+UUID::UUID(void)
 		: UUID(static_cast<unsigned int>(Random::getInt()),
 					 static_cast<unsigned int>(Random::getInt()),
 					 static_cast<unsigned int>(Random::getInt()),
@@ -17,7 +17,7 @@ UUID::UUID(unsigned int sec1,
 					 unsigned int sec4)
 		: sec1(sec1), sec2(sec2), sec3(sec3), sec4(sec4) {}
 
-QString UUID::toString() const {
+QString UUID::toString(void) const {
 	return QString::number(sec1) + "-" + QString::number(sec2) + "-" +
 				 QString::number(sec3) + "-" + QString::number(sec4);
 }

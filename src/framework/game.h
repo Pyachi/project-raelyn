@@ -25,17 +25,17 @@ class Game : public QGraphicsView {
 	Q_OBJECT
 
  public:
-	static void create();
-	static QSet<int> getKeys();
-	static EntityPlayer* getPlayer();
-	static QMap<UUID, Entity*> getEntities();
-	static QGraphicsPixmapItem& getPlayableArea();
+	static void create(void);
+	static QSet<int> getKeys(void);
+	static EntityPlayer* getPlayer(void);
+	static QMap<UUID, Entity*> getEntities(void);
+	static QGraphicsPixmapItem& getPlayableArea(void);
 	static void addEntity(Entity*);
 	static void queueEvent(std::function<void(void)>);
 
  private:
-	Game();
-	~Game();
+	Game(void);
+	~Game(void);
 
 	static Game* GAME;
 
@@ -55,10 +55,10 @@ class Game : public QGraphicsView {
 
 	QSet<int> keys;
 
-	void tick();
+	void tick(void);
 
-	void keyPressEvent(QKeyEvent* e);
-	void keyReleaseEvent(QKeyEvent* e);
+	void keyPressEvent(QKeyEvent*);
+	void keyReleaseEvent(QKeyEvent*);
 
 	friend class Connection;
 };

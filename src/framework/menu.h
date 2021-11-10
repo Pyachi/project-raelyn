@@ -11,13 +11,13 @@
 
 class Menu : public QDialog {
  public:
-	static void openMenu();
-	static void closeMenu();
+	static void openMenu(void);
+	static void closeMenu(void);
 	static void updatePlayerCount(int);
 	static void updatePlayerList(const QStringList&);
 
  private:
-	Menu();
+	Menu(void);
 
 	static Menu* MENU;
 
@@ -77,15 +77,15 @@ class Menu : public QDialog {
 	QPushButton startLobby;
 	QPushButton backLobby;
 
-	void openSingleplayer();
-	void openMultiplayer();
-	void openOptions();
-	void quitGame();
-	void startGame();
-	void returnToMenu();
-	void hostServer();
-	void joinServer();
-	void changeCharacter();
+	void openSingleplayer(void);
+	void openMultiplayer(void);
+	void openOptions(void);
+	void quitGame(void);
+	void startGame(void);
+	void returnToMenu(void);
+	void hostServer(void);
+	void joinServer(void);
+	void changeCharacter(void);
 
 	friend class Connection;
 };

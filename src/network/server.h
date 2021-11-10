@@ -11,13 +11,13 @@ class UUID;
 class Server : public QTcpServer {
  public:
 	static bool create(quint16);
-	static void disconnect();
-	static int getPort();
+	static void disconnect(void);
+	static int getPort(void);
 
 	static void sendPacket(const Packet&, QTcpSocket* = nullptr);
 
  private:
-	Server();
+	Server(void);
 
 	static Server* SER;
 
@@ -25,10 +25,10 @@ class Server : public QTcpServer {
 	QMap<QTcpSocket*, UUID> users;
 	QMap<QTcpSocket*, QString> names;
 
-	void handleConnection();
-	void handleDisconnection();
+	void handleConnection(void);
+	void handleDisconnection(void);
 
-	void receivePacket();
+	void receivePacket(void);
 	void handlePacket(const Packet&, QTcpSocket* = nullptr);
 };
 

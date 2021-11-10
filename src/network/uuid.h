@@ -5,10 +5,10 @@
 
 class UUID {
  public:
-	UUID();
+	UUID(void);
 	UUID(const UUID&);
 
-	QString toString() const;
+	QString toString(void) const;
 	static UUID fromString(const QString&);
 
 	bool operator==(const UUID&) const;

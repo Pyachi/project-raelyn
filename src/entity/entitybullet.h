@@ -14,7 +14,7 @@ class EntityBullet : public Entity {
  private:
 	const AI<EntityBullet> ai;
 
-	void tick() override;
+	void tick(void) override;
 };
 
 #endif  // BULLET_H

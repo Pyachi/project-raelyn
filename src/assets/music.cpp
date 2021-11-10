@@ -51,5 +51,5 @@ void changeVolume(int vol) {
 	player->setVolume(volume);
 }
 
-void stopSong() { player->stop(); }
+void stopSong(void) { player->stop(); }
 }  // namespace Music

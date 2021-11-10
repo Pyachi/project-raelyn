@@ -14,7 +14,7 @@ EntityBullet::EntityBullet(Tex tex,
 	Game::addEntity(this);
 }
 
-void EntityBullet::tick() {
+void EntityBullet::tick(void) {
 	age++;
 	ai(this);
 	if (borderCheck && !isOnScreen())

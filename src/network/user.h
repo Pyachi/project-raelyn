@@ -9,16 +9,16 @@ class UUID;
 namespace User {
 extern PlayerType character;
 extern Array<int> keys;
-extern int getKeyUp();
-extern int getKeyLeft();
-extern int getKeyDown();
-extern int getKeyRight();
-extern int getKeyFocus();
-extern int getKeyShoot();
-extern int getKeyBomb();
-extern const QString getName();
-extern const QString getIp();
-extern const UUID getUUID();
+extern int getKeyUp(void);
+extern int getKeyLeft(void);
+extern int getKeyDown(void);
+extern int getKeyRight(void);
+extern int getKeyFocus(void);
+extern int getKeyShoot(void);
+extern int getKeyBomb(void);
+extern const QString getName(void);
+extern const QString getIp(void);
+extern const UUID getUUID(void);
 };  // namespace User
 
 #endif  // USER_H

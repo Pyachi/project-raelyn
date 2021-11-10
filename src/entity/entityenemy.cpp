@@ -13,7 +13,7 @@ EntityEnemy::EntityEnemy(Tex tex, UUID id, int health, AI<EntityEnemy> ai)
 	Game::addEntity(this);
 }
 
-void EntityEnemy::tick() {
+void EntityEnemy::tick(void) {
 	age++;
 	ai(this);
 	List<EntityBullet*> bullets;
@@ -35,7 +35,7 @@ void EntityEnemy::tick() {
 	}
 }
 
-void EntityEnemy::kill() {
+void EntityEnemy::kill(void) {
 	if (cleanup)
 		return;
 	for (int i = 0; i < (Random::getInt() % 5) + 8; i++)

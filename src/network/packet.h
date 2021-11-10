@@ -32,7 +32,7 @@ struct Packet {
 	Header header;
 	QStringList data;
 
-	QByteArray encode() const;
+	QByteArray encode(void) const;
 	static QList<Packet> decode(const QByteArray&);
 };
 #endif  // PACKET_H

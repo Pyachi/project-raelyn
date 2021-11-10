@@ -13,7 +13,7 @@ Level Level::LVL1(":/levels/lvl1.txt");
 Level Level::LVL2(":/levels/lvl2.txt");
 Level Level::LVL3(":/levels/lvl3.txt");
 
-void Level::start() {
+void Level::start(void) {
 	QFile file(path);
 	if (!file.open(QIODevice::ReadOnly))
 		qDebug() << file.errorString();
@@ -23,7 +23,7 @@ void Level::start() {
 	timer.start(1000 / 20);
 }
 
-void Level::iterate() {
+void Level::iterate(void) {
 	if (waitTimer != 0) {
 		waitTimer--;
 		return;

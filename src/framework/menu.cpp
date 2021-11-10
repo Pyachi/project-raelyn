@@ -9,7 +9,7 @@
 
 Menu* Menu::MENU = nullptr;
 
-Menu::Menu()
+Menu::Menu(void)
 		: QDialog(),
 			singleplayer("Singleplayer"),
 			multiplayer("Multiplayer"),
@@ -139,7 +139,7 @@ Menu::Menu()
 	connect(&backLobby, &QPushButton::clicked, this, &Menu::returnToMenu);
 }
 
-void Menu::openMenu() {
+void Menu::openMenu(void) {
 	if (MENU == nullptr)
 		MENU = new Menu();
 	MENU->show();
@@ -147,7 +147,7 @@ void Menu::openMenu() {
 	Music::playSong(Song::MENU);
 }
 
-void Menu::closeMenu() {
+void Menu::closeMenu(void) {
 	if (MENU != nullptr)
 		MENU->close();
 }
@@ -162,28 +162,28 @@ void Menu::updatePlayerList(const QStringList& list) {
 		MENU->players.addItem(string);
 }
 
-void Menu::openSingleplayer() {
+void Menu::openSingleplayer(void) {
 	mainMenu.hide();
 	singleplayerMenu.show();
 	SFX::playSound(SELECT_1, 1);
 }
 
-void Menu::openMultiplayer() {
+void Menu::openMultiplayer(void) {
 	mainMenu.hide();
 	lobbyMenu.hide();
 	multiplayerMenu.show();
 	SFX::playSound(SELECT_1, 1);
 }
 
-void Menu::openOptions() {
+void Menu::openOptions(void) {
 	mainMenu.hide();
 	optionsMenu.show();
 	SFX::playSound(SELECT_1, 1);
 }
 
-void Menu::quitGame() { close(); }
+void Menu::quitGame(void) { close(); }
 
-void Menu::startGame() {
+void Menu::startGame(void) {
 	if (!Connection::exists()) {
 		if (!Server::create(1337) || !Connection::create("127.0.0.1", 1337)) {
 			SFX::playSound(SELECT_2, 1);
@@ -193,7 +193,7 @@ void Menu::startGame() {
 	Connection::sendPacket(PACKETPLAYINSTARTGAME);
 }
 
-void Menu::returnToMenu() {
+void Menu::returnToMenu(void) {
 	if (!mainMenu.isVisible())
 		SFX::playSound(SELECT_2);
 	if (serverMenu.isVisible())
@@ -208,7 +208,7 @@ void Menu::returnToMenu() {
 	serverMenu.hide();
 }
 
-void Menu::hostServer() {
+void Menu::hostServer(void) {
 	if (!Server::create(portForm.text().toUShort())) {
 		SFX::playSound(SELECT_2, 1);
 		return;
@@ -221,7 +221,7 @@ void Menu::hostServer() {
 	Music::stopSong();
 }
 
-void Menu::joinServer() {
+void Menu::joinServer(void) {
 	if (Connection::create(ipForm.text(), portForm.text().toUShort())) {
 		lobbyMenu.show();
 		multiplayerMenu.hide();
@@ -231,7 +231,7 @@ void Menu::joinServer() {
 		SFX::playSound(SELECT_2, 1);
 }
 
-void Menu::changeCharacter() {
+void Menu::changeCharacter(void) {
 	switch (User::character) {
 		case PYACHI:
 			User::character = AERON;

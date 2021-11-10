@@ -13,7 +13,7 @@ EntityCollectable::EntityCollectable(Tex tex, AI<EntityPlayer> ai)
 	Game::addEntity(this);
 }
 
-void EntityCollectable::tick() {
+void EntityCollectable::tick(void) {
 	age++;
 	int dir = Random::getInt() % 360;
 	if (getAge() < 10)
