@@ -199,7 +199,7 @@ Menu::Menu(void)
 	serverLayout.addWidget(&playerCount, 2, 1, 1, -1);
 	serverLayout.addWidget(&backServer, 3, 1, 1, -1);
 	connect(&backServer, &QPushButton::clicked, [this]() {
-		Server::disconnect();
+		Server::destruct();
 		serverMenu.hide();
 		multiplayerMenu.show();
 		SFX::playSound(SFX_SELECT2);
@@ -239,7 +239,7 @@ Menu::Menu(void)
 		Connection::sendPacket(PACKETPLAYINSTARTGAME);
 	});
 	connect(&backLobby, &QPushButton::clicked, [this]() {
-		Connection::disconnect();
+		Connection::destruct();
 		lobbyMenu.hide();
 		multiplayerMenu.show();
 		SFX::playSound(SFX_DISCONNECT);

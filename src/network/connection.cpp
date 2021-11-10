@@ -22,11 +22,13 @@ bool Connection::create(QString ip, quint16 port) {
 																							<< User::getUUID().toString()
 																							<< User::getName()});
 		CON->connect(CON, &Connection::stateChanged, []() {
+			if (CON == nullptr)
+				return;
 			if (CON->state() == UnconnectedState) {
 				Menu::MENU->lobbyMenu.hide();
 				Menu::MENU->multiplayerMenu.show();
 				SFX::playSound(SFX_DISCONNECT);
-				disconnect();
+				destruct();
 				if (Game::GAME == nullptr)
 					return;
 				Game::GAME->paused = true;
@@ -42,12 +44,9 @@ bool Connection::create(QString ip, quint16 port) {
 	}
 }
 
-bool Connection::exists(void) { return CON != nullptr; }
-
-void Connection::disconnect(void) {
+void Connection::destruct(void) {
 	if (CON == nullptr)
 		return;
-	CON->disconnectFromHost();
 	CON->deleteLater();
 	CON = nullptr;
 }

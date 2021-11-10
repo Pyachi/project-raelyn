@@ -25,10 +25,9 @@ bool Server::create(quint16 port) {
 	return true;
 }
 
-void Server::disconnect(void) {
+void Server::destruct(void) {
 	if (SER == nullptr)
 		return;
-	SER->close();
 	SER->deleteLater();
 	SER = nullptr;
 }
