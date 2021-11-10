@@ -2,11 +2,11 @@
 #include <QNetworkProxy>
 #include "packet.h"
 #include "src/ai/enemy.h"
+#include "src/assets/sfx.h"
 #include "src/entity/entityenemy.h"
 #include "src/entity/entityplayer.h"
 #include "src/framework/game.h"
 #include "src/framework/menu.h"
-#include "src/assets/sfx.h"
 #include "user.h"
 
 Connection* Connection::CON = nullptr;
@@ -21,6 +21,21 @@ bool Connection::create(QString ip, quint16 port) {
 		CON->sendPacket({PACKETPLAYINCONNECT, QStringList()
 																							<< User::getUUID().toString()
 																							<< User::getName()});
+		CON->connect(CON, &Connection::stateChanged, []() {
+			if (CON->state() == UnconnectedState) {
+				if (Game::GAME == nullptr) {
+					Menu::MENU->openMenu();
+					Menu::MENU->multiplayerMenu.show();
+					Menu::MENU->lobbyMenu.hide();
+					CON->deleteLater();
+					CON = nullptr;
+					return;
+				}
+				Game::GAME->paused = true;
+				Game::GAME->popupText.setText("ERROR: Disconnected from Server!");
+				Game::GAME->popup.show();
+			}
+		});
 		return true;
 	} else {
 		CON->deleteLater();
@@ -29,7 +44,9 @@ bool Connection::create(QString ip, quint16 port) {
 	}
 }
 
-bool Connection::exists(void) { return CON != nullptr; }
+bool Connection::exists(void) {
+	return CON != nullptr;
+}
 
 void Connection::disconnect(void) {
 	if (CON == nullptr)
@@ -50,19 +67,6 @@ Connection::Connection(void) : QTcpSocket() {
 	connect(this, &Connection::readyRead, [this]() {
 		for (Packet packet : Packet::decode(readAll()))
 			handlePacket(packet);
-	});
-	connect(this, &Connection::stateChanged, [this]() {
-		if (this->state() == UnconnectedState) {
-			if (Game::GAME == nullptr) {
-				Menu::MENU->openMenu();
-				Menu::MENU->multiplayerMenu.show();
-				Menu::MENU->lobbyMenu.hide();
-				return;
-			}
-			Game::GAME->paused = true;
-			Game::GAME->popupText.setText("ERROR: Disconnected from Server!");
-			Game::GAME->popup.show();
-		}
 	});
 }
 
@@ -99,8 +103,7 @@ void Connection::handlePacket(const Packet& packet) {
 				EntityPlayer* player =
 						new EntityPlayer(static_cast<PlayerType>(packet.data.at(2).toInt()),
 														 packet.data.at(1),
-														 UUID::fromString(packet.data.at(0)),
-														 ONLINEPLAYER);
+														 UUID::fromString(packet.data.at(0)), ONLINEPLAYER);
 				player->setOpacity(0.25);
 				player->hitbox.hide();
 			});
