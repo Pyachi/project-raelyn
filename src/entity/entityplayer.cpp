@@ -23,9 +23,9 @@ EntityPlayer::EntityPlayer(PlayerType playerType,
 }
 
 void EntityPlayer::tick(void) {
+	age++;
 	if (type != PLAYER)
 		return;
-	age++;
 	QSet<int> keys = Game::getKeys();
 
 	firing = keys.contains(User::getKeyShoot());
