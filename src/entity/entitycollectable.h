@@ -7,7 +7,7 @@ class EntityPlayer;
 
 class EntityCollectable : public Entity {
  public:
-	EntityCollectable(Tex, AI<EntityPlayer>);
+	EntityCollectable(Texture, AI<EntityPlayer>);
 
  private:
 	const AI<EntityPlayer> ai;

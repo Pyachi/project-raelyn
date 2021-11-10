@@ -88,12 +88,16 @@ void EntityPlayer::tick(void) {
 }
 
 List<EntityBullet*> EntityPlayer::fireBullets(Pattern pattern,
+																							Texture texture,
 																							double rot,
-																							const QPointF& loc) {
-	List<EntityBullet*> list = Entity::fireBullets(pattern, rot, loc);
+																							const QPointF& loc,
+																							int damage) {
+	List<EntityBullet*> list =
+			Entity::fireBullets(pattern, texture, rot, loc, damage);
 
 	for (EntityBullet* bullet : list) {
 		bullet->setOpacity(0.25);
+		bullet->setScale(2);
 		if (type == ONLINEPLAYER)
 			bullet->damage = 0;
 	}

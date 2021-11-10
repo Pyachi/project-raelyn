@@ -20,8 +20,8 @@ enum EntityType {
 
 class Entity : public QGraphicsPixmapItem {
  public:
-	Entity(EntityType, Tex);
-	Entity(EntityType, Tex, UUID);
+	Entity(EntityType, Texture);
+	Entity(EntityType, Texture, UUID);
 
 	void deleteLater(void);
 	int getAge(void);
@@ -41,7 +41,11 @@ class Entity : public QGraphicsPixmapItem {
 	void moveFoward(double);
 	void moveTowardsPoint(const QPointF&, double);
 	void rotate(double);
-	List<EntityBullet*> fireBullets(Pattern, double = 0, const QPointF& = {0, 0});
+	List<EntityBullet*> fireBullets(Pattern,
+																	Texture,
+																	double = 0,
+																	const QPointF& = {0, 0},
+																	int = 1);
 	Entity* getNearestEntity(EntityType);
 	List<Entity*> getCollisions(EntityType);
 	double distanceSquared(const Entity&);

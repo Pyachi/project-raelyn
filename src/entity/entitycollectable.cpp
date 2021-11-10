@@ -8,7 +8,7 @@
 #include "src/framework/game.h"
 #include "src/network/user.h"
 
-EntityCollectable::EntityCollectable(Tex tex, AI<EntityPlayer> ai)
+EntityCollectable::EntityCollectable(Texture tex, AI<EntityPlayer> ai)
 		: Entity(COLLECTABLE, tex), ai(ai) {
 	Game::addEntity(this);
 }

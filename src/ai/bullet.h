@@ -24,16 +24,16 @@ extern AI<EntityBullet> get(BulletAI);
 }
 
 struct BulletInfo {
-  BulletInfo(Tex, BulletAI, double = 0, const QPointF& = {0, 0}, int = 1);
-  const Tex texture;
+	BulletInfo(BulletAI, double = 0, const QPointF& = {0, 0});
   const BulletAI ai;
   const double relRot;
   const QPointF relLoc;
-  const int damage;
 
-  EntityBullet* spawn(const Entity* owner,
+	EntityBullet* spawn(Texture,
+											const Entity*,
                       double = 0,
-                      const QPointF& = {0, 0}) const;
+											const QPointF& = {0, 0},
+											int = 1) const;
 };
 
 #endif  // BULLETS_H

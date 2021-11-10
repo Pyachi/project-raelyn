@@ -1,28 +1,160 @@
 #include "texture.h"
 
-const Texture Texture::get(Tex texture) {
+namespace Textures {
+const QString getTexture(Texture texture) {
 	switch (texture) {
-		case TEXHITBOX:
-			return {":/textures/player_hitbox.png", 4};
-		case TEXPYACHI:
-			return {":/textures/player.png", 3};
-		case TEXAERON:
-			return {":/textures/player.png", 3};
-		case TEXDAESCH:
-			return {":/textures/player.png", 3};
-		case TEXANEKHANDA:
-			return {":/textures/player.png", 3};
-		case TEXENEMY1:
-			return {":/textures/enemy.png", 3};
-		case TEXPLAYERBULLET:
-			return {":/textures/player_bullet.png", 2};
-		case TEXBULLETROUND:
-			return {":/textures/bulletRound.png", 2};
-		case TEXBULLETELLIPSE:
-			return {":/textures/bulletEllipse.png", 2};
-		case BACKGROUND:
-			return {":/textures/background.png", 5};
-		case TITLE:
-			return {":/textures/title.png", 0};
+		case TEXTURE_BULLET_ROUND_RED:
+			return ":/textures/bullets/round/red.png";
+		case TEXTURE_BULLET_ROUND_ORANGE:
+			return ":/textures/bullets/round/orange.png";
+		case TEXTURE_BULLET_ROUND_YELLOW:
+			return ":/textures/bullets/round/yellow.png";
+		case TEXTURE_BULLET_ROUND_GREEN:
+			return ":/textures/bullets/round/green.png";
+		case TEXTURE_BULLET_ROUND_AQUA:
+			return ":/textures/bullets/round/aqua.png";
+		case TEXTURE_BULLET_ROUND_BLUE:
+			return ":/textures/bullets/round/blue.png";
+		case TEXTURE_BULLET_ROUND_PURPLE:
+			return ":/textures/bullets/round/purple.png";
+		case TEXTURE_BULLET_ROUND_MAGENTA:
+			return ":/textures/bullets/round/magenta.png";
+		case TEXTURE_BULLET_ELLIPSE_RED:
+			return ":/textures/bullets/ellipse/red.png";
+		case TEXTURE_BULLET_ELLIPSE_ORANGE:
+			return ":/textures/bullets/ellipse/orange.png";
+		case TEXTURE_BULLET_ELLIPSE_YELLOW:
+			return ":/textures/bullets/ellipse/yellow.png";
+		case TEXTURE_BULLET_ELLIPSE_GREEN:
+			return ":/textures/bullets/ellipse/green.png";
+		case TEXTURE_BULLET_ELLIPSE_AQUA:
+			return ":/textures/bullets/ellipse/aqua.png";
+		case TEXTURE_BULLET_ELLIPSE_BLUE:
+			return ":/textures/bullets/ellipse/blue.png";
+		case TEXTURE_BULLET_ELLIPSE_PURPLE:
+			return ":/textures/bullets/ellipse/purple.png";
+		case TEXTURE_BULLET_ELLIPSE_MAGENTA:
+			return ":/textures/bullets/ellipse/magenta.png";
+		case TEXTURE_BULLET_ARROW_RED:
+			return ":/textures/bullets/arrow/red.png";
+		case TEXTURE_BULLET_ARROW_ORANGE:
+			return ":/textures/bullets/arrow/orange.png";
+		case TEXTURE_BULLET_ARROW_YELLOW:
+			return ":/textures/bullets/arrow/yellow.png";
+		case TEXTURE_BULLET_ARROW_GREEN:
+			return ":/textures/bullets/arrow/green.png";
+		case TEXTURE_BULLET_ARROW_AQUA:
+			return ":/textures/bullets/arrow/aqua.png";
+		case TEXTURE_BULLET_ARROW_BLUE:
+			return ":/textures/bullets/arrow/blue.png";
+		case TEXTURE_BULLET_ARROW_PURPLE:
+			return ":/textures/bullets/arrow/purple.png";
+		case TEXTURE_BULLET_ARROW_MAGENTA:
+			return ":/textures/bullets/arrow/magenta.png";
+		case TEXTURE_BULLET_STAR_RED:
+			return ":/textures/bullets/star/red.png";
+		case TEXTURE_BULLET_STAR_ORANGE:
+			return ":/textures/bullets/star/orange.png";
+		case TEXTURE_BULLET_STAR_YELLOW:
+			return ":/textures/bullets/star/yellow.png";
+		case TEXTURE_BULLET_STAR_GREEN:
+			return ":/textures/bullets/star/green.png";
+		case TEXTURE_BULLET_STAR_AQUA:
+			return ":/textures/bullets/star/aqua.png";
+		case TEXTURE_BULLET_STAR_BLUE:
+			return ":/textures/bullets/star/blue.png";
+		case TEXTURE_BULLET_STAR_PURPLE:
+			return ":/textures/bullets/star/purple.png";
+		case TEXTURE_BULLET_STAR_MAGENTA:
+			return ":/textures/bullets/star/magenta.png";
+		case TEXTURE_BULLET_LAZER_RED:
+			return ":/textures/bullets/lazer/red.png";
+		case TEXTURE_BULLET_LAZER_ORANGE:
+			return ":/textures/bullets/lazer/orange.png";
+		case TEXTURE_BULLET_LAZER_YELLOW:
+			return ":/textures/bullets/lazer/yellow.png";
+		case TEXTURE_BULLET_LAZER_GREEN:
+			return ":/textures/bullets/lazer/green.png";
+		case TEXTURE_BULLET_LAZER_AQUA:
+			return ":/textures/bullets/lazer/aqua.png";
+		case TEXTURE_BULLET_LAZER_BLUE:
+			return ":/textures/bullets/lazer/blue.png";
+		case TEXTURE_BULLET_LAZER_PURPLE:
+			return ":/textures/bullets/LAZER/purple.png";
+		case TEXTURE_BULLET_LAZER_MAGENTA:
+			return ":/textures/bullets/lazer/magenta.png";
+		case TEXTURE_COLLECTABLE_POWER:
+			return ":/textures/collectables/power.png";
+		case TEXTURE_COLLECTABLE_POINTS:
+			return ":/textures/collectables/points.png";
+		case TEXTURE_ENEMYTEMP:
+			return ":/textures/enemies/enemy.png";
+		case TEXTURE_BACKGROUNDTEMP:
+			return ":/textures/misc/background.png";
+		case TEXTURE_TITLETEMP:
+			return ":/textures/misc/title.png";
+		case TEXTURE_PLAYERTEMP:
+			return ":/textures/players/player.png";
+		case TEXTURE_PLAYER_HITBOX:
+			return ":/textures/players/player_hitbox.png";
 	}
+}
+
+int getZValue(Texture texture) {
+	switch (texture) {
+		case TEXTURE_BULLET_ROUND_RED:
+		case TEXTURE_BULLET_ROUND_ORANGE:
+		case TEXTURE_BULLET_ROUND_YELLOW:
+		case TEXTURE_BULLET_ROUND_GREEN:
+		case TEXTURE_BULLET_ROUND_AQUA:
+		case TEXTURE_BULLET_ROUND_BLUE:
+		case TEXTURE_BULLET_ROUND_PURPLE:
+		case TEXTURE_BULLET_ROUND_MAGENTA:
+		case TEXTURE_BULLET_ELLIPSE_RED:
+		case TEXTURE_BULLET_ELLIPSE_ORANGE:
+		case TEXTURE_BULLET_ELLIPSE_YELLOW:
+		case TEXTURE_BULLET_ELLIPSE_GREEN:
+		case TEXTURE_BULLET_ELLIPSE_AQUA:
+		case TEXTURE_BULLET_ELLIPSE_BLUE:
+		case TEXTURE_BULLET_ELLIPSE_PURPLE:
+		case TEXTURE_BULLET_ELLIPSE_MAGENTA:
+		case TEXTURE_BULLET_ARROW_RED:
+		case TEXTURE_BULLET_ARROW_ORANGE:
+		case TEXTURE_BULLET_ARROW_YELLOW:
+		case TEXTURE_BULLET_ARROW_GREEN:
+		case TEXTURE_BULLET_ARROW_AQUA:
+		case TEXTURE_BULLET_ARROW_BLUE:
+		case TEXTURE_BULLET_ARROW_PURPLE:
+		case TEXTURE_BULLET_ARROW_MAGENTA:
+		case TEXTURE_BULLET_STAR_RED:
+		case TEXTURE_BULLET_STAR_ORANGE:
+		case TEXTURE_BULLET_STAR_YELLOW:
+		case TEXTURE_BULLET_STAR_GREEN:
+		case TEXTURE_BULLET_STAR_AQUA:
+		case TEXTURE_BULLET_STAR_BLUE:
+		case TEXTURE_BULLET_STAR_PURPLE:
+		case TEXTURE_BULLET_STAR_MAGENTA:
+		case TEXTURE_BULLET_LAZER_RED:
+		case TEXTURE_BULLET_LAZER_ORANGE:
+		case TEXTURE_BULLET_LAZER_YELLOW:
+		case TEXTURE_BULLET_LAZER_GREEN:
+		case TEXTURE_BULLET_LAZER_AQUA:
+		case TEXTURE_BULLET_LAZER_BLUE:
+		case TEXTURE_BULLET_LAZER_PURPLE:
+		case TEXTURE_BULLET_LAZER_MAGENTA:
+			return 1;
+		case TEXTURE_COLLECTABLE_POWER:
+		case TEXTURE_COLLECTABLE_POINTS:
+			return 3;
+		case TEXTURE_ENEMYTEMP:
+			return 2;
+		case TEXTURE_BACKGROUNDTEMP:
+		case TEXTURE_TITLETEMP:
+			return 5;
+		case TEXTURE_PLAYERTEMP:
+			return 4;
+		case TEXTURE_PLAYER_HITBOX:
+			return 0;
+	}
+}
 }

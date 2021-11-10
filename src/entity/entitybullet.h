@@ -5,7 +5,7 @@
 
 class EntityBullet : public Entity {
  public:
-	EntityBullet(Tex, AI<EntityBullet>, EntityType, int);
+	EntityBullet(Texture, AI<EntityBullet>, EntityType, int);
 
 	const EntityType ownerType;
 	bool borderCheck;

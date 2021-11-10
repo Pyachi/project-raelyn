@@ -2,7 +2,7 @@
 #include "src/ai/bullet.h"
 #include "src/framework/game.h"
 
-EntityBullet::EntityBullet(Tex tex,
+EntityBullet::EntityBullet(Texture tex,
 													 AI<EntityBullet> ai,
 													 EntityType ownerType,
 													 int damage)

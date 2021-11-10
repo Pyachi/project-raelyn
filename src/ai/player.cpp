@@ -5,16 +5,16 @@
 #include "src/entity/entityplayer.h"
 
 namespace Players {
-Tex getTexture(PlayerType type) {
+Texture getTexture(PlayerType type) {
 	switch (type) {
 		case PYACHI:
-			return TEXPYACHI;
+			return TEXTURE_PLAYERTEMP;
 		case AERON:
-			return TEXAERON;
+			return TEXTURE_PLAYERTEMP;
 		case DAESCH:
-			return TEXDAESCH;
+			return TEXTURE_PLAYERTEMP;
 		case ANEKHANDA:
-			return TEXANEKHANDA;
+			return TEXTURE_PLAYERTEMP;
 	}
 }
 
@@ -28,11 +28,71 @@ const AI<EntityPlayer> getShootingPattern(PlayerType type,
 				case 1:
 					if (focus)
 						return [](EntityPlayer* player) {
-							player->fireBullets(PATTERN_PLAYERBASICX5C);
+							if (player->cycle(5))
+								switch ((player->getAge() / 5) % 8) {
+									default:
+									case 0:
+										player->fireBullets(PATTERN_PLAYERHOMINGX2C,
+																				TEXTURE_BULLET_STAR_RED,
+																				0,
+																				{0, 0},
+																				5);
+										break;
+									case 1:
+										player->fireBullets(PATTERN_PLAYERHOMINGX2C,
+																				TEXTURE_BULLET_STAR_ORANGE,
+																				0,
+																				{0, 0},
+																				5);
+										break;
+									case 2:
+										player->fireBullets(PATTERN_PLAYERHOMINGX2C,
+																				TEXTURE_BULLET_STAR_YELLOW,
+																				0,
+																				{0, 0},
+																				5);
+										break;
+									case 3:
+										player->fireBullets(PATTERN_PLAYERHOMINGX2C,
+																				TEXTURE_BULLET_STAR_GREEN,
+																				0,
+																				{0, 0},
+																				5);
+										break;
+									case 4:
+										player->fireBullets(PATTERN_PLAYERHOMINGX2C,
+																				TEXTURE_BULLET_STAR_AQUA,
+																				0,
+																				{0, 0},
+																				5);
+										break;
+									case 5:
+										player->fireBullets(PATTERN_PLAYERHOMINGX2C,
+																				TEXTURE_BULLET_STAR_BLUE,
+																				0,
+																				{0, 0},
+																				5);
+										break;
+									case 6:
+										player->fireBullets(PATTERN_PLAYERHOMINGX2C,
+																				TEXTURE_BULLET_STAR_PURPLE,
+																				0,
+																				{0, 0},
+																				5);
+										break;
+									case 7:
+										player->fireBullets(PATTERN_PLAYERHOMINGX2C,
+																				TEXTURE_BULLET_STAR_MAGENTA,
+																				0,
+																				{0, 0},
+																				5);
+										break;
+								}
 						};
 					else
 						return [](EntityPlayer* player) {
-							player->fireBullets(PATTERN_PLAYERBASIC);
+							player->fireBullets(PATTERN_PLAYERBASIC,
+																	TEXTURE_BULLET_ARROW_RED);
 						};
 				case 2:
 					if (focus)

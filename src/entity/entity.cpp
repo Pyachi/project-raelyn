@@ -7,16 +7,16 @@
 #include "src/assets/texture.h"
 #include "src/framework/game.h"
 
-Entity::Entity(EntityType type, Tex tex) : Entity(type, tex, UUID()) {}
+Entity::Entity(EntityType type, Texture tex) : Entity(type, tex, UUID()) {}
 
-Entity::Entity(EntityType type, Tex tex, UUID id)
+Entity::Entity(EntityType type, Texture tex, UUID id)
 		: QGraphicsPixmapItem(&Game::getPlayableArea()),
 			type(type),
 			id(id),
 			age(0),
 			cleanup(false) {
-	setPixmap(QPixmap(Texture::get(tex).texture));
-	setZValue(Texture::get(tex).zValue);
+	setPixmap(QPixmap(Textures::getTexture(tex)));
+	setZValue(Textures::getZValue(tex));
 	setOffset(-boundingRect().center());
 }
 
@@ -44,11 +44,13 @@ void Entity::moveTowardsPoint(const QPointF& point, double distance) {
 void Entity::rotate(double deg) { setRotation(rotation() + deg); }
 
 List<EntityBullet*> Entity::fireBullets(Pattern pattern,
+																				Texture texture,
 																				double rot,
-																				const QPointF& loc) {
+																				const QPointF& loc,
+																				int damage) {
 	List<EntityBullet*> list;
 	for (BulletInfo info : Patterns::get(pattern))
-		list.push_back(info.spawn(this, rot, loc));
+		list.push_back(info.spawn(texture, this, rot, loc, damage));
 	return list;
 }
 

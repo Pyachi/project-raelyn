@@ -22,9 +22,9 @@ Game::Game(void)
   setInteractive(false);
   setViewport(&openGL);
 
-  QPixmap backgroundPixmap(Texture::get(BACKGROUND).texture);
+	QPixmap backgroundPixmap(Textures::getTexture(TEXTURE_BACKGROUNDTEMP));
   background.setPixmap(backgroundPixmap);
-  background.setZValue(Texture::get(BACKGROUND).zValue);
+	background.setZValue(Textures::getZValue(TEXTURE_BACKGROUNDTEMP));
   scene.addItem(&background);
 
   QPixmap playableAreaPixmap(gameHeight - (playBorder * 2),

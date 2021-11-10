@@ -10,7 +10,7 @@ enum PlayerType { PYACHI, AERON, DAESCH, ANEKHANDA };
 class EntityPlayer;
 
 namespace Players {
-extern Tex getTexture(PlayerType);
+extern Texture getTexture(PlayerType);
 extern const AI<EntityPlayer> getShootingPattern(PlayerType, int, bool);
 extern int getSpeed(PlayerType);
 extern int getFocusSpeed(PlayerType);

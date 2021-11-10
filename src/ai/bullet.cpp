@@ -74,16 +74,14 @@ AI<EntityBullet> get(BulletAI ai) {
 }
 }  // namespace Bullets
 
-BulletInfo::BulletInfo(Tex texture,
-											 BulletAI ai,
-											 double rot,
-											 const QPointF& loc,
-											 int damage)
-		: texture(texture), ai(ai), relRot(rot), relLoc(loc), damage(damage) {}
+BulletInfo::BulletInfo(BulletAI ai, double rot, const QPointF& loc)
+		: ai(ai), relRot(rot), relLoc(loc) {}
 
-EntityBullet* BulletInfo::spawn(const Entity* owner,
+EntityBullet* BulletInfo::spawn(Texture texture,
+																const Entity* owner,
 																double rot,
-																const QPointF& loc) const {
+																const QPointF& loc,
+																int damage) const {
 	EntityBullet* bullet =
 			new EntityBullet(texture, Bullets::get(ai), owner->type, damage);
 	bullet->setRotation(owner->rotation() + rot + relRot);
