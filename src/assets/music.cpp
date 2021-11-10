@@ -15,15 +15,15 @@ const QString get(Song song) {
 		case MENU:
 			return "qrc:/music/music_menu_theme.ogg";
 		case LVL1:
-			return "qrc:/music/music_menu_theme.ogg";
+            return "qrc:/music/music_menu_theme.ogg";
 		case LVL2:
-			return "qrc:/music/music_menu_theme.ogg";
+            return "qrc:/music/music_lvl2_theme.ogg";
 		case LVL3:
 			return "qrc:/music/music_menu_theme.ogg";
 		case LVL1BOSS:
-			return "qrc:/music/music_menu_theme.ogg";
+            return "qrc:/music/music_lvl1_boss.ogg";
 		case LVL2BOSS:
-			return "qrc:/music/music_menu_theme.ogg";
+            return "qrc:/music/music_lvl2_boss.ogg";
 		case LVL3BOSS:
 			return "qrc:/music/music_menu_theme.ogg";
 		case CREDITS:
