@@ -4,9 +4,9 @@
 #include "entityenemy.h"
 #include "src/assets/texture.h"
 #include "src/framework/game.h"
+#include "src/framework/user.h"
 #include "src/network/connection.h"
 #include "src/network/packet.h"
-#include "src/network/user.h"
 
 EntityPlayer::EntityPlayer(PlayerType playerType,
 													 const QString& user,
@@ -40,8 +40,8 @@ void EntityPlayer::tick(void) {
 	if (firing) {
 		Players::getShootingPattern(playerType, level, focus)(this);
 		Connection::sendPacket(
-				{PACKETPLAYINFIREBULLETS, QStringList() << QString::number(level)
-																								<< QString::number(focus)});
+				{PACKETPLAYINFIREBULLETS,
+				 QStringList() << QString::number(level) << QString::number(focus)});
 	}
 
 	int dx = 0, dy = 0;

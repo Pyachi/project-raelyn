@@ -7,21 +7,23 @@
 #include "src/framework/game.h"
 #include "src/framework/level.h"
 #include "src/framework/menu.h"
-#include "user.h"
+#include "src/framework/user.h"
 #include "uuid.h"
 
 Server* Server::SER = nullptr;
 
-bool Server::create(quint16 port) {
+bool Server::create(unsigned short port) {
 	if (SER != nullptr)
 		return false;
-	Server::SER = new Server;
+	Server::SER = new Server();
 	Server* server = Server::SER;
 
 	if (!server->listen(QHostAddress::Any, port)) {
 		SER = nullptr;
 		return false;
 	}
+	if (port == 0)
+		port = SER->getPort();
 	return true;
 }
 
@@ -35,7 +37,7 @@ void Server::destruct(void) {
 unsigned short Server::getPort(void) {
 	if (SER == nullptr)
 		return 0;
-	return SER->serverPort();
+	return SER->getPort();
 }
 
 void Server::sendPacket(const Packet& packet, QTcpSocket* sender) {
@@ -47,8 +49,9 @@ void Server::sendPacket(const Packet& packet, QTcpSocket* sender) {
 	}
 }
 
-Server::Server(void) : QTcpServer() {
+Server::Server() : QTcpServer() {
 	connect(this, &Server::newConnection, this, &Server::handleConnection);
+	Menu::MENU->playerCount.setText("Players Connected: 0");
 }
 
 void Server::handleConnection(void) {
@@ -57,7 +60,8 @@ void Server::handleConnection(void) {
 	connect(socket, &QTcpSocket::readyRead, this, &Server::receivePacket);
 	connect(socket, &QTcpSocket::disconnected, this,
 					&Server::handleDisconnection);
-	Menu::updatePlayerCount(sockets.size());
+	Menu::MENU->playerCount.setText("Players Connected: " +
+																	QString::number(sockets.size()));
 }
 
 void Server::handleDisconnection(void) {
@@ -68,8 +72,14 @@ void Server::handleDisconnection(void) {
 	sockets.remove(socket);
 	users.remove(socket);
 	names.remove(socket);
-	Menu::updatePlayerCount(sockets.size());
+	Menu::MENU->playerCount.setText("Players Connected: " +
+																	QString::number(sockets.size()));
 	sendPacket({PACKETPLAYOUTPLAYERLEAVE, names.values()});
+	if (sockets.size() == 0 && !isListening()) {
+		Menu::MENU->serverStatus.setText("Status: In Lobby");
+		//		listen(QHostAddress::Any,
+		//Menu::MENU->portForm.text().toUShort());
+	}
 }
 
 void Server::receivePacket(void) {
@@ -89,6 +99,7 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
 			sendPacket({PACKETPLAYOUTPLAYERJOIN, names.values()});
 			break;
 		case PACKETPLAYINSTARTGAME:
+			Menu::MENU->serverStatus.setText("Status: In Game");
 			close();
 			sendPacket(PACKETPLAYOUTSTARTGAME);
 			Level::LVL1.start();

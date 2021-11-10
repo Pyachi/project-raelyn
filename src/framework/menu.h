@@ -12,9 +12,6 @@
 class Menu : public QDialog {
  public:
 	static void openMenu(void);
-	static void closeMenu(void);
-	static void updatePlayerCount(int);
-	static void updatePlayerList(const QStringList&);
 
  private:
 	Menu(void);
@@ -68,6 +65,7 @@ class Menu : public QDialog {
 
 	// Server
 	QLabel connectionInfo;
+	QLabel serverStatus;
 	QLabel playerCount;
 	QPushButton backServer;
 
@@ -78,6 +76,7 @@ class Menu : public QDialog {
 	QPushButton backLobby;
 
 	friend class Connection;
+	friend class Server;
 };
 
 #endif  // MAINMENU_H

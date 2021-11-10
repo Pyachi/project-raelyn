@@ -7,11 +7,11 @@
 #include "src/entity/entityplayer.h"
 #include "src/framework/game.h"
 #include "src/framework/menu.h"
-#include "user.h"
+#include "src/framework/user.h"
 
 Connection* Connection::CON = nullptr;
 
-bool Connection::create(QString ip, quint16 port) {
+bool Connection::create(QString ip, unsigned short port) {
 	if (CON != nullptr)
 		return false;
 	CON = new Connection;
@@ -70,15 +70,19 @@ void Connection::handlePacket(const Packet& packet) {
 	switch (header) {
 		case PACKETPLAYOUTSTARTGAME:
 			Game::create();
-			Menu::closeMenu();
+			Menu::MENU->close();
 			new EntityPlayer(User::character, User::getName(), User::getUUID());
 			break;
 		case PACKETPLAYOUTPLAYERJOIN:
-			Menu::updatePlayerList(packet.data);
+			Menu::MENU->players.clear();
+			for (QString name : packet.data)
+				Menu::MENU->players.addItem(name);
 			SFX::playSound(SFX_CONNECT);
 			break;
 		case PACKETPLAYOUTPLAYERLEAVE:
-			Menu::updatePlayerList(packet.data);
+			Menu::MENU->players.clear();
+			for (QString name : packet.data)
+				Menu::MENU->players.addItem(name);
 			SFX::playSound(SFX_DISCONNECT);
 			break;
 		case PACKETPLAYOUTUPDATEPLAYER:
@@ -98,8 +102,7 @@ void Connection::handlePacket(const Packet& packet) {
 				EntityPlayer* player =
 						new EntityPlayer(static_cast<PlayerType>(packet.data.at(2).toInt()),
 														 packet.data.at(1),
-														 UUID::fromString(packet.data.at(0)),
-														 ONLINEPLAYER);
+														 UUID::fromString(packet.data.at(0)), ONLINEPLAYER);
 				player->setOpacity(0.25);
 				player->hitbox.hide();
 			});

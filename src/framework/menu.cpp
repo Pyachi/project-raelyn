@@ -2,10 +2,10 @@
 #include "src/assets/music.h"
 #include "src/assets/sfx.h"
 #include "src/assets/texture.h"
+#include "src/framework/user.h"
 #include "src/network/connection.h"
 #include "src/network/packet.h"
 #include "src/network/server.h"
-#include "src/network/user.h"
 
 Menu* Menu::MENU = nullptr;
 
@@ -34,6 +34,7 @@ Menu::Menu(void)
 			keys("Controls: Traditional"),
 			backOptions("Return to Menu"),
 			playerCount("Players Connected: 0"),
+			serverStatus("Status: In Lobby"),
 			backServer("Return to Menu"),
 			playerLobby("Character: Pyachi"),
 			startLobby("Start Game"),
@@ -196,8 +197,9 @@ Menu::Menu(void)
 	//************************************************************
 	serverMenu.setLayout(&serverLayout);
 	serverLayout.addWidget(&connectionInfo, 1, 1, 1, -1);
-	serverLayout.addWidget(&playerCount, 2, 1, 1, -1);
-	serverLayout.addWidget(&backServer, 3, 1, 1, -1);
+	serverLayout.addWidget(&serverStatus, 2, 1, 1, -1);
+	serverLayout.addWidget(&playerCount, 3, 1, 1, -1);
+	serverLayout.addWidget(&backServer, 4, 1, 1, -1);
 	connect(&backServer, &QPushButton::clicked, [this]() {
 		Server::destruct();
 		serverMenu.hide();
@@ -250,19 +252,4 @@ void Menu::openMenu(void) {
 		MENU = new Menu();
 	MENU->show();
 	Music::playSong(SONG_MENU);
-}
-
-void Menu::closeMenu(void) {
-	if (MENU != nullptr)
-		MENU->close();
-}
-
-void Menu::updatePlayerCount(int size) {
-	MENU->playerCount.setText("Players Connected: " + QString::number(size));
-}
-
-void Menu::updatePlayerList(const QStringList& list) {
-	MENU->players.clear();
-	for (QString string : list)
-		MENU->players.addItem(string);
 }

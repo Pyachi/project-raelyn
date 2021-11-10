@@ -5,9 +5,9 @@
 #include "src/ai/player.h"
 #include "src/assets/texture.h"
 #include "src/entity/entityplayer.h"
+#include "src/framework/user.h"
 #include "src/network/connection.h"
 #include "src/network/packet.h"
-#include "src/network/user.h"
 
 Game* Game::GAME = nullptr;
 
@@ -53,7 +53,7 @@ Game::Game(void)
 }
 
 Game::~Game(void) {
-  foreach(Entity * entity, entities.values()) {
+	foreach (Entity* entity, entities.values()) {
     GAME = nullptr;
     entities.remove(entity->id);
     scene.removeItem(entity);
@@ -71,7 +71,7 @@ void Game::tick(void) {
 		eventQueue.front()();
 		eventQueue.pop_front();
 	}
-  foreach(Entity * entity, entities.values()) {
+	foreach (Entity* entity, entities.values()) {
     if (entity->readyToDelete()) {
       entities.remove(entity->id);
       scene.removeItem(entity);
@@ -98,11 +98,17 @@ void Game::keyReleaseEvent(QKeyEvent* e) {
   QGraphicsView::keyReleaseEvent(e);
 }
 
-QGraphicsPixmapItem& Game::getPlayableArea(void) { return GAME->playableArea; }
+QGraphicsPixmapItem& Game::getPlayableArea(void) {
+	return GAME->playableArea;
+}
 
-QSet<int> Game::getKeys(void) { return GAME->keys; }
+QSet<int> Game::getKeys(void) {
+	return GAME->keys;
+}
 
-QMap<UUID, Entity*> Game::getEntities(void) { return GAME->entities; }
+QMap<UUID, Entity*> Game::getEntities(void) {
+	return GAME->entities;
+}
 
 void Game::addEntity(Entity* entity) {
   GAME->entities.insert(entity->id, entity);

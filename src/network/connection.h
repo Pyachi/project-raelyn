@@ -7,7 +7,7 @@ class Packet;
 
 class Connection : public QTcpSocket {
  public:
-	static bool create(QString, quint16);
+	static bool create(QString, unsigned short);
 	static void destruct(void);
 
 	static void sendPacket(const Packet&);

@@ -36,12 +36,12 @@ SOURCES += \
     src/framework/game.cpp \
     src/framework/level.cpp \
     src/framework/menu.cpp \
+    src/framework/user.cpp \
     src/framework/util.cpp \
     src/main.cpp \
     src/network/connection.cpp \
     src/network/packet.cpp \
     src/network/server.cpp \
-    src/network/user.cpp \
     src/network/uuid.cpp
 
 HEADERS += \
@@ -62,10 +62,10 @@ HEADERS += \
     src/framework/game.h \
     src/framework/level.h \
     src/framework/menu.h \
+    src/framework/user.h \
     src/network/connection.h \
     src/network/packet.h \
     src/network/server.h \
-    src/network/user.h \
     src/network/uuid.h \
     util.h
 

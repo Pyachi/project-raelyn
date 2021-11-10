@@ -10,7 +10,7 @@ class UUID;
 
 class Server : public QTcpServer {
  public:
-	static bool create(quint16);
+	static bool create(unsigned short);
 	static void destruct(void);
 	static unsigned short getPort(void);
 

@@ -6,7 +6,7 @@
 #include "entityplayer.h"
 #include "src/ai/collectable.h"
 #include "src/framework/game.h"
-#include "src/network/user.h"
+#include "src/framework/user.h"
 
 EntityCollectable::EntityCollectable(Texture tex, AI<EntityPlayer> ai)
 		: Entity(COLLECTABLE, tex), ai(ai) {
