@@ -1,7 +1,7 @@
 #ifndef BULLETGROUP_H
 #define BULLETGROUP_H
 
-#include "alias.h"
+#include "util.h"
 
 enum Pattern {
 	PATTERN_PLAYERBASIC,

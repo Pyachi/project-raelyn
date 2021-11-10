@@ -2,7 +2,7 @@
 #define BULLETS_H
 
 #include <QPointF>
-#include "alias.h"
+#include "util.h"
 #include "src/assets/texture.h"
 #include "src/entity/entity.h"
 

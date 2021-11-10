@@ -36,6 +36,7 @@ SOURCES += \
     src/framework/game.cpp \
     src/framework/level.cpp \
     src/framework/menu.cpp \
+    src/framework/util.cpp \
     src/main.cpp \
     src/network/connection.cpp \
     src/network/packet.cpp \
@@ -44,7 +45,6 @@ SOURCES += \
     src/network/uuid.cpp
 
 HEADERS += \
-    alias.h \
     src/ai/bullet.h \
     src/ai/bulletpattern.h \
     src/ai/collectable.h \
@@ -66,7 +66,8 @@ HEADERS += \
     src/network/packet.h \
     src/network/server.h \
     src/network/user.h \
-    src/network/uuid.h
+    src/network/uuid.h \
+    util.h
 
 FORMS +=
 

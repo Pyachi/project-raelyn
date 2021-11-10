@@ -2,7 +2,7 @@
 #define ENTITYTYPES_H
 
 #include <QGraphicsPixmapItem>
-#include "alias.h"
+#include "util.h"
 #include "src/ai/bulletpattern.h"
 #include "src/assets/texture.h"
 #include "src/network/uuid.h"

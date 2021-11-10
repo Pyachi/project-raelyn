@@ -38,7 +38,7 @@ void EntityEnemy::tick() {
 void EntityEnemy::kill() {
 	if (cleanup)
 		return;
-	for (int i = 0; i < (rand() % 5) + 8; i++)
+	for (int i = 0; i < (Random::getInt() % 5) + 8; i++)
 		Collectables::spawn(POWER, pos());
 	deleteLater();
 }

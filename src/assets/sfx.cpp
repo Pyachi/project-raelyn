@@ -1,6 +1,6 @@
 #include "sfx.h"
 #include <QSoundEffect>
-#include "alias.h"
+#include "util.h"
 
 namespace SFX {
 namespace {

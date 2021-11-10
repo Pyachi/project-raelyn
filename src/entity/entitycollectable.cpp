@@ -15,7 +15,7 @@ EntityCollectable::EntityCollectable(Tex tex, AI<EntityPlayer> ai)
 
 void EntityCollectable::tick() {
 	age++;
-	int dir = rand() % 360;
+	int dir = Random::getInt() % 360;
 	if (getAge() < 10)
 		moveBy(20 * -sin(dir), 20 * cos(dir));
 	else {

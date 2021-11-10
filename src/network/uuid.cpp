@@ -1,12 +1,12 @@
 #include "uuid.h"
-#include <random>
+#include "util.h"
 #include <QStringList>
 
 UUID::UUID()
-		: UUID(static_cast<unsigned int>(rand()),
-					 static_cast<unsigned int>(rand()),
-					 static_cast<unsigned int>(rand()),
-					 static_cast<unsigned int>(rand())) {}
+		: UUID(static_cast<unsigned int>(Random::getInt()),
+					 static_cast<unsigned int>(Random::getInt()),
+					 static_cast<unsigned int>(Random::getInt()),
+					 static_cast<unsigned int>(Random::getInt())) {}
 
 UUID::UUID(const UUID& other)
 		: UUID(other.sec1, other.sec2, other.sec3, other.sec4) {}

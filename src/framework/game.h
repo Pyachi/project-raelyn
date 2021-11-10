@@ -10,7 +10,7 @@
 #include <QLabel>
 #include <QGridLayout>
 #include <QPushButton>
-#include "alias.h"
+#include "util.h"
 #include "src/ai/player.h"
 #include "src/network/uuid.h"
 
