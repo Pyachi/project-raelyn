@@ -5,7 +5,7 @@
 #include "util.h"
 #include "src/ai/bulletpattern.h"
 #include "src/assets/texture.h"
-#include "src/network/uuid.h"
+#include "src/network/uid.h"
 
 class EntityBullet;
 
@@ -21,7 +21,7 @@ enum EntityType {
 class Entity : public QGraphicsPixmapItem {
  public:
 	Entity(EntityType, Texture);
-	Entity(EntityType, Texture, UUID);
+	Entity(EntityType, Texture, UID);
 
 	void deleteLater(void);
 	int getAge(void);
@@ -30,7 +30,7 @@ class Entity : public QGraphicsPixmapItem {
 	virtual void tick(void) = 0;
 
 	const EntityType type;
-	const UUID id;
+	const UID id;
 
  protected:
 	int age;

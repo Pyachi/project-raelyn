@@ -1,13 +1,13 @@
 #include "user.h"
 #include <QDir>
 #include <QNetworkInterface>
-#include "src/network/uuid.h"
+#include "src/network/uid.h"
 
 namespace User {
 namespace {
 QString name;
 QString ip;
-UUID id;
+UID id;
 bool nameExists = false;
 bool ipExists = false;
 bool uuidExists = false;
@@ -63,9 +63,9 @@ const QString getIp(void) {
 	return ip;
 }
 
-const UUID getUUID(void) {
+const UID getUUID(void) {
 	if (!uuidExists) {
-		id = UUID();
+		id = UID();
 		uuidExists = true;
 	}
 	return id;

@@ -42,7 +42,7 @@ SOURCES += \
     src/network/connection.cpp \
     src/network/packet.cpp \
     src/network/server.cpp \
-    src/network/uuid.cpp
+    src/network/uid.cpp
 
 HEADERS += \
     src/ai/bullet.h \
@@ -66,7 +66,7 @@ HEADERS += \
     src/network/connection.h \
     src/network/packet.h \
     src/network/server.h \
-    src/network/uuid.h \
+    src/network/uid.h \
     util.h
 
 FORMS +=

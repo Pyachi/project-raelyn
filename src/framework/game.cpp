@@ -20,7 +20,7 @@ Game::Game(void)
   setScene(&scene);
 
   setInteractive(false);
-  setViewport(&openGL);
+//  setViewport(&openGL);
 
 	QPixmap backgroundPixmap(Textures::getTexture(TEXTURE_BACKGROUNDTEMP));
   background.setPixmap(backgroundPixmap);
@@ -106,7 +106,7 @@ QSet<int> Game::getKeys(void) {
 	return GAME->keys;
 }
 
-QMap<UUID, Entity*> Game::getEntities(void) {
+QMap<UID, Entity*> Game::getEntities(void) {
 	return GAME->entities;
 }
 

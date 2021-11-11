@@ -6,7 +6,7 @@
 #include <QTcpServer>
 
 class Packet;
-class UUID;
+class UID;
 
 class Server : public QTcpServer {
  public:
@@ -22,7 +22,7 @@ class Server : public QTcpServer {
 	static Server* SER;
 
 	QSet<QTcpSocket*> sockets;
-	QMap<QTcpSocket*, UUID> users;
+	QMap<QTcpSocket*, UID> users;
 	QMap<QTcpSocket*, QString> names;
 
 	void handleConnection(void);

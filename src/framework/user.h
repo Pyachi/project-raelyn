@@ -4,7 +4,7 @@
 #include <QString>
 #include "src/ai/player.h"
 
-class UUID;
+class UID;
 
 namespace User {
 extern PlayerType character;
@@ -18,7 +18,7 @@ extern int getKeyShoot(void);
 extern int getKeyBomb(void);
 extern const QString getName(void);
 extern const QString getIp(void);
-extern const UUID getUUID(void);
+extern const UID getUUID(void);
 };  // namespace User
 
 #endif  // USER_H

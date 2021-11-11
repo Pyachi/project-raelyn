@@ -10,7 +10,7 @@
 
 EntityPlayer::EntityPlayer(PlayerType playerType,
 													 const QString& user,
-													 UUID id,
+													 UID id,
 													 EntityType type)
 		: Entity(type, Players::getTexture(playerType), id),
 			playerType(playerType),

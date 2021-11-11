@@ -3,7 +3,7 @@
 #include "src/assets/music.h"
 #include "src/network/packet.h"
 #include "src/network/server.h"
-#include "src/network/uuid.h"
+#include "src/network/uid.h"
 
 Level::Level(const QString& path) : path(path) {
 	timer.connect(&timer, &QTimer::timeout, [this]() { this->iterate(); });
@@ -39,7 +39,7 @@ void Level::iterate(void) {
 			return;
 		} else if (opCode == "SPAWN") {
 			Server::sendPacket({PACKETPLAYOUTSPAWNENEMY,
-													QStringList() << UUID().toString() << args.at(1)
+													QStringList() << UID().toString() << args.at(1)
 																				<< args.at(2) << args.at(3)});
 		} else if (opCode == "PLAY") {
 			Music::playSong(static_cast<Song>(args.at(1).toInt()));

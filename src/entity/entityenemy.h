@@ -7,7 +7,7 @@ struct EnemyInfo;
 
 class EntityEnemy : public Entity {
  public:
-	EntityEnemy(Texture, UUID, int, AI<EntityEnemy>);
+	EntityEnemy(Texture, UID, int, AI<EntityEnemy>);
 
 	int health;
 

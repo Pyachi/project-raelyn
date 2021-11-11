@@ -8,7 +8,7 @@
 #include "src/framework/level.h"
 #include "src/framework/menu.h"
 #include "src/framework/user.h"
-#include "uuid.h"
+#include "uid.h"
 
 Server* Server::SER = nullptr;
 
@@ -91,7 +91,7 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
 	Header header = packet.header;
 	switch (header) {
 		case PACKETPLAYINCONNECT:
-			users.insert(sender, UUID::fromString(packet.data.at(0)));
+			users.insert(sender, UID::fromString(packet.data.at(0)));
 			names.insert(sender, packet.data.at(1));
 			break;
 		case PACKETPLAYINPLAYERJOIN:

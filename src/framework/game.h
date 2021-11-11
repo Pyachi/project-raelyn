@@ -12,7 +12,7 @@
 #include <QPushButton>
 #include "util.h"
 #include "src/ai/player.h"
-#include "src/network/uuid.h"
+#include "src/network/uid.h"
 
 class Entity;
 class EntityPlayer;
@@ -28,7 +28,7 @@ class Game : public QGraphicsView {
 	static void create(void);
 	static QSet<int> getKeys(void);
 	static EntityPlayer* getPlayer(void);
-	static QMap<UUID, Entity*> getEntities(void);
+	static QMap<UID, Entity*> getEntities(void);
 	static QGraphicsPixmapItem& getPlayableArea(void);
 	static void addEntity(Entity*);
 	static void queueEvent(std::function<void(void)>);
@@ -50,7 +50,7 @@ class Game : public QGraphicsView {
 	QPushButton menuButton;
 
 	bool paused;
-	QMap<UUID, Entity*> entities;
+	QMap<UID, Entity*> entities;
 	List<std::function<void(void)> > eventQueue;
 
 	QSet<int> keys;

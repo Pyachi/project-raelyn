@@ -15,10 +15,10 @@ enum Enemy {
 };
 
 class EntityEnemy;
-class UUID;
+class UID;
 
 namespace Enemies {
-extern EntityEnemy* spawn(Enemy, UUID, const QPointF&);
+extern EntityEnemy* spawn(Enemy, UID, const QPointF&);
 }
 
 #endif  // ENEMIES_H

@@ -7,22 +7,22 @@ namespace Collectables {
 EntityCollectable* spawn(Collectable collectable, const QPointF& loc) {
 	EntityCollectable* entity;
 	switch (collectable) {
-		case POWER:
+		case COLLECTABLE_POWER:
 			entity = new EntityCollectable(
 					TEXTURE_COLLECTABLE_POWER,
 					[](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 0.25); });
 			break;
-		case POINTS:
+		case COLLECTABLE_POINTS:
 			entity = new EntityCollectable(
 					TEXTURE_COLLECTABLE_POINTS,
 					[](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 0.25); });
 			break;
-		case HEALTH:
+		case COLLECTABLE_HEALTH:
 			entity = new EntityCollectable(
 					TEXTURE_COLLECTABLE_POINTS,
 					[](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 0.25); });
 			break;
-		case BOMB:
+		case COLLECTABLE_BOMB:
 			entity = new EntityCollectable(
 					TEXTURE_COLLECTABLE_POINTS,
 					[](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 0.25); });

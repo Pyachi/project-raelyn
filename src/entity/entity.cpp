@@ -7,9 +7,9 @@
 #include "src/assets/texture.h"
 #include "src/framework/game.h"
 
-Entity::Entity(EntityType type, Texture tex) : Entity(type, tex, UUID()) {}
+Entity::Entity(EntityType type, Texture tex) : Entity(type, tex, UID()) {}
 
-Entity::Entity(EntityType type, Texture tex, UUID id)
+Entity::Entity(EntityType type, Texture tex, UID id)
 		: QGraphicsPixmapItem(&Game::getPlayableArea()),
 			type(type),
 			id(id),

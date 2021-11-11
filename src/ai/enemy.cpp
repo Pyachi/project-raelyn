@@ -4,7 +4,7 @@
 #include "src/framework/game.h"
 
 namespace Enemies {
-EntityEnemy* spawn(Enemy enemy, UUID uuid, const QPointF& loc) {
+EntityEnemy* spawn(Enemy enemy, UID uuid, const QPointF& loc) {
   EntityEnemy* entity;
   switch (enemy) {
     // new EntityEnemy(TEXTURE, 'uuid', HEALTH, AI);

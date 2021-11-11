@@ -3,7 +3,12 @@
 
 #include <QPointF>
 
-enum Collectable { POWER, POINTS, HEALTH, BOMB };
+enum Collectable {
+  COLLECTABLE_POWER,
+  COLLECTABLE_POINTS,
+  COLLECTABLE_HEALTH,
+  COLLECTABLE_BOMB
+};
 
 class EntityCollectable;
 

@@ -87,13 +87,13 @@ void Connection::handlePacket(const Packet& packet) {
 			break;
 		case PACKETPLAYOUTUPDATEPLAYER:
 			Game::queueEvent([packet]() {
-				Game::GAME->entities[UUID::fromString(packet.data.at(0))]->setPos(
+				Game::GAME->entities[UID::fromString(packet.data.at(0))]->setPos(
 						{packet.data.at(1).toDouble(), packet.data.at(2).toDouble()});
 			});
 			break;
 		case PACKETPLAYOUTPLAYERDEATH:
 			Game::queueEvent([packet]() {
-				Game::GAME->entities[UUID::fromString(packet.data.at(0))]
+				Game::GAME->entities[UID::fromString(packet.data.at(0))]
 						->deleteLater();
 			});
 			break;
@@ -102,7 +102,7 @@ void Connection::handlePacket(const Packet& packet) {
 				EntityPlayer* player =
 						new EntityPlayer(static_cast<PlayerType>(packet.data.at(2).toInt()),
 														 packet.data.at(1),
-														 UUID::fromString(packet.data.at(0)), ONLINEPLAYER);
+														 UID::fromString(packet.data.at(0)), ONLINEPLAYER);
 				player->setOpacity(0.25);
 				player->hitbox.hide();
 			});
@@ -110,7 +110,7 @@ void Connection::handlePacket(const Packet& packet) {
 		case PACKETPLAYOUTFIREBULLETS:
 			Game::queueEvent([packet]() {
 				EntityPlayer* player = dynamic_cast<EntityPlayer*>(
-						Game::GAME->entities[UUID::fromString(packet.data.at(0))]);
+						Game::GAME->entities[UID::fromString(packet.data.at(0))]);
 				Players::getShootingPattern(player->playerType,
 																		packet.data.at(1).toInt(),
 																		packet.data.at(2).toInt())(player);
@@ -119,16 +119,16 @@ void Connection::handlePacket(const Packet& packet) {
 		case PACKETPLAYOUTSPAWNENEMY:
 			Game::queueEvent([packet]() {
 				Enemies::spawn(static_cast<Enemy>(packet.data.at(1).toInt()),
-											 UUID::fromString(packet.data.at(0)),
+											 UID::fromString(packet.data.at(0)),
 											 QPointF(packet.data.at(2).toDouble(),
 															 packet.data.at(3).toDouble()));
 			});
 			break;
 		case PACKETPLAYOUTENEMYDEATH:
 			Game::queueEvent([packet]() {
-				if (Game::GAME->entities.contains(UUID::fromString(packet.data.at(0))))
+				if (Game::GAME->entities.contains(UID::fromString(packet.data.at(0))))
 					dynamic_cast<EntityEnemy*>(
-							Game::GAME->entities[UUID::fromString(packet.data.at(0))])
+							Game::GAME->entities[UID::fromString(packet.data.at(0))])
 							->kill();
 			});
 			break;

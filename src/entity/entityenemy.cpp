@@ -8,7 +8,7 @@
 #include "src/network/connection.h"
 #include "src/network/packet.h"
 
-EntityEnemy::EntityEnemy(Texture tex, UUID id, int health, AI<EntityEnemy> ai)
+EntityEnemy::EntityEnemy(Texture tex, UID id, int health, AI<EntityEnemy> ai)
 		: Entity(ENEMY, tex, id), health(health), ai(ai) {
 	Game::addEntity(this);
 }
@@ -39,8 +39,8 @@ void EntityEnemy::kill(void) {
 	if (cleanup)
 		return;
 	for (int i = 0; i < (Random::getInt() % 5) + 5; i++)
-		Collectables::spawn(POWER, pos());
+		Collectables::spawn(COLLECTABLE_POWER, pos());
 	for (int i = 0; i < (Random::getInt() % 20); i++)
-		Collectables::spawn(POINTS, pos());
+		Collectables::spawn(COLLECTABLE_POINTS, pos());
 	deleteLater();
 }
