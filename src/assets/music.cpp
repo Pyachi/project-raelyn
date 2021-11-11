@@ -13,17 +13,17 @@ const String get(Song song) {
 		case SONG_MENU:
 			return "assets/music/music_menu_theme.ogg";
 		case SONG_LVL1:
-            return "assets/music/music_lvl1_theme.ogg";
+			return "assets/music/music_lvl1_theme.ogg";
 		case SONG_LVL2:
 			return "assets/music/music_lvl2_theme.ogg";
 		case SONG_LVL3:
-            return "assets/music/music_lvl3_theme.ogg";
+			return "assets/music/music_lvl3_theme.ogg";
 		case SONG_BOSS1:
 			return "assets/music/music_lvl1_boss.ogg";
 		case SONG_BOSS2:
 			return "assets/music/music_lvl2_boss.ogg";
 		case SONG_BOSS3:
-            return "assets/music/music_lvl3_boss.ogg";
+			return "assets/music/music_lvl3_boss.ogg";
 		case SONG_CREDITS:
 			return "assets/music/music_menu_theme.ogg";
 	}
@@ -38,6 +38,7 @@ void playSong(Song song) {
 	player->stop();
 	player->openFromFile(get(song));
 	player->setVolume(volume);
+	player->setLoop(true);
 	player->play();
 }
 
@@ -46,7 +47,5 @@ void changeVolume(float vol) {
 	player->setVolume(volume);
 }
 
-void stopSong(void) {
-	player->stop();
-}
+void stopSong(void) { player->stop(); }
 }  // namespace Music

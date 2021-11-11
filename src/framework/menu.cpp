@@ -44,8 +44,8 @@ Menu::Menu(void)
 
   setFixedSize(0, 0);
 
-	title.setPixmap(
-			QPixmap(QString::fromStdString(Textures::getTexture(TEXTURE_TITLETEMP))));
+  title.setPixmap(
+      QPixmap(QString::fromStdString(Textures::getTexture(TEXTURE_TITLETEMP))));
   title.setAlignment(Qt::AlignHCenter);
   layout.addWidget(&title, 1, 1, 1, -1);
   layout.addWidget(&mainMenu, 2, 1, 1, -1);
@@ -135,7 +135,7 @@ Menu::Menu(void)
   multiplayerLayout.addWidget(&backMultiplayer, 3, 1, 1, -1);
   connect(&host, &QPushButton::clicked, [this]() {
     if (!Server::create(portForm.text().toUShort())) {
-			SFX::playSound(SFX_SELECT2);
+      SFX::playSound(SFX_SELECT2);
       return;
     }
     connectionInfo.setText(User::getIp() + ":" +
@@ -143,7 +143,7 @@ Menu::Menu(void)
     multiplayerMenu.hide();
     serverMenu.show();
     adjustSize();
-		SFX::playSound(SFX_SELECT1);
+    SFX::playSound(SFX_SELECT1);
     Music::stopSong();
   });
   connect(&join, &QPushButton::clicked, [this]() {
@@ -152,9 +152,9 @@ Menu::Menu(void)
       multiplayerMenu.hide();
       adjustSize();
       Connection::sendPacket(PACKETPLAYINPLAYERJOIN);
-			SFX::playSound(SFX_CONNECT);
+      SFX::playSound(SFX_CONNECT);
     } else
-			SFX::playSound(SFX_SELECT2);
+      SFX::playSound(SFX_SELECT2);
   });
   connect(&backMultiplayer, &QPushButton::clicked, [this]() {
     multiplayerMenu.hide();
@@ -180,8 +180,9 @@ Menu::Menu(void)
     SFX::volume = this->soundSlider.value() / 5.0;
     SFX::playSound(SFX_COLLECT2);
   });
-  connect(&musicSlider, &QSlider::valueChanged,
-          [this]() { Music::changeVolume(this->musicSlider.value() * 20); });
+  connect(&musicSlider, &QSlider::valueChanged, [this]() {
+    Music::changeVolume(this->musicSlider.value() * 20);
+  });
   connect(&keys, &QPushButton::pressed, [this]() {
     if (User::getKeyUp() == Qt::Key_Up) {
       keys.setText("Controls: WASD");
@@ -248,8 +249,9 @@ Menu::Menu(void)
         break;
     }
   });
-  connect(&startLobby, &QPushButton::clicked,
-          []() { Connection::sendPacket(PACKETPLAYINSTARTGAME); });
+  connect(&startLobby, &QPushButton::clicked, []() {
+    Connection::sendPacket(PACKETPLAYINSTARTGAME);
+  });
   connect(&backLobby, &QPushButton::clicked, [this]() {
     Connection::destruct();
     lobbyMenu.hide();

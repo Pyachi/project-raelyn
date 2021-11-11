@@ -3,6 +3,7 @@
 #include "packet.h"
 #include "src/ai/enemy.h"
 #include "src/assets/sfx.h"
+#include "src/assets/music.h"
 #include "src/entity/entityenemy.h"
 #include "src/entity/entityplayer.h"
 #include "src/framework/game.h"
@@ -101,7 +102,8 @@ void Connection::handlePacket(const Packet& packet) {
         EntityPlayer* player =
             new EntityPlayer(static_cast<PlayerType>(packet.data.at(2).toInt()),
                              packet.data.at(1),
-                             UID::fromString(packet.data.at(0)), ONLINEPLAYER);
+														 UID::fromString(packet.data.at(0)),
+														 ONLINEPLAYER);
         player->setOpacity(0.25);
         player->hitbox.hide();
       });
@@ -127,10 +129,12 @@ void Connection::handlePacket(const Packet& packet) {
       Game::queueEvent([packet]() {
 				if (Game::GAME->entities.count(UID::fromString(packet.data.at(0))))
           dynamic_cast<EntityEnemy*>(
-              Game::GAME->entities[UID::fromString(packet.data.at(0))])
-              ->kill();
+							Game::GAME->entities[UID::fromString(packet.data.at(0))])->kill();
       });
       break;
+		case PACKETPLAYOUTPLAYSONG:
+			Music::playSong(static_cast<Song>(packet.data.at(0).toInt()));
+			break;
     default:
       qDebug() << "ERROR: Received IN Packet!";
       break;

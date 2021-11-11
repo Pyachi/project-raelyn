@@ -42,7 +42,7 @@ void Level::iterate(void) {
 													QStringList() << UID().toString() << args.at(1)
 																				<< args.at(2) << args.at(3)});
 		} else if (opCode == "PLAY") {
-			Music::playSong(static_cast<Song>(args.at(1).toInt()));
+			Server::sendPacket({PACKETPLAYOUTPLAYSONG, QStringList() << args.at(1)});
 		} else if (opCode == "PAUSE") {
 			waitTimer = 999;
 			return;
