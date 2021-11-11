@@ -152,7 +152,6 @@ Menu::Menu(void)
       multiplayerMenu.hide();
       adjustSize();
       Connection::sendPacket(PACKETPLAYINPLAYERJOIN);
-      SFX::playSound(SFX_CONNECT);
     } else
       SFX::playSound(SFX_SELECT2);
   });
