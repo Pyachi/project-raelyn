@@ -9,9 +9,9 @@ Level::Level(const QString& path) : path(path) {
 	timer.connect(&timer, &QTimer::timeout, [this]() { this->iterate(); });
 }
 
-Level Level::LVL1(":/levels/lvl1.txt");
-Level Level::LVL2(":/levels/lvl2.txt");
-Level Level::LVL3(":/levels/lvl3.txt");
+Level Level::LVL1("assets/levels/lvl1.txt");
+Level Level::LVL2("assets/levels/lvl2.txt");
+Level Level::LVL3("assets/levels/lvl3.txt");
 
 void Level::start(void) {
 	QFile file(path);

@@ -53,29 +53,29 @@ Game::Game(void)
 }
 
 Game::~Game(void) {
-  foreach (Entity* entity, entities.values()) {
+	foreach (auto entity, entities) {
     GAME = nullptr;
-    entities.remove(entity->id);
-    scene.removeItem(entity);
-    delete entity;
+		entities.erase(entity.second->id);
+		scene.removeItem(entity.second);
+		delete entity.second;
   }
 }
 
 void Game::tick(void) {
   if (paused)
     return;
-  for (Entity* entity : entities.values()) {
-    entity->tick();
+	for (auto entity : entities) {
+		entity.second->tick();
   }
   while (!eventQueue.empty()) {
     eventQueue.front()();
     eventQueue.pop_front();
   }
-  foreach (Entity* entity, entities.values()) {
-    if (entity->readyToDelete()) {
-      entities.remove(entity->id);
-      scene.removeItem(entity);
-      delete entity;
+	foreach (auto entity, entities) {
+		if (entity.second->readyToDelete()) {
+			entities.erase(entity.second->id);
+			scene.removeItem(entity.second);
+			delete entity.second;
     }
   }
 }
@@ -106,12 +106,12 @@ QSet<int> Game::getKeys(void) {
   return GAME->keys;
 }
 
-QMap<UID, Entity*> Game::getEntities(void) {
+Map<UID, Entity*> Game::getEntities(void) {
   return GAME->entities;
 }
 
 void Game::addEntity(Entity* entity) {
-  GAME->entities.insert(entity->id, entity);
+	GAME->entities.insert({entity->id, entity});
 }
 
 void Game::queueEvent(std::function<void(void)> func) {

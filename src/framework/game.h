@@ -1,18 +1,18 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include <QDialog>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsView>
+#include <QGridLayout>
+#include <QLabel>
 #include <QOpenGLWidget>
+#include <QPushButton>
 #include <QSet>
 #include <QTimer>
-#include <QDialog>
-#include <QLabel>
-#include <QGridLayout>
-#include <QPushButton>
-#include "util.h"
 #include "src/ai/player.h"
 #include "src/network/uid.h"
+#include "util.h"
 
 class Entity;
 class EntityPlayer;
@@ -28,7 +28,7 @@ class Game : public QGraphicsView {
 	static void create(void);
 	static QSet<int> getKeys(void);
 	static EntityPlayer* getPlayer(void);
-	static QMap<UID, Entity*> getEntities(void);
+	static Map<UID, Entity*> getEntities(void);
 	static QGraphicsPixmapItem& getPlayableArea(void);
 	static void addEntity(Entity*);
 	static void queueEvent(std::function<void(void)>);
@@ -50,7 +50,7 @@ class Game : public QGraphicsView {
 	QPushButton menuButton;
 
 	bool paused;
-	QMap<UID, Entity*> entities;
+	Map<UID, Entity*> entities;
 	List<std::function<void(void)> > eventQueue;
 
 	QSet<int> keys;

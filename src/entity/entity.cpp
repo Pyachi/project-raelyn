@@ -20,11 +20,17 @@ Entity::Entity(EntityType type, Texture tex, UID id)
 	setOffset(-boundingRect().center());
 }
 
-void Entity::deleteLater() { cleanup = true; }
+void Entity::deleteLater() {
+	cleanup = true;
+}
 
-int Entity::getAge() { return age; }
+int Entity::getAge() {
+	return age;
+}
 
-bool Entity::readyToDelete() { return cleanup; }
+bool Entity::readyToDelete() {
+	return cleanup;
+}
 
 void Entity::moveFoward(double distance) {
 	double rot = qDegreesToRadians(rotation());
@@ -41,7 +47,9 @@ void Entity::moveTowardsPoint(const QPointF& point, double distance) {
 	moveBy(dir.x(), dir.y());
 }
 
-void Entity::rotate(double deg) { setRotation(rotation() + deg); }
+void Entity::rotate(double deg) {
+	setRotation(rotation() + deg);
+}
 
 List<EntityBullet*> Entity::fireBullets(Pattern pattern,
 																				Texture texture,
@@ -76,9 +84,13 @@ bool Entity::isOnScreen(void) {
 	return collidesWithItem(&Game::getPlayableArea());
 }
 
-bool Entity::cycle(int dur) { return cycle(dur, 0, 0); }
+bool Entity::cycle(int dur) {
+	return cycle(dur, 0, 0);
+}
 
-bool Entity::cycle(int dur, int time) { return cycle(dur, time, time); }
+bool Entity::cycle(int dur, int time) {
+	return cycle(dur, time, time);
+}
 
 bool Entity::cycle(int dur, int low, int high) {
 	return (getAge() % dur >= low && getAge() % dur <= high);
@@ -87,11 +99,11 @@ bool Entity::cycle(int dur, int low, int high) {
 Entity* Entity::getNearestEntity(EntityType type) {
 	Entity* closest = nullptr;
 	double closestDistance = 99999999;
-	for (Entity* entity : Game::getEntities()) {
-		if (entity->type == type &&
-				entity->distanceSquared(*this) < closestDistance) {
-			closest = entity;
-			closestDistance = entity->distanceSquared(*this);
+	for (auto entity : Game::getEntities()) {
+		if (entity.second->type == type &&
+				entity.second->distanceSquared(*this) < closestDistance) {
+			closest = entity.second;
+			closestDistance = entity.second->distanceSquared(*this);
 		}
 	}
 	return closest;

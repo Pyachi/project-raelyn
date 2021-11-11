@@ -76,8 +76,16 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-RESOURCES += \
-    assets/levels.qrc \
-    assets/music.qrc \
-    assets/soundeffects.qrc \
-    assets/textures.qrc
+RESOURCES +=
+
+unix: LIBS += -L$$PWD/libraries/SFML-2.5.1/lib -lsfml-system
+unix: LIBS += -L$$PWD/libraries/SFML-2.5.1/lib -lsfml-audio
+
+INCLUDEPATH += $$PWD/libraries/SFML-2.5.1/include
+DEPENDPATH += $$PWD/libraries/SFML-2.5.1/include
+
+copydata.commands = $(COPY_DIR) $$PWD/assets $$OUT_PWD
+first.depends = $(first) copydata
+export(first.depends)
+export(copydata.commands)
+QMAKE_EXTRA_TARGETS += first copydata

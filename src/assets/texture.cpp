@@ -4,99 +4,99 @@ namespace Textures {
 const QString getTexture(Texture texture) {
 	switch (texture) {
 		case TEXTURE_BULLET_ROUND_RED:
-			return ":/textures/bullets/round/red.png";
+			return "assets/textures/bullets/round/red.png";
 		case TEXTURE_BULLET_ROUND_ORANGE:
-			return ":/textures/bullets/round/orange.png";
+			return "assets/textures/bullets/round/orange.png";
 		case TEXTURE_BULLET_ROUND_YELLOW:
-			return ":/textures/bullets/round/yellow.png";
+			return "assets/textures/bullets/round/yellow.png";
 		case TEXTURE_BULLET_ROUND_GREEN:
-			return ":/textures/bullets/round/green.png";
+			return "assets/textures/bullets/round/green.png";
 		case TEXTURE_BULLET_ROUND_AQUA:
-			return ":/textures/bullets/round/aqua.png";
+			return "assets/textures/bullets/round/aqua.png";
 		case TEXTURE_BULLET_ROUND_BLUE:
-			return ":/textures/bullets/round/blue.png";
+			return "assets/textures/bullets/round/blue.png";
 		case TEXTURE_BULLET_ROUND_PURPLE:
-			return ":/textures/bullets/round/purple.png";
+			return "assets/textures/bullets/round/purple.png";
 		case TEXTURE_BULLET_ROUND_MAGENTA:
-			return ":/textures/bullets/round/magenta.png";
+			return "assets/textures/bullets/round/magenta.png";
 		case TEXTURE_BULLET_ELLIPSE_RED:
-			return ":/textures/bullets/ellipse/red.png";
+			return "assets/textures/bullets/ellipse/red.png";
 		case TEXTURE_BULLET_ELLIPSE_ORANGE:
-			return ":/textures/bullets/ellipse/orange.png";
+			return "assets/textures/bullets/ellipse/orange.png";
 		case TEXTURE_BULLET_ELLIPSE_YELLOW:
-			return ":/textures/bullets/ellipse/yellow.png";
+			return "assets/textures/bullets/ellipse/yellow.png";
 		case TEXTURE_BULLET_ELLIPSE_GREEN:
-			return ":/textures/bullets/ellipse/green.png";
+			return "assets/textures/bullets/ellipse/green.png";
 		case TEXTURE_BULLET_ELLIPSE_AQUA:
-			return ":/textures/bullets/ellipse/aqua.png";
+			return "assets/textures/bullets/ellipse/aqua.png";
 		case TEXTURE_BULLET_ELLIPSE_BLUE:
-			return ":/textures/bullets/ellipse/blue.png";
+			return "assets/textures/bullets/ellipse/blue.png";
 		case TEXTURE_BULLET_ELLIPSE_PURPLE:
-			return ":/textures/bullets/ellipse/purple.png";
+			return "assets/textures/bullets/ellipse/purple.png";
 		case TEXTURE_BULLET_ELLIPSE_MAGENTA:
-			return ":/textures/bullets/ellipse/magenta.png";
+			return "assets/textures/bullets/ellipse/magenta.png";
 		case TEXTURE_BULLET_ARROW_RED:
-			return ":/textures/bullets/arrow/red.png";
+			return "assets/textures/bullets/arrow/red.png";
 		case TEXTURE_BULLET_ARROW_ORANGE:
-			return ":/textures/bullets/arrow/orange.png";
+			return "assets/textures/bullets/arrow/orange.png";
 		case TEXTURE_BULLET_ARROW_YELLOW:
-			return ":/textures/bullets/arrow/yellow.png";
+			return "assets/textures/bullets/arrow/yellow.png";
 		case TEXTURE_BULLET_ARROW_GREEN:
-			return ":/textures/bullets/arrow/green.png";
+			return "assets/textures/bullets/arrow/green.png";
 		case TEXTURE_BULLET_ARROW_AQUA:
-			return ":/textures/bullets/arrow/aqua.png";
+			return "assets/textures/bullets/arrow/aqua.png";
 		case TEXTURE_BULLET_ARROW_BLUE:
-			return ":/textures/bullets/arrow/blue.png";
+			return "assets/textures/bullets/arrow/blue.png";
 		case TEXTURE_BULLET_ARROW_PURPLE:
-			return ":/textures/bullets/arrow/purple.png";
+			return "assets/textures/bullets/arrow/purple.png";
 		case TEXTURE_BULLET_ARROW_MAGENTA:
-			return ":/textures/bullets/arrow/magenta.png";
+			return "assets/textures/bullets/arrow/magenta.png";
 		case TEXTURE_BULLET_STAR_RED:
-			return ":/textures/bullets/star/red.png";
+			return "assets/textures/bullets/star/red.png";
 		case TEXTURE_BULLET_STAR_ORANGE:
-			return ":/textures/bullets/star/orange.png";
+			return "assets/textures/bullets/star/orange.png";
 		case TEXTURE_BULLET_STAR_YELLOW:
-			return ":/textures/bullets/star/yellow.png";
+			return "assets/textures/bullets/star/yellow.png";
 		case TEXTURE_BULLET_STAR_GREEN:
-			return ":/textures/bullets/star/green.png";
+			return "assets/textures/bullets/star/green.png";
 		case TEXTURE_BULLET_STAR_AQUA:
-			return ":/textures/bullets/star/aqua.png";
+			return "assets/textures/bullets/star/aqua.png";
 		case TEXTURE_BULLET_STAR_BLUE:
-			return ":/textures/bullets/star/blue.png";
+			return "assets/textures/bullets/star/blue.png";
 		case TEXTURE_BULLET_STAR_PURPLE:
-			return ":/textures/bullets/star/purple.png";
+			return "assets/textures/bullets/star/purple.png";
 		case TEXTURE_BULLET_STAR_MAGENTA:
-			return ":/textures/bullets/star/magenta.png";
+			return "assets/textures/bullets/star/magenta.png";
 		case TEXTURE_BULLET_LAZER_RED:
-			return ":/textures/bullets/lazer/red.png";
+			return "assets/textures/bullets/lazer/red.png";
 		case TEXTURE_BULLET_LAZER_ORANGE:
-			return ":/textures/bullets/lazer/orange.png";
+			return "assets/textures/bullets/lazer/orange.png";
 		case TEXTURE_BULLET_LAZER_YELLOW:
-			return ":/textures/bullets/lazer/yellow.png";
+			return "assets/textures/bullets/lazer/yellow.png";
 		case TEXTURE_BULLET_LAZER_GREEN:
-			return ":/textures/bullets/lazer/green.png";
+			return "assets/textures/bullets/lazer/green.png";
 		case TEXTURE_BULLET_LAZER_AQUA:
-			return ":/textures/bullets/lazer/aqua.png";
+			return "assets/textures/bullets/lazer/aqua.png";
 		case TEXTURE_BULLET_LAZER_BLUE:
-			return ":/textures/bullets/lazer/blue.png";
+			return "assets/textures/bullets/lazer/blue.png";
 		case TEXTURE_BULLET_LAZER_PURPLE:
-			return ":/textures/bullets/LAZER/purple.png";
+			return "assets/textures/bullets/LAZER/purple.png";
 		case TEXTURE_BULLET_LAZER_MAGENTA:
-			return ":/textures/bullets/lazer/magenta.png";
+			return "assets/textures/bullets/lazer/magenta.png";
 		case TEXTURE_COLLECTABLE_POWER:
-			return ":/textures/collectables/power.png";
+			return "assets/textures/collectables/power.png";
 		case TEXTURE_COLLECTABLE_POINTS:
-			return ":/textures/collectables/points.png";
+			return "assets/textures/collectables/points.png";
 		case TEXTURE_ENEMYTEMP:
-			return ":/textures/enemies/enemy.png";
+			return "assets/textures/enemies/enemy.png";
 		case TEXTURE_BACKGROUNDTEMP:
-			return ":/textures/misc/background.png";
+			return "assets/textures/misc/background.png";
 		case TEXTURE_TITLETEMP:
-			return ":/textures/misc/title.png";
+			return "assets/textures/misc/title.png";
 		case TEXTURE_PLAYERTEMP:
-			return ":/textures/players/player.png";
+			return "assets/textures/players/player.png";
 		case TEXTURE_PLAYER_HITBOX:
-			return ":/textures/players/player_hitbox.png";
+			return "assets/textures/players/player_hitbox.png";
 	}
 }
 
@@ -157,4 +157,4 @@ int getZValue(Texture texture) {
 			return 0;
 	}
 }
-}
+}  // namespace Textures

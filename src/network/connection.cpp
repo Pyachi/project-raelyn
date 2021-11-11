@@ -125,7 +125,7 @@ void Connection::handlePacket(const Packet& packet) {
       break;
     case PACKETPLAYOUTENEMYDEATH:
       Game::queueEvent([packet]() {
-        if (Game::GAME->entities.contains(UID::fromString(packet.data.at(0))))
+				if (Game::GAME->entities.count(UID::fromString(packet.data.at(0))))
           dynamic_cast<EntityEnemy*>(
               Game::GAME->entities[UID::fromString(packet.data.at(0))])
               ->kill();

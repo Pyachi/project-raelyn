@@ -38,7 +38,7 @@ enum Sound {
 
 namespace SFX {
 extern double volume;
-extern const QString get(Sound);
+extern const std::string get(Sound);
 extern void playSound(Sound, double = 1);
 };  // namespace SFX
 

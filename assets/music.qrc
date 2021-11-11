@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>music/music_menu_theme.ogg</file>
-        <file>music/music_lvl1_boss.ogg</file>
-        <file>music/music_lvl2_boss.ogg</file>
-        <file>music/music_lvl2_theme.ogg</file>
-    </qresource>
-</RCC>
