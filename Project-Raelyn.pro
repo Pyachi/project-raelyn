@@ -100,6 +100,7 @@ export(first.depends)
 export(copydata.commands)
 QMAKE_EXTRA_TARGETS += first copydata
 
-LD_RUN_PATH=lib gcc main.c -I include -L lib -ltcod -o Project-Raelyn
+LD_RUN_PATH='$ORIGIN/lib' gcc main.c -I include -L lib -ltcod -o Project-Raelyn
 
-QMAKE_LFLAGS += -Wl,-rpath,'lib'
+QMAKE_LFLAGS_RPATH=
+QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN/lib\'"
