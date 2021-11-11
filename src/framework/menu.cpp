@@ -42,7 +42,7 @@ Menu::Menu(void)
   setLayout(&layout);
   setWindowFlags(Qt::FramelessWindowHint);
 
-  adjustSize();
+  setFixedSize(0, 0);
 
   title.setPixmap(QPixmap(Textures::getTexture(TEXTURE_TITLETEMP)));
   title.setAlignment(Qt::AlignHCenter);
