@@ -8,7 +8,7 @@ bool setup = false;
 int volume = 100;
 }  // namespace
 
-const std::string get(Song song) {
+const String get(Song song) {
 	switch (song) {
 		case SONG_MENU:
 			return "assets/music/music_menu_theme.ogg";

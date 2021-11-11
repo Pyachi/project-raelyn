@@ -10,6 +10,8 @@ class EntityCollectable : public Entity {
 	EntityCollectable(Texture, AI<EntityPlayer>);
 
  private:
+	int dir;
+	int speed;
 	const AI<EntityPlayer> ai;
 
 	void tick(void) override;

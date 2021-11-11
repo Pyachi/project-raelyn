@@ -1,7 +1,6 @@
 #ifndef PLAYERTYPE_H
 #define PLAYERTYPE_H
 
-#include <QString>
 #include "src/assets/texture.h"
 #include "util.h"
 

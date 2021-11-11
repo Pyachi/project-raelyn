@@ -2,13 +2,12 @@
 #define ALIAS_H
 
 #include <QDebug>
-#include <chrono>
 #include <functional>
 #include <list>
 #include <map>
-#include <queue>
 #include <random>
-#include <set>
+
+using String = std::string;
 
 template <class T>
 using List = std::list<T>;

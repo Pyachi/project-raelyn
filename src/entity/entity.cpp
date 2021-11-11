@@ -15,7 +15,7 @@ Entity::Entity(EntityType type, Texture tex, UID id)
 			id(id),
 			age(0),
 			cleanup(false) {
-	setPixmap(QPixmap(Textures::getTexture(tex)));
+	setPixmap(QPixmap(QString::fromStdString(Textures::getTexture(tex))));
 	setZValue(Textures::getZValue(tex));
 	setOffset(-boundingRect().center());
 }

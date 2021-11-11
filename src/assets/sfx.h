@@ -1,7 +1,7 @@
 #ifndef SFX_H
 #define SFX_H
 
-#include <QString>
+#include "util.h"
 
 enum Sound {
 	SFX_COLLECT1,
@@ -38,7 +38,7 @@ enum Sound {
 
 namespace SFX {
 extern double volume;
-extern const std::string get(Sound);
+extern const String get(Sound);
 extern void playSound(Sound, double = 1);
 };  // namespace SFX
 

@@ -5,17 +5,17 @@
 
 class UID {
  public:
-    UID(void);
-    UID(const UID&);
+	UID(void);
+	UID(const UID&);
 
 	QString toString(void) const;
-    static UID fromString(const QString&);
+	static UID fromString(const QString&);
 
-    bool operator==(const UID&) const;
-    bool operator<(const UID&) const;
+	bool operator==(const UID&) const;
+	bool operator<(const UID&) const;
 
  private:
-    UID(unsigned int, unsigned int, unsigned int, unsigned int);
+	UID(unsigned int, unsigned int, unsigned int, unsigned int);
 
 	unsigned int sec1;
 	unsigned int sec2;

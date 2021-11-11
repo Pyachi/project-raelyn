@@ -40,7 +40,7 @@ void EntityEnemy::kill(void) {
 		return;
 	for (int i = 0; i < (Random::getInt() % 5) + 5; i++)
 		Collectables::spawn(COLLECTABLE_POWER, pos());
-	for (int i = 0; i < (Random::getInt() % 20); i++)
+	for (int i = 0; i < (Random::getInt() % 20) + 10; i++)
 		Collectables::spawn(COLLECTABLE_POINTS, pos());
 	deleteLater();
 }

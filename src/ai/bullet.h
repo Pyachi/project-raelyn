@@ -2,9 +2,10 @@
 #define BULLETS_H
 
 #include <QPointF>
-#include "util.h"
 #include "src/assets/texture.h"
-#include "src/entity/entity.h"
+#include "util.h"
+
+class Entity;
 
 enum BulletAI {
   AI_PLAYERBASIC,

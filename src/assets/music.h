@@ -1,7 +1,7 @@
 #ifndef MUSIC_H
 #define MUSIC_H
 
-#include <QString>
+#include "util.h"
 
 enum Song {
 	SONG_MENU,
@@ -15,7 +15,7 @@ enum Song {
 };
 
 namespace Music {
-extern const std::string get(Song);
+extern const String get(Song);
 extern void playSong(Song);
 extern void changeVolume(int);
 extern void stopSong(void);

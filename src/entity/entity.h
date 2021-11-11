@@ -2,21 +2,14 @@
 #define ENTITYTYPES_H
 
 #include <QGraphicsPixmapItem>
-#include "util.h"
 #include "src/ai/bulletpattern.h"
 #include "src/assets/texture.h"
 #include "src/network/uid.h"
+#include "util.h"
 
 class EntityBullet;
 
-enum EntityType {
-	ENEMY,
-	BULLET,
-	PLAYER,
-	ONLINEPLAYER,
-	HITBOX,
-	COLLECTABLE
-};
+enum EntityType { ENEMY, BULLET, PLAYER, ONLINEPLAYER, HITBOX, COLLECTABLE };
 
 class Entity : public QGraphicsPixmapItem {
  public:

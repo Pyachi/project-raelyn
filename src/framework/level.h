@@ -2,7 +2,6 @@
 #define LEVEL_H
 
 #include <QTimer>
-#include <fstream>
 #include "util.h"
 
 class Level : public QObject {

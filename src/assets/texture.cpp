@@ -1,7 +1,7 @@
 #include "texture.h"
 
 namespace Textures {
-const QString getTexture(Texture texture) {
+const String getTexture(Texture texture) {
 	switch (texture) {
 		case TEXTURE_BULLET_ROUND_RED:
 			return "assets/textures/bullets/round/red.png";

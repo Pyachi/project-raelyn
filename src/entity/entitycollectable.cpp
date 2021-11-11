@@ -15,10 +15,12 @@ EntityCollectable::EntityCollectable(Texture tex, AI<EntityPlayer> ai)
 
 void EntityCollectable::tick(void) {
 	age++;
-	int dir = Random::getInt() % 360;
-	if (getAge() < 10)
-		moveBy(20 * -sin(dir), 20 * cos(dir));
-	else {
+	if (getAge() == 1) {
+		dir = Random::getInt() % 360;
+		speed = Random::getInt() % 30;
+	} else if (getAge() < 5) {
+		moveBy(speed * cos(dir), speed * sin(dir));
+	} else {
 		EntityPlayer* player = Game::getPlayer();
 		if (player->distanceSquared(*this) < 150 * 150 || player->pos().y() < -200)
 			moveTowardsPoint(player->pos(), 15);

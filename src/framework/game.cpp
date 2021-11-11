@@ -22,7 +22,8 @@ Game::Game(void)
   setInteractive(false);
   setViewport(&openGL);
 
-  QPixmap backgroundPixmap(Textures::getTexture(TEXTURE_BACKGROUNDTEMP));
+	QPixmap backgroundPixmap(
+			QString::fromStdString(Textures::getTexture(TEXTURE_BACKGROUNDTEMP)));
   background.setPixmap(backgroundPixmap);
   background.setZValue(Textures::getZValue(TEXTURE_BACKGROUNDTEMP));
   scene.addItem(&background);

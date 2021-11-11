@@ -1,7 +1,7 @@
 #ifndef TEXTURES_H
 #define TEXTURES_H
 
-#include <QString>
+#include "util.h"
 
 enum Texture {
 	// Round Bullets
@@ -69,8 +69,8 @@ enum Texture {
 };
 
 namespace Textures {
-const QString getTexture(Texture);
+const String getTexture(Texture);
 int getZValue(Texture);
-}
+}  // namespace Textures
 
 #endif  // TEXTURES_H

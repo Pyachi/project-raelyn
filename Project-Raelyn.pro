@@ -63,11 +63,11 @@ HEADERS += \
     src/framework/level.h \
     src/framework/menu.h \
     src/framework/user.h \
+    src/framework/util.h \
     src/network/connection.h \
     src/network/packet.h \
     src/network/server.h \
-    src/network/uid.h \
-    util.h
+    src/network/uid.h
 
 FORMS +=
 
@@ -81,6 +81,7 @@ RESOURCES +=
 unix: LIBS += -L$$PWD/libraries/SFML-2.5.1/lib -lsfml-system
 unix: LIBS += -L$$PWD/libraries/SFML-2.5.1/lib -lsfml-audio
 
+INCLUDEPATH += $$PWD/src/framework
 INCLUDEPATH += $$PWD/libraries/SFML-2.5.1/include
 DEPENDPATH += $$PWD/libraries/SFML-2.5.1/include
 
