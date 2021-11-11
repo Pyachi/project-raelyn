@@ -79,14 +79,14 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES +=
 
 unix: LIBS += -L$$PWD/libraries/OpenAL/ -lopenal
-unix: LIBS += -L$$PWD/libraries/SFML/lib -lsfml-system
-unix: LIBS += -L$$PWD/libraries/SFML/lib -lsfml-audio
+unix: LIBS += -L$$PWD/libraries/SFML-2.2/lib -lsfml-system
+unix: LIBS += -L$$PWD/libraries/SFML-2.2/lib -lsfml-audio
 
 INCLUDEPATH += $$PWD/src/framework
-INCLUDEPATH += $$PWD/libraries/SFML/include
-DEPENDPATH += $$PWD/libraries/SFML/include
+INCLUDEPATH += $$PWD/libraries/SFML-2.2/include
+DEPENDPATH += $$PWD/libraries/SFML-2.2/include
 
-copydata.commands = $(COPY_DIR) $$PWD/assets $$OUT_PWD
+copydata.commands = $(COPY_DIR) $$PWD/assets $$PWD/libraries/SFML-2.2/lib/* $$OUT_PWD
 first.depends = $(first) copydata
 export(first.depends)
 export(copydata.commands)
