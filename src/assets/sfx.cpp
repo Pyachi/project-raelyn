@@ -86,7 +86,6 @@ void playSound(Sound sfx, double vol) {
   player->stop();
   player->setSource(get(sfx));
   player->setVolume(volume * vol);
-  player->setLoopCount(1);
   player->play();
   queue.push_back(player);
 }

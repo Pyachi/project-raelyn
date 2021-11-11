@@ -20,11 +20,11 @@ Game::Game(void)
   setScene(&scene);
 
   setInteractive(false);
-//  setViewport(&openGL);
+  setViewport(&openGL);
 
-	QPixmap backgroundPixmap(Textures::getTexture(TEXTURE_BACKGROUNDTEMP));
+  QPixmap backgroundPixmap(Textures::getTexture(TEXTURE_BACKGROUNDTEMP));
   background.setPixmap(backgroundPixmap);
-	background.setZValue(Textures::getZValue(TEXTURE_BACKGROUNDTEMP));
+  background.setZValue(Textures::getZValue(TEXTURE_BACKGROUNDTEMP));
   scene.addItem(&background);
 
   QPixmap playableAreaPixmap(gameHeight - (playBorder * 2),
@@ -53,7 +53,7 @@ Game::Game(void)
 }
 
 Game::~Game(void) {
-	foreach (Entity* entity, entities.values()) {
+  foreach (Entity* entity, entities.values()) {
     GAME = nullptr;
     entities.remove(entity->id);
     scene.removeItem(entity);
@@ -67,11 +67,11 @@ void Game::tick(void) {
   for (Entity* entity : entities.values()) {
     entity->tick();
   }
-	while (!eventQueue.empty()) {
-		eventQueue.front()();
-		eventQueue.pop_front();
-	}
-	foreach (Entity* entity, entities.values()) {
+  while (!eventQueue.empty()) {
+    eventQueue.front()();
+    eventQueue.pop_front();
+  }
+  foreach (Entity* entity, entities.values()) {
     if (entity->readyToDelete()) {
       entities.remove(entity->id);
       scene.removeItem(entity);
@@ -99,15 +99,15 @@ void Game::keyReleaseEvent(QKeyEvent* e) {
 }
 
 QGraphicsPixmapItem& Game::getPlayableArea(void) {
-	return GAME->playableArea;
+  return GAME->playableArea;
 }
 
 QSet<int> Game::getKeys(void) {
-	return GAME->keys;
+  return GAME->keys;
 }
 
 QMap<UID, Entity*> Game::getEntities(void) {
-	return GAME->entities;
+  return GAME->entities;
 }
 
 void Game::addEntity(Entity* entity) {
