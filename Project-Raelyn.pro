@@ -78,7 +78,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES +=
 
-unix: LIBS += -L$$PWD/libraries/OpenAL/ -lopenal
+unix: LIBS += -L$$PWD/libraries/OpenAL/lib -lopenal
 
 INCLUDEPATH += $$PWD/src/framework
 
@@ -87,15 +87,19 @@ unix: LIBS += -L$$PWD/libraries/SFML-2.5.1/lib -lsfml-system
 unix: LIBS += -L$$PWD/libraries/SFML-2.5.1/lib -lsfml-audio
 INCLUDEPATH += $$PWD/libraries/SFML-2.5.1/include
 DEPENDPATH += $$PWD/libraries/SFML-2.5.1/include
-copydata.commands = $(COPY_DIR) $$PWD/assets $$PWD/libraries/SFML-2.5.1/lib/* $$OUT_PWD
+copydata.commands = $(COPY_DIR) $$PWD/assets $$PWD/libraries/SFML-2.5.1/lib $$PWD/libraries/OpenAL/lib $$OUT_PWD
 } else {
 unix: LIBS += -L$$PWD/libraries/SFML-2.2/lib -lsfml-system
 unix: LIBS += -L$$PWD/libraries/SFML-2.2/lib -lsfml-audio
 INCLUDEPATH += $$PWD/libraries/SFML-2.2/include
 DEPENDPATH += $$PWD/libraries/SFML-2.2/include
-copydata.commands = $(COPY_DIR) $$PWD/assets $$PWD/libraries/SFML-2.2/lib/* $$OUT_PWD
+copydata.commands = $(COPY_DIR) $$PWD/assets $$PWD/libraries/SFML-2.2/lib $$PWD/libraries/OpenAL/lib $$OUT_PWD
 }
 first.depends = $(first) copydata
 export(first.depends)
 export(copydata.commands)
 QMAKE_EXTRA_TARGETS += first copydata
+
+LD_RUN_PATH=lib gcc main.c -I include -L lib -ltcod -o Project-Raelyn
+
+QMAKE_LFLAGS += -Wl,-rpath,'lib'

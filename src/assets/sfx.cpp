@@ -82,7 +82,7 @@ void playSound(Sound sfx, float vol) {
 		buffers.insert({get(sfx), buffer});
 	}
 	if (!setup) {
-		for (int i = 0; i < 32; i++)
+		for (int i = 0; i < 128; i++)
 			players.push_back(new sf::Sound);
 		atexit([]() {
 			for (auto player : players)
