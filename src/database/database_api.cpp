@@ -21,23 +21,29 @@ QSqlDatabase database_API::start_connection(QString type, QString host, int port
         qDebug() << "Error: Unable to connect to above error.";
     }
 
+    db = start;
+
     return start;
+}
+
+void database_API::create_table(QString level)
+{
+
 }
 
 bool database_API::add_score(QSqlDatabase db, QDateTime time, QString level, QString user, int score)
 {
     bool pass = true;
-
     QSqlQuery query;
-    QString querySTR = "INSERT INTO (Time, User, Level, Score) VALUES (";
+    QString querySTR = "INSERT INTO (DATETIME, User, Level, Score) VALUES (";
 
-//    querySTR.append(time);
+    querySTR.append(time.toString("yyyy-MM-dd HH:mm:ss"));
     querySTR.append(", ");
     querySTR.append(user);
     querySTR.append(", ");
     querySTR.append(level);
     querySTR.append(", ");
-    querySTR.append(score);    
+    querySTR.append(score);
     querySTR.append(");");
 
 
@@ -53,13 +59,13 @@ bool database_API::add_score(QSqlDatabase db, QDateTime time, QString level, QSt
 
 }
 
-
-Scoreboard database_API::get_scoreboard(QString level)
+Scoreboard* database_API::get_scoreboard(QString level)
 {
     QSqlQuery query;
     QString querySTR = "SELECT * FROM ";
+    querySTR.append(level);
 
-    Scoreboard board;
+    Scoreboard* board = new Scoreboard(level);
 
     querySTR.append(level);
     querySTR.append(";");
@@ -71,22 +77,24 @@ Scoreboard database_API::get_scoreboard(QString level)
 
     while(query.next())
     {
-        board.Add_Score(query.value(1).toString(), query.value(2).toString(), query.value(3).toInt());
+        board->Add_Score(query.value(1).toString(), query.value(2).toString(), query.value(0).toDateTime(), query.value(3).toInt());
     }
 
     return board;
 }
 
-bool database_API::update_database(QString name, Scoreboard score)
+bool database_API::update_database(QString name, Scoreboard* score)
 {
     bool pass = true;
-    Scoreboard data = get_scoreboard(name);
+    Scoreboard* data = get_scoreboard(name);
 
-    Scoreboard diff = data.Differences(&score);
+    Scoreboard* diff = score->Extra_Here(data);
 
-
-
-
+    for(int i = 0; i < diff->Get_length(); i++)
+    {
+        Scoreboard::run* hold = diff->Get_Run(i);
+        add_score(db, hold->time, hold->level, hold->user, hold->score);
+    }
 
     return pass;
 }
@@ -111,7 +119,7 @@ bool database_API::create_level_table(QString level)
     return pass;
 }
 
-void database_API::close_database(QSqlDatabase db)
+void database_API::close_database()
 {
     db.close();
 }
