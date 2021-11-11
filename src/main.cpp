@@ -1,4 +1,3 @@
-#include <AL/al.h>
 #include <QApplication>
 #include "framework/menu.h"
 

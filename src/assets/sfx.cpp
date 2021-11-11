@@ -8,7 +8,7 @@ Map<String, sf::SoundBuffer*> buffers;
 List<sf::Sound*> players;
 bool setup = false;
 }  // namespace
-double volume = 1;
+float volume = 1;
 
 const String get(Sound sfx) {
   switch (sfx) {
@@ -75,7 +75,7 @@ const String get(Sound sfx) {
   }
 }
 
-void playSound(Sound sfx, double vol) {
+void playSound(Sound sfx, float vol) {
 	if (!buffers.count(get(sfx))) {
 		sf::SoundBuffer* buffer = new sf::SoundBuffer;
 		buffer->loadFromFile(get(sfx));
@@ -97,7 +97,7 @@ void playSound(Sound sfx, double vol) {
 	players.pop_front();
 	player->stop();
 	player->setBuffer(*buffer);
-	player->setVolume(vol);
+	player->setVolume(volume * vol);
 	player->play();
 	players.push_back(player);
 }

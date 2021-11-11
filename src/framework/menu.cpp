@@ -135,7 +135,7 @@ Menu::Menu(void)
   multiplayerLayout.addWidget(&backMultiplayer, 3, 1, 1, -1);
   connect(&host, &QPushButton::clicked, [this]() {
     if (!Server::create(portForm.text().toUShort())) {
-      SFX::playSound(SFX_SELECT2, 1);
+			SFX::playSound(SFX_SELECT2);
       return;
     }
     connectionInfo.setText(User::getIp() + ":" +
@@ -143,7 +143,7 @@ Menu::Menu(void)
     multiplayerMenu.hide();
     serverMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT1, 1);
+		SFX::playSound(SFX_SELECT1);
     Music::stopSong();
   });
   connect(&join, &QPushButton::clicked, [this]() {
@@ -152,9 +152,9 @@ Menu::Menu(void)
       multiplayerMenu.hide();
       adjustSize();
       Connection::sendPacket(PACKETPLAYINPLAYERJOIN);
-      SFX::playSound(SFX_CONNECT, 1);
+			SFX::playSound(SFX_CONNECT);
     } else
-      SFX::playSound(SFX_SELECT2, 1);
+			SFX::playSound(SFX_SELECT2);
   });
   connect(&backMultiplayer, &QPushButton::clicked, [this]() {
     multiplayerMenu.hide();

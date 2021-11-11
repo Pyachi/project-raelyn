@@ -5,7 +5,7 @@ namespace Music {
 namespace {
 sf::Music* player;
 bool setup = false;
-int volume = 100;
+float volume = 100;
 }  // namespace
 
 const String get(Song song) {
@@ -41,7 +41,7 @@ void playSong(Song song) {
 	player->play();
 }
 
-void changeVolume(int vol) {
+void changeVolume(float vol) {
 	volume = vol;
 	player->setVolume(volume);
 }

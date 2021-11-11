@@ -37,9 +37,9 @@ enum Sound {
 };
 
 namespace SFX {
-extern double volume;
+extern float volume;
 extern const String get(Sound);
-extern void playSound(Sound, double = 1);
+extern void playSound(Sound, float = 100);
 };  // namespace SFX
 
 #endif  // SFX_H

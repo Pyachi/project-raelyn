@@ -17,7 +17,7 @@ enum Song {
 namespace Music {
 extern const String get(Song);
 extern void playSong(Song);
-extern void changeVolume(int);
+extern void changeVolume(float);
 extern void stopSong(void);
 };  // namespace Music
 
