@@ -4,13 +4,13 @@
 
 namespace SFX {
 namespace {
-Map<std::string, sf::SoundBuffer*> buffers;
+Map<String, sf::SoundBuffer*> buffers;
 List<sf::Sound*> players;
 bool setup = false;
 }  // namespace
 double volume = 1;
 
-const std::string get(Sound sfx) {
+const String get(Sound sfx) {
   switch (sfx) {
     case SFX_COLLECT1:
 			return "assets/soundeffects/sound_collect_1.wav";
