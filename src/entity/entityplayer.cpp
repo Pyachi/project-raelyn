@@ -89,10 +89,13 @@ void EntityPlayer::tick(void) {
 		if (hit) {
 			health--;
 			if (health == 0) {
+                SFX::playSound(SFX_EXPL_SUPERHEAVY1);
 				Connection::sendPacket(PACKETPLAYINPLAYERDEATH);
 				deleteLater();
-			} else
+            } else {
 				invFrames = 100;
+                SFX::playSound(SFX_HIT1);
+            }
 		}
 	} else {
 		int flashTime = invFrames < 40 ? 5 : 10;
