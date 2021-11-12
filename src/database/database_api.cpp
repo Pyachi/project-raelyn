@@ -121,7 +121,6 @@ bool database_API::update_database(QString name, Scoreboard* score)
         Scoreboard::run* hold = diff->Get_Run(i);
         pass = pass && add_score(hold->level, hold->user, hold->time, hold->score);
     }
-
     return pass;
 }
 

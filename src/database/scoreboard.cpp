@@ -76,8 +76,6 @@ void Scoreboard::Order_Scores(QString key)
             {
                 hold = temp->last;
                 Swap_Adjectent_Runs(hold, temp);
-                qDebug() << "\n";
-                Show_Scoreboard();
             }
 
             start = start->next;
@@ -88,6 +86,7 @@ void Scoreboard::Order_Scores(QString key)
 
 void Scoreboard::Show_Scoreboard()
 {
+    Order_Scores("Accending_Score");
     run* temp = head;
     while(temp != nullptr)
     {
@@ -128,19 +127,6 @@ int Scoreboard::Get_length()
 
 void Scoreboard::Swap_Adjectent_Runs(run* left, run* right)
 {
-//    qDebug() << "\nSwap Start";
-//    qDebug() << left->last;
-//    qDebug() << left;
-//    qDebug() << left->score;
-//    qDebug() << "\n";
-//    qDebug() << left->next;
-//    qDebug() << right->last;
-//    qDebug() << right;
-//    qDebug() << right->score;
-//    qDebug() << right->next;
-//    qDebug() << "\n";
-
-
     run* pointers[2];
     pointers[0] = left->last;
     pointers[1] = right->next;
@@ -165,21 +151,6 @@ void Scoreboard::Swap_Adjectent_Runs(run* left, run* right)
     else {
         tail =left;
     }
-
-
-
-
-//    qDebug() << "\nSwap";
-//    qDebug() << right->last;
-//    qDebug() << right;
-//    qDebug() << right->score;
-//    qDebug() << right->next;
-//    qDebug() << "\n";
-//    qDebug() << left->last;
-//    qDebug() << left;
-//    qDebug() << left->score;
-
-//    qDebug() << left->next;
 }
 
 Scoreboard::run* Scoreboard::Get_Run(int index)
@@ -219,6 +190,7 @@ int Scoreboard::Exists(run* checker)
             }
         }
         count++;
+        temp = temp->next;
     }
     return index;
 }

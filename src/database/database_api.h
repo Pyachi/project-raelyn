@@ -24,6 +24,8 @@ public:
     bool create_level_table(QString level);
     void close_database();
 
+
+
     bool create_master_table(QString level);        // is this needed?
     int run_table_stats(QString level);             // create object to have stats in
 
