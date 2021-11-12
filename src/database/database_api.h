@@ -7,15 +7,17 @@
 #include <QSqlError>
 #include "scoreboard.h"
 #include <QDateTime>
+#include <QDir>
 
 class database_API
 {
 public:
     database_API();
     QSqlDatabase start_connection(QString type, QString host, int port, QString name, QString user, QString pass);
+    QSqlDatabase start_connection(QString type);
 
     void create_table(QString level);
-    bool add_score(QSqlDatabase db, QDateTime time, QString level, QString user, int score);
+    bool add_score(QDateTime time, QString level, QString user, int score);
 
     Scoreboard* get_scoreboard(QString level);
 

@@ -7,31 +7,57 @@ database_API::database_API()
 
 QSqlDatabase database_API::start_connection(QString type, QString host, int port, QString name, QString user, QString pass)
 {
+
+
     QSqlDatabase start = QSqlDatabase::addDatabase(type);       // starts the type of SQL database to be used (SQLite, MySQL)
-
-    start.setHostName(host);                                    // adds connection details to session
-    start.setPort(port);
-    start.setDatabaseName(name);
-    start.setUserName(user);
-    start.setPassword(pass);
-
-    if(!start.open())                                           // opens connection
+    if(type == "MYSQL")
     {
-        qDebug() << start.lastError();
-        qDebug() << "Error: Unable to connect to above error.";
-    }
+        start.setHostName(host);                                    // adds connection details to session
+        start.setPort(port);
+        start.setDatabaseName(name);
+        start.setUserName(user);
+        start.setPassword(pass);
 
+        if(!start.open())                                           // opens connection
+        {
+            qDebug() << start.lastError();
+            qDebug() << "Error: Unable to connect to above error.";
+        }
+    }
     db = start;
 
     return start;
 }
+
+QSqlDatabase database_API::start_connection(QString type)
+{
+    // should be used only for SQLITE databases
+
+    QSqlDatabase start = QSqlDatabase::addDatabase("QSQLITE", type);
+    if(type == "SQLITE")
+    {
+        start.setDatabaseName(QDir::currentPath() + "/scores");         // creates the name and path where
+    }                                                                   // the database should be stored
+
+    if(!start.open())                               // tries to open/create the database file
+    {
+        qDebug() << start.lastError().text();       // if fail display error
+    }
+    else {
+        qDebug() << "Database opened at: " + QDir::currentPath() + "/scores";   // if successful display where it opened
+    }
+    db = start;         // save the database object into global variable
+
+    return start;       // returns database object
+}
+
 
 void database_API::create_table(QString level)
 {
 
 }
 
-bool database_API::add_score(QSqlDatabase db, QDateTime time, QString level, QString user, int score)
+bool database_API::add_score(QDateTime time, QString level, QString user, int score)
 {
     bool pass = true;
     QSqlQuery query;
@@ -93,7 +119,7 @@ bool database_API::update_database(QString name, Scoreboard* score)
     for(int i = 0; i < diff->Get_length(); i++)
     {
         Scoreboard::run* hold = diff->Get_Run(i);
-        add_score(db, hold->time, hold->level, hold->user, hold->score);
+        add_score(hold->time, hold->level, hold->user, hold->score);
     }
 
     return pass;
