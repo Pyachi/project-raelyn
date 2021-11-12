@@ -181,7 +181,7 @@ EntityEnemy* spawn(Enemy enemy, UID uuid, const QPointF& loc) {
                                 TEXTURE_BULLET_ROUND_RED,
                                 0,
                                 {0, 0},
-                                5);
+                                6);
             if (enemy->getAge() == 1000)  // 15 seconds plus off screen
               enemy->deleteLater();
           });
@@ -199,7 +199,7 @@ EntityEnemy* spawn(Enemy enemy, UID uuid, const QPointF& loc) {
                                 TEXTURE_BULLET_ROUND_RED,
                                 0,
                                 {0, 0},
-                                5);
+                                6);
             if (enemy->getAge() == 1000)  // 15 seconds plus off screen
               enemy->deleteLater();
           });
@@ -213,7 +213,7 @@ EntityEnemy* spawn(Enemy enemy, UID uuid, const QPointF& loc) {
 
             if (enemy->cycle(50))
               enemy->fireBullets(
-                  PATTERN_CIRCLE16, AI_BASIC5, TEXTURE_BULLET_LAZER_RED);
+                  PATTERN_CIRCLE16, AI_BASIC5, TEXTURE_BULLET_ELLIPSE_RED);
             if (enemy->getAge() == 1000)  // 15 seconds plus off screen
               enemy->deleteLater();
           });
@@ -227,7 +227,7 @@ EntityEnemy* spawn(Enemy enemy, UID uuid, const QPointF& loc) {
 
             if (enemy->cycle(50))
               enemy->fireBullets(
-                  PATTERN_CIRCLE16, AI_BASIC5, TEXTURE_BULLET_LAZER_RED);
+                  PATTERN_CIRCLE16, AI_BASIC5, TEXTURE_BULLET_ELLIPSE_RED);
             if (enemy->getAge() == 1000)  // 15 seconds plus off screen
               enemy->deleteLater();
           });
@@ -237,14 +237,13 @@ EntityEnemy* spawn(Enemy enemy, UID uuid, const QPointF& loc) {
       entity =
           new EntityEnemy(TEXTURE_ENEMYTEMP, uuid, 80, [](EntityEnemy* enemy) {
             if (enemy->cycle(900, 1, 450))
-              enemy->moveBy(0, -3);
+              enemy->moveBy(0, 3);
             if (enemy->cycle(900, 451, 900))
               enemy->moveBy(-3, 0);
 
-            //            if (enemy->cycle(50))
-            //              enemy->fireBullets(
-            //                  PATTERN_CIRCLE8, AI_ACCELERATING,
-            // TEXTURE_BULLET_LAZER_RED);
+            if (enemy->cycle(1))
+              enemy->fireBullets(
+                  PATTERN_CIRCLE8, AI_ACCELERATING, TEXTURE_BULLET_ELLIPSE_RED);
             if (enemy->getAge() == 1000)  // 15 seconds plus off screen
               enemy->deleteLater();
           });
@@ -254,13 +253,12 @@ EntityEnemy* spawn(Enemy enemy, UID uuid, const QPointF& loc) {
       entity =
           new EntityEnemy(TEXTURE_ENEMYTEMP, uuid, 80, [](EntityEnemy* enemy) {
             if (enemy->cycle(900, 1, 450))
-              enemy->moveBy(0, -3);
+              enemy->moveBy(0, 3);
             if (enemy->cycle(1800, 901, 1700))
               enemy->moveBy(3, 0);
-            //            if (enemy->cycle(50))
-            //              enemy->fireBullets(
-            //                  PATTERN_CIRCLE8, AI_ACCELERATING,
-            // TEXTURE_BULLET_LAZER_RED);
+            if (enemy->cycle(1))
+              enemy->fireBullets(
+                  PATTERN_CIRCLE8, AI_ACCELERATING, TEXTURE_BULLET_ELLIPSE_RED);
             if (enemy->getAge() == 1000)  // 15 seconds plus off screen
               enemy->deleteLater();
           });
