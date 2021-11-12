@@ -2,7 +2,6 @@
 #define PLAYER_H
 
 #include "entity.h"
-#include "entityhitbox.h"
 #include "player.h"
 
 class EntityPlayer : public Entity {
@@ -14,7 +13,7 @@ class EntityPlayer : public Entity {
 
 	void tick(void) override;
 
-	EntityHitbox hitbox;
+	QGraphicsPixmapItem hitbox;
 	const PlayerType playerType;
 
 	EntityBullet* fireBullet(BulletInfo info,
@@ -26,11 +25,14 @@ class EntityPlayer : public Entity {
 													 int damage = 1);
 
  private:
+	QGraphicsSimpleTextItem display;
 	QString name;
 	bool firing;
 	bool focus;
 	int level;
 	int power;
+	int health;
+	int invFrames;
 };
 
 #endif  // PLAYER_H

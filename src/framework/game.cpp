@@ -17,9 +17,7 @@ Game::Game(void)
   setInteractive(false);
   setViewport(&openGL);
 
-  QPixmap backgroundPixmap(
-      QString::fromStdString(Textures::getTexture(TEXTURE_BACKGROUNDTEMP)));
-  background.setPixmap(backgroundPixmap);
+	background.setPixmap(Textures::getTexture(TEXTURE_BACKGROUNDTEMP));
   background.setZValue(Textures::getZValue(TEXTURE_BACKGROUNDTEMP));
   scene.addItem(&background);
 
@@ -47,7 +45,7 @@ Game::Game(void)
   adjustSize();
 	setFixedSize(size() + QSize(2, 2));
 
-  timer.start(1000 / 60);
+	timer.start(1000 / 60);
   connect(&timer, &QTimer::timeout, [this]() { this->tick(); });
 }
 
@@ -104,7 +102,7 @@ QSet<int> Game::getKeys(void) { return GAME->keys; }
 Map<UID, Entity*> Game::getEntities(void) { return GAME->entities; }
 
 void Game::addEntity(Entity* entity) {
-  GAME->entities.insert({entity->id, entity});
+	queueEvent([entity]() { GAME->entities.insert({entity->id, entity}); });
 }
 
 void Game::queueEvent(std::function<void(void)> func) {

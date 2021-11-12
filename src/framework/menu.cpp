@@ -40,8 +40,7 @@ Menu::Menu(void)
 
   setFixedSize(0, 0);
 
-  title.setPixmap(
-      QPixmap(QString::fromStdString(Textures::getTexture(TEXTURE_TITLETEMP))));
+	title.setPixmap(Textures::getTexture(TEXTURE_TITLETEMP));
   title.setAlignment(Qt::AlignHCenter);
   layout.addWidget(&title, 1, 1, 1, -1);
   layout.addWidget(&mainMenu, 2, 1, 1, -1);

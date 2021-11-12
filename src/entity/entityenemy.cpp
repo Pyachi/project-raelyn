@@ -6,9 +6,7 @@
 #include "Network"
 
 EntityEnemy::EntityEnemy(Texture tex, UID id, int health, AI<EntityEnemy> ai)
-		: Entity(ENEMY, tex, id), health(health), ai(ai) {
-	Game::addEntity(this);
-}
+		: Entity(ENEMY, tex, id), health(health), ai(ai) {}
 
 void EntityEnemy::tick(void) {
 	age++;

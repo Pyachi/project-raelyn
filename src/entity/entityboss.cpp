@@ -14,9 +14,7 @@ EntityBoss::EntityBoss(Texture tex,
 			health(health),
 			phase(phaseCount),
 			phaseHealth(health),
-			ai(ai) {
-	Game::addEntity(this);
-}
+			ai(ai) {}
 
 void EntityBoss::tick(void) {
 	age++;

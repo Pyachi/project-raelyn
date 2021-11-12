@@ -3,9 +3,7 @@
 #include "Entity"
 
 EntityCollectable::EntityCollectable(Texture tex, AI<EntityPlayer> ai)
-		: Entity(COLLECTABLE, tex), onPickup(ai) {
-	Game::addEntity(this);
-}
+		: Entity(COLLECTABLE, tex), onPickup(ai) {}
 
 void EntityCollectable::tick(void) {
 	age++;

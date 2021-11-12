@@ -5,13 +5,13 @@
 Entity::Entity(EntityType type, Texture tex) : Entity(type, tex, UID()) {}
 
 Entity::Entity(EntityType type, Texture tex, UID id)
-		: QGraphicsPixmapItem(&Game::getPlayableArea()),
+		: QGraphicsPixmapItem(Textures::getTexture(tex), &Game::getPlayableArea()),
 			type(type),
 			id(id),
 			age(0),
 			cleanup(false),
 			movementTicks(0) {
-	setPixmap(QPixmap(QString::fromStdString(Textures::getTexture(tex))));
+	Game::addEntity(this);
 	setZValue(Textures::getZValue(tex));
 	setOffset(-boundingRect().center());
 }

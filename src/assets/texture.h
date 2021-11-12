@@ -69,7 +69,7 @@ enum Texture {
 };
 
 namespace Textures {
-const String getTexture(Texture tex);
+const QPixmap getTexture(Texture tex);
 int getZValue(Texture tex);
 }  // namespace Textures
 

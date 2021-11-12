@@ -35,7 +35,6 @@ SOURCES += \
     src/entity/entitybullet.cpp \
     src/entity/entitycollectable.cpp \
     src/entity/entityenemy.cpp \
-    src/entity/entityhitbox.cpp \
     src/entity/entityplayer.cpp \
     src/framework/game.cpp \
     src/framework/level.cpp \
@@ -69,7 +68,6 @@ HEADERS += \
     src/entity/entitybullet.h \
     src/entity/entitycollectable.h \
     src/entity/entityenemy.h \
-    src/entity/entityhitbox.h \
     src/entity/entityplayer.h \
     src/framework/Framework \
     src/framework/game.h \

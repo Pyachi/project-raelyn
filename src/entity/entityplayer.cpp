@@ -2,20 +2,29 @@
 #include "Framework"
 #include "Network"
 #include "Entity"
+#include "Assets"
 
 EntityPlayer::EntityPlayer(PlayerType playerType,
 													 const QString& user,
 													 UID id,
 													 EntityType type)
 		: Entity(type, Players::getTexture(playerType), id),
+			hitbox(Textures::getTexture(TEXTURE_PLAYER_HITBOX), this),
 			playerType(playerType),
+			display(user, this),
 			name(user),
 			firing(false),
 			focus(false),
 			level(1),
-			power(0) {
-	Game::addEntity(this);
+			power(0),
+			health(3) {
+	hitbox.setOffset(-hitbox.boundingRect().center());
 	setRotation(180);
+	if (type == PLAYER)
+		display.hide();
+	display.setBrush(Qt::white);
+	display.setRotation(180);
+	display.setPos({display.boundingRect().center().x(), -40});
 }
 
 void EntityPlayer::tick(void) {
@@ -28,10 +37,9 @@ void EntityPlayer::tick(void) {
 	focus = keys.contains(User::getKeyFocus());
 
 	if (focus)
-		hitbox.setZValue(4);
+		hitbox.setOpacity(1);
 	else
-		hitbox.setZValue(-1);
-	hitbox.setPos(pos());
+		hitbox.setOpacity(0);
 
 	if (firing) {
 		Players::getShootingPattern(playerType, level, focus)(this);
@@ -69,18 +77,16 @@ void EntityPlayer::tick(void) {
 		power = 0;
 	}
 
-	List<EntityBullet*> bullets;
-	for (Entity* entity : hitbox.getCollisions(BULLET)) {
-		EntityBullet* bullet = dynamic_cast<EntityBullet*>(entity);
-		if (bullet->ownerType == ENEMY)
-			bullets.push_back(bullet);
+	bool hit = false;
+	for (QGraphicsItem* entity : hitbox.collidingItems()) {
+		if (EntityBullet* bullet = dynamic_cast<EntityBullet*>(entity))
+			if (bullet->ownerType == ENEMY || bullet->ownerType == BULLET)
+				hit = true;
 	}
 
-	//  if (!bullets.empty()) {
-	//    Connection::sendPacket(PACKETPLAYINPLAYERDEATH);
-	//    deleteLater();
-	//    hitbox.scene()->removeItem(&hitbox);
-	//  }
+	if (hit) {
+		qDebug() << "a";
+	}
 }
 
 EntityBullet* EntityPlayer::fireBullet(BulletInfo info,

@@ -42,8 +42,7 @@ int getKeyBomb(void) {
 
 const QString getName(void) {
 	if (!nameExists) {
-		name = (QDir::homePath().split('/').last() + "#" +
-						QString::number((Random::getInt() % 9000) + 1000));
+		name = (QDir::homePath().split('/').last());
 		nameExists = true;
 	}
 	return name;

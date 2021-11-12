@@ -14,7 +14,6 @@ enum EntityType {
 	BULLET,
 	PLAYER,
 	ONLINEPLAYER,
-	HITBOX,
 	COLLECTABLE
 };
 

@@ -3,5 +3,4 @@
 #include "entitybullet.h"
 #include "entitycollectable.h"
 #include "entityenemy.h"
-#include "entityhitbox.h"
 #include "entityplayer.h"
