@@ -11,9 +11,10 @@ EntityEnemy* spawn(Enemy enemy, UID uuid, const QPointF& loc) {
     case ENEMY_ENEMYTEST1:
 			entity =
 					new EntityEnemy(TEXTURE_ENEMYTEMP, uuid, 50, [](EntityEnemy* enemy) {
-						if (enemy->cycle(50))
-							enemy->fireBullets(PATTERN_SHOTGUN10X5,
-																 TEXTURE_BULLET_ROUND_AQUA);
+						if (enemy->cycle(200, 50))
+							enemy->moveTo({150, -300}, 50, QUICK);
+						else if (enemy->cycle(200, 150))
+							enemy->moveTo({-150, -300}, 50);
 					});
       break;
     //***********************************************************************************
