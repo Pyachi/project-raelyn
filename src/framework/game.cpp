@@ -22,8 +22,8 @@ Game::Game(void)
   setInteractive(false);
   setViewport(&openGL);
 
-	QPixmap backgroundPixmap(
-			QString::fromStdString(Textures::getTexture(TEXTURE_BACKGROUNDTEMP)));
+  QPixmap backgroundPixmap(
+      QString::fromStdString(Textures::getTexture(TEXTURE_BACKGROUNDTEMP)));
   background.setPixmap(backgroundPixmap);
   background.setZValue(Textures::getZValue(TEXTURE_BACKGROUNDTEMP));
   scene.addItem(&background);
@@ -47,36 +47,39 @@ Game::Game(void)
     delete this;
   });
 
-  setFixedSize(gameWidth + 2, gameHeight + 2);
+  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  adjustSize();
+  setFixedSize(size());
 
   timer.start(1000 / 60);
   connect(&timer, &QTimer::timeout, [this]() { this->tick(); });
 }
 
 Game::~Game(void) {
-	foreach (auto entity, entities) {
+  foreach (auto entity, entities) {
     GAME = nullptr;
-		entities.erase(entity.second->id);
-		scene.removeItem(entity.second);
-		delete entity.second;
+    entities.erase(entity.second->id);
+    scene.removeItem(entity.second);
+    delete entity.second;
   }
 }
 
 void Game::tick(void) {
   if (paused)
     return;
-	for (auto entity : entities) {
-		entity.second->tick();
+  for (auto entity : entities) {
+    entity.second->tick();
   }
   while (!eventQueue.empty()) {
     eventQueue.front()();
     eventQueue.pop_front();
   }
-	foreach (auto entity, entities) {
-		if (entity.second->readyToDelete()) {
-			entities.erase(entity.second->id);
-			scene.removeItem(entity.second);
-			delete entity.second;
+  foreach (auto entity, entities) {
+    if (entity.second->readyToDelete()) {
+      entities.erase(entity.second->id);
+      scene.removeItem(entity.second);
+      delete entity.second;
     }
   }
 }
@@ -112,7 +115,7 @@ Map<UID, Entity*> Game::getEntities(void) {
 }
 
 void Game::addEntity(Entity* entity) {
-	GAME->entities.insert({entity->id, entity});
+  GAME->entities.insert({entity->id, entity});
 }
 
 void Game::queueEvent(std::function<void(void)> func) {

@@ -120,10 +120,13 @@ win32: {
     copyassets.commands = $$replace(copyassets.commands, /, \\)
     copylibs.commands = $(COPY_DIR) $$PWD/libraries/SFML-2.5.1-Win/bin $$DESTDIR
     copylibs.commands = $$replace(copylibs.commands, /, \\)
-    first.depends = $(first) copyassets copylibs
+    copyqt.commands = $(COPY_DIR) $$PWD/libraries/Qt5-Win/bin $$DESTDIR
+    copyqt.commands = $$replace(copyqt.commands, /, \\)
+    first.depends = $(first) copyassets copylibs copyqt
     export(first.depends)
     export(copyassets.commands)
     export(copylibs.commands)
-    QMAKE_EXTRA_TARGETS += first copyassets copylibs
+    export(copyqt.commands)
+    QMAKE_EXTRA_TARGETS += first copyassets copylibs copyqt
 
 }
