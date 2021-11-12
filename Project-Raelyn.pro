@@ -82,31 +82,47 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES +=
 
-unix: LIBS += -L$$PWD/libraries/OpenAL/lib -lopenal
-
 INCLUDEPATH += $$PWD/src/framework
 
-DESTDIR = ../Project-Raelyn
-
-equals(QT_PATCH_VERSION,8): {
-unix: LIBS += -L$$PWD/libraries/SFML-2.5.1/lib -lsfml-system
-unix: LIBS += -L$$PWD/libraries/SFML-2.5.1/lib -lsfml-audio
-INCLUDEPATH += $$PWD/libraries/SFML-2.5.1/include
-DEPENDPATH += $$PWD/libraries/SFML-2.5.1/include
-copydata.commands = $(COPY_DIR) $$PWD/assets $$PWD/libraries/SFML-2.5.1/lib $$PWD/libraries/OpenAL/lib $$DESTDIR
-} else {
-unix: LIBS += -L$$PWD/libraries/SFML-2.2/lib -lsfml-system
-unix: LIBS += -L$$PWD/libraries/SFML-2.2/lib -lsfml-audio
-INCLUDEPATH += $$PWD/libraries/SFML-2.2/include
-DEPENDPATH += $$PWD/libraries/SFML-2.2/include
-copydata.commands = $(COPY_DIR) $$PWD/assets $$PWD/libraries/SFML-2.2/lib $$PWD/libraries/OpenAL/lib $$DESTDIR
+unix: {
+    DESTDIR = ../Project-Raelyn
+    LIBS += -L$$PWD/libraries/OpenAL/lib -lopenal
+    equals(QT_PATCH_VERSION,8): {
+        LIBS += -L$$PWD/libraries/SFML-2.5.1/lib -lsfml-system
+        LIBS += -L$$PWD/libraries/SFML-2.5.1/lib -lsfml-audio
+        INCLUDEPATH += $$PWD/libraries/SFML-2.5.1/include
+        DEPENDPATH += $$PWD/libraries/SFML-2.5.1/include
+        copydata.commands = $(COPY_DIR) $$PWD/assets $$PWD/libraries/SFML-2.5.1/lib $$PWD/libraries/OpenAL/lib $$DESTDIR
+    } else {
+        LIBS += -L$$PWD/libraries/SFML-2.2/lib -lsfml-system
+        LIBS += -L$$PWD/libraries/SFML-2.2/lib -lsfml-audio
+        INCLUDEPATH += $$PWD/libraries/SFML-2.2/include
+        DEPENDPATH += $$PWD/libraries/SFML-2.2/include
+        copydata.commands = $(COPY_DIR) $$PWD/assets $$PWD/libraries/SFML-2.2/lib $$PWD/libraries/OpenAL/lib $$DESTDIR
+    }
+    first.depends = $(first) copydata
+    export(first.depends)
+    export(copydata.commands)
+    QMAKE_EXTRA_TARGETS += first copydata
+    LD_RUN_PATH='$ORIGIN/lib' gcc main.c -I include -L lib -ltcod -o Project-Raelyn
+    QMAKE_LFLAGS_RPATH=
+    QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN/lib\'"
 }
-first.depends = $(first) copydata
-export(first.depends)
-export(copydata.commands)
-QMAKE_EXTRA_TARGETS += first copydata
 
-LD_RUN_PATH='$ORIGIN/lib' gcc main.c -I include -L lib -ltcod -o Project-Raelyn
+win32: {
+    DESTDIR = ..\Project-Raelyn
+    LIBS += -L$$PWD/libraries/SFML-2.5.1-Win/lib -lsfml-system
+    LIBS += -L$$PWD/libraries/SFML-2.5.1-Win/lib -lsfml-audio
+    INCLUDEPATH += $$PWD/libraries/SFML-2.5.1-Win/include
+    DEPENDPATH += $$PWD/libraries/SFML-2.5.1-Win/include
+    copyassets.commands = $(COPY_DIR) $$PWD/assets $$DESTDIR/assets
+    copyassets.commands = $$replace(copyassets.commands, /, \\)
+    copylibs.commands = $(COPY_DIR) $$PWD/libraries/SFML-2.5.1-Win/bin $$DESTDIR
+    copylibs.commands = $$replace(copylibs.commands, /, \\)
+    first.depends = $(first) copyassets copylibs
+    export(first.depends)
+    export(copyassets.commands)
+    export(copylibs.commands)
+    QMAKE_EXTRA_TARGETS += first copyassets copylibs
 
-QMAKE_LFLAGS_RPATH=
-QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN/lib\'"
+}
