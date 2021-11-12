@@ -10,6 +10,9 @@ class Entity;
 enum BulletAI {
   AI_PLAYERBASIC,
   AI_PLAYERHOMING,
+  AI_BASIC2,
+  AI_BASIC4,
+  AI_BASIC6,
   AI_BASIC8,
   AI_BASIC10,
   AI_BASIC12,
@@ -25,16 +28,16 @@ extern AI<EntityBullet> get(BulletAI);
 }
 
 struct BulletInfo {
-	BulletInfo(BulletAI, double = 0, const QPointF& = {0, 0});
+  BulletInfo(BulletAI, double = 0, const QPointF& = {0, 0});
   const BulletAI ai;
   const double relRot;
   const QPointF relLoc;
 
-	EntityBullet* spawn(Texture,
-											const Entity*,
+  EntityBullet* spawn(Texture,
+                      const Entity*,
                       double = 0,
-											const QPointF& = {0, 0},
-											int = 1) const;
+                      const QPointF& = {0, 0},
+                      int = 1) const;
 };
 
 #endif  // BULLETS_H
