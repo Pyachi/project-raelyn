@@ -9,7 +9,7 @@ EntityCollectable* spawn(Collectable collectable, const QPointF& loc) {
 		case COLLECTABLE_POWER:
 			entity = new EntityCollectable(
 					TEXTURE_COLLECTABLE_POWER,
-					[](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 10); });
+                    [](EntityPlayer* player) { SFX::playSound(SFX_COLLECT1, 10); });
 			break;
 		case COLLECTABLE_POINTS:
 			entity = new EntityCollectable(

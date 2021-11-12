@@ -75,6 +75,8 @@ const String get(Sound sfx) {
 }
 
 void playSound(Sound sfx, float vol) {
+
+
 	if (!buffers.count(get(sfx))) {
 		sf::SoundBuffer* buffer = new sf::SoundBuffer;
 		buffer->loadFromFile(get(sfx));
@@ -91,6 +93,12 @@ void playSound(Sound sfx, float vol) {
 		});
 		setup = true;
 	}
+
+    for (sf::Sound* player : players) {
+        if (player->getBuffer() == buffers[get(sfx)]
+                && player->getStatus() == sf::Sound::Playing
+                && player->getPlayingOffset().asMilliseconds() < 40) return;
+    }
 	sf::SoundBuffer* buffer = buffers[get(sfx)];
 	sf::Sound* player = players.front();
 	players.pop_front();
