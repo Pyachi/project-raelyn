@@ -66,19 +66,19 @@ Menu::Menu(void)
     mainMenu.hide();
     singleplayerMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT1);
+    SFX::playSound(SFX_SELECT1, 50);
   });
   connect(&multiplayer, &QPushButton::clicked, [this]() {
     mainMenu.hide();
     multiplayerMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT1);
+    SFX::playSound(SFX_SELECT1, 50);
   });
   connect(&options, &QPushButton::clicked, [this]() {
     mainMenu.hide();
     optionsMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT1);
+    SFX::playSound(SFX_SELECT1, 50);
   });
   connect(&quit, &QPushButton::clicked, [this]() { close(); });
   //************************************************************
@@ -92,21 +92,25 @@ Menu::Menu(void)
         User::character = AERON;
         playerSingle.setText("Character: Aeron");
         playerLobby.setText("Character: Aeron");
+        SFX::playSound(SFX_SELECT1, 50);
         break;
       case AERON:
         User::character = PRYSMA;
         playerSingle.setText("Character: Prysma");
         playerLobby.setText("Character: Prysma");
+        SFX::playSound(SFX_SELECT1, 50);
         break;
       case PRYSMA:
         User::character = ANEKHANDA;
         playerSingle.setText("Character: Anekhanda");
         playerLobby.setText("Character: Anekhanda");
+        SFX::playSound(SFX_SELECT1, 50);
         break;
       case ANEKHANDA:
         User::character = PYACHI;
         playerSingle.setText("Character: Pyachi");
         playerLobby.setText("Character: Pyachi");
+        SFX::playSound(SFX_SELECT1, 50);
         break;
     }
   });
@@ -119,7 +123,7 @@ Menu::Menu(void)
     singleplayerMenu.hide();
     mainMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT2);
+    SFX::playSound(SFX_SELECT2, 50);
   });
   //************************************************************
   multiplayerMenu.setLayout(&multiplayerLayout);
@@ -130,7 +134,7 @@ Menu::Menu(void)
   multiplayerLayout.addWidget(&backMultiplayer, 3, 1, 1, -1);
   connect(&host, &QPushButton::clicked, [this]() {
     if (!Server::create(portForm.text().toUShort())) {
-      SFX::playSound(SFX_SELECT2);
+      SFX::playSound(SFX_SELECT2, 50);
       return;
     }
     connectionInfo.setText(User::getIp() + ":" +
@@ -138,7 +142,7 @@ Menu::Menu(void)
     multiplayerMenu.hide();
     serverMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT1);
+    SFX::playSound(SFX_SELECT1, 50);
     Music::stopSong();
   });
   connect(&join, &QPushButton::clicked, [this]() {
@@ -148,13 +152,13 @@ Menu::Menu(void)
       adjustSize();
       Connection::sendPacket(PACKETPLAYINPLAYERJOIN);
     } else
-      SFX::playSound(SFX_SELECT2);
+      SFX::playSound(SFX_SELECT2, 50);
   });
   connect(&backMultiplayer, &QPushButton::clicked, [this]() {
     multiplayerMenu.hide();
     mainMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT2);
+    SFX::playSound(SFX_SELECT2, 50);
   });
   ipForm.setValidator(&ipValidator);
   portForm.setValidator(&portValidator);
@@ -182,22 +186,24 @@ Menu::Menu(void)
       keys.setText("Controls: WASD");
       User::keys = {Qt::Key_W, Qt::Key_A, Qt::Key_S, Qt::Key_D,
                     Qt::Key_L, Qt::Key_K, Qt::Key_J};
+      SFX::playSound(SFX_SELECT1, 50);
     } else if (User::getKeyUp() == Qt::Key_W) {
       keys.setText("Controls: IJKL");
       User::keys = {Qt::Key_I, Qt::Key_J, Qt::Key_K, Qt::Key_L,
                     Qt::Key_A, Qt::Key_S, Qt::Key_D};
+      SFX::playSound(SFX_SELECT1, 50);
     } else if (User::getKeyUp() == Qt::Key_I) {
       keys.setText("Controls: Traditional");
       User::keys = {Qt::Key_Up,    Qt::Key_Left, Qt::Key_Down, Qt::Key_Right,
                     Qt::Key_Shift, Qt::Key_Z,    Qt::Key_X};
-      SFX::playSound(SFX_SELECT1);
+      SFX::playSound(SFX_SELECT1, 50);
     }
   });
   connect(&backOptions, &QPushButton::clicked, [this]() {
     optionsMenu.hide();
     mainMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT2);
+    SFX::playSound(SFX_SELECT2, 50);
   });
   //************************************************************
   serverMenu.setLayout(&serverLayout);
@@ -210,7 +216,7 @@ Menu::Menu(void)
     serverMenu.hide();
     multiplayerMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT2);
+    SFX::playSound(SFX_SELECT2, 50);
     Music::playSong(SONG_MENU);
   });
   //************************************************************
@@ -225,21 +231,25 @@ Menu::Menu(void)
         User::character = AERON;
         playerSingle.setText("Character: Aeron");
         playerLobby.setText("Character: Aeron");
+        SFX::playSound(SFX_SELECT1, 50);
         break;
       case AERON:
         User::character = PRYSMA;
         playerSingle.setText("Character: Prysma");
         playerLobby.setText("Character: Prysma");
+        SFX::playSound(SFX_SELECT1, 50);
         break;
       case PRYSMA:
         User::character = ANEKHANDA;
         playerSingle.setText("Character: Anekhanda");
         playerLobby.setText("Character: Anekhanda");
+        SFX::playSound(SFX_SELECT1, 50);
         break;
       case ANEKHANDA:
         User::character = PYACHI;
         playerSingle.setText("Character: Pyachi");
         playerLobby.setText("Character: Pyachi");
+        SFX::playSound(SFX_SELECT1, 50);
         break;
     }
   });
