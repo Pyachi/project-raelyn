@@ -15,6 +15,7 @@ EntityPlayer::EntityPlayer(PlayerType playerType,
 			level(1),
 			power(0) {
 	Game::addEntity(this);
+	setRotation(180);
 }
 
 void EntityPlayer::tick(void) {

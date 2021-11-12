@@ -28,7 +28,7 @@ const AI<EntityPlayer> getShootingPattern(PlayerType type,
 							player->fireBullet(BulletInfo(),
 																 AI_PLAYERBASIC,
 																 TEXTURE_BULLET_ARROW_RED,
-																 180,
+																 0,
 																 {0, 0},
 																 2);
 						};
@@ -37,7 +37,7 @@ const AI<EntityPlayer> getShootingPattern(PlayerType type,
 							player->fireBullet(BulletInfo(),
 																 AI_PLAYERBASIC,
 																 TEXTURE_BULLET_ARROW_RED,
-																 180,
+																 0,
 																 {0, 0},
 																 2);
 						};

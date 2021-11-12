@@ -10,7 +10,7 @@ EntityBullet::EntityBullet(Texture tex,
 			damage(1),
 			ai(ai) {
 	Game::addEntity(this);
-	rotate(180);
+	rotate(owner->rotation());
 	setPos(owner->pos());
 }
 

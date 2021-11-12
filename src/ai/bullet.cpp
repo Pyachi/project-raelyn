@@ -6,7 +6,7 @@ namespace Bullets {
 AI<EntityBullet> get(BulletAI ai) {
 	switch (ai) {
 		case AI_PLAYERBASIC:
-			return [](EntityBullet* bullet) { bullet->moveForward(-40); };
+			return [](EntityBullet* bullet) { bullet->moveForward(40); };
 
 		case AI_PLAYERHOMING:
       return [](EntityBullet* bullet) {
