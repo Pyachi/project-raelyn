@@ -1,4 +1,4 @@
-QT       += core gui opengl network
+QT       += core gui opengl network sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
