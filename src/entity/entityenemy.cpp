@@ -19,7 +19,7 @@ void EntityEnemy::tick(void) {
 			bullets.push_back(bullet);
 	}
 	for (EntityBullet* bullet : bullets) {
-		SFX::playSound(SFX_EXPL_LIGHT2, 10);
+        SFX::playSound(SFX_EXPL_LIGHT1, 10);
 		health -= bullet->damage;
 		bullet->deleteLater();
 		if (health <= 0) {
