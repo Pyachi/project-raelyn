@@ -93,6 +93,7 @@ unix: {
         INCLUDEPATH += $$PWD/libraries/SFML-2.5.1/include
         DEPENDPATH += $$PWD/libraries/SFML-2.5.1/include
         copydata.commands = $(COPY_DIR) $$PWD/assets $$PWD/libraries/SFML-2.5.1/lib $$PWD/libraries/OpenAL/lib $$DESTDIR
+        QMAKE_LFLAGS += -no-pie
     } else {
         LIBS += -L$$PWD/libraries/SFML-2.2/lib -lsfml-system
         LIBS += -L$$PWD/libraries/SFML-2.2/lib -lsfml-audio
