@@ -88,9 +88,11 @@ void EntityPlayer::tick(void) {
 
 		if (hit) {
 			health--;
-			if (health == 0)
+			if (health == 0) {
+				Connection::sendPacket(PACKETPLAYINPLAYERDEATH);
 				deleteLater();
-			invFrames = 100;
+			} else
+				invFrames = 100;
 		}
 	} else {
 		int flashTime = invFrames < 40 ? 5 : 10;
