@@ -17,7 +17,8 @@ EntityPlayer::EntityPlayer(PlayerType playerType,
 			focus(false),
 			level(1),
 			power(0),
-			health(3) {
+			health(3),
+			invFrames(0) {
 	hitbox.setOffset(-hitbox.boundingRect().center());
 	setRotation(180);
 	if (type == PLAYER)
@@ -77,15 +78,29 @@ void EntityPlayer::tick(void) {
 		power = 0;
 	}
 
-	bool hit = false;
-	for (QGraphicsItem* entity : hitbox.collidingItems()) {
-		if (EntityBullet* bullet = dynamic_cast<EntityBullet*>(entity))
-			if (bullet->ownerType == ENEMY || bullet->ownerType == BULLET)
-				hit = true;
-	}
+	if (invFrames == 0) {
+		bool hit = false;
+		for (QGraphicsItem* entity : hitbox.collidingItems()) {
+			if (EntityBullet* bullet = dynamic_cast<EntityBullet*>(entity))
+				if (bullet->ownerType == ENEMY || bullet->ownerType == BULLET)
+					hit = true;
+		}
 
-	if (hit) {
-		qDebug() << "a";
+		if (hit) {
+			health--;
+			if (health == 0)
+				deleteLater();
+			invFrames = 100;
+		}
+	} else {
+		int flashTime = invFrames < 40 ? 5 : 10;
+		if (cycle(flashTime, 1))
+			setOpacity(0);
+		else if (cycle(flashTime, flashTime / 2))
+			setOpacity(1);
+		invFrames--;
+		if (invFrames == 0)
+			setOpacity(1);
 	}
 }
 

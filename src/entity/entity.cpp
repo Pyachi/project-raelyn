@@ -77,6 +77,8 @@ double Entity::distanceSquared(const Entity* entity) {
 }
 
 double Entity::getDirectionOfEntity(const Entity* entity) {
+	if (entity == nullptr)
+		return 0;
 	QVector2D vec = QVector2D(entity->pos() - pos()).normalized();
 	return qRadiansToDegrees(qAcos(vec.y())) * ((vec.x() > 0 ? -1 : 1));
 }

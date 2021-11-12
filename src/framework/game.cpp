@@ -9,8 +9,10 @@ Game* Game::GAME = nullptr;
 Game::Game(void)
     : QGraphicsView(),
       scene(0, 0, gameWidth, gameHeight),
+			dead("Game Over", &playableArea),
       menuButton("Return to Menu"),
-      paused(false) {
+			paused(false),
+			age(0) {
   GAME = this;
   setScene(&scene);
 
@@ -40,6 +42,12 @@ Game::Game(void)
     delete this;
   });
 
+	dead.setBrush(Qt::red);
+	dead.setScale(5);
+	dead.setPos(-(dead.boundingRect().center().toPoint() * 5));
+	dead.setZValue(10);
+	dead.hide();
+
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   adjustSize();
@@ -61,6 +69,13 @@ Game::~Game(void) {
 void Game::tick(void) {
   if (paused)
     return;
+	age++;
+	if (getPlayer() == nullptr) {
+		if (age % 120 == 0)
+			dead.show();
+		else if (age % 120 == 60)
+			dead.hide();
+	}
   for (auto entity : entities) {
     entity.second->tick();
   }
@@ -112,5 +127,7 @@ void Game::queueEvent(std::function<void(void)> func) {
 }
 
 EntityPlayer* Game::getPlayer(void) {
-  return dynamic_cast<EntityPlayer*>(GAME->entities[User::getUUID()]);
+	if (GAME->entities.count(User::getUUID()))
+		return dynamic_cast<EntityPlayer*>(GAME->entities[User::getUUID()]);
+	return nullptr;
 }

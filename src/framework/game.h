@@ -43,12 +43,14 @@ class Game : public QGraphicsView {
 	QGraphicsScene scene;
 	QGraphicsPixmapItem playableArea;
 	QGraphicsPixmapItem background;
+	QGraphicsSimpleTextItem dead;
 	QDialog popup;
 	QLabel popupText;
 	QGridLayout popupLayout;
 	QPushButton menuButton;
 
 	bool paused;
+	int age;
 	Map<UID, Entity*> entities;
 	List<std::function<void(void)> > eventQueue;
 

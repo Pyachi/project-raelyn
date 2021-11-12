@@ -14,7 +14,8 @@ void EntityCollectable::tick(void) {
 		moveBy(speed * cos(dir), speed * sin(dir));
 	} else {
 		EntityPlayer* player = Game::getPlayer();
-		if (player->distanceSquared(this) < 150 * 150 || player->pos().y() < -200)
+		if (player != nullptr &&
+				(player->distanceSquared(this) < 150 * 150 || player->pos().y() < -200))
 			moveTowardsPoint(player->pos(), 15);
 		else
 			moveBy(0, getAge() / 30.0);
