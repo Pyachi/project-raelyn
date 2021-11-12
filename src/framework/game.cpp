@@ -50,7 +50,7 @@ Game::Game(void)
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   adjustSize();
-  setFixedSize(size());
+	setFixedSize(size() + QSize(2, 2));
 
   timer.start(1000 / 60);
   connect(&timer, &QTimer::timeout, [this]() { this->tick(); });
