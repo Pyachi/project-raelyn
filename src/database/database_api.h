@@ -16,8 +16,7 @@ public:
     QSqlDatabase start_connection(QString type, QString host, int port, QString name, QString user, QString pass);
     QSqlDatabase start_connection(QString type);
 
-    void create_table(QString level);
-    bool add_score(QDateTime time, QString level, QString user, int score);
+    bool add_score(QString level, QString user, QDateTime time, int score);
 
     Scoreboard* get_scoreboard(QString level);
 

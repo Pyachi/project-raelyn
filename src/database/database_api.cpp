@@ -33,50 +33,43 @@ QSqlDatabase database_API::start_connection(QString type)
 {
     // should be used only for SQLITE databases
 
-    QSqlDatabase start = QSqlDatabase::addDatabase("QSQLITE", type);
+    db = QSqlDatabase::addDatabase("QSQLITE", type);
     if(type == "SQLITE")
     {
-        start.setDatabaseName(QDir::currentPath() + "/scores");         // creates the name and path where
+        db.setDatabaseName(QDir::currentPath() + "/scores");         // creates the name and path where
     }                                                                   // the database should be stored
 
-    if(!start.open())                               // tries to open/create the database file
+    if(!db.open())                               // tries to open/create the database file
     {
-        qDebug() << start.lastError().text();       // if fail display error
+        qDebug() << db.lastError().text();       // if fail display error
     }
     else {
         qDebug() << "Database opened at: " + QDir::currentPath() + "/scores";   // if successful display where it opened
     }
-    db = start;         // save the database object into global variable
 
-    return start;       // returns database object
+    return db;       // returns database object
 }
 
-
-void database_API::create_table(QString level)
-{
-
-}
-
-bool database_API::add_score(QDateTime time, QString level, QString user, int score)
+bool database_API::add_score(QString level, QString user, QDateTime time, int score)
 {
     bool pass = true;
-    QSqlQuery query;
-    QString querySTR = "INSERT INTO (DATETIME, User, Level, Score) VALUES (";
+    QSqlQuery query = QSqlQuery(db);
+    QString querySTR = "INSERT INTO " + level + " (Time, User, Level, Score) VALUES ('";
 
-    querySTR.append(time.toString("yyyy-MM-dd HH:mm:ss"));
-    querySTR.append(", ");
+
+    querySTR.append(time.toString("yyyyMMdd HH:mm:ss"));
+    querySTR.append("', '");
     querySTR.append(user);
-    querySTR.append(", ");
+    querySTR.append("', '");
     querySTR.append(level);
-    querySTR.append(", ");
-    querySTR.append(score);
+    querySTR.append("', ");
+    querySTR.append(QString::number(score));
     querySTR.append(");");
-
 
     if(!query.exec(querySTR))
     {
         qDebug() << db.lastError();
-        qDebug() << "Error: invalid query";
+        qDebug() << "Error: invalid query from adding score" + time.toString();
         pass = false;
     }
 
@@ -87,18 +80,17 @@ bool database_API::add_score(QDateTime time, QString level, QString user, int sc
 
 Scoreboard* database_API::get_scoreboard(QString level)
 {
-    QSqlQuery query;
+    QSqlQuery query = QSqlQuery(db);
     QString querySTR = "SELECT * FROM ";
     querySTR.append(level);
 
     Scoreboard* board = new Scoreboard(level);
 
-    querySTR.append(level);
     querySTR.append(";");
     if(!query.exec(querySTR))
     {
         qDebug() << db.lastError();
-        qDebug() << "Error: invalid query";
+        qDebug() << "Error: invalid query get scoreboard " + level;
     }
 
     while(query.next())
@@ -113,13 +105,21 @@ bool database_API::update_database(QString name, Scoreboard* score)
 {
     bool pass = true;
     Scoreboard* data = get_scoreboard(name);
-
-    Scoreboard* diff = score->Extra_Here(data);
+    Scoreboard* diff;
+    if(data == nullptr)
+    {
+        diff = score;
+    }
+    else
+    {
+        diff = score->Extra_Here(data);
+        qDebug() << "get diff";
+    }
 
     for(int i = 0; i < diff->Get_length(); i++)
     {
         Scoreboard::run* hold = diff->Get_Run(i);
-        add_score(hold->time, hold->level, hold->user, hold->score);
+        pass = pass && add_score(hold->level, hold->user, hold->time, hold->score);
     }
 
     return pass;
@@ -128,17 +128,17 @@ bool database_API::update_database(QString name, Scoreboard* score)
 
 
 bool database_API::create_level_table(QString level)
-{
-    QSqlQuery query;
-    QString querySTR = "CREATE TABLE ";
+{  
+    QSqlQuery query = QSqlQuery(db);
+    QString querySTR = "CREATE TABLE IF NOT EXISTS ";
     bool pass = true;
 
     querySTR.append(level);
-    querySTR.append(" (Id: int , Level: TEXT, User: TEXT, Score: int);");
+    querySTR.append(" (Time DATETIME UNIQUE PRIMARY KEY, User TEXT, Level TEXT, Score int);");
     if(!query.exec(querySTR))
     {
         qDebug() << db.lastError();
-        qDebug() << "Error: invalid query";
+        qDebug() << "Error: invalid query for create_level_table";
         pass = false;
     }
 
