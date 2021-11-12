@@ -1,7 +1,7 @@
 #ifndef ENEMIES_H
 #define ENEMIES_H
 
-#include <QPointF>
+#include "util.h"
 
 enum Enemy {
   ENEMY_ENEMYTEST1,  // ADD NEW ENEMIES HERE
@@ -18,7 +18,7 @@ class EntityEnemy;
 class UID;
 
 namespace Enemies {
-extern EntityEnemy* spawn(Enemy, UID, const QPointF&);
+extern EntityEnemy* spawn(Enemy enemy, UID id, const QPointF& loc);
 }
 
 #endif  // ENEMIES_H

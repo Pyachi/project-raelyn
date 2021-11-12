@@ -2,19 +2,31 @@
 #define ENTITYTYPES_H
 
 #include <QGraphicsPixmapItem>
-#include "src/ai/bulletpattern.h"
-#include "src/assets/texture.h"
-#include "src/network/uid.h"
-#include "util.h"
+#include "texture.h"
+#include "uid.h"
+#include "pattern.h"
+#include "bullet.h"
 
 class EntityBullet;
 
-enum EntityType { ENEMY, BULLET, PLAYER, ONLINEPLAYER, HITBOX, COLLECTABLE };
+enum EntityType {
+	ENEMY,
+	BULLET,
+	PLAYER,
+	ONLINEPLAYER,
+	HITBOX,
+	COLLECTABLE
+};
+
+enum MovementType {
+	SMOOTH,
+	QUICK
+};
 
 class Entity : public QGraphicsPixmapItem {
  public:
-	Entity(EntityType, Texture);
-	Entity(EntityType, Texture, UID);
+	Entity(EntityType type, Texture tex);
+	Entity(EntityType type, Texture tex, UID id);
 
 	void deleteLater(void);
 	int getAge(void);
@@ -28,25 +40,47 @@ class Entity : public QGraphicsPixmapItem {
  protected:
 	int age;
 	bool cleanup;
+	QPointF targetPos;
+	int movementTicks;
+	MovementType movementType;
+	void handleMovement(void);
 
  public:
 	// Utility Functions
-	void moveFoward(double);
-	void moveTowardsPoint(const QPointF&, double);
-	void rotate(double);
-	List<EntityBullet*> fireBullets(Pattern,
-																	Texture,
-																	double = 0,
-																	const QPointF& = {0, 0},
-																	int = 1);
-	Entity* getNearestEntity(EntityType);
-	List<Entity*> getCollisions(EntityType);
-	double distanceSquared(const Entity&);
-	QPointF confineToPlayableArea(const QPointF&);
+	void moveForward(double dis);
+	void moveTowardsPoint(const QPointF& loc, double dis);
+	void moveTo(const QPointF& loc, int time, MovementType type = SMOOTH);
+	void rotate(double rot);
+	List<EntityBullet*> fireBullets(Pattern pat,
+																	BulletAI ai,
+																	Texture tex,
+																	double rot = 0,
+																	const QPointF& loc = {0, 0},
+																	int scale = 1,
+																	int damage = 1);
+	List<EntityBullet*> fireBullets(List<BulletInfo> list,
+																	BulletAI ai,
+																	Texture tex,
+																	double rot = 0,
+																	const QPointF& loc = {0, 0},
+																	int scale = 1,
+																	int damage = 1);
+	EntityBullet* fireBullet(BulletInfo info,
+													 BulletAI ai,
+													 Texture tex,
+													 double rot = 0,
+													 const QPointF& loc = {0, 0},
+													 int scale = 1,
+													 int damage = 1);
+	Entity* getNearestEntity(EntityType type);
+	List<Entity*> getCollisions(EntityType type);
+	double getDirectionOfEntity(const Entity* entity);
+	double distanceSquared(const Entity* entity);
+	QPointF confineToPlayableArea(const QPointF& loc);
 	bool isOnScreen(void);
-	bool cycle(int);
-	bool cycle(int, int);
-	bool cycle(int, int, int);
+	bool cycle(int dur);
+	bool cycle(int dur, int time);
+	bool cycle(int dur, int low, int high);
 };
 
 #endif  // ENTITYTYPES_H

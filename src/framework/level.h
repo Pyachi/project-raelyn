@@ -7,13 +7,14 @@
 class Level : public QObject {
  public:
 	void start(void);
+	void resume(void);
 
 	static Level LVL1;
 	static Level LVL2;
 	static Level LVL3;
 
  private:
-	Level(const QString&);
+	Level(const QString& file);
 
 	const QString path;
 	QStringList instructions;

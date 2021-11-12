@@ -7,7 +7,7 @@
 #include <QLineEdit>
 #include <QListWidget>
 #include <QPushButton>
-#include "src/ai/player.h"
+#include "player.h"
 
 class Menu : public QDialog {
  public:

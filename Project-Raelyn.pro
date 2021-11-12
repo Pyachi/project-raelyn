@@ -19,10 +19,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/ai/boss.cpp \
     src/ai/bullet.cpp \
-    src/ai/bulletpattern.cpp \
     src/ai/collectable.cpp \
     src/ai/enemy.cpp \
+    src/ai/pattern.cpp \
     src/ai/player.cpp \
     src/assets/music.cpp \
     src/assets/sfx.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
     src/database/database_api.cpp \
     src/database/scoreboard.cpp \
     src/entity/entity.cpp \
+    src/entity/entityboss.cpp \
     src/entity/entitybullet.cpp \
     src/entity/entitycollectable.cpp \
     src/entity/entityenemy.cpp \
@@ -47,27 +49,35 @@ SOURCES += \
     src/network/uid.cpp
 
 HEADERS += \
+    src/ai/AI \
+    src/ai/boss.h \
     src/ai/bullet.h \
-    src/ai/bulletpattern.h \
     src/ai/collectable.h \
     src/ai/enemy.h \
+    src/ai/pattern.h \
     src/ai/player.h \
+    src/assets/Assets \
     src/assets/music.h \
     src/assets/sfx.h \
     src/assets/texture.h \
+    src/database/Database \
     src/database/database_api.h \
     src/database/scoreboard.h \
+    src/entity/Entity \
     src/entity/entity.h \
+    src/entity/entityboss.h \
     src/entity/entitybullet.h \
     src/entity/entitycollectable.h \
     src/entity/entityenemy.h \
     src/entity/entityhitbox.h \
     src/entity/entityplayer.h \
+    src/framework/Framework \
     src/framework/game.h \
     src/framework/level.h \
     src/framework/menu.h \
     src/framework/user.h \
     src/framework/util.h \
+    src/network/Network \
     src/network/connection.h \
     src/network/packet.h \
     src/network/server.h \
@@ -82,7 +92,13 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES +=
 
-INCLUDEPATH += $$PWD/src/framework
+INCLUDEPATH += \
+    src/ai \
+    src/assets \
+    src/database \
+    src/entity \
+    src/framework \
+    src/network
 
 unix: {
     DESTDIR = ../Project-Raelyn

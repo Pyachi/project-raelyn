@@ -1,7 +1,7 @@
 #include "user.h"
 #include <QDir>
 #include <QNetworkInterface>
-#include "src/network/uid.h"
+#include "Network"
 
 namespace User {
 namespace {

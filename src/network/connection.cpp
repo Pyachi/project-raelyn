@@ -1,14 +1,10 @@
 #include "connection.h"
 #include <QNetworkProxy>
-#include "packet.h"
-#include "src/ai/enemy.h"
-#include "src/assets/sfx.h"
-#include "src/assets/music.h"
-#include "src/entity/entityenemy.h"
-#include "src/entity/entityplayer.h"
-#include "src/framework/game.h"
-#include "src/framework/menu.h"
-#include "src/framework/user.h"
+#include "Network"
+#include "Assets"
+#include "Framework"
+#include "Entity"
+#include "AI"
 
 Connection* Connection::CON = nullptr;
 
@@ -125,6 +121,14 @@ void Connection::handlePacket(const Packet& packet) {
                                packet.data.at(3).toDouble()));
       });
       break;
+		case PACKETPLAYOUTSPAWNBOSS:
+			Game::queueEvent([packet]() {
+				Bosses::spawn(static_cast<Boss>(packet.data.at(1).toInt()),
+											UID::fromString(packet.data.at(0)),
+											QPointF(packet.data.at(2).toDouble(),
+															packet.data.at(3).toDouble()));
+			});
+			break;
     case PACKETPLAYOUTENEMYDEATH:
       Game::queueEvent([packet]() {
 				if (Game::GAME->entities.count(UID::fromString(packet.data.at(0))))
@@ -134,6 +138,13 @@ void Connection::handlePacket(const Packet& packet) {
       break;
 		case PACKETPLAYOUTPLAYSONG:
 			Music::playSong(static_cast<Song>(packet.data.at(0).toInt()));
+			break;
+		case PACKETPLAYOUTADVANCEPHASE:
+			Game::queueEvent([packet]() {
+				dynamic_cast<EntityBoss*>(
+						Game::GAME->entities[UID::fromString(packet.data.at(0))])
+						->advancePhase();
+			});
 			break;
     default:
       qDebug() << "ERROR: Received IN Packet!";

@@ -1,20 +1,18 @@
 #include "uid.h"
-#include "util.h"
-#include <QStringList>
 
 UID::UID(void)
 		: UID(static_cast<unsigned int>(Random::getInt()),
-					 static_cast<unsigned int>(Random::getInt()),
-					 static_cast<unsigned int>(Random::getInt()),
-					 static_cast<unsigned int>(Random::getInt())) {}
+					static_cast<unsigned int>(Random::getInt()),
+					static_cast<unsigned int>(Random::getInt()),
+					static_cast<unsigned int>(Random::getInt())) {}
 
 UID::UID(const UID& other)
 		: UID(other.sec1, other.sec2, other.sec3, other.sec4) {}
 
 UID::UID(unsigned int sec1,
-					 unsigned int sec2,
-					 unsigned int sec3,
-					 unsigned int sec4)
+				 unsigned int sec2,
+				 unsigned int sec3,
+				 unsigned int sec4)
 		: sec1(sec1), sec2(sec2), sec3(sec3), sec4(sec4) {}
 
 QString UID::toString(void) const {
@@ -25,9 +23,9 @@ QString UID::toString(void) const {
 UID UID::fromString(const QString& string) {
 	QStringList list = string.split('-');
 	return UID(list.at(0).toUInt(),
-							list.at(1).toUInt(),
-							list.at(2).toUInt(),
-							list.at(3).toUInt());
+						 list.at(1).toUInt(),
+						 list.at(2).toUInt(),
+						 list.at(3).toUInt());
 }
 
 bool UID::operator==(const UID& other) const {

@@ -1,9 +1,6 @@
 #include "level.h"
 #include <QFile>
-#include "src/assets/music.h"
-#include "src/network/packet.h"
-#include "src/network/server.h"
-#include "src/network/uid.h"
+#include "Network"
 
 Level::Level(const QString& path) : path(path) {
 	timer.connect(&timer, &QTimer::timeout, [this]() { this->iterate(); });
@@ -23,6 +20,8 @@ void Level::start(void) {
 	timer.start(1000 / 20);
 }
 
+void Level::resume(void) { waitTimer = 0; }
+
 void Level::iterate(void) {
 	if (waitTimer != 0) {
 		waitTimer--;
@@ -41,6 +40,12 @@ void Level::iterate(void) {
 			Server::sendPacket({PACKETPLAYOUTSPAWNENEMY,
 													QStringList() << UID().toString() << args.at(1)
 																				<< args.at(2) << args.at(3)});
+		} else if (opCode == "BOSS") {
+			Server::sendPacket({PACKETPLAYOUTSPAWNBOSS,
+													QStringList() << UID().toString() << args.at(1)
+																				<< args.at(2) << args.at(3)});
+			waitTimer = -1;
+			return;
 		} else if (opCode == "PLAY") {
 			Server::sendPacket({PACKETPLAYOUTPLAYSONG, QStringList() << args.at(1)});
 		} else if (opCode == "PAUSE") {

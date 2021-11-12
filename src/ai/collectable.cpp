@@ -1,7 +1,6 @@
 #include "collectable.h"
-#include "src/assets/sfx.h"
-#include "src/entity/entitycollectable.h"
-#include "src/framework/game.h"
+#include "Assets"
+#include "Entity"
 
 namespace Collectables {
 EntityCollectable* spawn(Collectable collectable, const QPointF& loc) {

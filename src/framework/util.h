@@ -2,6 +2,9 @@
 #define ALIAS_H
 
 #include <QDebug>
+#include <QtMath>
+#include <QPointF>
+#include <QVector2D>
 #include <functional>
 #include <list>
 #include <map>

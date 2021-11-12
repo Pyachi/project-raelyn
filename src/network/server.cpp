@@ -2,13 +2,8 @@
 #include <QGridLayout>
 #include <QNetworkInterface>
 #include <QTcpSocket>
-#include "packet.h"
-#include "src/ai/enemy.h"
-#include "src/framework/game.h"
-#include "src/framework/level.h"
-#include "src/framework/menu.h"
-#include "src/framework/user.h"
-#include "uid.h"
+#include "Network"
+#include "Framework"
 
 Server* Server::SER = nullptr;
 
@@ -101,7 +96,8 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
 			Menu::MENU->serverStatus.setText("Status: In Game");
 			close();
 			sendPacket(PACKETPLAYOUTSTARTGAME);
-			Level::LVL1.start();
+			level = &Level::LVL1;
+			level->start();
 			break;
 		case PACKETPLAYINUPDATEPLAYER:
 			sendPacket({PACKETPLAYOUTUPDATEPLAYER,
@@ -126,6 +122,12 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
 			break;
 		case PACKETPLAYINENEMYDEATH:
 			sendPacket({PACKETPLAYOUTENEMYDEATH, packet.data}, sender);
+			break;
+		case PACKETPLAYINADVANCEPHASE:
+			sendPacket({PACKETPLAYOUTADVANCEPHASE, packet.data}, sender);
+			break;
+		case PACKETPLAYINRESUMELEVEL:
+			level->resume();
 			break;
 		default:
 			qDebug() << "ERROR: Received OUT Packet!";

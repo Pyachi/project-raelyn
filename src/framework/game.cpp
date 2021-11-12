@@ -1,13 +1,8 @@
 #include "game.h"
 #include <QKeyEvent>
-#include "menu.h"
-#include "src/ai/enemy.h"
-#include "src/ai/player.h"
-#include "src/assets/texture.h"
-#include "src/entity/entityplayer.h"
-#include "src/framework/user.h"
-#include "src/network/connection.h"
-#include "src/network/packet.h"
+#include "Framework"
+#include "Entity"
+#include "Network"
 
 Game* Game::GAME = nullptr;
 
@@ -57,7 +52,7 @@ Game::Game(void)
 }
 
 Game::~Game(void) {
-  foreach (auto entity, entities) {
+	foreach(auto entity, entities) {
     GAME = nullptr;
     entities.erase(entity.second->id);
     scene.removeItem(entity.second);
@@ -75,7 +70,7 @@ void Game::tick(void) {
     eventQueue.front()();
     eventQueue.pop_front();
   }
-  foreach (auto entity, entities) {
+	foreach(auto entity, entities) {
     if (entity.second->readyToDelete()) {
       entities.erase(entity.second->id);
       scene.removeItem(entity.second);
@@ -102,17 +97,11 @@ void Game::keyReleaseEvent(QKeyEvent* e) {
   QGraphicsView::keyReleaseEvent(e);
 }
 
-QGraphicsPixmapItem& Game::getPlayableArea(void) {
-  return GAME->playableArea;
-}
+QGraphicsPixmapItem& Game::getPlayableArea(void) { return GAME->playableArea; }
 
-QSet<int> Game::getKeys(void) {
-  return GAME->keys;
-}
+QSet<int> Game::getKeys(void) { return GAME->keys; }
 
-Map<UID, Entity*> Game::getEntities(void) {
-  return GAME->entities;
-}
+Map<UID, Entity*> Game::getEntities(void) { return GAME->entities; }
 
 void Game::addEntity(Entity* entity) {
   GAME->entities.insert({entity->id, entity});

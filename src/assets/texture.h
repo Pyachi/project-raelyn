@@ -69,8 +69,8 @@ enum Texture {
 };
 
 namespace Textures {
-const String getTexture(Texture);
-int getZValue(Texture);
+const String getTexture(Texture tex);
+int getZValue(Texture tex);
 }  // namespace Textures
 
 #endif  // TEXTURES_H

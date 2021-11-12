@@ -1,11 +1,7 @@
 #include "menu.h"
-#include "src/assets/music.h"
-#include "src/assets/sfx.h"
-#include "src/assets/texture.h"
-#include "src/framework/user.h"
-#include "src/network/connection.h"
-#include "src/network/packet.h"
-#include "src/network/server.h"
+#include "Network"
+#include "Framework"
+#include "Assets"
 
 Menu* Menu::MENU = nullptr;
 

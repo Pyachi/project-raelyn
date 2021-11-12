@@ -1,18 +1,18 @@
 #ifndef UID_H
 #define UID_H
 
-#include <QString>
+#include "util.h"
 
 class UID {
  public:
 	UID(void);
-	UID(const UID&);
+	UID(const UID& id);
 
 	QString toString(void) const;
-	static UID fromString(const QString&);
+	static UID fromString(const QString& string);
 
-	bool operator==(const UID&) const;
-	bool operator<(const UID&) const;
+	bool operator==(const UID& id) const;
+	bool operator<(const UID& id) const;
 
  private:
 	UID(unsigned int, unsigned int, unsigned int, unsigned int);

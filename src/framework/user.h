@@ -1,8 +1,8 @@
 #ifndef USER_H
 #define USER_H
 
-#include <QString>
-#include "src/ai/player.h"
+#include "player.h"
+#include "util.h"
 
 class UID;
 

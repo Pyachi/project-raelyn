@@ -7,12 +7,12 @@ class EntityPlayer;
 
 class EntityCollectable : public Entity {
  public:
-	EntityCollectable(Texture, AI<EntityPlayer>);
+	EntityCollectable(Texture tex, AI<EntityPlayer> onPickup);
 
  private:
 	int dir;
 	int speed;
-	const AI<EntityPlayer> ai;
+	const AI<EntityPlayer> onPickup;
 
 	void tick(void) override;
 };

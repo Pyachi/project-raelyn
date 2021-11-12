@@ -1,6 +1,5 @@
 #include "sfx.h"
 #include <SFML/Audio.hpp>
-#include "util.h"
 
 namespace SFX {
 namespace {

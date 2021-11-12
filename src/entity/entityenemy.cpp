@@ -1,13 +1,9 @@
 #include "entityenemy.h"
-#include "entitybullet.h"
-#include "entityplayer.h"
-#include "src/ai/collectable.h"
-#include "src/ai/enemy.h"
-#include "src/assets/sfx.h"
-#include "src/framework/game.h"
-#include "src/network/connection.h"
-#include "src/network/packet.h"
-#include <QVector2D>
+#include "Framework"
+#include "Entity"
+#include "Assets"
+#include "AI"
+#include "Network"
 
 EntityEnemy::EntityEnemy(Texture tex, UID id, int health, AI<EntityEnemy> ai)
 		: Entity(ENEMY, tex, id), health(health), ai(ai) {
@@ -17,19 +13,7 @@ EntityEnemy::EntityEnemy(Texture tex, UID id, int health, AI<EntityEnemy> ai)
 void EntityEnemy::tick(void) {
 	age++;
 	ai(this);
-	if (movementTicks != 0) {
-		switch (movementType) {
-			case SMOOTH:
-				moveTowardsPoint(targetPos,
-												 QVector2D(targetPos - pos()).length() / movementTicks);
-				movementTicks--;
-				break;
-			case QUICK:
-				moveTowardsPoint(targetPos, QVector2D(targetPos - pos()).length() / 10);
-				movementTicks--;
-				break;
-		}
-	}
+	handleMovement();
 	List<EntityBullet*> bullets;
 	for (Entity* entity : getCollisions(BULLET)) {
 		EntityBullet* bullet = dynamic_cast<EntityBullet*>(entity);
@@ -57,10 +41,4 @@ void EntityEnemy::kill(void) {
 	for (int i = 0; i < (Random::getInt() % 20) + 10; i++)
 		Collectables::spawn(COLLECTABLE_POINTS, pos());
 	deleteLater();
-}
-
-void EntityEnemy::moveTo(const QPointF& loc, int time, MovementType type) {
-	targetPos = loc;
-	movementTicks = time;
-	movementType = type;
 }

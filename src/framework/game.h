@@ -10,9 +10,8 @@
 #include <QPushButton>
 #include <QSet>
 #include <QTimer>
-#include "src/ai/player.h"
-#include "src/network/uid.h"
 #include "util.h"
+#include "uid.h"
 
 class Entity;
 class EntityPlayer;
@@ -30,7 +29,7 @@ class Game : public QGraphicsView {
 	static EntityPlayer* getPlayer(void);
 	static Map<UID, Entity*> getEntities(void);
 	static QGraphicsPixmapItem& getPlayableArea(void);
-	static void addEntity(Entity*);
+	static void addEntity(Entity* entity);
 	static void queueEvent(std::function<void(void)>);
 
  private:
@@ -57,8 +56,8 @@ class Game : public QGraphicsView {
 
 	void tick(void);
 
-	void keyPressEvent(QKeyEvent*);
-	void keyReleaseEvent(QKeyEvent*);
+	void keyPressEvent(QKeyEvent* e);
+	void keyReleaseEvent(QKeyEvent* e);
 
 	friend class Connection;
 };

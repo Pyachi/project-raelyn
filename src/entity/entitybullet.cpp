@@ -1,22 +1,23 @@
 #include "entitybullet.h"
-#include "src/ai/bullet.h"
-#include "src/framework/game.h"
+#include "Framework"
 
 EntityBullet::EntityBullet(Texture tex,
 													 AI<EntityBullet> ai,
-													 EntityType ownerType,
-													 int damage)
+													 const Entity* owner)
 		: Entity(BULLET, tex),
-			ownerType(ownerType),
+			ownerType(owner->type),
 			borderCheck(true),
-			damage(damage),
+			damage(1),
 			ai(ai) {
 	Game::addEntity(this);
+	rotate(180);
+	setPos(owner->pos());
 }
 
 void EntityBullet::tick(void) {
 	age++;
 	ai(this);
+	handleMovement();
 	if (borderCheck && !isOnScreen())
 		deleteLater();
 }

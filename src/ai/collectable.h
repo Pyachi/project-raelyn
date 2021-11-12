@@ -1,7 +1,7 @@
 #ifndef COLLECTABLES_H
 #define COLLECTABLES_H
 
-#include <QPointF>
+#include "util.h"
 
 enum Collectable {
   COLLECTABLE_POWER,
@@ -13,7 +13,7 @@ enum Collectable {
 class EntityCollectable;
 
 namespace Collectables {
-extern EntityCollectable* spawn(Collectable, const QPointF&);
+extern EntityCollectable* spawn(Collectable col, const QPointF& loc);
 }
 
 #endif  // COLLECTABLES_H

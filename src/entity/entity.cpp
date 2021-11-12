@@ -1,11 +1,6 @@
 #include "entity.h"
-#include <QVector2D>
-#include <QtMath>
-#include "entitybullet.h"
-#include "src/ai/bullet.h"
-#include "src/ai/bulletpattern.h"
-#include "src/assets/texture.h"
-#include "src/framework/game.h"
+#include "Framework"
+#include "AI"
 
 Entity::Entity(EntityType type, Texture tex) : Entity(type, tex, UID()) {}
 
@@ -14,7 +9,8 @@ Entity::Entity(EntityType type, Texture tex, UID id)
 			type(type),
 			id(id),
 			age(0),
-			cleanup(false) {
+			cleanup(false),
+			movementTicks(0) {
 	setPixmap(QPixmap(QString::fromStdString(Textures::getTexture(tex))));
 	setZValue(Textures::getZValue(tex));
 	setOffset(-boundingRect().center());
@@ -26,7 +22,7 @@ int Entity::getAge() { return age; }
 
 bool Entity::readyToDelete() { return cleanup; }
 
-void Entity::moveFoward(double distance) {
+void Entity::moveForward(double distance) {
 	double rot = qDegreesToRadians(rotation());
 	double dx = distance * -sin(rot);
 	double dy = distance * cos(rot);
@@ -42,19 +38,47 @@ void Entity::moveTowardsPoint(const QPointF& point, double distance) {
 void Entity::rotate(double deg) { setRotation(rotation() + deg); }
 
 List<EntityBullet*> Entity::fireBullets(Pattern pattern,
+																				BulletAI ai,
 																				Texture texture,
 																				double rot,
 																				const QPointF& loc,
+																				int scale,
+																				int damage) {
+	return fireBullets(
+			Patterns::get(pattern), ai, texture, rot, loc, scale, damage);
+}
+
+List<EntityBullet*> Entity::fireBullets(List<BulletInfo> pattern,
+																				BulletAI ai,
+																				Texture texture,
+																				double rot,
+																				const QPointF& loc,
+																				int scale,
 																				int damage) {
 	List<EntityBullet*> list;
-	for (BulletInfo info : Patterns::get(pattern))
-		list.push_back(info.spawn(texture, this, rot, loc, damage));
+	for (BulletInfo info : pattern)
+		list.push_back(fireBullet(info, ai, texture, rot, loc, scale, damage));
 	return list;
 }
 
-double Entity::distanceSquared(const Entity& entity) {
-	return pow(pos().x() - entity.pos().x(), 2) +
-				 pow(pos().y() - entity.pos().y(), 2);
+EntityBullet* Entity::fireBullet(BulletInfo info,
+																 BulletAI ai,
+																 Texture tex,
+																 double rot,
+																 const QPointF& loc,
+																 int scale,
+																 int damage) {
+	return Bullets::spawn(ai, info, tex, this, rot, loc, scale, damage);
+}
+
+double Entity::distanceSquared(const Entity* entity) {
+	return pow(pos().x() - entity->pos().x(), 2) +
+				 pow(pos().y() - entity->pos().y(), 2);
+}
+
+double Entity::getDirectionOfEntity(const Entity* entity) {
+	QVector2D vec = QVector2D(entity->pos() - pos()).normalized();
+	return qRadiansToDegrees(qAcos(vec.y())) * ((vec.x() > 0 ? -1 : 1));
 }
 
 QPointF Entity::confineToPlayableArea(const QPointF& pos) {
@@ -87,9 +111,9 @@ Entity* Entity::getNearestEntity(EntityType type) {
 	double closestDistance = 99999999;
 	for (auto entity : Game::getEntities()) {
 		if (entity.second->type == type &&
-				entity.second->distanceSquared(*this) < closestDistance) {
+				entity.second->distanceSquared(this) < closestDistance) {
 			closest = entity.second;
-			closestDistance = entity.second->distanceSquared(*this);
+			closestDistance = entity.second->distanceSquared(this);
 		}
 	}
 	return closest;
@@ -103,4 +127,26 @@ List<Entity*> Entity::getCollisions(EntityType type) {
 				list.push_back(entity);
 	}
 	return list;
+}
+
+void Entity::handleMovement() {
+	if (movementTicks != 0) {
+		switch (movementType) {
+			case SMOOTH:
+				moveTowardsPoint(targetPos,
+												 QVector2D(targetPos - pos()).length() / movementTicks);
+				movementTicks--;
+				break;
+			case QUICK:
+				moveTowardsPoint(targetPos, QVector2D(targetPos - pos()).length() / 20);
+				movementTicks--;
+				break;
+		}
+	}
+}
+
+void Entity::moveTo(const QPointF& loc, int time, MovementType type) {
+	targetPos = loc;
+	movementTicks = time;
+	movementType = type;
 }
