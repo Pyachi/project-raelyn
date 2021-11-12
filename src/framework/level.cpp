@@ -65,6 +65,13 @@ void Level::iterate(void) {
 			for (int i = 0; i < loopCount; i++)
 				loop << loopInstructions;
 			instructions = loop << instructions;
+		} else if (opCode == "$") {
+			while (opCode != "\\$") {
+				instruction = instructions.front();
+				instructions.pop_front();
+				args = instruction.split(':');
+				opCode = args.at(0);
+			}
 		}
 	}
 }
