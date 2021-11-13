@@ -25,7 +25,7 @@ const String get(Song song) {
 		case SONG_BOSS3:
 			return "assets/music/music_lvl3_boss.ogg";
 		case SONG_CREDITS:
-			return "assets/music/music_menu_theme.ogg";
+            return "assets/music/music_credits.ogg";
 	}
 }
 
