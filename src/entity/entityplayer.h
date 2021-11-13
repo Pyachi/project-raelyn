@@ -6,33 +6,37 @@
 
 class EntityPlayer : public Entity {
  public:
-	EntityPlayer(PlayerType playerType,
-							 const QString& name,
-							 UID id,
-							 EntityType type = PLAYER);
+  EntityPlayer(PlayerType playerType,
+               const QString& name,
+               UID id,
+               EntityType type = PLAYER);
 
-	void tick(void) override;
+  void tick(void) override;
 
-	QGraphicsPixmapItem hitbox;
-	const PlayerType playerType;
+  QGraphicsPixmapItem hitbox;
+  const PlayerType playerType;
 
-	EntityBullet* fireBullet(BulletInfo info,
-													 BulletAI ai,
-													 Texture tex,
-													 double rot = 0,
-													 const QPointF& loc = {0, 0},
-													 int scale = 1,
-													 int damage = 1);
+  EntityBullet* fireBullet(BulletInfo info,
+                           BulletAI ai,
+                           Texture tex,
+                           double rot = 0,
+                           const QPointF& loc = {0, 0},
+                           int scale = 1,
+                           int damage = 1);
+
+  void addPower(void);
+  void addPoints(int points);
 
  private:
-	QGraphicsSimpleTextItem display;
-	QString name;
-	bool firing;
-	bool focus;
-	int level;
-	int power;
-	int health;
-	int invFrames;
+  QGraphicsSimpleTextItem display;
+  QString name;
+  bool firing;
+  bool focus;
+  int level;
+  int power;
+  int points;
+  int health;
+  int invFrames;
 };
 
 #endif  // PLAYER_H

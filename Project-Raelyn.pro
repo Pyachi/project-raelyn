@@ -130,17 +130,13 @@ win32: {
     LIBS += -L$$PWD/libraries/SFML-2.5.1-Win/lib -lsfml-audio
     INCLUDEPATH += $$PWD/libraries/SFML-2.5.1-Win/include
     DEPENDPATH += $$PWD/libraries/SFML-2.5.1-Win/include
-    copyassets.commands = $(COPY_DIR) $$PWD/assets $$DESTDIR/assets
+    copyassets.commands = $(COPY_DIR) $$PWD/assets $$DESTDIR/assets/
     copyassets.commands = $$replace(copyassets.commands, /, \\)
-    copylibs.commands = $(COPY_DIR) $$PWD/libraries/SFML-2.5.1-Win/bin $$DESTDIR
+    copylibs.commands = $(COPY_DIR) $$PWD/libraries/SFML-2.5.1-Win/bin/ $$DESTDIR
     copylibs.commands = $$replace(copylibs.commands, /, \\)
-    copyqt.commands = $(COPY_DIR) $$PWD/libraries/Qt5-Win/bin $$DESTDIR
+    copyqt.commands = $(COPY_DIR) $$PWD/libraries/Qt5-Win/bin/ $$DESTDIR
     copyqt.commands = $$replace(copyqt.commands, /, \\)
     first.depends = $(first) copyassets copylibs copyqt
     export(first.depends)
-    export(copyassets.commands)
-    export(copylibs.commands)
-    export(copyqt.commands)
     QMAKE_EXTRA_TARGETS += first copyassets copylibs copyqt
-
 }
