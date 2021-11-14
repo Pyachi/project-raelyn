@@ -7,7 +7,7 @@ class EntityPlayer;
 
 class EntityCollectable : public Entity {
  public:
-	EntityCollectable(Texture tex, AI<EntityPlayer> onPickup);
+	EntityCollectable(Texture tex, AI<EntityPlayer> onPickup, bool random = true);
 
  private:
 	int dir;

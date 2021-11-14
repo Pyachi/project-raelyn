@@ -16,10 +16,6 @@
 class Entity;
 class EntityPlayer;
 
-const int gameWidth = 1280;
-const int gameHeight = 720;
-const int playBorder = 20;
-
 class Game : public QGraphicsView {
 	Q_OBJECT
 

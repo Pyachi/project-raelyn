@@ -73,6 +73,7 @@ class Entity : public QGraphicsPixmapItem {
 													 int damage = 1);
 	Entity* getNearestEntity(EntityType type);
 	List<Entity*> getCollisions(EntityType type);
+	List<Entity*> getNearbyEntities(EntityType type, double distance);
 	double getDirectionOfEntity(const Entity* entity);
 	double distanceSquared(const Entity* entity);
 	QPointF confineToPlayableArea(const QPointF& loc);

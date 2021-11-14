@@ -3,7 +3,9 @@
 #include "Entity"
 
 namespace Collectables {
-EntityCollectable* spawn(Collectable collectable, const QPointF& loc) {
+EntityCollectable* spawn(Collectable collectable,
+												 const QPointF& loc,
+												 bool random) {
   EntityCollectable* entity;
   switch (collectable) {
     case COLLECTABLE_POWER:
@@ -11,22 +13,26 @@ EntityCollectable* spawn(Collectable collectable, const QPointF& loc) {
                                      [](EntityPlayer* player) {
                                        player->addPower();
                                        SFX::playSound(SFX_COLLECT1, 10);
-                                     });
+																		 },
+																		 random);
       break;
     case COLLECTABLE_POINTS:
       entity = new EntityCollectable(
           TEXTURE_COLLECTABLE_POINTS,
-          [](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 10); });
+					[](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 10); },
+					random);
       break;
     case COLLECTABLE_HEALTH:
       entity = new EntityCollectable(
           TEXTURE_COLLECTABLE_POINTS,
-          [](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 10); });
+					[](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 10); },
+					random);
       break;
     case COLLECTABLE_BOMB:
       entity = new EntityCollectable(
           TEXTURE_COLLECTABLE_POINTS,
-          [](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 10); });
+					[](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 10); },
+					random);
       break;
   }
   entity->setPos(loc);

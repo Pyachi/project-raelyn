@@ -131,6 +131,16 @@ List<Entity*> Entity::getCollisions(EntityType type) {
 	return list;
 }
 
+List<Entity*> Entity::getNearbyEntities(EntityType type, double distance) {
+	List<Entity*> list;
+	for (auto pair : Game::getEntities()) {
+		Entity* entity = pair.second;
+		if (entity->type == type && distanceSquared(entity) <= distance * distance)
+			list.push_back(entity);
+	}
+	return list;
+}
+
 void Entity::handleMovement() {
 	if (movementTicks != 0) {
 		switch (movementType) {

@@ -8,7 +8,7 @@ Game* Game::GAME = nullptr;
 
 Game::Game(void)
     : QGraphicsView(),
-      scene(0, 0, gameWidth, gameHeight),
+			scene(0, 0, 900, 720),
 			dead("Game Over", &playableArea),
       menuButton("Return to Menu"),
 			paused(false),
@@ -23,13 +23,12 @@ Game::Game(void)
   background.setZValue(Textures::getZValue(TEXTURE_BACKGROUNDTEMP));
   scene.addItem(&background);
 
-  QPixmap playableAreaPixmap(gameHeight - (playBorder * 2),
-                             gameHeight - (playBorder * 2));
+	QPixmap playableAreaPixmap(544, 680);
   playableAreaPixmap.fill(Qt::darkRed);
   playableArea.setPixmap(playableAreaPixmap);
   playableArea.setOffset(-playableArea.boundingRect().center());
-  playableArea.setPos(playBorder + playableArea.boundingRect().width() / 2,
-                      playBorder + playableArea.boundingRect().height() / 2);
+	playableArea.setPos(40 + playableArea.boundingRect().width() / 2,
+											20 + playableArea.boundingRect().height() / 2);
   scene.addItem(&playableArea);
 
   popup.setLayout(&popupLayout);
@@ -48,9 +47,9 @@ Game::Game(void)
 	dead.setZValue(10);
 	dead.hide();
 
-  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  adjustSize();
+	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	adjustSize();
 	setFixedSize(size() + QSize(2, 2));
 
 	timer.start(1000 / 60);

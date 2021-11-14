@@ -52,6 +52,13 @@ void EntityBoss::kill(void) {
 
 void EntityBoss::advancePhase() {
 	phase--;
+	for (Entity* entity : getNearbyEntities(BULLET, 1000000)) {
+		EntityBullet* bullet = dynamic_cast<EntityBullet*>(entity);
+		if (bullet->ownerType == BULLET || bullet->ownerType == ENEMY) {
+			Collectables::spawn(COLLECTABLE_POINTS, bullet->pos(), false);
+			bullet->deleteLater();
+		}
+	}
 	if (phase == 0) {
 		kill();
 		return;

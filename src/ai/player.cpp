@@ -25,28 +25,40 @@ const AI<EntityPlayer> getShootingPattern(PlayerType type,
         case 1:
           if (focus)
             return [](EntityPlayer* player) {
-              player->fireBullet(BulletInfo(0, {0, -13}), AI_PLAYERBASIC,
-                                 TEXTURE_BULLET_ELLIPSE_YELLOW);
+							player->fireBullet(BulletInfo(0, {0, -13}),
+																 AI_PLAYERBASIC,
+																 TEXTURE_BULLET_ELLIPSE_YELLOW,
+																 0,
+																 {0, 0},
+																 1,
+																 50);
             };
           else
             return [](EntityPlayer* player) {
-              player->fireBullet(BulletInfo(0, {0, -13}), AI_PLAYERBASIC,
-                                 TEXTURE_BULLET_ELLIPSE_YELLOW);
+							player->fireBullet(BulletInfo(0, {0, -13}),
+																 AI_PLAYERBASIC,
+																 TEXTURE_BULLET_ELLIPSE_YELLOW,
+																 0,
+																 {0, 0},
+																 1,
+																 50);
             };
         case 2:
           if (focus)
             return [](EntityPlayer* player) {
-              player->fireBullets(
-                  BulletInfo(0, {0, -13})
-                      << BulletInfo(0, {5, -13}) << BulletInfo(0, {-5, -13}),
-                  AI_PLAYERBASIC, TEXTURE_BULLET_ELLIPSE_YELLOW);
+							player->fireBullets(BulletInfo(0, {0, -13})
+																			<< BulletInfo(0, {5, -13})
+																			<< BulletInfo(0, {-5, -13}),
+																	AI_PLAYERBASIC,
+																	TEXTURE_BULLET_ELLIPSE_YELLOW);
             };
           else
             return [](EntityPlayer* player) {
-              player->fireBullets(
-                  BulletInfo(0, {0, -13})
-                      << BulletInfo(0, {10, -13}) << BulletInfo(0, {-10, -13}),
-                  AI_PLAYERBASIC, TEXTURE_BULLET_ELLIPSE_YELLOW);
+							player->fireBullets(BulletInfo(0, {0, -13})
+																			<< BulletInfo(0, {10, -13})
+																			<< BulletInfo(0, {-10, -13}),
+																	AI_PLAYERBASIC,
+																	TEXTURE_BULLET_ELLIPSE_YELLOW);
             };
         case 3:
           if (focus)

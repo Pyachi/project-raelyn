@@ -13,7 +13,9 @@ enum Collectable {
 class EntityCollectable;
 
 namespace Collectables {
-extern EntityCollectable* spawn(Collectable col, const QPointF& loc);
+extern EntityCollectable* spawn(Collectable col,
+																const QPointF& loc,
+																bool random = true);
 }
 
 #endif  // COLLECTABLES_H
