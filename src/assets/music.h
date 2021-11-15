@@ -23,6 +23,7 @@ class Music {
 
 	operator int() const { return index; }
 
+	static float getVolume() { return volume; }
 	static void changeVolume(float vol) {
 		volume = vol;
 		player.setVolume(vol);
