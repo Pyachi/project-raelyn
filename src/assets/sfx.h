@@ -5,7 +5,7 @@
 #include "util.h"
 
 class SFX {
-  static Array<Ref<SFX>> list;
+	static Array<Ref<SFX> > list;
   static float volume;
   static List<sf::Sound*> players;
   static bool init;
@@ -23,7 +23,7 @@ class SFX {
  public:
   void play(float vol = 100) const;
 
-  constexpr operator int() const { return index; }
+	operator int() const { return index; }
 
   static void changeVolume(float vol) { volume = vol; }
 

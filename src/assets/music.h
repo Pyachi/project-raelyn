@@ -5,7 +5,7 @@
 #include "util.h"
 
 class Music {
-  static Array<Ref<Music>> list;
+	static Array<Ref<Music> > list;
   static float volume;
   static sf::Music player;
 
@@ -21,7 +21,7 @@ class Music {
  public:
   void play() const;
 
-  constexpr operator int() const { return index; }
+	operator int() const { return index; }
 
   static void changeVolume(float vol);
   static void stop();

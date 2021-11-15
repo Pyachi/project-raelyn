@@ -8,7 +8,7 @@ class Texture;
 class UID;
 
 class Boss {
-  static Array<Ref<Boss>> list;
+	static Array<Ref<Boss> > list;
 
   Boss(const Texture& tex, const Array<int>& health, const AI<EntityBoss>& ai)
       : index(list.size()), tex(tex), health(health), ai(ai) {
@@ -25,7 +25,7 @@ class Boss {
  public:
   EntityBoss* spawn(const QPointF& loc, const UID& id) const;
 
-  constexpr operator int() const { return index; }
+	operator int() const { return index; }
 
   static const Boss& valueOf(int i) { return list[i]; }
 

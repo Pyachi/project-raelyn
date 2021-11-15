@@ -8,7 +8,7 @@ class Texture;
 class BulletInfo;
 
 class Character {
-  static Array<Ref<Character>> list;
+	static Array<Ref<Character> > list;
 
   Character(const Texture& tex,
             int speed,
@@ -32,10 +32,10 @@ class Character {
   const int focusSpeed;
   const Func<const List<BulletInfo>(EntityPlayer*)> pattern;
 
-  constexpr operator int() const { return index; }
+	operator int() const { return index; }
 
   static const Character& valueOf(int i) { return list[i]; }
-  static const Array<Ref<Character>>& values() { return list; }
+	static const Array<Ref<Character> >& values() { return list; }
 
   static const Character PYACHI;
   static const Character AERON;
