@@ -62,4 +62,5 @@ const SFX SFX::SELECT1("assets/soundeffects/sound_select_1.wav");
 const SFX SFX::SELECT2("assets/soundeffects/sound_select_2.wav");
 const SFX SFX::CONNECT("assets/soundeffects/sound_join.wav");
 const SFX SFX::DISCONNECT("assets/soundeffects/sound_leave.wav");
+const SFX SFX::FIRE1("assets/soundeffects/sound_fire_1.wav");
 // const SFX SFX::ERROR("assets/soundeffects/sound_disconnect.wav");

@@ -47,7 +47,7 @@ void EntityPlayer::tick(void) {
 
   if (firing) {
     fireBullets(character.pattern(this));
-		character.shootSound(this).play();
+        character.shootSound(this).play(3);
     Connection::sendPacket(
 				{PACKETPLAYINFIREBULLETS, QStringList() << QString::number(level)
 																								<< QString::number(focus)});

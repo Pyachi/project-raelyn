@@ -58,6 +58,7 @@ class SFX {
   static const SFX SELECT2;
   static const SFX CONNECT;
   static const SFX DISCONNECT;
+  static const SFX FIRE1;
   //  static const SFX ERROR;
 };
 
