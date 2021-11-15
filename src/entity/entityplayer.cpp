@@ -111,7 +111,3 @@ void EntityPlayer::tick(void) {
       setOpacity(1);
   }
 }
-
-void EntityPlayer::addPower() { power++; }
-
-void EntityPlayer::addPoints(int points) { this->points += points; }

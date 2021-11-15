@@ -23,8 +23,11 @@ class Music {
 
 	operator int() const { return index; }
 
-  static void changeVolume(float vol);
-  static void stop();
+	static void changeVolume(float vol) {
+		volume = vol;
+		player.setVolume(vol);
+	}
+	static void stop() { player.stop(); }
 
   static const Music& valueOf(int i) { return list[i]; }
 

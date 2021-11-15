@@ -18,8 +18,8 @@ class EntityPlayer : public Entity {
   bool focus;
   int level;
 
-  void addPower(void);
-  void addPoints(int points);
+	void addPower(void) { power++; }
+	void addPoints(int count) { points += count; }
 
  private:
   QGraphicsSimpleTextItem display;

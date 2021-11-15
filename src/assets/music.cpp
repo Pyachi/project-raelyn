@@ -1,7 +1,7 @@
 #include "music.h"
 #include <SFML/Audio.hpp>
 
-Array<Ref<Music>> Music::list;
+Array<Ref<Music> > Music::list;
 float Music::volume = 100;
 sf::Music Music::player;
 
@@ -11,15 +11,6 @@ void Music::play() const {
   player.setVolume(volume);
   player.setLoop(true);
   player.play();
-}
-
-void Music::changeVolume(float vol) {
-  volume = vol;
-  player.setVolume(vol);
-}
-
-void Music::stop() {
-  player.stop();
 }
 
 const Music Music::MENU("assets/music/music_menu_theme.ogg");

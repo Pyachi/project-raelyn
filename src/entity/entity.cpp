@@ -17,18 +17,22 @@ Entity::Entity(EntityType type, const Texture& tex, const UID& id)
   setOffset(-boundingRect().center());
 }
 
-void Entity::deleteLater() {
-  cleanup = true;
+void Entity::handleMovement() {
+	if (movementTicks != 0) {
+		switch (movementType) {
+			case SMOOTH:
+				moveTowardsPoint(targetPos,
+												 QVector2D(targetPos - pos()).length() / movementTicks);
+				movementTicks--;
+				break;
+			case QUICK:
+				moveTowardsPoint(targetPos, QVector2D(targetPos - pos()).length() / 20);
+				movementTicks--;
+				break;
+		}
+	}
 }
-
-int Entity::getAge() const {
-  return age;
-}
-
-bool Entity::readyToDelete() {
-  return cleanup;
-}
-
+//***************************************************************************
 void Entity::moveForward(double distance) {
   double rot = qDegreesToRadians(rotation());
   double dx = distance * -sin(rot);
@@ -42,10 +46,12 @@ void Entity::moveTowardsPoint(const QPointF& point, double distance) {
   moveBy(dir.x(), dir.y());
 }
 
-void Entity::rotate(double deg) {
-  setRotation(rotation() + deg);
+void Entity::moveTo(const QPointF& loc, int time, MovementType type) {
+	targetPos = loc;
+	movementTicks = time;
+	movementType = type;
 }
-
+//***************************************************************************
 List<EntityBullet*> Entity::fireBullets(const List<BulletInfo>& list,
                                         double rot,
                                         const QPointF& loc) {
@@ -62,17 +68,51 @@ List<EntityBullet*> Entity::fireBullets(const List<BulletInfo>& list,
   }
   return bullets;
 }
+//***************************************************************************
+Entity* Entity::getNearestEntity(EntityType type) const {
+	Entity* closest = nullptr;
+	double closestDistance = 99999999;
+	for (auto entity : Game::getEntities()) {
+		if (entity.second->type == type &&
+				entity.second->distanceSquared(this) < closestDistance) {
+			closest = entity.second;
+			closestDistance = entity.second->distanceSquared(this);
+		}
+	}
+	return closest;
+}
 
-double Entity::distanceSquared(const Entity* entity) const {
-  return pow(pos().x() - entity->pos().x(), 2) +
-         pow(pos().y() - entity->pos().y(), 2);
+List<Entity*> Entity::getCollisions(EntityType type) const {
+	List<Entity*> list;
+	for (QGraphicsItem* item : collidingItems()) {
+		if (Entity* entity = dynamic_cast<Entity*>(item))
+			if (entity->type == type)
+				list.push_back(entity);
+	}
+	return list;
+}
+
+List<Entity*> Entity::getNearbyEntities(EntityType type,
+																				double distance) const {
+	List<Entity*> list;
+	for (auto pair : Game::getEntities()) {
+		Entity* entity = pair.second;
+		if (entity->type == type && distanceSquared(entity) <= distance * distance)
+			list.push_back(entity);
+	}
+	return list;
 }
 
 double Entity::getDirectionOfEntity(const Entity* entity) const {
-  if (entity == nullptr)
-    return 0;
-  QVector2D vec = QVector2D(entity->pos() - pos()).normalized();
-  return qRadiansToDegrees(qAcos(vec.y())) * ((vec.x() > 0 ? -1 : 1));
+	if (entity == nullptr)
+		return 0;
+	QVector2D vec = QVector2D(entity->pos() - pos()).normalized();
+	return qRadiansToDegrees(qAcos(vec.y())) * ((vec.x() > 0 ? -1 : 1));
+}
+//***************************************************************************
+double Entity::distanceSquared(const Entity* entity) const {
+  return pow(pos().x() - entity->pos().x(), 2) +
+         pow(pos().y() - entity->pos().y(), 2);
 }
 
 QPointF Entity::confineToPlayableArea(const QPointF& pos) const {
@@ -91,71 +131,4 @@ QPointF Entity::confineToPlayableArea(const QPointF& pos) const {
 bool Entity::isOnScreen(void) const {
   return collidesWithItem(&Game::getPlayableArea());
 }
-
-bool Entity::cycle(int dur) const {
-  return cycle(dur, 0, 0);
-}
-
-bool Entity::cycle(int dur, int time) const {
-  return cycle(dur, time, time);
-}
-
-bool Entity::cycle(int dur, int low, int high) const {
-  return (getAge() % dur >= low && getAge() % dur <= high);
-}
-
-Entity* Entity::getNearestEntity(EntityType type) const {
-  Entity* closest = nullptr;
-  double closestDistance = 99999999;
-  for (auto entity : Game::getEntities()) {
-    if (entity.second->type == type &&
-        entity.second->distanceSquared(this) < closestDistance) {
-      closest = entity.second;
-      closestDistance = entity.second->distanceSquared(this);
-    }
-  }
-  return closest;
-}
-
-List<Entity*> Entity::getCollisions(EntityType type) const {
-  List<Entity*> list;
-  for (QGraphicsItem* item : collidingItems()) {
-    if (Entity* entity = dynamic_cast<Entity*>(item))
-      if (entity->type == type)
-        list.push_back(entity);
-  }
-  return list;
-}
-
-List<Entity*> Entity::getNearbyEntities(EntityType type,
-                                        double distance) const {
-  List<Entity*> list;
-  for (auto pair : Game::getEntities()) {
-    Entity* entity = pair.second;
-    if (entity->type == type && distanceSquared(entity) <= distance * distance)
-      list.push_back(entity);
-  }
-  return list;
-}
-
-void Entity::handleMovement() {
-  if (movementTicks != 0) {
-    switch (movementType) {
-      case SMOOTH:
-        moveTowardsPoint(targetPos,
-                         QVector2D(targetPos - pos()).length() / movementTicks);
-        movementTicks--;
-        break;
-      case QUICK:
-        moveTowardsPoint(targetPos, QVector2D(targetPos - pos()).length() / 20);
-        movementTicks--;
-        break;
-    }
-  }
-}
-
-void Entity::moveTo(const QPointF& loc, int time, MovementType type) {
-  targetPos = loc;
-  movementTicks = time;
-  movementType = type;
-}
+//***************************************************************************

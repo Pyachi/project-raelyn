@@ -65,12 +65,12 @@ Game::Game(void)
 }
 
 Game::~Game(void) {
-  foreach (auto entity, entities) {
-    GAME = nullptr;
-    entities.erase(entity.second->id);
-    scene.removeItem(entity.second);
-    delete entity.second;
-  }
+	foreach(auto entity, entities) {
+		GAME = nullptr;
+		entities.erase(entity.second->id);
+		scene.removeItem(entity.second);
+		delete entity.second;
+	}
 }
 
 void Game::tick(void) {
@@ -96,11 +96,11 @@ void Game::tick(void) {
     eventQueue.front()();
     eventQueue.pop_front();
   }
-  foreach (auto entity, entities) {
+	foreach(auto entity, entities) {
     if (entity.second->readyToDelete()) {
       entities.erase(entity.second->id);
       scene.removeItem(entity.second);
-      delete entity.second;
+			delete entity.second;
     }
   }
 }
@@ -111,38 +111,6 @@ void Game::create(void) {
   GAME->show();
   Connection::sendPacket({PACKETPLAYINPLAYERSPAWN,
                           QStringList() << QString::number(User::character)});
-}
-
-void Game::keyPressEvent(QKeyEvent* e) {
-  keys.insert(e->key());
-  QGraphicsView::keyPressEvent(e);
-}
-
-void Game::keyReleaseEvent(QKeyEvent* e) {
-  keys.remove(e->key());
-  QGraphicsView::keyReleaseEvent(e);
-}
-
-QGraphicsRectItem& Game::getPlayableArea(void) {
-  return GAME->playableArea;
-}
-
-QSet<int> Game::getKeys(void) {
-  return GAME->keys;
-}
-
-Map<UID, Entity*> Game::getEntities(void) {
-  return GAME->entities;
-}
-
-void Game::addEntity(Entity* entity) {
-  queueEvent([entity]() { GAME->entities.insert({entity->id, entity}); });
-}
-
-void Game::queueEvent(std::function<void(void)> func) {
-  if (GAME == nullptr)
-    return;
-  GAME->eventQueue.push_back(func);
 }
 
 EntityPlayer* Game::getPlayer(void) {
