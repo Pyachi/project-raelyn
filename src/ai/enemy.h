@@ -8,7 +8,7 @@ class Texture;
 class UID;
 
 class Enemy {
-	static Array<Ref<Enemy> > list;
+  static Array<Ref<Enemy> > list;
 
   Enemy(const Texture& tex, int health, const AI<EntityEnemy>& ai)
       : index(list.size()), tex(tex), health(health), ai(ai) {
@@ -26,10 +26,10 @@ class Enemy {
  public:
   EntityEnemy* spawn(const QPointF& loc, const UID& id) const;
 
-	operator int() const { return index; }
+  operator int() const { return index; }
 
   static const Enemy& valueOf(int i) { return list[i]; }
-	static const Array<Ref<Enemy> >& values() { return list; }
+  static const Array<Ref<Enemy> >& values() { return list; }
 
   static const Enemy ENEMYTEST1;
   static const Enemy ENEMYTEST2;
@@ -46,6 +46,9 @@ class Enemy {
   static const Enemy small_fast_LEFTTORIGHT;
   static const Enemy small_fast_TOPDOWNTOLEFT;
   static const Enemy small_fast_TOPDOWNTORIGHT;
+  static const Enemy DART1;
+  static const Enemy DART2;
+  static const Enemy DART3;
 };
 
 #endif  // ENEMY_H
