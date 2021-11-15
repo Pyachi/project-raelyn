@@ -30,6 +30,8 @@ Game::Game(void)
   screen.setZValue(Texture::BACKGROUNDTEMP.zValue);
   scene.addItem(&screen);
 
+	scene.setSceneRect(screen.boundingRect());
+
   playableArea.setPos(40 + playableArea.boundingRect().width() / 2,
                       20 + playableArea.boundingRect().height() / 2);
   scene.addItem(&playableArea);
@@ -55,17 +57,18 @@ Game::Game(void)
   dead.setZValue(10);
   dead.hide();
 
-  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  adjustSize();
-  setFixedSize(size() + QSize(2, 2));
+	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	adjustSize();
+	setFixedSize(size() + QSize(2, 2));
+	setWindowFlags(Qt::FramelessWindowHint);
 
   timer.start(1000 / 60);
   connect(&timer, &QTimer::timeout, [this]() { this->tick(); });
 }
 
 Game::~Game(void) {
-	foreach(auto entity, entities) {
+	foreach (auto entity, entities) {
 		GAME = nullptr;
 		entities.erase(entity.second->id);
 		scene.removeItem(entity.second);
@@ -96,7 +99,7 @@ void Game::tick(void) {
     eventQueue.front()();
     eventQueue.pop_front();
   }
-	foreach(auto entity, entities) {
+	foreach (auto entity, entities) {
     if (entity.second->readyToDelete()) {
       entities.erase(entity.second->id);
       scene.removeItem(entity.second);
