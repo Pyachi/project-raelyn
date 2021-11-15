@@ -14,7 +14,7 @@ EntityBoss* Boss::spawn(const QPointF& loc, const UID& id) const {
   return boss;
 }
 
-const Boss Boss::LVL1MINI(Texture::ENEMYTEMP, {2000}, [](EntityBoss* boss) {
+const Boss Boss::LVL1MINI(Texture::ENEMYTEMP, {200}, [](EntityBoss* boss) {
   switch (boss->phase) {
     case 0:
       if (boss->cycle(1000, 10) || boss->cycle(1000, 510))
@@ -26,23 +26,15 @@ const Boss Boss::LVL1MINI(Texture::ENEMYTEMP, {2000}, [](EntityBoss* boss) {
       if (boss->cycle(250, 100) || boss->cycle(250, 150) ||
           boss->cycle(250, 200)) {
         boss->fireBullets(
-						BulletInfo(Bullet::BASIC4,
-											 Texture::ROUNDBLUE,
-											 SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10),
-											 2)
-								<< BulletInfo(Bullet::BASIC5,
-															Texture::ROUNDBLUE,
-															SpawnInfo(-5) << SpawnInfo(5),
-															2)
-								<< BulletInfo(Bullet::BASIC6,
-															Texture::ROUNDBLUE,
-															SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10),
-															2) << BulletInfo(Bullet::BASIC7,
-																							 Texture::ROUNDBLUE,
-																							 SpawnInfo(-5) << SpawnInfo(5),
-																							 2)
-								<< BulletInfo(Bullet::BASIC8,
-															Texture::ROUNDBLUE,
+						BulletInfo(Bullet::BASIC4, Texture::ROUNDBLUE,
+											 SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10), 2)
+								<< BulletInfo(Bullet::BASIC5, Texture::ROUNDBLUE,
+															SpawnInfo(-5) << SpawnInfo(5), 2)
+								<< BulletInfo(Bullet::BASIC6, Texture::ROUNDBLUE,
+															SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10), 2)
+								<< BulletInfo(Bullet::BASIC7, Texture::ROUNDBLUE,
+															SpawnInfo(-5) << SpawnInfo(5), 2)
+								<< BulletInfo(Bullet::BASIC8, Texture::ROUNDBLUE,
                               SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10),
                               2),
             boss->getDirectionOfEntity(Game::getPlayer()));

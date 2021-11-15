@@ -4,9 +4,16 @@
 #include "sfx.h"
 #include "texture.h"
 
-EntityCollectable* Collectable::spawn(const QPointF& loc) const {
+EntityCollectable* Collectable::spawn(const QPointF& loc, int maxDis) const {
   EntityCollectable* col = new EntityCollectable(tex, ai);
-  col->setPos(loc);
+	if (maxDis != 0) {
+		double randRot = Random::getInt() % 360;
+		double dist = 0;
+		for (int i = 0; i < 2; i++)
+			dist += (Random::getInt() % maxDis) - (maxDis / 2);
+		col->setPos(loc + QPointF(dist * cos(randRot), dist * sin(randRot)));
+	} else
+		col->setPos(loc);
   return col;
 }
 

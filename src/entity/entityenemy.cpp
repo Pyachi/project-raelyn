@@ -45,10 +45,8 @@ void EntityEnemy::kill(void) {
     }
   }
   for (int i = 0; i < (Random::getInt() % 5) + 3; i++)
-    Collectable::POWER.spawn(pos() + QPointF((Random::getInt() % 40) - 20,
-                                             (Random::getInt() % 40) - 20));
+		Collectable::POWER.spawn(pos(), 40);
   for (int i = 0; i < (Random::getInt() % 5) + 3; i++)
-    Collectable::POINTS.spawn(pos() + QPointF((Random::getInt() % 40) - 20,
-                                              (Random::getInt() % 40) - 20));
+		Collectable::POINTS.spawn(pos(), 40);
   deleteLater();
 }

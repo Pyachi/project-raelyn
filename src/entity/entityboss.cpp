@@ -41,12 +41,10 @@ void EntityBoss::tick(void) {
 void EntityBoss::kill(void) {
   if (cleanup)
     return;
-  for (int i = 0; i < (Random::getInt() % 5) + 50; i++)
-    Collectable::POWER.spawn(pos() + QPointF((Random::getInt() % 100) - 50,
-                                             (Random::getInt() % 100) - 50));
-  for (int i = 0; i < (Random::getInt() % 20) + 100; i++)
-    Collectable::POINTS.spawn(pos() + QPointF((Random::getInt() % 100) - 50,
-                                              (Random::getInt() % 100) - 50));
+	for (int i = 0; i < (Random::getInt() % 5) + 50; i++)
+		Collectable::POWER.spawn(pos(), 200);
+	for (int i = 0; i < (Random::getInt() % 20) + 100; i++)
+		Collectable::POINTS.spawn(pos(), 200);
   Connection::sendPacket(PACKETPLAYINRESUMELEVEL);
   deleteLater();
 }
@@ -67,10 +65,8 @@ void EntityBoss::advancePhase() {
     health = totalHealth[phase];
     age = 0;
     for (int i = 0; i < (Random::getInt() % 5) + 5; i++)
-      Collectable::POWER.spawn(pos() + QPointF((Random::getInt()) % 100 - 50,
-                                               (Random::getInt() % 100) - 50));
+			Collectable::POWER.spawn(pos(), 100);
     for (int i = 0; i < (Random::getInt() % 20) + 10; i++)
-      Collectable::POINTS.spawn(pos() + QPointF((Random::getInt()) % 100 - 50,
-                                                (Random::getInt() % 100) - 50));
+			Collectable::POINTS.spawn(pos(), 100);
   }
 }
