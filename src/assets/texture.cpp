@@ -1,170 +1,70 @@
 #include "texture.h"
-#include <QPixmap>
 
-namespace Textures {
-const QPixmap getTexture(Texture texture) {
-  switch (texture) {
-    case TEXTURE_BULLET_ROUND_RED:
-      return {"assets/textures/bullets/round/red.png"};
-    case TEXTURE_BULLET_ROUND_ORANGE:
-      return {"assets/textures/bullets/round/orange.png"};
-    case TEXTURE_BULLET_ROUND_YELLOW:
-      return {"assets/textures/bullets/round/yellow.png"};
-    case TEXTURE_BULLET_ROUND_GREEN:
-      return {"assets/textures/bullets/round/green.png"};
-    case TEXTURE_BULLET_ROUND_AQUA:
-      return {"assets/textures/bullets/round/aqua.png"};
-    case TEXTURE_BULLET_ROUND_BLUE:
-      return {"assets/textures/bullets/round/blue.png"};
-    case TEXTURE_BULLET_ROUND_PURPLE:
-      return {"assets/textures/bullets/round/purple.png"};
-    case TEXTURE_BULLET_ROUND_MAGENTA:
-      return {"assets/textures/bullets/round/magenta.png"};
-    case TEXTURE_BULLET_ELLIPSE_RED:
-      return {"assets/textures/bullets/ellipse/red.png"};
-    case TEXTURE_BULLET_ELLIPSE_ORANGE:
-      return {"assets/textures/bullets/ellipse/orange.png"};
-    case TEXTURE_BULLET_ELLIPSE_YELLOW:
-      return {"assets/textures/bullets/ellipse/yellow.png"};
-    case TEXTURE_BULLET_ELLIPSE_GREEN:
-      return {"assets/textures/bullets/ellipse/green.png"};
-    case TEXTURE_BULLET_ELLIPSE_AQUA:
-      return {"assets/textures/bullets/ellipse/aqua.png"};
-    case TEXTURE_BULLET_ELLIPSE_BLUE:
-      return {"assets/textures/bullets/ellipse/blue.png"};
-    case TEXTURE_BULLET_ELLIPSE_PURPLE:
-      return {"assets/textures/bullets/ellipse/purple.png"};
-    case TEXTURE_BULLET_ELLIPSE_MAGENTA:
-      return {"assets/textures/bullets/ellipse/magenta.png"};
-    case TEXTURE_BULLET_ARROW_RED:
-      return {"assets/textures/bullets/arrow/red.png"};
-    case TEXTURE_BULLET_ARROW_ORANGE:
-      return {"assets/textures/bullets/arrow/orange.png"};
-    case TEXTURE_BULLET_ARROW_YELLOW:
-      return {"assets/textures/bullets/arrow/yellow.png"};
-    case TEXTURE_BULLET_ARROW_GREEN:
-      return {"assets/textures/bullets/arrow/green.png"};
-    case TEXTURE_BULLET_ARROW_AQUA:
-      return {"assets/textures/bullets/arrow/aqua.png"};
-    case TEXTURE_BULLET_ARROW_BLUE:
-      return {"assets/textures/bullets/arrow/blue.png"};
-    case TEXTURE_BULLET_ARROW_PURPLE:
-      return {"assets/textures/bullets/arrow/purple.png"};
-    case TEXTURE_BULLET_ARROW_MAGENTA:
-      return {"assets/textures/bullets/arrow/magenta.png"};
-    case TEXTURE_BULLET_STAR_RED:
-      return {"assets/textures/bullets/star/red.png"};
-    case TEXTURE_BULLET_STAR_ORANGE:
-      return {"assets/textures/bullets/star/orange.png"};
-    case TEXTURE_BULLET_STAR_YELLOW:
-      return {"assets/textures/bullets/star/yellow.png"};
-    case TEXTURE_BULLET_STAR_GREEN:
-      return {"assets/textures/bullets/star/green.png"};
-    case TEXTURE_BULLET_STAR_AQUA:
-      return {"assets/textures/bullets/star/aqua.png"};
-    case TEXTURE_BULLET_STAR_BLUE:
-      return {"assets/textures/bullets/star/blue.png"};
-    case TEXTURE_BULLET_STAR_PURPLE:
-      return {"assets/textures/bullets/star/purple.png"};
-    case TEXTURE_BULLET_STAR_MAGENTA:
-      return {"assets/textures/bullets/star/magenta.png"};
-    case TEXTURE_BULLET_LAZER_RED:
-      return {"assets/textures/bullets/lazer/red.png"};
-    case TEXTURE_BULLET_LAZER_ORANGE:
-      return {"assets/textures/bullets/lazer/orange.png"};
-    case TEXTURE_BULLET_LAZER_YELLOW:
-      return {"assets/textures/bullets/lazer/yellow.png"};
-    case TEXTURE_BULLET_LAZER_GREEN:
-      return {"assets/textures/bullets/lazer/green.png"};
-    case TEXTURE_BULLET_LAZER_AQUA:
-      return {"assets/textures/bullets/lazer/aqua.png"};
-    case TEXTURE_BULLET_LAZER_BLUE:
-      return {"assets/textures/bullets/lazer/blue.png"};
-    case TEXTURE_BULLET_LAZER_PURPLE:
-      return {"assets/textures/bullets/LAZER/purple.png"};
-    case TEXTURE_BULLET_LAZER_MAGENTA:
-      return {"assets/textures/bullets/lazer/magenta.png"};
-    case TEXTURE_COLLECTABLE_POWER:
-      return {"assets/textures/collectables/power.png"};
-    case TEXTURE_COLLECTABLE_POINTS:
-      return {"assets/textures/collectables/points.png"};
-    case TEXTURE_ENEMYTEMP:
-      return {"assets/textures/enemies/enemy.png"};
-    case TEXTURE_BACKGROUNDTEMP:
-      return {"assets/textures/misc/background.png"};
-    case TEXTURE_TITLETEMP:
-      return {"assets/textures/misc/title.png"};
-    case TEXTURE_PLAYER_HITBOX:
-      return {"assets/textures/players/player_hitbox.png"};
-    case TEXTURE_PYACHI:
-      return {"assets/textures/players/pyachi.png"};
-    case TEXTURE_AERON:
-      return {"assets/textures/players/player.png"};
-    case TEXTURE_PRYSMA:
-      return {"assets/textures/players/player.png"};
-    case TEXTURE_ANEKHANDA:
-      return {"assets/textures/players/player.png"};
-  }
-}
-
-int getZValue(Texture texture) {
-  switch (texture) {
-    case TEXTURE_BULLET_ROUND_RED:
-    case TEXTURE_BULLET_ROUND_ORANGE:
-    case TEXTURE_BULLET_ROUND_YELLOW:
-    case TEXTURE_BULLET_ROUND_GREEN:
-    case TEXTURE_BULLET_ROUND_AQUA:
-    case TEXTURE_BULLET_ROUND_BLUE:
-    case TEXTURE_BULLET_ROUND_PURPLE:
-    case TEXTURE_BULLET_ROUND_MAGENTA:
-    case TEXTURE_BULLET_ELLIPSE_RED:
-    case TEXTURE_BULLET_ELLIPSE_ORANGE:
-    case TEXTURE_BULLET_ELLIPSE_YELLOW:
-    case TEXTURE_BULLET_ELLIPSE_GREEN:
-    case TEXTURE_BULLET_ELLIPSE_AQUA:
-    case TEXTURE_BULLET_ELLIPSE_BLUE:
-    case TEXTURE_BULLET_ELLIPSE_PURPLE:
-    case TEXTURE_BULLET_ELLIPSE_MAGENTA:
-    case TEXTURE_BULLET_ARROW_RED:
-    case TEXTURE_BULLET_ARROW_ORANGE:
-    case TEXTURE_BULLET_ARROW_YELLOW:
-    case TEXTURE_BULLET_ARROW_GREEN:
-    case TEXTURE_BULLET_ARROW_AQUA:
-    case TEXTURE_BULLET_ARROW_BLUE:
-    case TEXTURE_BULLET_ARROW_PURPLE:
-    case TEXTURE_BULLET_ARROW_MAGENTA:
-    case TEXTURE_BULLET_STAR_RED:
-    case TEXTURE_BULLET_STAR_ORANGE:
-    case TEXTURE_BULLET_STAR_YELLOW:
-    case TEXTURE_BULLET_STAR_GREEN:
-    case TEXTURE_BULLET_STAR_AQUA:
-    case TEXTURE_BULLET_STAR_BLUE:
-    case TEXTURE_BULLET_STAR_PURPLE:
-    case TEXTURE_BULLET_STAR_MAGENTA:
-    case TEXTURE_BULLET_LAZER_RED:
-    case TEXTURE_BULLET_LAZER_ORANGE:
-    case TEXTURE_BULLET_LAZER_YELLOW:
-    case TEXTURE_BULLET_LAZER_GREEN:
-    case TEXTURE_BULLET_LAZER_AQUA:
-    case TEXTURE_BULLET_LAZER_BLUE:
-    case TEXTURE_BULLET_LAZER_PURPLE:
-    case TEXTURE_BULLET_LAZER_MAGENTA:
-      return 1;
-    case TEXTURE_COLLECTABLE_POWER:
-    case TEXTURE_COLLECTABLE_POINTS:
-      return 3;
-    case TEXTURE_ENEMYTEMP:
-      return 2;
-    case TEXTURE_BACKGROUNDTEMP:
-    case TEXTURE_TITLETEMP:
-      return 5;
-    case TEXTURE_PYACHI:
-    case TEXTURE_AERON:
-    case TEXTURE_PRYSMA:
-    case TEXTURE_ANEKHANDA:
-      return 4;
-    case TEXTURE_PLAYER_HITBOX:
-      return 0;
-  }
-}
-}  // namespace Textures
+Array<Ref<Texture>> Texture::list;
+//***************************************************************************
+// Round Bullets
+const Texture Texture::ROUNDRED("assets/textures/round/red.png", 1);
+const Texture Texture::ROUNDORANGE("assets/textures/round/orange.png", 1);
+const Texture Texture::ROUNDYELLOW("assets/textures/round/yellow.png", 1);
+const Texture Texture::ROUNDGREEN("assets/textures/round/green.png", 1);
+const Texture Texture::ROUNDAQUA("assets/textures/round/aqua.png", 1);
+const Texture Texture::ROUNDBLUE("assets/textures/round/blue.png", 1);
+const Texture Texture::ROUNDPURPLE("assets/textures/round/purple.png", 1);
+const Texture Texture::ROUNDMAGENTA("assets/textures/round/magenta.png", 1);
+//***************************************************************************
+// Elliptical Bullets
+const Texture Texture::ELLIPSERED("assets/textures/ellipse/red.png", 1);
+const Texture Texture::ELLIPSEORANGE("assets/textures/ellipse/orange.png", 1);
+const Texture Texture::ELLIPSEYELLOW("assets/textures/ellipse/yellow.png", 1);
+const Texture Texture::ELLIPSEGREEN("assets/textures/ellipse/green.png", 1);
+const Texture Texture::ELLIPSEAQUA("assets/textures/ellipse/aqua.png", 1);
+const Texture Texture::ELLIPSEBLUE("assets/textures/ellipse/blue.png", 1);
+const Texture Texture::ELLIPSEPURPLE("assets/textures/ellipse/purple.png", 1);
+const Texture Texture::ELLIPSEMAGENTA("assets/textures/ellipse/magenta.png", 1);
+//***************************************************************************
+// Arrowhead Bullets
+const Texture Texture::ARROWRED("assets/textures/arrow/red.png", 1);
+const Texture Texture::ARROWORANGE("assets/textures/arrow/orange.png", 1);
+const Texture Texture::ARROWYELLOW("assets/textures/arrow/yellow.png", 1);
+const Texture Texture::ARROWGREEN("assets/textures/arrow/green.png", 1);
+const Texture Texture::ARROWAQUA("assets/textures/arrow/aqua.png", 1);
+const Texture Texture::ARROWBLUE("assets/textures/arrow/blue.png", 1);
+const Texture Texture::ARROWPURPLE("assets/textures/arrow/purple.png", 1);
+const Texture Texture::ARROWMAGENTA("assets/textures/arrow/magenta.png", 1);
+//***************************************************************************
+// Star Bullets
+const Texture Texture::STARRED("assets/textures/star/red.png", 1);
+const Texture Texture::STARORANGE("assets/textures/star/orange.png", 1);
+const Texture Texture::STARYELLOW("assets/textures/star/yellow.png", 1);
+const Texture Texture::STARGREEN("assets/textures/star/green.png", 1);
+const Texture Texture::STARAQUA("assets/textures/star/aqua.png", 1);
+const Texture Texture::STARBLUE("assets/textures/star/blue.png", 1);
+const Texture Texture::STARPURPLE("assets/textures/star/purple.png", 1);
+const Texture Texture::STARMAGENTA("assets/textures/star/magenta.png", 1);
+//***************************************************************************
+// Lazer Bullets
+const Texture Texture::LAZERRED("assets/textures/lazer/red.png", 1);
+const Texture Texture::LAZERORANGE("assets/textures/lazer/orange.png", 1);
+const Texture Texture::LAZERYELLOW("assets/textures/lazer/yellow.png", 1);
+const Texture Texture::LAZERGREEN("assets/textures/lazer/green.png", 1);
+const Texture Texture::LAZERAQUA("assets/textures/lazer/aqua.png", 1);
+const Texture Texture::LAZERBLUE("assets/textures/lazer/blue.png", 1);
+const Texture Texture::LAZERPURPLE("assets/textures/lazer/purple.png", 1);
+const Texture Texture::LAZERMAGENTA("assets/textures/lazer/magenta.png", 1);
+//***************************************************************************
+// Collectables
+const Texture Texture::POWER("assets/textures/collectables/power.png", 3);
+const Texture Texture::POINTS("assets/textures/collectables/points.png", 3);
+//***************************************************************************
+// Temporary
+const Texture Texture::ENEMYTEMP("assets/textures/enemies/enemy.png", 2);
+const Texture Texture::BACKGROUNDTEMP("assets/textures/misc/background.png", 5);
+const Texture Texture::TITLETEMP("assets/textures/misc/title.png", 5);
+const Texture Texture::BACKGROUND("assets/textures/misc/background1.png", -1);
+//***************************************************************************
+// Players
+const Texture Texture::PYACHI("assets/textures/players/pyachi.png", 4);
+const Texture Texture::AERON("assets/textures/players/player.png", 4);
+const Texture Texture::PRYSMA("assets/textures/players/player.png", 4);
+const Texture Texture::ANEKHANDA("assets/textures/players/player.png", 4);
+const Texture Texture::HITBOX("assets/textures/players/player_hitbox.png", 0);

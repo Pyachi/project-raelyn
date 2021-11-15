@@ -1,114 +1,90 @@
 #include "bullet.h"
-#include "Entity"
-#include "AI"
+#include "entitybullet.h"
 
-namespace Bullets {
-AI<EntityBullet> get(BulletAI ai) {
-	switch (ai) {
-		case AI_PLAYERBASIC:
-			return [](EntityBullet* bullet) { bullet->moveForward(40); };
+const Bullet Bullet::BASIC1([](EntityBullet* bullet) {
+  bullet->moveForward(1);
+});
+const Bullet Bullet::BASIC2([](EntityBullet* bullet) {
+  bullet->moveForward(2);
+});
+const Bullet Bullet::BASIC3([](EntityBullet* bullet) {
+  bullet->moveForward(3);
+});
+const Bullet Bullet::BASIC4([](EntityBullet* bullet) {
+  bullet->moveForward(4);
+});
+const Bullet Bullet::BASIC5([](EntityBullet* bullet) {
+  bullet->moveForward(5);
+});
+const Bullet Bullet::BASIC6([](EntityBullet* bullet) {
+  bullet->moveForward(6);
+});
+const Bullet Bullet::BASIC7([](EntityBullet* bullet) {
+  bullet->moveForward(7);
+});
+const Bullet Bullet::BASIC8([](EntityBullet* bullet) {
+  bullet->moveForward(8);
+});
+const Bullet Bullet::BASIC9([](EntityBullet* bullet) {
+  bullet->moveForward(9);
+});
+const Bullet Bullet::BASIC10([](EntityBullet* bullet) {
+  bullet->moveForward(10);
+});
+const Bullet Bullet::BASIC11([](EntityBullet* bullet) {
+  bullet->moveForward(11);
+});
+const Bullet Bullet::BASIC12([](EntityBullet* bullet) {
+  bullet->moveForward(12);
+});
+const Bullet Bullet::BASIC40([](EntityBullet* bullet) {
+  bullet->moveForward(40);
+});
 
-		case AI_PLAYERHOMING:
-      return [](EntityBullet* bullet) {
-        bullet->rotate(20);
-        if (bullet->getNearestEntity(ENEMY) == nullptr) {
-          bullet->moveBy(0, -20);
-          return;
-        }
-        QVector2D dir =
-            QVector2D(bullet->getNearestEntity(ENEMY)->pos() - bullet->pos());
-        dir.normalize();
-        dir *= 20;
-        bullet->setPos(bullet->pos() + dir.toPointF());
-      };
+const List<SpawnInfo> operator<<(const List<SpawnInfo>& list1,
+                                 const SpawnInfo& info) {
+  List<SpawnInfo> list;
+  for (const SpawnInfo& info : list1)
+    list.push_back(info);
+  list.push_back(info);
+  return list;
+};
+const List<SpawnInfo> operator<<(const List<SpawnInfo>& list1,
+                                 const List<SpawnInfo>& list2) {
+  List<SpawnInfo> list;
+  for (const SpawnInfo& info : list1)
+    list.push_back(info);
+  for (const SpawnInfo& info : list2)
+    list.push_back(info);
+  return list;
+};
 
-		case AI_BASIC1:
-			return [](EntityBullet* bullet) { bullet->moveForward(1); };
+const Pattern Pattern::CIRCLE4(SpawnInfo() << SpawnInfo(90) << SpawnInfo(180)
+                                           << SpawnInfo(270));
+const Pattern Pattern::CIRCLE8(SpawnInfo(45) << SpawnInfo(135) << SpawnInfo(225)
+                                             << SpawnInfo(315) << CIRCLE4);
+const Pattern Pattern::CIRCLE16(SpawnInfo(22.5)
+                                << SpawnInfo(67.5) << SpawnInfo(112.5)
+                                << SpawnInfo(157.5) << SpawnInfo(202.5)
+                                << SpawnInfo(247.5) << SpawnInfo(292.5)
+                                << SpawnInfo(337.5) << CIRCLE8);
+const Pattern Pattern::SHOTGUN3(SpawnInfo() << SpawnInfo(-20) << SpawnInfo(20));
+const Pattern Pattern::SHOTGUN5(SpawnInfo(-40) << SpawnInfo(40) << SHOTGUN3);
 
-		case AI_BASIC2:
-      return [](EntityBullet* bullet) { bullet->moveForward(2); };
-
-		case AI_BASIC3:
-			return [](EntityBullet* bullet) { bullet->moveForward(3); };
-
-		case AI_BASIC4:
-      return [](EntityBullet* bullet) { bullet->moveForward(4); };
-
-		case AI_BASIC5:
-			return [](EntityBullet* bullet) { bullet->moveForward(5); };
-
-		case AI_BASIC6:
-      return [](EntityBullet* bullet) { bullet->moveForward(6); };
-
-		case AI_BASIC7:
-			return [](EntityBullet* bullet) { bullet->moveForward(7); };
-
-		case AI_BASIC8:
-      return [](EntityBullet* bullet) { bullet->moveForward(8); };
-
-		case AI_BASIC9:
-			return [](EntityBullet* bullet) { bullet->moveForward(9); };
-
-		case AI_BASIC10:
-      return [](EntityBullet* bullet) { bullet->moveForward(10); };
-
-		case AI_BASIC11:
-			return [](EntityBullet* bullet) { bullet->moveForward(11); };
-
-		case AI_BASIC12:
-      return [](EntityBullet* bullet) { bullet->moveForward(12); };
-
-		case AI_ACCELERATING:
-      return [](EntityBullet* bullet) {
-        bullet->moveForward(pow(bullet->getAge(), 3) / 100000);
-      };
-
-		case AI_SCREENWRAPTEST:
-      return [](EntityBullet* bullet) {
-        if (bullet->getAge() == 1)
-          bullet->borderCheck = false;
-        bullet->moveForward(5);
-        if (bullet->getAge() > 1 && !bullet->isOnScreen()) {
-          bullet->deleteLater();
-          return;
-        }
-        if (!bullet->isOnScreen()) {
-          if (bullet->pos().x() < -340)
-            bullet->moveBy(690, 0);
-          else if (bullet->pos().x() > 340)
-            bullet->moveBy(-690, 0);
-          else if (bullet->pos().y() < -340)
-            bullet->moveBy(0, 690);
-          else if (bullet->pos().y() > 340)
-            bullet->moveBy(0, -690);
-        }
-      };
-
-		case AI_FLOWER:
-      return [](EntityBullet* bullet) {
-        if (bullet->getAge() == 1)
-          bullet->borderCheck = false;
-        if (bullet->getAge() < 20) {
-          bullet->rotate(18);
-        } else if (bullet->getAge() == 20)
-          bullet->deleteLater();
-        bullet->moveForward(20);
-      };
-  }
-}
-EntityBullet* spawn(BulletAI ai,
-										BulletInfo info,
-										Texture texture,
-										const Entity* owner,
-										double rot,
-										const QPointF& loc,
-										int scale,
-										int damage) {
-	EntityBullet* bullet = new EntityBullet(texture, get(ai), owner);
-	bullet->setRotation(bullet->rotation() + info.rot + rot);
-	bullet->setPos(bullet->pos() + info.loc + loc);
-	bullet->setScale(info.scale * scale);
-	bullet->damage = damage;
-	return bullet;
-}
-}  // namespace Bullets
+const List<BulletInfo> operator<<(const List<BulletInfo>& list1,
+                                  const BulletInfo& info) {
+  List<BulletInfo> list;
+  for (const BulletInfo& info : list1)
+    list.push_back(info);
+  list.push_back(info);
+  return list;
+};
+const List<BulletInfo> operator<<(const List<BulletInfo>& list1,
+                                  const List<BulletInfo>& list2) {
+  List<BulletInfo> list;
+  for (const BulletInfo& info : list1)
+    list.push_back(info);
+  for (const BulletInfo& info : list2)
+    list.push_back(info);
+  return list;
+};

@@ -1,13 +1,13 @@
 #ifndef USER_H
 #define USER_H
 
-#include "player.h"
+#include "character.h"
 #include "util.h"
 
 class UID;
 
 namespace User {
-extern PlayerType character;
+extern int character;
 extern Array<int> keys;
 extern int getKeyUp(void);
 extern int getKeyLeft(void);

@@ -1,35 +1,43 @@
 #include "game.h"
 #include <QKeyEvent>
-#include "Framework"
-#include "Entity"
-#include "Network"
+#include "connection.h"
+#include "entity.h"
+#include "entityplayer.h"
+#include "menu.h"
+#include "packet.h"
+#include "texture.h"
+#include "user.h"
 
 Game* Game::GAME = nullptr;
 
 Game::Game(void)
     : QGraphicsView(),
-			scene(0, 0, 900, 720),
-			dead("Game Over", &playableArea),
+      scene(0, 0, 900, 720),
+      playableArea(-272, -340, 544, 680),
+      background1(Texture::BACKGROUND, &playableArea),
+      background2(Texture::BACKGROUND, &playableArea),
+      dead("Game Over", &playableArea),
       menuButton("Return to Menu"),
-			paused(false),
-			age(0) {
+      paused(false),
+      age(0) {
   GAME = this;
   setScene(&scene);
 
   setInteractive(false);
   setViewport(&openGL);
 
-	background.setPixmap(Textures::getTexture(TEXTURE_BACKGROUNDTEMP));
-  background.setZValue(Textures::getZValue(TEXTURE_BACKGROUNDTEMP));
-  scene.addItem(&background);
+  screen.setPixmap(Texture::BACKGROUNDTEMP);
+  screen.setZValue(Texture::BACKGROUNDTEMP.zValue);
+  scene.addItem(&screen);
 
-	QPixmap playableAreaPixmap(544, 680);
-  playableAreaPixmap.fill(Qt::darkRed);
-  playableArea.setPixmap(playableAreaPixmap);
-  playableArea.setOffset(-playableArea.boundingRect().center());
-	playableArea.setPos(40 + playableArea.boundingRect().width() / 2,
-											20 + playableArea.boundingRect().height() / 2);
+  playableArea.setPos(40 + playableArea.boundingRect().width() / 2,
+                      20 + playableArea.boundingRect().height() / 2);
   scene.addItem(&playableArea);
+
+  background1.setPos({0, -340});
+  background1.setOffset(-background1.boundingRect().center());
+  background2.setPos({0, 340});
+  background2.setOffset(-background2.boundingRect().center());
 
   popup.setLayout(&popupLayout);
   popup.setModal(true);
@@ -41,23 +49,23 @@ Game::Game(void)
     delete this;
   });
 
-	dead.setBrush(Qt::red);
-	dead.setScale(5);
-	dead.setPos(-(dead.boundingRect().center().toPoint() * 5));
-	dead.setZValue(10);
-	dead.hide();
+  dead.setBrush(Qt::red);
+  dead.setScale(5);
+  dead.setPos(-(dead.boundingRect().center().toPoint() * 5));
+  dead.setZValue(10);
+  dead.hide();
 
-	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	adjustSize();
-	setFixedSize(size() + QSize(2, 2));
+  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  adjustSize();
+  setFixedSize(size() + QSize(2, 2));
 
-	timer.start(1000 / 60);
+  timer.start(1000 / 60);
   connect(&timer, &QTimer::timeout, [this]() { this->tick(); });
 }
 
 Game::~Game(void) {
-	foreach(auto entity, entities) {
+  foreach (auto entity, entities) {
     GAME = nullptr;
     entities.erase(entity.second->id);
     scene.removeItem(entity.second);
@@ -68,13 +76,19 @@ Game::~Game(void) {
 void Game::tick(void) {
   if (paused)
     return;
-	age++;
-	if (getPlayer() == nullptr) {
-		if (age % 120 == 0)
-			dead.show();
-		else if (age % 120 == 60)
-			dead.hide();
-	}
+  age++;
+  background1.moveBy(0, 1);
+  background2.moveBy(0, 1);
+  if (!background1.collidesWithItem(&playableArea))
+    background1.moveBy(0, -1360);
+  if (!background2.collidesWithItem(&playableArea))
+    background2.moveBy(0, -1360);
+  if (getPlayer() == nullptr) {
+    if (age % 120 == 0)
+      dead.show();
+    else if (age % 120 == 60)
+      dead.hide();
+  }
   for (auto entity : entities) {
     entity.second->tick();
   }
@@ -82,7 +96,7 @@ void Game::tick(void) {
     eventQueue.front()();
     eventQueue.pop_front();
   }
-	foreach(auto entity, entities) {
+  foreach (auto entity, entities) {
     if (entity.second->readyToDelete()) {
       entities.erase(entity.second->id);
       scene.removeItem(entity.second);
@@ -109,14 +123,20 @@ void Game::keyReleaseEvent(QKeyEvent* e) {
   QGraphicsView::keyReleaseEvent(e);
 }
 
-QGraphicsPixmapItem& Game::getPlayableArea(void) { return GAME->playableArea; }
+QGraphicsRectItem& Game::getPlayableArea(void) {
+  return GAME->playableArea;
+}
 
-QSet<int> Game::getKeys(void) { return GAME->keys; }
+QSet<int> Game::getKeys(void) {
+  return GAME->keys;
+}
 
-Map<UID, Entity*> Game::getEntities(void) { return GAME->entities; }
+Map<UID, Entity*> Game::getEntities(void) {
+  return GAME->entities;
+}
 
 void Game::addEntity(Entity* entity) {
-	queueEvent([entity]() { GAME->entities.insert({entity->id, entity}); });
+  queueEvent([entity]() { GAME->entities.insert({entity->id, entity}); });
 }
 
 void Game::queueEvent(std::function<void(void)> func) {
@@ -126,7 +146,7 @@ void Game::queueEvent(std::function<void(void)> func) {
 }
 
 EntityPlayer* Game::getPlayer(void) {
-	if (GAME->entities.count(User::getUUID()))
-		return dynamic_cast<EntityPlayer*>(GAME->entities[User::getUUID()]);
-	return nullptr;
+  if (GAME->entities.count(User::getUUID()))
+    return dynamic_cast<EntityPlayer*>(GAME->entities[User::getUUID()]);
+  return nullptr;
 }

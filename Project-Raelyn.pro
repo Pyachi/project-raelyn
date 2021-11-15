@@ -21,10 +21,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     src/ai/boss.cpp \
     src/ai/bullet.cpp \
+    src/ai/character.cpp \
     src/ai/collectable.cpp \
     src/ai/enemy.cpp \
-    src/ai/pattern.cpp \
-    src/ai/player.cpp \
     src/assets/music.cpp \
     src/assets/sfx.cpp \
     src/assets/texture.cpp \
@@ -48,34 +47,27 @@ SOURCES += \
     src/network/uid.cpp
 
 HEADERS += \
-    src/ai/AI \
     src/ai/boss.h \
     src/ai/bullet.h \
+    src/ai/character.h \
     src/ai/collectable.h \
     src/ai/enemy.h \
-    src/ai/pattern.h \
-    src/ai/player.h \
-    src/assets/Assets \
     src/assets/music.h \
     src/assets/sfx.h \
     src/assets/texture.h \
-    src/database/Database \
     src/database/database_api.h \
     src/database/scoreboard.h \
-    src/entity/Entity \
     src/entity/entity.h \
     src/entity/entityboss.h \
     src/entity/entitybullet.h \
     src/entity/entitycollectable.h \
     src/entity/entityenemy.h \
     src/entity/entityplayer.h \
-    src/framework/Framework \
     src/framework/game.h \
     src/framework/level.h \
     src/framework/menu.h \
     src/framework/user.h \
     src/framework/util.h \
-    src/network/Network \
     src/network/connection.h \
     src/network/packet.h \
     src/network/server.h \

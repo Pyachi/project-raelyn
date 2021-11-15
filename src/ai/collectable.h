@@ -1,21 +1,28 @@
-#ifndef COLLECTABLES_H
-#define COLLECTABLES_H
+#ifndef COLLECTABLE_H
+#define COLLECTABLE_H
 
 #include "util.h"
 
-enum Collectable {
-  COLLECTABLE_POWER,
-  COLLECTABLE_POINTS,
-  COLLECTABLE_HEALTH,
-  COLLECTABLE_BOMB
+class EntityCollectable;
+class EntityPlayer;
+class Texture;
+
+class Collectable {
+  Collectable(const Texture& tex, const AI<EntityPlayer>& ai)
+      : tex(tex), ai(ai) {}
+
+  Collectable(const Collectable& col) = delete;
+
+  const Texture& tex;
+  const AI<EntityPlayer> ai;
+
+ public:
+  EntityCollectable* spawn(const QPointF& loc) const;
+
+  static const Collectable POWER;
+  static const Collectable POINTS;
+  static const Collectable HEALTH;
+  static const Collectable BOMB;
 };
 
-class EntityCollectable;
-
-namespace Collectables {
-extern EntityCollectable* spawn(Collectable col,
-																const QPointF& loc,
-																bool random = true);
-}
-
-#endif  // COLLECTABLES_H
+#endif  // COLLECTABLE_H

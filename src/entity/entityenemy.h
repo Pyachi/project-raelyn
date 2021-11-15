@@ -1,20 +1,23 @@
-#ifndef ENEMY_H
-#define ENEMY_H
+#ifndef ENTITYENEMY_H
+#define ENTITYENEMY_H
 
 #include "entity.h"
 
 class EntityEnemy : public Entity {
  public:
-	EntityEnemy(Texture tex, UID id, int health, AI<EntityEnemy> ai);
+  EntityEnemy(const Texture& tex,
+              const UID& id,
+              int health,
+              const AI<EntityEnemy>& ai);
 
-	int health;
+  int health;
 
-	void kill(void);
+  void kill(void);
 
  private:
-	const AI<EntityEnemy> ai;
+  const AI<EntityEnemy> ai;
 
-	void tick(void) override;
+  void tick(void) override;
 };
 
-#endif  // ENEMY_H
+#endif  // ENTITYENEMY_H

@@ -10,54 +10,56 @@
 #include <QPushButton>
 #include <QSet>
 #include <QTimer>
-#include "util.h"
 #include "uid.h"
+#include "util.h"
 
 class Entity;
 class EntityPlayer;
 
 class Game : public QGraphicsView {
-	Q_OBJECT
+  Q_OBJECT
 
  public:
-	static void create(void);
-	static QSet<int> getKeys(void);
-	static EntityPlayer* getPlayer(void);
-	static Map<UID, Entity*> getEntities(void);
-	static QGraphicsPixmapItem& getPlayableArea(void);
-	static void addEntity(Entity* entity);
-	static void queueEvent(std::function<void(void)>);
+  static void create(void);
+  static QSet<int> getKeys(void);
+  static EntityPlayer* getPlayer(void);
+  static Map<UID, Entity*> getEntities(void);
+  static QGraphicsRectItem& getPlayableArea(void);
+  static void addEntity(Entity* entity);
+  static void queueEvent(std::function<void(void)>);
 
  private:
-	Game(void);
-	~Game(void);
+  Game(void);
+  ~Game(void);
 
-	static Game* GAME;
+  static Game* GAME;
 
-	QTimer timer;
-	QOpenGLWidget openGL;
-	QGraphicsScene scene;
-	QGraphicsPixmapItem playableArea;
-	QGraphicsPixmapItem background;
-	QGraphicsSimpleTextItem dead;
-	QDialog popup;
-	QLabel popupText;
-	QGridLayout popupLayout;
-	QPushButton menuButton;
+  QTimer timer;
+  QOpenGLWidget openGL;
+  QGraphicsScene scene;
+  QGraphicsRectItem playableArea;
+  QGraphicsPixmapItem background1;
+  QGraphicsPixmapItem background2;
+  QGraphicsPixmapItem screen;
+  QGraphicsSimpleTextItem dead;
+  QDialog popup;
+  QLabel popupText;
+  QGridLayout popupLayout;
+  QPushButton menuButton;
 
-	bool paused;
-	int age;
-	Map<UID, Entity*> entities;
-	List<std::function<void(void)> > eventQueue;
+  bool paused;
+  int age;
+  Map<UID, Entity*> entities;
+  List<std::function<void(void)> > eventQueue;
 
-	QSet<int> keys;
+  QSet<int> keys;
 
-	void tick(void);
+  void tick(void);
 
-	void keyPressEvent(QKeyEvent* e);
-	void keyReleaseEvent(QKeyEvent* e);
+  void keyPressEvent(QKeyEvent* e);
+  void keyReleaseEvent(QKeyEvent* e);
 
-	friend class Connection;
+  friend class Connection;
 };
 
 #endif  // SCENE_H

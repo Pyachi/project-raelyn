@@ -2,9 +2,9 @@
 #define ALIAS_H
 
 #include <QDebug>
-#include <QtMath>
 #include <QPointF>
 #include <QVector2D>
+#include <QtMath>
 #include <functional>
 #include <list>
 #include <map>
@@ -23,6 +23,12 @@ using Map = std::map<T, V>;
 
 template <class T>
 using AI = std::function<void(T*)>;
+
+template <class T>
+using Func = std::function<T>;
+
+template <class T>
+using Ref = std::reference_wrapper<T>;
 
 namespace Random {
 int getInt(void);

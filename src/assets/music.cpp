@@ -1,51 +1,33 @@
 #include "music.h"
 #include <SFML/Audio.hpp>
 
-namespace Music {
-namespace {
-sf::Music* player;
-bool setup = false;
-float volume = 100;
-}  // namespace
+Array<Ref<Music>> Music::list;
+float Music::volume = 100;
+sf::Music Music::player;
 
-const String get(Song song) {
-	switch (song) {
-		case SONG_MENU:
-			return "assets/music/music_menu_theme.ogg";
-		case SONG_LVL1:
-			return "assets/music/music_lvl1_theme.ogg";
-		case SONG_LVL2:
-			return "assets/music/music_lvl2_theme.ogg";
-		case SONG_LVL3:
-			return "assets/music/music_lvl3_theme.ogg";
-		case SONG_BOSS1:
-			return "assets/music/music_lvl1_boss.ogg";
-		case SONG_BOSS2:
-			return "assets/music/music_lvl2_boss.ogg";
-		case SONG_BOSS3:
-			return "assets/music/music_lvl3_boss.ogg";
-		case SONG_CREDITS:
-            return "assets/music/music_credits.ogg";
-	}
+void Music::play() const {
+  player.stop();
+  player.openFromFile(file);
+  player.setVolume(volume);
+  player.setLoop(true);
+  player.play();
 }
 
-void playSong(Song song) {
-	if (!setup) {
-		player = new sf::Music;
-		atexit([]() { delete player; });
-		setup = true;
-	}
-	player->stop();
-	player->openFromFile(get(song));
-	player->setVolume(volume);
-	player->setLoop(true);
-	player->play();
+void Music::changeVolume(float vol) {
+  volume = vol;
+  player.setVolume(vol);
 }
 
-void changeVolume(float vol) {
-	volume = vol;
-	player->setVolume(volume);
+void Music::stop() {
+  player.stop();
 }
 
-void stopSong(void) { player->stop(); }
-}  // namespace Music
+const Music Music::MENU("assets/music/music_menu_theme.ogg");
+const Music Music::LVL1("assets/music/music_lvl1_theme.ogg");
+const Music Music::LVL2("assets/music/music_lvl2_theme.ogg");
+const Music Music::LVL3("assets/music/music_lvl3_theme.ogg");
+const Music Music::BOSS1("assets/music/music_lvl1_boss.ogg");
+const Music Music::BOSS2("assets/music/music_lvl2_boss.ogg");
+const Music Music::BOSS3("assets/music/music_lvl3_boss.ogg");
+const Music Music::LOSS("assets/music/music_credits.ogg");
+const Music Music::END("assets/music/music_credits.ogg");

@@ -5,23 +5,22 @@
 
 class EntityBoss : public Entity {
  public:
-	EntityBoss(Texture tex,
-						 UID id,
-						 int phaseHealth,
-						 int phaseCount,
-						 AI<EntityBoss> ai);
+  EntityBoss(const Texture& tex,
+             const UID& id,
+             const Array<int>& health,
+             const AI<EntityBoss>& ai);
 
-	int health;
-	int phase;
+  int health;
+  int phase;
 
-	void kill(void);
-	void advancePhase(void);
+  void kill(void);
+  void advancePhase(void);
 
  private:
-	int phaseHealth;
-	const AI<EntityBoss> ai;
+  const Array<int> totalHealth;
+  const AI<EntityBoss>& ai;
 
-	void tick(void) override;
+  void tick(void) override;
 };
 
 #endif  // ENTITYBOSS_H

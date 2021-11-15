@@ -1,41 +1,31 @@
 #include "collectable.h"
-#include "Assets"
-#include "Entity"
+#include "entitycollectable.h"
+#include "entityplayer.h"
+#include "sfx.h"
+#include "texture.h"
 
-namespace Collectables {
-EntityCollectable* spawn(Collectable collectable,
-												 const QPointF& loc,
-												 bool random) {
-  EntityCollectable* entity;
-  switch (collectable) {
-    case COLLECTABLE_POWER:
-      entity = new EntityCollectable(TEXTURE_COLLECTABLE_POWER,
-                                     [](EntityPlayer* player) {
-                                       player->addPower();
-                                       SFX::playSound(SFX_COLLECT1, 10);
-																		 },
-																		 random);
-      break;
-    case COLLECTABLE_POINTS:
-      entity = new EntityCollectable(
-          TEXTURE_COLLECTABLE_POINTS,
-					[](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 10); },
-					random);
-      break;
-    case COLLECTABLE_HEALTH:
-      entity = new EntityCollectable(
-          TEXTURE_COLLECTABLE_POINTS,
-					[](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 10); },
-					random);
-      break;
-    case COLLECTABLE_BOMB:
-      entity = new EntityCollectable(
-          TEXTURE_COLLECTABLE_POINTS,
-					[](EntityPlayer* player) { SFX::playSound(SFX_COLLECT3, 10); },
-					random);
-      break;
-  }
-  entity->setPos(loc);
-  return entity;
+EntityCollectable* Collectable::spawn(const QPointF& loc) const {
+  EntityCollectable* col = new EntityCollectable(tex, ai);
+  col->setPos(loc);
+  return col;
 }
-}  // namespace Collectables
+
+const Collectable Collectable::POWER(Texture::POWER, [](EntityPlayer* player) {
+  player->addPower();
+  SFX::COLLECT1.play(10);
+});
+
+const Collectable Collectable::POINTS(Texture::POINTS,
+                                      [](EntityPlayer* player) {
+                                        SFX::COLLECT3.play(10);
+                                      });
+
+const Collectable Collectable::HEALTH(Texture::ENEMYTEMP,
+                                      [](EntityPlayer* player) {
+                                        SFX::COLLECT3.play(10);
+                                      });
+
+const Collectable Collectable::BOMB(Texture::ENEMYTEMP,
+                                    [](EntityPlayer* player) {
+                                      SFX::COLLECT3.play(10);
+                                    });

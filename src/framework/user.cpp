@@ -1,7 +1,7 @@
 #include "user.h"
 #include <QDir>
 #include <QNetworkInterface>
-#include "Network"
+#include "uid.h"
 
 namespace User {
 namespace {
@@ -13,60 +13,60 @@ bool ipExists = false;
 bool uuidExists = false;
 }  // namespace
 
-PlayerType character = PYACHI;
+int character = Character::PYACHI;
 
 Array<int> keys = {Qt::Key_Up,    Qt::Key_Left, Qt::Key_Down, Qt::Key_Right,
-									 Qt::Key_Shift, Qt::Key_Z,    Qt::Key_X};
+                   Qt::Key_Shift, Qt::Key_Z,    Qt::Key_X};
 
 int getKeyUp(void) {
-	return keys[0];
+  return keys[0];
 };
 int getKeyLeft(void) {
-	return keys[1];
+  return keys[1];
 };
 int getKeyDown(void) {
-	return keys[2];
+  return keys[2];
 };
 int getKeyRight(void) {
-	return keys[3];
+  return keys[3];
 };
 int getKeyFocus(void) {
-	return keys[4];
+  return keys[4];
 };
 int getKeyShoot(void) {
-	return keys[5];
+  return keys[5];
 };
 int getKeyBomb(void) {
-	return keys[6];
+  return keys[6];
 };
 
 const QString getName(void) {
-	if (!nameExists) {
-		name = (QDir::homePath().split('/').last());
-		nameExists = true;
-	}
-	return name;
+  if (!nameExists) {
+    name = (QDir::homePath().split('/').last());
+    nameExists = true;
+  }
+  return name;
 }
 
 const QString getIp(void) {
-	if (!ipExists) {
-		for (const QHostAddress& address : QNetworkInterface::allAddresses()) {
-			if (address.protocol() == QAbstractSocket::IPv4Protocol &&
-					address.isLoopback() == false) {
-				ip = address.toString();
-				break;
-			}
-		}
-		ipExists = true;
-	}
-	return ip;
+  if (!ipExists) {
+    for (const QHostAddress& address : QNetworkInterface::allAddresses()) {
+      if (address.protocol() == QAbstractSocket::IPv4Protocol &&
+          address.isLoopback() == false) {
+        ip = address.toString();
+        break;
+      }
+    }
+    ipExists = true;
+  }
+  return ip;
 }
 
 const UID getUUID(void) {
-	if (!uuidExists) {
-		id = UID();
-		uuidExists = true;
-	}
-	return id;
+  if (!uuidExists) {
+    id = UID();
+    uuidExists = true;
+  }
+  return id;
 }
 }  // namespace User

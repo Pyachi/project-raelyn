@@ -1,101 +1,48 @@
 #include "boss.h"
-#include "Assets"
-#include "Entity"
-#include "AI"
-#include "Framework"
+#include "bullet.h"
+#include "entityboss.h"
+#include "entitybullet.h"
+#include "entityplayer.h"
+#include "game.h"
+#include "uid.h"
 
-namespace Bosses {
-EntityBoss* spawn(Boss boss, UID uuid, const QPointF& loc) {
-	EntityBoss* entity;
-	switch (boss) {
-		//******************************************************************************************
-		case BOSS_LVL1MINI:
-			entity =
-					new EntityBoss(TEXTURE_ENEMYTEMP, uuid, 200, 3, [](EntityBoss* boss) {
-						switch (boss->phase) {
-							case 3:
-								if (boss->cycle(1000, 10) || boss->cycle(1000, 510))
-									boss->moveTo({0, -200}, 100, QUICK);
-								if (boss->cycle(1000, 260))
-									boss->moveTo({-200, -200}, 100, QUICK);
-								if (boss->cycle(1000, 760))
-									boss->moveTo({200, -200}, 100, QUICK);
-								if (boss->cycle(250, 100) || boss->cycle(250, 150) ||
-										boss->cycle(250, 200)) {
-									boss->fireBullets(
-											BulletInfo(-10) << BulletInfo(10) << BulletInfo(),
-											AI_BASIC4,
-											TEXTURE_BULLET_ROUND_BLUE,
-											boss->getDirectionOfEntity(Game::getPlayer()),
-											{0, 0},
-											2);
-									boss->fireBullets(
-											BulletInfo(-5) << BulletInfo(5),
-											AI_BASIC5,
-											TEXTURE_BULLET_ROUND_BLUE,
-											boss->getDirectionOfEntity(Game::getPlayer()),
-											{0, 0},
-											2);
-									boss->fireBullets(
-											BulletInfo(-10) << BulletInfo(10) << BulletInfo(),
-											AI_BASIC6,
-											TEXTURE_BULLET_ROUND_BLUE,
-											boss->getDirectionOfEntity(Game::getPlayer()),
-											{0, 0},
-											2);
-									boss->fireBullets(
-											BulletInfo(-5) << BulletInfo(5),
-											AI_BASIC7,
-											TEXTURE_BULLET_ROUND_BLUE,
-											boss->getDirectionOfEntity(Game::getPlayer()),
-											{0, 0},
-											2);
-									boss->fireBullets(
-											BulletInfo(-10) << BulletInfo(10) << BulletInfo(),
-											AI_BASIC8,
-											TEXTURE_BULLET_ROUND_BLUE,
-											boss->getDirectionOfEntity(Game::getPlayer()),
-											{0, 0},
-											2);
-								}
-								break;
-							case 2:
+Array<Ref<Boss>> Boss::list;
 
-								break;
-							case 1:
-
-								break;
-						}
-					});
-			break;
-		//******************************************************************************************
-		case BOSS_LVL1:
-			entity = new EntityBoss(
-					TEXTURE_ENEMYTEMP, uuid, 200, 5, [](EntityBoss* boss) {});
-			break;
-		//******************************************************************************************
-		case BOSS_LVL2MINI:
-			entity = new EntityBoss(
-					TEXTURE_ENEMYTEMP, uuid, 200, 5, [](EntityBoss* boss) {});
-			break;
-		//******************************************************************************************
-		case BOSS_LVL2:
-			entity = new EntityBoss(
-					TEXTURE_ENEMYTEMP, uuid, 200, 5, [](EntityBoss* boss) {});
-			break;
-		//******************************************************************************************
-		case BOSS_LVL3MINI:
-			entity = new EntityBoss(
-					TEXTURE_ENEMYTEMP, uuid, 200, 5, [](EntityBoss* boss) {});
-			break;
-		//******************************************************************************************
-		case BOSS_LVL3:
-			entity = new EntityBoss(
-					TEXTURE_ENEMYTEMP, uuid, 200, 5, [](EntityBoss* boss) {});
-			break;
-			//******************************************************************************************
-	}
-	entity->setPos(loc);
-	return entity;
+EntityBoss* Boss::spawn(const QPointF& loc, const UID& id) const {
+  EntityBoss* boss = new EntityBoss(tex, id, health, ai);
+  boss->setPos(loc);
+  return boss;
 }
-}
+
+const Boss Boss::LVL1MINI(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss* boss) {
+  switch (boss->phase) {
+    case 0:
+      if (boss->cycle(1000, 10) || boss->cycle(1000, 510))
+        boss->moveTo({0, -200}, 100, QUICK);
+      if (boss->cycle(1000, 260))
+        boss->moveTo({-200, -200}, 100, QUICK);
+      if (boss->cycle(1000, 760))
+        boss->moveTo({200, -200}, 100, QUICK);
+      if (boss->cycle(250, 100) || boss->cycle(250, 150) ||
+          boss->cycle(250, 200)) {
+        boss->fireBullets(
+            BulletInfo(Bullet::BASIC4, Texture::ROUNDBLUE,
+                       SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10), 2)
+                << BulletInfo(Bullet::BASIC5, Texture::ROUNDBLUE,
+                              SpawnInfo(-5) << SpawnInfo(5), 2)
+                << BulletInfo(Bullet::BASIC6, Texture::ROUNDBLUE,
+                              SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10), 2)
+                << BulletInfo(Bullet::BASIC7, Texture::ROUNDBLUE,
+                              SpawnInfo(-5) << SpawnInfo(5), 2)
+                << BulletInfo(Bullet::BASIC8, Texture::ROUNDBLUE,
+                              SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10),
+                              2),
+            boss->getDirectionOfEntity(Game::getPlayer()));
+      }
+  }
+});
+const Boss Boss::LVL1(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});
+const Boss Boss::LVL2MINI(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});
+const Boss Boss::LVL2(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});
+const Boss Boss::LVL3MINI(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});
+const Boss Boss::LVL3(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});

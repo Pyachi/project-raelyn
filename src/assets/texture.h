@@ -1,79 +1,99 @@
 #ifndef TEXTURES_H
 #define TEXTURES_H
 
+#include <QPixmap>
 #include "util.h"
 
-enum Texture {
+class Texture {
+  static Array<Ref<Texture>> list;
+
+  Texture(const String& file, int zValue)
+      : index(list.size()), file(file), zValue(zValue) {
+    list.push_back(*this);
+  }
+
+  Texture(const Texture& texture) = delete;
+
+  const int index;
+  const String file;
+
+ public:
+  const int zValue;
+
+  operator const QPixmap() const {
+    return QPixmap(QString::fromStdString(file));
+  };
+
+  static const Texture& valueOf(int i) { return list[i]; }
+  static const Array<Ref<Texture>>& values() { return list; }
+
+  //***************************************************************************
   // Round Bullets
-  TEXTURE_BULLET_ROUND_RED,
-  TEXTURE_BULLET_ROUND_ORANGE,
-  TEXTURE_BULLET_ROUND_YELLOW,
-  TEXTURE_BULLET_ROUND_GREEN,
-  TEXTURE_BULLET_ROUND_AQUA,
-  TEXTURE_BULLET_ROUND_BLUE,
-  TEXTURE_BULLET_ROUND_PURPLE,
-  TEXTURE_BULLET_ROUND_MAGENTA,
-
+  static const Texture ROUNDRED;
+  static const Texture ROUNDORANGE;
+  static const Texture ROUNDYELLOW;
+  static const Texture ROUNDGREEN;
+  static const Texture ROUNDAQUA;
+  static const Texture ROUNDBLUE;
+  static const Texture ROUNDPURPLE;
+  static const Texture ROUNDMAGENTA;
+  //***************************************************************************
   // Elliptical Bullets
-  TEXTURE_BULLET_ELLIPSE_RED,
-  TEXTURE_BULLET_ELLIPSE_ORANGE,
-  TEXTURE_BULLET_ELLIPSE_YELLOW,
-  TEXTURE_BULLET_ELLIPSE_GREEN,
-  TEXTURE_BULLET_ELLIPSE_AQUA,
-  TEXTURE_BULLET_ELLIPSE_BLUE,
-  TEXTURE_BULLET_ELLIPSE_PURPLE,
-  TEXTURE_BULLET_ELLIPSE_MAGENTA,
-
+  static const Texture ELLIPSERED;
+  static const Texture ELLIPSEORANGE;
+  static const Texture ELLIPSEYELLOW;
+  static const Texture ELLIPSEGREEN;
+  static const Texture ELLIPSEAQUA;
+  static const Texture ELLIPSEBLUE;
+  static const Texture ELLIPSEPURPLE;
+  static const Texture ELLIPSEMAGENTA;
+  //***************************************************************************
   // Arrowhead Bullets
-  TEXTURE_BULLET_ARROW_RED,
-  TEXTURE_BULLET_ARROW_ORANGE,
-  TEXTURE_BULLET_ARROW_YELLOW,
-  TEXTURE_BULLET_ARROW_GREEN,
-  TEXTURE_BULLET_ARROW_AQUA,
-  TEXTURE_BULLET_ARROW_BLUE,
-  TEXTURE_BULLET_ARROW_PURPLE,
-  TEXTURE_BULLET_ARROW_MAGENTA,
-
+  static const Texture ARROWRED;
+  static const Texture ARROWORANGE;
+  static const Texture ARROWYELLOW;
+  static const Texture ARROWGREEN;
+  static const Texture ARROWAQUA;
+  static const Texture ARROWBLUE;
+  static const Texture ARROWPURPLE;
+  static const Texture ARROWMAGENTA;
+  //***************************************************************************
   // Star Bullets
-  TEXTURE_BULLET_STAR_RED,
-  TEXTURE_BULLET_STAR_ORANGE,
-  TEXTURE_BULLET_STAR_YELLOW,
-  TEXTURE_BULLET_STAR_GREEN,
-  TEXTURE_BULLET_STAR_AQUA,
-  TEXTURE_BULLET_STAR_BLUE,
-  TEXTURE_BULLET_STAR_PURPLE,
-  TEXTURE_BULLET_STAR_MAGENTA,
-
+  static const Texture STARRED;
+  static const Texture STARORANGE;
+  static const Texture STARYELLOW;
+  static const Texture STARGREEN;
+  static const Texture STARAQUA;
+  static const Texture STARBLUE;
+  static const Texture STARPURPLE;
+  static const Texture STARMAGENTA;
+  //***************************************************************************
   // Lazer Bullets
-  TEXTURE_BULLET_LAZER_RED,
-  TEXTURE_BULLET_LAZER_ORANGE,
-  TEXTURE_BULLET_LAZER_YELLOW,
-  TEXTURE_BULLET_LAZER_GREEN,
-  TEXTURE_BULLET_LAZER_AQUA,
-  TEXTURE_BULLET_LAZER_BLUE,
-  TEXTURE_BULLET_LAZER_PURPLE,
-  TEXTURE_BULLET_LAZER_MAGENTA,
-
+  static const Texture LAZERRED;
+  static const Texture LAZERORANGE;
+  static const Texture LAZERYELLOW;
+  static const Texture LAZERGREEN;
+  static const Texture LAZERAQUA;
+  static const Texture LAZERBLUE;
+  static const Texture LAZERPURPLE;
+  static const Texture LAZERMAGENTA;
+  //***************************************************************************
   // Collectables
-  TEXTURE_COLLECTABLE_POWER,
-  TEXTURE_COLLECTABLE_POINTS,
-
+  static const Texture POWER;
+  static const Texture POINTS;
+  //***************************************************************************
   // Temporary
-  TEXTURE_ENEMYTEMP,
-  TEXTURE_BACKGROUNDTEMP,
-  TEXTURE_TITLETEMP,
-
+  static const Texture ENEMYTEMP;
+  static const Texture BACKGROUNDTEMP;
+  static const Texture TITLETEMP;
+  static const Texture BACKGROUND;
+  //***************************************************************************
   // Players
-  TEXTURE_PYACHI,
-  TEXTURE_AERON,
-  TEXTURE_PRYSMA,
-  TEXTURE_ANEKHANDA,
-  TEXTURE_PLAYER_HITBOX,
+  static const Texture PYACHI;
+  static const Texture AERON;
+  static const Texture PRYSMA;
+  static const Texture ANEKHANDA;
+  static const Texture HITBOX;
 };
-
-namespace Textures {
-const QPixmap getTexture(Texture tex);
-int getZValue(Texture tex);
-}  // namespace Textures
 
 #endif  // TEXTURES_H

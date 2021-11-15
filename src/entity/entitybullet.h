@@ -1,20 +1,22 @@
-#ifndef BULLET_H
-#define BULLET_H
+#ifndef ENITTYBULLET_H
+#define ENTITYBULLET_H
 
 #include "entity.h"
 
 class EntityBullet : public Entity {
  public:
-	EntityBullet(Texture tex, AI<EntityBullet> ai, const Entity* owner);
+  EntityBullet(const Texture& tex,
+               const AI<EntityBullet>& ai,
+               const Entity* owner);
 
-	const EntityType ownerType;
-	bool borderCheck;
-	int damage;
+  const EntityType ownerType;
+  bool borderCheck;
+  int damage;
 
  private:
-	const AI<EntityBullet> ai;
+  const AI<EntityBullet> ai;
 
-	void tick(void) override;
+  void tick(void) override;
 };
 
-#endif  // BULLET_H
+#endif  // ENTITYBULLET_H

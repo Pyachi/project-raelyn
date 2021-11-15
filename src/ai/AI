@@ -1,6 +1,0 @@
-#include "boss.h"
-#include "bullet.h"
-#include "pattern.h"
-#include "collectable.h"
-#include "enemy.h"
-#include "player.h"

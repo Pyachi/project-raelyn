@@ -1,16 +1,18 @@
 #include "entityplayer.h"
-#include "Assets"
-#include "Entity"
-#include "Framework"
-#include "Network"
+#include "connection.h"
+#include "entitybullet.h"
+#include "game.h"
+#include "packet.h"
+#include "sfx.h"
+#include "user.h"
 
-EntityPlayer::EntityPlayer(PlayerType playerType,
+EntityPlayer::EntityPlayer(const Character& character,
                            const QString& user,
-                           UID id,
+                           const UID& id,
                            EntityType type)
-    : Entity(type, Players::getTexture(playerType), id),
-      hitbox(Textures::getTexture(TEXTURE_PLAYER_HITBOX), this),
-      playerType(playerType),
+    : Entity(type, character.tex, id),
+      hitbox(Texture::HITBOX, this),
+      character(character),
       display(user, this),
       name(user),
       firing(false),
@@ -44,15 +46,14 @@ void EntityPlayer::tick(void) {
     hitbox.setOpacity(0);
 
   if (firing) {
-    Players::getShootingPattern(playerType, level, focus)(this);
+    fireBullets(character.pattern(this));
     Connection::sendPacket(
         {PACKETPLAYINFIREBULLETS,
          QStringList() << QString::number(level) << QString::number(focus)});
   }
 
   int dx = 0, dy = 0;
-  int speed = focus ? Players::getFocusSpeed(playerType)
-                    : Players::getSpeed(playerType);
+  int speed = focus ? character.focusSpeed : character.speed;
   if (keys.contains(User::getKeyRight()))
     dx += speed;
   if (keys.contains(User::getKeyLeft()))
@@ -73,7 +74,7 @@ void EntityPlayer::tick(void) {
   }
 
   if (power >= 100 && level != 4) {
-    SFX::playSound(SFX_POWERUP1);
+    SFX::POWERUP1.play();
     level++;
     if (level != 4)
       power = 0;
@@ -90,12 +91,12 @@ void EntityPlayer::tick(void) {
     if (hit) {
       health--;
       if (health == 0) {
-        SFX::playSound(SFX_EXPL_SUPERHEAVY1);
+        SFX::EXPL_SUPERHEAVY1.play();
         Connection::sendPacket(PACKETPLAYINPLAYERDEATH);
         deleteLater();
       } else {
         invFrames = 100;
-        SFX::playSound(SFX_HIT1);
+        SFX::HIT1.play();
       }
     }
   } else {
@@ -108,21 +109,6 @@ void EntityPlayer::tick(void) {
     if (invFrames == 0)
       setOpacity(1);
   }
-}
-
-EntityBullet* EntityPlayer::fireBullet(BulletInfo info,
-                                       BulletAI ai,
-                                       Texture texture,
-                                       double rot,
-                                       const QPointF& loc,
-                                       int scale,
-                                       int damage) {
-  EntityBullet* bullet =
-      Entity::fireBullet(info, ai, texture, rot, loc, scale, damage);
-  bullet->setOpacity(0.5);
-  if (type == ONLINEPLAYER)
-    bullet->damage = 0;
-  return bullet;
 }
 
 void EntityPlayer::addPower() {

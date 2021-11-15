@@ -1,28 +1,22 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef ENTITYPLAYER_H
+#define ENTITYPLAYER_H
 
+#include "character.h"
 #include "entity.h"
-#include "player.h"
 
 class EntityPlayer : public Entity {
  public:
-  EntityPlayer(PlayerType playerType,
+  EntityPlayer(const Character& character,
                const QString& name,
-               UID id,
+               const UID& id,
                EntityType type = PLAYER);
 
   void tick(void) override;
 
   QGraphicsPixmapItem hitbox;
-  const PlayerType playerType;
-
-  EntityBullet* fireBullet(BulletInfo info,
-                           BulletAI ai,
-                           Texture tex,
-                           double rot = 0,
-                           const QPointF& loc = {0, 0},
-                           int scale = 1,
-                           int damage = 1);
+  const Character& character;
+  bool focus;
+  int level;
 
   void addPower(void);
   void addPoints(int points);
@@ -31,12 +25,10 @@ class EntityPlayer : public Entity {
   QGraphicsSimpleTextItem display;
   QString name;
   bool firing;
-  bool focus;
-  int level;
   int power;
   int points;
   int health;
   int invFrames;
 };
 
-#endif  // PLAYER_H
+#endif  // ENTITYPLAYER_H

@@ -1,7 +1,11 @@
 #include "menu.h"
-#include "Network"
-#include "Framework"
-#include "Assets"
+#include "connection.h"
+#include "music.h"
+#include "packet.h"
+#include "server.h"
+#include "sfx.h"
+#include "texture.h"
+#include "user.h"
 
 Menu* Menu::MENU = nullptr;
 
@@ -40,7 +44,7 @@ Menu::Menu(void)
 
   setFixedSize(0, 0);
 
-	title.setPixmap(Textures::getTexture(TEXTURE_TITLETEMP));
+  title.setPixmap(Texture::TITLETEMP);
   title.setAlignment(Qt::AlignHCenter);
   layout.addWidget(&title, 1, 1, 1, -1);
   layout.addWidget(&mainMenu, 2, 1, 1, -1);
@@ -66,19 +70,19 @@ Menu::Menu(void)
     mainMenu.hide();
     singleplayerMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT1, 25);
+    SFX::SELECT1.play(25);
   });
   connect(&multiplayer, &QPushButton::clicked, [this]() {
     mainMenu.hide();
     multiplayerMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT1, 25);
+    SFX::SELECT1.play(25);
   });
   connect(&options, &QPushButton::clicked, [this]() {
     mainMenu.hide();
     optionsMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT1, 25);
+    SFX::SELECT1.play(25);
   });
   connect(&quit, &QPushButton::clicked, [this]() { close(); });
   //************************************************************
@@ -88,29 +92,29 @@ Menu::Menu(void)
   singleplayerLayout.addWidget(&backSingleplayer, 3, 1, 1, -1);
   connect(&playerSingle, &QPushButton::clicked, [this]() {
     switch (User::character) {
-      case PYACHI:
-        User::character = AERON;
+      case 0:
+        User::character = Character::AERON;
         playerSingle.setText("Character: Aeron");
         playerLobby.setText("Character: Aeron");
-        SFX::playSound(SFX_SELECT1, 25);
+        SFX::SELECT1.play(25);
         break;
-      case AERON:
-        User::character = PRYSMA;
+      case 1:
+        User::character = Character::PRYSMA;
         playerSingle.setText("Character: Prysma");
         playerLobby.setText("Character: Prysma");
-        SFX::playSound(SFX_SELECT1, 25);
+        SFX::SELECT1.play(25);
         break;
-      case PRYSMA:
-        User::character = ANEKHANDA;
+      case 2:
+        User::character = Character::ANEKHANDA;
         playerSingle.setText("Character: Anekhanda");
         playerLobby.setText("Character: Anekhanda");
-        SFX::playSound(SFX_SELECT1, 25);
+        SFX::SELECT1.play(25);
         break;
-      case ANEKHANDA:
-        User::character = PYACHI;
+      case 3:
+        User::character = Character::PYACHI;
         playerSingle.setText("Character: Pyachi");
         playerLobby.setText("Character: Pyachi");
-        SFX::playSound(SFX_SELECT1, 25);
+        SFX::SELECT1.play(25);
         break;
     }
   });
@@ -123,7 +127,7 @@ Menu::Menu(void)
     singleplayerMenu.hide();
     mainMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT2, 25);
+    SFX::SELECT2.play(25);
   });
   //************************************************************
   multiplayerMenu.setLayout(&multiplayerLayout);
@@ -134,7 +138,7 @@ Menu::Menu(void)
   multiplayerLayout.addWidget(&backMultiplayer, 3, 1, 1, -1);
   connect(&host, &QPushButton::clicked, [this]() {
     if (!Server::create(portForm.text().toUShort())) {
-      SFX::playSound(SFX_SELECT2, 25);
+      SFX::SELECT2.play(25);
       return;
     }
     connectionInfo.setText(User::getIp() + ":" +
@@ -142,8 +146,8 @@ Menu::Menu(void)
     multiplayerMenu.hide();
     serverMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT1, 25);
-    Music::stopSong();
+    SFX::SELECT1.play(25);
+    Music::stop();
   });
   connect(&join, &QPushButton::clicked, [this]() {
     if (Connection::create(ipForm.text(), portForm.text().toUShort())) {
@@ -152,13 +156,13 @@ Menu::Menu(void)
       adjustSize();
       Connection::sendPacket(PACKETPLAYINPLAYERJOIN);
     } else
-      SFX::playSound(SFX_SELECT2, 25);
+      SFX::SELECT2.play(25);
   });
   connect(&backMultiplayer, &QPushButton::clicked, [this]() {
     multiplayerMenu.hide();
     mainMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT2, 25);
+    SFX::SELECT2.play(25);
   });
   ipForm.setValidator(&ipValidator);
   portForm.setValidator(&portValidator);
@@ -175,35 +179,32 @@ Menu::Menu(void)
   optionsLayout.addWidget(&keys, 5, 1, 1, -1);
   optionsLayout.addWidget(&backOptions, 6, 1, 1, -1);
   connect(&soundSlider, &QSlider::valueChanged, [this]() {
-    SFX::volume = this->soundSlider.value() / 5.0;
-    SFX::playSound(SFX_COLLECT2);
+    SFX::changeVolume(soundSlider.value() * 20);
+    SFX::COLLECT2.play();
   });
-  connect(&musicSlider, &QSlider::valueChanged, [this]() {
-    Music::changeVolume(this->musicSlider.value() * 20);
-  });
+  connect(&musicSlider, &QSlider::valueChanged,
+          [this]() { Music::changeVolume(this->musicSlider.value() * 20); });
   connect(&keys, &QPushButton::pressed, [this]() {
+    SFX::SELECT1.play(25);
     if (User::getKeyUp() == Qt::Key_Up) {
       keys.setText("Controls: WASD");
       User::keys = {Qt::Key_W, Qt::Key_A, Qt::Key_S, Qt::Key_D,
                     Qt::Key_L, Qt::Key_K, Qt::Key_J};
-      SFX::playSound(SFX_SELECT1, 25);
     } else if (User::getKeyUp() == Qt::Key_W) {
       keys.setText("Controls: IJKL");
       User::keys = {Qt::Key_I, Qt::Key_J, Qt::Key_K, Qt::Key_L,
                     Qt::Key_A, Qt::Key_S, Qt::Key_D};
-      SFX::playSound(SFX_SELECT1, 25);
     } else if (User::getKeyUp() == Qt::Key_I) {
       keys.setText("Controls: Traditional");
       User::keys = {Qt::Key_Up,    Qt::Key_Left, Qt::Key_Down, Qt::Key_Right,
                     Qt::Key_Shift, Qt::Key_Z,    Qt::Key_X};
-      SFX::playSound(SFX_SELECT1, 25);
     }
   });
   connect(&backOptions, &QPushButton::clicked, [this]() {
     optionsMenu.hide();
     mainMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT2, 25);
+    SFX::SELECT2.play(25);
   });
   //************************************************************
   serverMenu.setLayout(&serverLayout);
@@ -216,8 +217,8 @@ Menu::Menu(void)
     serverMenu.hide();
     multiplayerMenu.show();
     adjustSize();
-    SFX::playSound(SFX_SELECT2, 25);
-    Music::playSong(SONG_MENU);
+    SFX::SELECT2.play(25);
+    Music::MENU.play();
   });
   //************************************************************
   lobbyMenu.setLayout(&lobbyLayout);
@@ -227,41 +228,40 @@ Menu::Menu(void)
   lobbyLayout.addWidget(&backLobby, 4, 1, 1, -1);
   connect(&playerLobby, &QPushButton::clicked, [this]() {
     switch (User::character) {
-      case PYACHI:
-        User::character = AERON;
+      case 0:
+        User::character = Character::AERON;
         playerSingle.setText("Character: Aeron");
         playerLobby.setText("Character: Aeron");
-        SFX::playSound(SFX_SELECT1, 10);
+        SFX::SELECT1.play(25);
         break;
-      case AERON:
-        User::character = PRYSMA;
+      case 1:
+        User::character = Character::PRYSMA;
         playerSingle.setText("Character: Prysma");
         playerLobby.setText("Character: Prysma");
-        SFX::playSound(SFX_SELECT1, 10);
+        SFX::SELECT1.play(25);
         break;
-      case PRYSMA:
-        User::character = ANEKHANDA;
+      case 2:
+        User::character = Character::ANEKHANDA;
         playerSingle.setText("Character: Anekhanda");
         playerLobby.setText("Character: Anekhanda");
-        SFX::playSound(SFX_SELECT1, 10);
+        SFX::SELECT1.play(25);
         break;
-      case ANEKHANDA:
-        User::character = PYACHI;
+      case 3:
+        User::character = Character::PYACHI;
         playerSingle.setText("Character: Pyachi");
         playerLobby.setText("Character: Pyachi");
-        SFX::playSound(SFX_SELECT1, 10);
+        SFX::SELECT1.play(25);
         break;
     }
   });
-  connect(&startLobby, &QPushButton::clicked, []() {
-    Connection::sendPacket(PACKETPLAYINSTARTGAME);
-  });
+  connect(&startLobby, &QPushButton::clicked,
+          []() { Connection::sendPacket(PACKETPLAYINSTARTGAME); });
   connect(&backLobby, &QPushButton::clicked, [this]() {
     Connection::destruct();
     lobbyMenu.hide();
     multiplayerMenu.show();
     adjustSize();
-    SFX::playSound(SFX_DISCONNECT);
+    SFX::DISCONNECT.play();
   });
 }
 
@@ -269,5 +269,5 @@ void Menu::openMenu(void) {
   if (MENU == nullptr)
     MENU = new Menu();
   MENU->show();
-  Music::playSong(SONG_MENU);
+  Music::MENU.play();
 }

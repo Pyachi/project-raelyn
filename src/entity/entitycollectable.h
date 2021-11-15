@@ -1,5 +1,5 @@
-#ifndef COLLECTABLE_H
-#define COLLECTABLE_H
+#ifndef ENTITYCOLLECTABLE_H
+#define ENTITYCOLLECTABLE_H
 
 #include "entity.h"
 
@@ -7,14 +7,12 @@ class EntityPlayer;
 
 class EntityCollectable : public Entity {
  public:
-	EntityCollectable(Texture tex, AI<EntityPlayer> onPickup, bool random = true);
+  EntityCollectable(const Texture& tex, const AI<EntityPlayer>& onPickup);
 
  private:
-	int dir;
-	int speed;
-	const AI<EntityPlayer> onPickup;
+  const AI<EntityPlayer> onPickup;
 
-	void tick(void) override;
+  void tick(void) override;
 };
 
-#endif  // COLLECTABLE_H
+#endif  // ENTITYCOLLECTABLE_H
