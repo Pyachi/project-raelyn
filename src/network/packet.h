@@ -5,6 +5,7 @@
 #include <QStringList>
 
 enum Header {
+	//***************************************************************************
 	// CLIENT -> SERVER
 	PACKETPLAYINCONNECT,       // UUID:name
 	PACKETPLAYINPLAYERJOIN,    // null
@@ -16,7 +17,7 @@ enum Header {
 	PACKETPLAYINENEMYDEATH,    // UUID
 	PACKETPLAYINADVANCEPHASE,  // UUID
 	PACKETPLAYINRESUMELEVEL,   // null
-
+	//***************************************************************************
 	// SERVER -> CLIENT
 	PACKETPLAYOUTPLAYERJOIN,    // names
 	PACKETPLAYOUTPLAYERLEAVE,   // names
@@ -30,6 +31,7 @@ enum Header {
 	PACKETPLAYOUTENEMYDEATH,    // UUID
 	PACKETPLAYOUTPLAYSONG,      // SONG
 	PACKETPLAYOUTADVANCEPHASE,  // UUID
+	//***************************************************************************
 };
 
 struct Packet {

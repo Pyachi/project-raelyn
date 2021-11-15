@@ -47,9 +47,10 @@ void EntityPlayer::tick(void) {
 
   if (firing) {
     fireBullets(character.pattern(this));
+		character.shootSound(this).play();
     Connection::sendPacket(
-        {PACKETPLAYINFIREBULLETS,
-         QStringList() << QString::number(level) << QString::number(focus)});
+				{PACKETPLAYINFIREBULLETS, QStringList() << QString::number(level)
+																								<< QString::number(focus)});
   }
 
   int dx = 0, dy = 0;
@@ -111,10 +112,6 @@ void EntityPlayer::tick(void) {
   }
 }
 
-void EntityPlayer::addPower() {
-  power++;
-}
+void EntityPlayer::addPower() { power++; }
 
-void EntityPlayer::addPoints(int points) {
-  this->points += points;
-}
+void EntityPlayer::addPoints(int points) { this->points += points; }
