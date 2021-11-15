@@ -30,8 +30,6 @@ Game::Game(void)
   screen.setZValue(Texture::BACKGROUNDTEMP.zValue);
   scene.addItem(&screen);
 
-	scene.setSceneRect(screen.boundingRect());
-
   playableArea.setPos(40 + playableArea.boundingRect().width() / 2,
                       20 + playableArea.boundingRect().height() / 2);
   scene.addItem(&playableArea);
@@ -61,7 +59,6 @@ Game::Game(void)
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	adjustSize();
 	setFixedSize(size() + QSize(2, 2));
-	setWindowFlags(Qt::FramelessWindowHint);
 
   timer.start(1000 / 60);
   connect(&timer, &QTimer::timeout, [this]() { this->tick(); });
