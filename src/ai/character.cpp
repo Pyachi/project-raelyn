@@ -39,13 +39,13 @@ const Character Character::PYACHI(
 			switch (player->level) {
 				default:
 				case 1:
-					return SFX::HIT1;
+                    return SFX::FIRE1;
 				case 2:
-					return SFX::HIT1;
+                    return SFX::FIRE1;
 				case 3:
-					return SFX::HIT1;
+                    return SFX::FIRE1;
 				case 4:
-					return SFX::HIT1;
+                    return SFX::FIRE1;
 			}
 		});
 
@@ -60,13 +60,13 @@ const Character Character::AERON(Texture::AERON,
 	switch (player->level) {
 		default:
 		case 1:
-			return SFX::HIT1;
+            return SFX::FIRE1;
 		case 2:
-			return SFX::HIT1;
+            return SFX::FIRE1;
 		case 3:
-			return SFX::HIT1;
+            return SFX::FIRE1;
 		case 4:
-			return SFX::HIT1;
+            return SFX::FIRE1;
 	}
 });
 
@@ -81,13 +81,13 @@ const Character Character::PRYSMA(Texture::PRYSMA,
 	switch (player->level) {
 		default:
 		case 1:
-			return SFX::HIT1;
+            return SFX::FIRE1;
 		case 2:
-			return SFX::HIT1;
+            return SFX::FIRE1;
 		case 3:
-			return SFX::HIT1;
+            return SFX::FIRE1;
 		case 4:
-			return SFX::HIT1;
+            return SFX::FIRE1;
 	}
 });
 
@@ -102,12 +102,12 @@ const Character Character::ANEKHANDA(Texture::ANEKHANDA,
 	switch (player->level) {
 		default:
 		case 1:
-			return SFX::HIT1;
+            return SFX::FIRE1;
 		case 2:
-			return SFX::HIT1;
+            return SFX::FIRE1;
 		case 3:
-			return SFX::HIT1;
+            return SFX::FIRE1;
 		case 4:
-			return SFX::HIT1;
+            return SFX::FIRE1;
 	}
 });
