@@ -115,8 +115,7 @@ const Enemy
 				enemy->deleteLater();
 		});
 const Enemy Enemy::SIMPLESHOTGUN_MID_LEFT_UP(
-		Texture::ENEMYTEMP,
-		40,
+                                             55,
 		[](EntityEnemy* enemy) {
 			if (enemy->cycle(1800, 1, 120))
 				enemy->moveBy(5, 0);
@@ -139,8 +138,7 @@ const Enemy Enemy::SIMPLESHOTGUN_MID_LEFT_UP(
 				enemy->deleteLater();
 		});
 const Enemy Enemy::SIMPLESHOTGUN_MID_RIGHT_UP(
-		Texture::ENEMYTEMP,
-		40,
+                                              55,
 		[](EntityEnemy* enemy) {
 			if (enemy->cycle(1800, 1, 120))
 				enemy->moveBy(-5, 0);
@@ -276,7 +274,7 @@ const Enemy Enemy::small_fast_TOPDOWNTORIGHT(
 				enemy->deleteLater();
 		});
 
-const Enemy Enemy::DART1(Texture::ENEMYTEMP, {50}, [](EntityEnemy* enemy) {
+const Enemy Enemy::DART1(Texture::ENEMYTEMP, {80}, [](EntityEnemy* enemy) {
   if (enemy->cycle(1000, 10) || enemy->cycle(1000, 510))
     enemy->moveTo({0, 50}, 50, QUICK);
   if (enemy->cycle(1000, 260))
@@ -293,7 +291,7 @@ const Enemy Enemy::DART1(Texture::ENEMYTEMP, {50}, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::DART2(Texture::ENEMYTEMP, {50}, [](EntityEnemy* enemy) {
+const Enemy Enemy::DART2(Texture::ENEMYTEMP, {80}, [](EntityEnemy* enemy) {
   if (enemy->cycle(1000, 10) || enemy->cycle(1000, 510))
     enemy->moveTo({75, -200}, 75, QUICK);
   if (enemy->cycle(1000, 260))
@@ -310,7 +308,7 @@ const Enemy Enemy::DART2(Texture::ENEMYTEMP, {50}, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::DART3(Texture::ENEMYTEMP, {50}, [](EntityEnemy* enemy) {
+const Enemy Enemy::DART3(Texture::ENEMYTEMP, {80}, [](EntityEnemy* enemy) {
   if (enemy->cycle(1000, 10) || enemy->cycle(1000, 510))
     enemy->moveTo({-75, -200}, 100, QUICK);
   if (enemy->cycle(1000, 260))
@@ -325,5 +323,98 @@ const Enemy Enemy::DART3(Texture::ENEMYTEMP, {50}, [](EntityEnemy* enemy) {
 						<< BulletInfo(Bullet::BASIC4, Texture::ELLIPSEORANGE,
 													SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10), 2),
         enemy->getDirectionOfEntity(Game::getPlayer()));
+  }
+});
+
+const Enemy Enemy::DART4(Texture::ENEMYTEMP, {50}, [](EntityEnemy* enemy) {
+
+  if (enemy->cycle(1000, 10) || enemy->cycle(1000, 510))
+    enemy->moveTo({-100, -100}, 100, QUICK);
+  if (enemy->cycle(1000, 260))
+    enemy->moveTo({0, -200}, 75, QUICK);
+
+  if (enemy->cycle(1000, 760))
+    enemy->moveTo({100, -100}, 100, QUICK);
+  if (enemy->cycle(250, 100) || enemy->cycle(250, 150) ||
+      enemy->cycle(250, 200)) {
+
+    enemy->fireBullets(
+        BulletInfo(Bullet::BASIC10, Texture::ELLIPSEORANGE, SpawnInfo(), 2)
+            << BulletInfo(Bullet::BASIC4,
+                          Texture::ELLIPSEORANGE,
+                          SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10),
+                          2),
+        enemy->getDirectionOfEntity(Game::getPlayer()));
+  }
+});
+
+const Enemy Enemy::DART5(Texture::ENEMYTEMP, {50}, [](EntityEnemy* enemy) {
+
+  if (enemy->cycle(1000, 10) || enemy->cycle(1000, 510))
+    enemy->moveTo({100, -100}, 100, QUICK);
+  if (enemy->cycle(1000, 260))
+    enemy->moveTo({-100, -100}, 75, QUICK);
+
+  if (enemy->cycle(1000, 760))
+    enemy->moveTo({0, -200}, 100, QUICK);
+  if (enemy->cycle(250, 100) || enemy->cycle(250, 150) ||
+      enemy->cycle(250, 200)) {
+
+    enemy->fireBullets(
+        BulletInfo(Bullet::BASIC10, Texture::ELLIPSEORANGE, SpawnInfo(), 2)
+            << BulletInfo(Bullet::BASIC4,
+                          Texture::ELLIPSEORANGE,
+                          SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10),
+                          2),
+        enemy->getDirectionOfEntity(Game::getPlayer()));
+  }
+});
+
+const Enemy Enemy::DART6(Texture::ENEMYTEMP, {50}, [](EntityEnemy* enemy) {
+
+  if (enemy->cycle(1000, 10) || enemy->cycle(1000, 510))
+    enemy->moveTo({0, -200}, 100, QUICK);
+  if (enemy->cycle(1000, 260))
+    enemy->moveTo({100, -100}, 75, QUICK);
+
+  if (enemy->cycle(1000, 760))
+    enemy->moveTo({-100, -100}, 100, QUICK);
+  if (enemy->cycle(250, 100) || enemy->cycle(250, 150) ||
+      enemy->cycle(250, 200)) {
+
+    enemy->fireBullets(
+        BulletInfo(Bullet::BASIC10, Texture::ELLIPSEORANGE, SpawnInfo(), 2)
+            << BulletInfo(Bullet::BASIC4,
+                          Texture::ELLIPSEORANGE,
+                          SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10),
+                          2),
+        enemy->getDirectionOfEntity(Game::getPlayer()));
+  }
+});
+
+const Enemy Enemy::SUN(Texture::ENEMYTEMP, {100}, [](EntityEnemy* enemy) {
+
+  if (enemy->cycle(1000, 10) || enemy->cycle(1000, 510))
+    enemy->moveTo({0, -100}, 100, QUICK);
+  {
+    if (enemy->cycle(10)) {
+      enemy->fireBullets(
+          BulletInfo(Bullet::BASIC5, Texture::ARROWYELLOW, Pattern::CIRCLE16));
+      SFX::EXPL_LIGHT3.play(25);
+    }
+  }
+});
+
+const Enemy Enemy::WHEEL(Texture::ENEMYTEMP, {200}, [](EntityEnemy* enemy) {
+
+  if (enemy->cycle(1000, 10) || enemy->cycle(1000, 510))
+    enemy->moveTo({0, -100}, 100, QUICK);
+  {
+    if (enemy->cycle(5)) {
+      enemy->fireBullets(
+          BulletInfo(Bullet::BASIC3, Texture::ELLIPSERED, Pattern::CIRCLE8),
+          enemy->getDirectionOfEntity(Game::getPlayer()));
+      SFX::EXPL_LIGHT3.play(25);
+    }
   }
 });
