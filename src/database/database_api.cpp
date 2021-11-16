@@ -144,6 +144,117 @@ bool database_API::create_level_table(QString level)
     return pass;
 }
 
+bool database_API::create_settings_table(float SFX, float music, Array<int> controls)
+{
+    QSqlQuery query = QSqlQuery(db);
+    QString querySTR = "CREATE TABLE IF NOT EXISTS settings (ID INT UNIQUE PRIMARY KEY, SFX FLOAT, Music FLOAT);";
+    bool pass = true;
+
+    if(!query.exec(querySTR))
+    {
+        qDebug() << db.lastError();
+        qDebug() << "Error: invalid query for create_settings_table 1";
+        pass = false;
+    }
+
+    querySTR = "CREATE TABLE IF NOT EXISTS controls (ID INT UNIQUE PRIMARY KEY, up INT, left INT, down INT, right INT, focus INT, shoot INT, bomb INT);";
+    if(!query.exec(querySTR))
+    {
+        qDebug() << db.lastError();
+        qDebug() << "Error: invalid query for create_settings_table 2";
+        pass = false;
+    }
+
+
+    querySTR = "INSERT INTO settings VALUES (1, ";
+    querySTR.append(QString::number(double(SFX)));
+    querySTR.append(", ");
+    querySTR.append(QString::number(double(music)));
+    querySTR.append(");");
+
+    qDebug() << querySTR;
+
+    if(!query.exec(querySTR))
+    {
+        qDebug() << db.lastError();
+        qDebug() << "Error: invalid query for create_settings_table 3";
+        pass = false;
+    }
+
+    querySTR = "INSERT INTO controls VALUES (1, ";
+    querySTR.append(QString::number(controls[0]));
+    querySTR.append(", ");
+    querySTR.append(QString::number(controls[1]));
+    querySTR.append(", ");
+    querySTR.append(QString::number(controls[2]));
+    querySTR.append(", ");
+    querySTR.append(QString::number(controls[3]));
+    querySTR.append(", ");
+    querySTR.append(QString::number(controls[4]));
+    querySTR.append(", ");
+    querySTR.append(QString::number(controls[5]));
+    querySTR.append(", ");
+    querySTR.append(QString::number(controls[6]));
+    querySTR.append(");");
+
+    if(!query.exec(querySTR))
+    {
+        qDebug() << db.lastError();
+        qDebug() << "Error: invalid query for create_settings_table 4";
+        pass = false;
+    }
+
+    return pass;
+}
+
+
+float database_API::get_SFX()
+{
+    QSqlQuery query = QSqlQuery(db);
+    QString querySTR = "SELECT * FROM settings;";
+    if(!query.exec(querySTR))
+    {
+        qDebug() << db.lastError();
+        qDebug() << "Error: invalid query get SFX";
+    }
+    query.next();
+    return query.value(1).toFloat();
+}
+
+float database_API::get_music()
+{
+    QSqlQuery query = QSqlQuery(db);
+    QString querySTR = "SELECT * FROM settings;";
+    if(!query.exec(querySTR))
+    {
+        qDebug() << db.lastError();
+        qDebug() << "Error: invalid query get settings 1";
+    }
+    query.next();
+    return query.value(2).toFloat();
+}
+
+
+void database_API::get_controls(Array<int> controls)
+{
+    QSqlQuery query = QSqlQuery(db);
+    QString querySTR = "SELECT * FROM controls";
+    if(!query.exec(querySTR))
+    {
+        qDebug() << db.lastError();
+        qDebug() << "Error: invalid query get settings 2";
+    }
+
+    controls[0] = query.value(1).toInt();
+    controls[1] = query.value(2).toInt();
+    controls[2] = query.value(3).toInt();
+    controls[3] = query.value(4).toInt();
+    controls[4] = query.value(5).toInt();
+    controls[5] = query.value(6).toInt();
+    controls[6] = query.value(7).toInt();
+}
+
+
 void database_API::close_database()
 {
     db.close();

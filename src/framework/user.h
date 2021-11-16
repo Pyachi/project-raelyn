@@ -5,6 +5,9 @@
 #include "music.h"
 #include "uid.h"
 #include "util.h"
+#include "database_api.h"
+#include "scoreboard.h"
+#include <QVector>
 
 class User {
   static User* USER;
@@ -18,11 +21,13 @@ class User {
   String character;
   Array<int> controls;
 
-  int soundVol;
-  int musicVol;
+  float soundVol;
+  float musicVol;
 
   int currentScore = 0;
   Array<int> highScores;
+
+  QVector<Scoreboard> masterBoard;
 
  public:
   static void create(void) {
@@ -50,9 +55,9 @@ class User {
   static void setControls(const Array<int>& controls) {
     USER->controls = controls;
   }
-  static int getSoundVol(void) { return USER->soundVol; }
+  static float getSoundVol(void) { return USER->soundVol; }
   static void setSoundVol(float vol) { USER->soundVol = vol; }
-  static int getMusicVol(void) { return USER->musicVol; }
+  static float getMusicVol(void) { return USER->musicVol; }
   static void setMusicVol(float vol) {
     USER->musicVol = vol;
     Music::changeVolume(vol);

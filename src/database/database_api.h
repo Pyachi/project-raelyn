@@ -8,6 +8,7 @@
 #include "scoreboard.h"
 #include <QDateTime>
 #include <QDir>
+#include "util.h"
 
 class database_API
 {
@@ -22,13 +23,17 @@ public:
 
     bool update_database(QString name, Scoreboard *score);
     bool create_level_table(QString level);
+    bool create_settings_table(float SFX, float music, Array<int> controls);
+    void update_settings(float SFX, float music, Array<int> controls);
+    float get_SFX();
+    float get_music();
+    void get_controls(Array<int> controls);
     void close_database();
 
 
 
     bool create_master_table(QString level);        // is this needed?
     int run_table_stats(QString level);             // create object to have stats in
-
 
 private:
 
