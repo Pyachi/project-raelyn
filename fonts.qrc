@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/fonts/PressStart.ttf</file>
+    </qresource>
+</RCC>

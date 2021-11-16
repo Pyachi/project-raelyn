@@ -7,6 +7,7 @@
 #include "packet.h"
 #include "texture.h"
 #include "user.h"
+#include <QFontDatabase>
 
 Game* Game::GAME = nullptr;
 
@@ -56,8 +57,13 @@ Game::Game(void)
     delete this;
   });
 
+  int test = QFontDatabase::addApplicationFont(":/assets/fonts/PressStart.ttf");
+  qDebug() << test;
+  QString family = QFontDatabase::applicationFontFamilies(test).at(0);
+  QFont a(family);
   dead.setBrush(Qt::red);
-  dead.setScale(5);
+  dead.setFont(a);
+  dead.setScale(3);
   dead.setPos(-(dead.boundingRect().center().toPoint() * 5));
   dead.setZValue(10);
   dead.hide();
