@@ -100,6 +100,7 @@ void EntityPlayer::tick(void) {
 
     if (hit) {
       health--;
+			Game::queueEventLater([]() { qDebug() << "test"; }, 60);
 			for (int i = 0; i < (((level - 1) * 100) + power) / 2; i++) {
 				Collectable::POWER.spawn(pos(), 50, 5);
 			}

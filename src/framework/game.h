@@ -18,6 +18,7 @@
 
 class Entity;
 class EntityPlayer;
+class Game;
 
 class Game : public QGraphicsView {
   Q_OBJECT
@@ -40,6 +41,14 @@ class Game : public QGraphicsView {
       return;
     GAME->eventQueue.push_back(func);
   }
+	static void queueEventLater(std::function<void(void)> func, int time) {
+		if (GAME == nullptr)
+			return;
+		if (GAME->timedEventQueue.count(time))
+			GAME->timedEventQueue[time].push_back(func);
+		else
+			GAME->timedEventQueue.insert({time, {func}});
+	}
 
  private:
   Game(void);
@@ -65,7 +74,8 @@ class Game : public QGraphicsView {
   bool paused;
   int age;
   Map<UID, Entity*> entities;
-  List<std::function<void(void)> > eventQueue;
+	List<std::function<void(void)>> eventQueue;
+	Map<int, List<std::function<void(void)>>> timedEventQueue;
 
   QSet<int> keys;
 

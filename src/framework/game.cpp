@@ -91,10 +91,6 @@ void Game::tick(void) {
   background2.moveBy(0, 1);
 	points.setText(
 			QString::number(User::getCurrentScore()).rightJustified(12, '0'));
-	if (isPlayerAlive())
-		power.setText(QString::number(getPlayer()->level) + "." +
-									QString::number(getPlayer()->power).rightJustified(2, '0') +
-									" / 4.00");
   if (!background1.collidesWithItem(&playableArea))
     background1.moveBy(0, -1360);
   if (!background2.collidesWithItem(&playableArea))
@@ -111,7 +107,25 @@ void Game::tick(void) {
   while (!eventQueue.empty()) {
     eventQueue.front()();
     eventQueue.pop_front();
-  }
+	}
+	if (timedEventQueue.count(1)) {
+		for (std::function<void(void)> func : timedEventQueue[1])
+			eventQueue.push_back(func);
+		timedEventQueue.erase(1);
+	}
+	Map<int, List<std::function<void(void)>>> queue = timedEventQueue;
+	timedEventQueue.clear();
+	for (auto queueList : queue)
+		timedEventQueue.insert({queueList.first - 1, queueList.second});
+	if (isPlayerAlive())
+		power.setText(QString::number(getPlayer()->level) + "." +
+									QString::number(getPlayer()->power).rightJustified(2, '0') +
+									" / 4.00");
+	//	else if (age % 60 == 0 && getPlayer() == nullptr) {
+	//		paused = true;
+	//		popupText.setText("You died lol");
+	//		popup.show();
+	//	}
   foreach (auto entity, entities) {
     if (entity.second->readyToDelete()) {
       entities.erase(entity.second->id);
@@ -133,5 +147,12 @@ void Game::create(void) {
 EntityPlayer* Game::getPlayer(void) {
   if (GAME->entities.count(User::getUID()))
     return dynamic_cast<EntityPlayer*>(GAME->entities[User::getUID()]);
-  return nullptr;
+	else {
+		EntityPlayer* player = nullptr;
+		for (auto entity : GAME->entities) {
+			if (entity.second->type == ONLINEPLAYER)
+				player = dynamic_cast<EntityPlayer*>(entity.second);
+		}
+		return player;
+	}
 }

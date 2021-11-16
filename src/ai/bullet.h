@@ -14,7 +14,7 @@ class Bullet {
   const AI<EntityBullet> ai;
 
  public:
-  operator const AI<EntityBullet>&() const { return ai; }
+	operator const AI<EntityBullet> &() const { return ai; }
 
   static const Bullet BASIC1;
   static const Bullet BASIC2;
@@ -52,10 +52,13 @@ class Pattern {
   const List<SpawnInfo> pattern;
 
  public:
-  operator const List<SpawnInfo>&() const { return pattern; }
+	operator const List<SpawnInfo> &() const { return pattern; }
 
+	static const Pattern CIRCLE3;
   static const Pattern CIRCLE4;
+	static const Pattern CIRCLE6;
   static const Pattern CIRCLE8;
+	static const Pattern CIRCLE12;
   static const Pattern CIRCLE16;
   static const Pattern SHOTGUN3;
   static const Pattern SHOTGUN5;

@@ -48,7 +48,7 @@ void Entity::moveTowardsPoint(const QPointF& point, double distance) {
 
 void Entity::moveTo(const QPointF& loc, int time, MovementType type) {
 	targetPos = loc;
-	movementTicks = time;
+	movementTicks = type == SMOOTH ? time : 500;
 	movementType = type;
 }
 //***************************************************************************
