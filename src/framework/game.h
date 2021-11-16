@@ -26,9 +26,9 @@ class Game : public QGraphicsView {
  public:
   static void create(void);
   static EntityPlayer* getPlayer(void);
-	static bool isPlayerAlive(void) {
-		return GAME->entities.count(User::getUID());
-	}
+  static bool isPlayerAlive(void) {
+    return GAME->entities.count(User::getUID());
+  }
 
   static QSet<int> getKeys(void) { return GAME->keys; }
   static Map<UID, Entity*>& getEntities(void) { return GAME->entities; }
@@ -41,14 +41,14 @@ class Game : public QGraphicsView {
       return;
     GAME->eventQueue.push_back(func);
   }
-	static void queueEventLater(std::function<void(void)> func, int time) {
-		if (GAME == nullptr)
-			return;
-		if (GAME->timedEventQueue.count(time))
-			GAME->timedEventQueue[time].push_back(func);
-		else
-			GAME->timedEventQueue.insert({time, {func}});
-	}
+  static void queueEventLater(std::function<void(void)> func, int time) {
+    if (GAME == nullptr)
+      return;
+    if (GAME->timedEventQueue.count(time))
+      GAME->timedEventQueue[time].push_back(func);
+    else
+      GAME->timedEventQueue.insert({time, {func}});
+  }
 
  private:
   Game(void);
@@ -62,6 +62,8 @@ class Game : public QGraphicsView {
   QGraphicsRectItem playableArea;
   QGraphicsPixmapItem background1;
   QGraphicsPixmapItem background2;
+  QGraphicsPixmapItem background3;
+  QGraphicsPixmapItem background4;
   QGraphicsPixmapItem screen;
   QGraphicsSimpleTextItem dead;
   QDialog popup;
@@ -69,13 +71,13 @@ class Game : public QGraphicsView {
   QGridLayout popupLayout;
   QPushButton menuButton;
   QGraphicsSimpleTextItem points;
-	QGraphicsSimpleTextItem power;
+  QGraphicsSimpleTextItem power;
 
   bool paused;
   int age;
   Map<UID, Entity*> entities;
-	List<std::function<void(void)>> eventQueue;
-	Map<int, List<std::function<void(void)>>> timedEventQueue;
+  List<std::function<void(void)>> eventQueue;
+  Map<int, List<std::function<void(void)>>> timedEventQueue;
 
   QSet<int> keys;
 

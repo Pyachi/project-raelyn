@@ -183,7 +183,7 @@ Menu::Menu(void)
     SFX::COLLECT2.play();
   });
   connect(&musicSlider, &QSlider::valueChanged,
-          [this]() { Music::changeVolume(this->musicSlider.value() * 20); });
+          [this]() { User::setMusicVol(musicSlider.value() * 20); });
   connect(&keys, &QPushButton::pressed, [this]() {
     SFX::SELECT1.play(25);
     if (User::getKeyUp() == Qt::Key_Up) {

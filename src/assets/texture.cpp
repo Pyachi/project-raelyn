@@ -61,6 +61,7 @@ const Texture Texture::ENEMYTEMP("assets/textures/enemies/enemy.png", 2);
 const Texture Texture::BACKGROUNDTEMP("assets/textures/misc/background.png", 5);
 const Texture Texture::TITLETEMP("assets/textures/misc/title.png", 5);
 const Texture Texture::BACKGROUND("assets/textures/misc/background1.png", -1);
+const Texture Texture::BACKGROUND2("assets/textures/misc/background2.png", 0);
 //***************************************************************************
 // Players
 const Texture Texture::PYACHI("assets/textures/players/pyachi.png", 4);
