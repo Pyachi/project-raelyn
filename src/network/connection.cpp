@@ -21,9 +21,9 @@ bool Connection::create(QString ip, unsigned short port) {
 
   CON->connectToHost(ip, port);
   if (CON->waitForConnected(100)) {
-    CON->sendPacket({PACKETPLAYINCONNECT, QStringList()
-                                              << User::getUUID().toString()
-                                              << User::getName()});
+    CON->sendPacket({PACKETPLAYINCONNECT,
+                     QStringList() << User::getUID().toString()
+                                   << QString::fromStdString(User::getName())});
     CON->connect(CON, &Connection::stateChanged, []() {
       if (CON == nullptr)
         return;
@@ -63,7 +63,7 @@ void Connection::sendPacket(const Packet& packet) {
 Connection::Connection(void) : QTcpSocket() {
   setProxy(QNetworkProxy::NoProxy);
   connect(this, &Connection::readyRead, [this]() {
-    for (Packet packet : Packet::decode(readAll()))
+    for (const Packet& packet : Packet::decode(readAll()))
       handlePacket(packet);
   });
 }
@@ -74,18 +74,18 @@ void Connection::handlePacket(const Packet& packet) {
     case PACKETPLAYOUTSTARTGAME:
       Game::create();
       Menu::MENU->close();
-      new EntityPlayer(Character::valueOf(User::character), User::getName(),
-                       User::getUUID());
+      new EntityPlayer(Character::valueOf(User::getCharacter()),
+                       User::getName(), User::getUID());
       break;
     case PACKETPLAYOUTPLAYERJOIN:
       Menu::MENU->players.clear();
-      for (QString name : packet.data)
+      for (const QString& name : packet.data)
         Menu::MENU->players.addItem(name);
       SFX::CONNECT.play();
       break;
     case PACKETPLAYOUTPLAYERLEAVE:
       Menu::MENU->players.clear();
-      for (QString name : packet.data)
+      for (const QString& name : packet.data)
         Menu::MENU->players.addItem(name);
       SFX::DISCONNECT.play();
       break;
@@ -102,9 +102,10 @@ void Connection::handlePacket(const Packet& packet) {
       break;
     case PACKETPLAYOUTPLAYERSPAWN:
       Game::queueEvent([packet]() {
-        EntityPlayer* player = new EntityPlayer(
-            Character::valueOf(packet.data.at(2).toInt()), packet.data.at(1),
-            UID::fromString(packet.data.at(0)), ONLINEPLAYER);
+        EntityPlayer* player =
+            new EntityPlayer(Character::valueOf(packet.data.at(2).toInt()),
+                             packet.data.at(1).toStdString(),
+                             UID::fromString(packet.data.at(0)), ONLINEPLAYER);
         player->setOpacity(0.25);
         player->hitbox.hide();
       });

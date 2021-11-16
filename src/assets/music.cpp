@@ -1,14 +1,14 @@
 #include "music.h"
 #include <SFML/Audio.hpp>
+#include "user.h"
 
 Array<Ref<Music> > Music::list;
-float Music::volume = 100;
 sf::Music Music::player;
 
 void Music::play() const {
   player.stop();
   player.openFromFile(file);
-  player.setVolume(volume);
+  player.setVolume(User::getMusicVol());
   player.setLoop(true);
   player.play();
 }

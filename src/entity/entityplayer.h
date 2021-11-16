@@ -7,7 +7,7 @@
 class EntityPlayer : public Entity {
  public:
   EntityPlayer(const Character& character,
-               const QString& name,
+               const String& name,
                const UID& id,
                EntityType type = PLAYER);
 
@@ -18,15 +18,13 @@ class EntityPlayer : public Entity {
   bool focus;
   int level;
 
-	void addPower(void) { power++; }
-	void addPoints(int count) { points += count; }
+  void addPower(void) { power++; }
 
  private:
   QGraphicsSimpleTextItem display;
-  QString name;
+  String name;
   bool firing;
   int power;
-  int points;
   int health;
   int invFrames;
 };

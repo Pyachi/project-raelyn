@@ -91,27 +91,27 @@ Menu::Menu(void)
   singleplayerLayout.addWidget(&start, 2, 1, 1, -1);
   singleplayerLayout.addWidget(&backSingleplayer, 3, 1, 1, -1);
   connect(&playerSingle, &QPushButton::clicked, [this]() {
-    switch (User::character) {
+    switch (Character::valueOf(User::getCharacter())) {
       case 0:
-        User::character = Character::AERON;
+        User::setCharacter(Character::AERON);
         playerSingle.setText("Character: Aeron");
         playerLobby.setText("Character: Aeron");
         SFX::SELECT1.play(25);
         break;
       case 1:
-        User::character = Character::PRYSMA;
+        User::setCharacter(Character::PRYSMA);
         playerSingle.setText("Character: Prysma");
         playerLobby.setText("Character: Prysma");
         SFX::SELECT1.play(25);
         break;
       case 2:
-        User::character = Character::ANEKHANDA;
+        User::setCharacter(Character::ANEKHANDA);
         playerSingle.setText("Character: Anekhanda");
         playerLobby.setText("Character: Anekhanda");
         SFX::SELECT1.play(25);
         break;
       case 3:
-        User::character = Character::PYACHI;
+        User::setCharacter(Character::PYACHI);
         playerSingle.setText("Character: Pyachi");
         playerLobby.setText("Character: Pyachi");
         SFX::SELECT1.play(25);
@@ -141,7 +141,7 @@ Menu::Menu(void)
       SFX::SELECT2.play(25);
       return;
     }
-    connectionInfo.setText(User::getIp() + ":" +
+    connectionInfo.setText(QString::fromStdString(User::getIP()) + ":" +
                            QString::number(Server::getPort()));
     multiplayerMenu.hide();
     serverMenu.show();
@@ -179,7 +179,7 @@ Menu::Menu(void)
   optionsLayout.addWidget(&keys, 5, 1, 1, -1);
   optionsLayout.addWidget(&backOptions, 6, 1, 1, -1);
   connect(&soundSlider, &QSlider::valueChanged, [this]() {
-    SFX::changeVolume(soundSlider.value() * 20);
+    User::setSoundVol(soundSlider.value() * 20);
     SFX::COLLECT2.play();
   });
   connect(&musicSlider, &QSlider::valueChanged,
@@ -188,16 +188,16 @@ Menu::Menu(void)
     SFX::SELECT1.play(25);
     if (User::getKeyUp() == Qt::Key_Up) {
       keys.setText("Controls: WASD");
-      User::keys = {Qt::Key_W, Qt::Key_A, Qt::Key_S, Qt::Key_D,
-                    Qt::Key_L, Qt::Key_K, Qt::Key_J};
+      User::setControls({Qt::Key_W, Qt::Key_A, Qt::Key_S, Qt::Key_D, Qt::Key_L,
+                         Qt::Key_K, Qt::Key_J});
     } else if (User::getKeyUp() == Qt::Key_W) {
       keys.setText("Controls: IJKL");
-      User::keys = {Qt::Key_I, Qt::Key_J, Qt::Key_K, Qt::Key_L,
-                    Qt::Key_A, Qt::Key_S, Qt::Key_D};
+      User::setControls({Qt::Key_I, Qt::Key_J, Qt::Key_K, Qt::Key_L, Qt::Key_A,
+                         Qt::Key_S, Qt::Key_D});
     } else if (User::getKeyUp() == Qt::Key_I) {
       keys.setText("Controls: Traditional");
-      User::keys = {Qt::Key_Up,    Qt::Key_Left, Qt::Key_Down, Qt::Key_Right,
-                    Qt::Key_Shift, Qt::Key_Z,    Qt::Key_X};
+      User::setControls({Qt::Key_Up, Qt::Key_Left, Qt::Key_Down, Qt::Key_Right,
+                         Qt::Key_Shift, Qt::Key_Z, Qt::Key_X});
     }
   });
   connect(&backOptions, &QPushButton::clicked, [this]() {
@@ -227,27 +227,27 @@ Menu::Menu(void)
   lobbyLayout.addWidget(&startLobby, 3, 1, 1, -1);
   lobbyLayout.addWidget(&backLobby, 4, 1, 1, -1);
   connect(&playerLobby, &QPushButton::clicked, [this]() {
-    switch (User::character) {
+    switch (Character::valueOf(User::getCharacter())) {
       case 0:
-        User::character = Character::AERON;
+        User::setCharacter(Character::AERON);
         playerSingle.setText("Character: Aeron");
         playerLobby.setText("Character: Aeron");
         SFX::SELECT1.play(25);
         break;
       case 1:
-        User::character = Character::PRYSMA;
+        User::setCharacter(Character::PRYSMA);
         playerSingle.setText("Character: Prysma");
         playerLobby.setText("Character: Prysma");
         SFX::SELECT1.play(25);
         break;
       case 2:
-        User::character = Character::ANEKHANDA;
+        User::setCharacter(Character::ANEKHANDA);
         playerSingle.setText("Character: Anekhanda");
         playerLobby.setText("Character: Anekhanda");
         SFX::SELECT1.play(25);
         break;
       case 3:
-        User::character = Character::PYACHI;
+        User::setCharacter(Character::PYACHI);
         playerSingle.setText("Character: Pyachi");
         playerLobby.setText("Character: Pyachi");
         SFX::SELECT1.play(25);

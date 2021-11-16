@@ -7,19 +7,18 @@
 #include "user.h"
 
 EntityPlayer::EntityPlayer(const Character& character,
-                           const QString& user,
+                           const String& user,
                            const UID& id,
                            EntityType type)
     : Entity(type, character.tex, id),
       hitbox(Texture::HITBOX, this),
       character(character),
-      display(user, this),
-      name(user),
-      firing(false),
       focus(false),
       level(1),
+      display(QString::fromStdString(user), this),
+      name(user),
+      firing(false),
       power(0),
-      points(0),
       health(3),
       invFrames(0) {
   hitbox.setOffset(-hitbox.boundingRect().center());
@@ -47,10 +46,10 @@ void EntityPlayer::tick(void) {
 
   if (firing) {
     fireBullets(character.pattern(this));
-        character.shootSound(this).play(3);
+    character.shootSound(this).play(3);
     Connection::sendPacket(
-				{PACKETPLAYINFIREBULLETS, QStringList() << QString::number(level)
-																								<< QString::number(focus)});
+        {PACKETPLAYINFIREBULLETS,
+         QStringList() << QString::number(level) << QString::number(focus)});
   }
 
   int dx = 0, dy = 0;

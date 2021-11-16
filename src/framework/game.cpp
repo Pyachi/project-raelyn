@@ -18,6 +18,7 @@ Game::Game(void)
       background2(Texture::BACKGROUND, &playableArea),
       dead("Game Over", &playableArea),
       menuButton("Return to Menu"),
+      points(&screen),
       paused(false),
       age(0) {
   GAME = this;
@@ -55,22 +56,26 @@ Game::Game(void)
   dead.setZValue(10);
   dead.hide();
 
-	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	adjustSize();
-	setFixedSize(size() + QSize(2, 2));
+  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  adjustSize();
+  setFixedSize(size() + QSize(2, 2));
+
+  points.setBrush(Qt::white);
+  points.setScale(2);
+  points.setPos({710, 139});
 
   timer.start(1000 / 60);
   connect(&timer, &QTimer::timeout, [this]() { this->tick(); });
 }
 
 Game::~Game(void) {
-	foreach (auto entity, entities) {
-		GAME = nullptr;
-		entities.erase(entity.second->id);
-		scene.removeItem(entity.second);
-		delete entity.second;
-	}
+  foreach (auto entity, entities) {
+    GAME = nullptr;
+    entities.erase(entity.second->id);
+    scene.removeItem(entity.second);
+    delete entity.second;
+  }
 }
 
 void Game::tick(void) {
@@ -79,6 +84,7 @@ void Game::tick(void) {
   age++;
   background1.moveBy(0, 1);
   background2.moveBy(0, 1);
+  points.setText(QString::number(User::getCurrentScore()));
   if (!background1.collidesWithItem(&playableArea))
     background1.moveBy(0, -1360);
   if (!background2.collidesWithItem(&playableArea))
@@ -96,11 +102,11 @@ void Game::tick(void) {
     eventQueue.front()();
     eventQueue.pop_front();
   }
-	foreach (auto entity, entities) {
+  foreach (auto entity, entities) {
     if (entity.second->readyToDelete()) {
       entities.erase(entity.second->id);
       scene.removeItem(entity.second);
-			delete entity.second;
+      delete entity.second;
     }
   }
 }
@@ -109,12 +115,13 @@ void Game::create(void) {
   if (GAME == nullptr)
     GAME = new Game();
   GAME->show();
-  Connection::sendPacket({PACKETPLAYINPLAYERSPAWN,
-                          QStringList() << QString::number(User::character)});
+  Connection::sendPacket(
+      {PACKETPLAYINPLAYERSPAWN, QStringList() << QString::number(
+                                    Character::valueOf(User::getCharacter()))});
 }
 
 EntityPlayer* Game::getPlayer(void) {
-  if (GAME->entities.count(User::getUUID()))
-    return dynamic_cast<EntityPlayer*>(GAME->entities[User::getUUID()]);
+  if (GAME->entities.count(User::getUID()))
+    return dynamic_cast<EntityPlayer*>(GAME->entities[User::getUID()]);
   return nullptr;
 }

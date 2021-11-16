@@ -5,16 +5,16 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsView>
 #include <QGridLayout>
+#include <QKeyEvent>
 #include <QLabel>
 #include <QOpenGLWidget>
 #include <QPushButton>
 #include <QSet>
 #include <QTimer>
-#include <QKeyEvent>
 #include "entity.h"
 #include "uid.h"
-#include "util.h"
 #include "user.h"
+#include "util.h"
 
 class Entity;
 class EntityPlayer;
@@ -24,19 +24,19 @@ class Game : public QGraphicsView {
 
  public:
   static void create(void);
-	static EntityPlayer* getPlayer(void);
+  static EntityPlayer* getPlayer(void);
 
-	static QSet<int> getKeys(void) { return GAME->keys; }
-	static Map<UID, Entity*>& getEntities(void) { return GAME->entities; }
-	static QGraphicsRectItem& getPlayableArea(void) { return GAME->playableArea; }
-	static void addEntity(Entity* entity) {
-		queueEvent([entity]() { GAME->entities.insert({entity->id, entity}); });
-	}
-	static void queueEvent(std::function<void(void)> func) {
-		if (GAME == nullptr)
-			return;
-		GAME->eventQueue.push_back(func);
-	}
+  static QSet<int> getKeys(void) { return GAME->keys; }
+  static Map<UID, Entity*>& getEntities(void) { return GAME->entities; }
+  static QGraphicsRectItem& getPlayableArea(void) { return GAME->playableArea; }
+  static void addEntity(Entity* entity) {
+    queueEvent([entity]() { GAME->entities.insert({entity->id, entity}); });
+  }
+  static void queueEvent(std::function<void(void)> func) {
+    if (GAME == nullptr)
+      return;
+    GAME->eventQueue.push_back(func);
+  }
 
  private:
   Game(void);
@@ -56,6 +56,7 @@ class Game : public QGraphicsView {
   QLabel popupText;
   QGridLayout popupLayout;
   QPushButton menuButton;
+  QGraphicsSimpleTextItem points;
 
   bool paused;
   int age;
@@ -66,16 +67,20 @@ class Game : public QGraphicsView {
 
   void tick(void);
 
-	void keyPressEvent(QKeyEvent* e) {
-		keys.insert(e->key());
-		QGraphicsView::keyPressEvent(e);
-	}
-	void keyReleaseEvent(QKeyEvent* e) {
-		keys.remove(e->key());
-		QGraphicsView::keyReleaseEvent(e);
-	}
+  void keyPressEvent(QKeyEvent* e) {
+    keys.insert(e->key());
+    QGraphicsView::keyPressEvent(e);
+  }
+  void keyReleaseEvent(QKeyEvent* e) {
+    keys.remove(e->key());
+    QGraphicsView::keyReleaseEvent(e);
+  }
+  void mouseMoveEvent(QMouseEvent* e) {
+    qDebug() << e->pos();
+    QGraphicsView::mouseMoveEvent(e);
+  }
 
-	friend class Connection;
+  friend class Connection;
 };
 
 #endif  // SCENE_H

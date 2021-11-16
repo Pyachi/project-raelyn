@@ -5,8 +5,7 @@
 #include "util.h"
 
 class Music {
-	static Array<Ref<Music> > list;
-  static float volume;
+  static Array<Ref<Music> > list;
   static sf::Music player;
 
   Music(const String& file) : index(list.size()), file(file) {
@@ -21,14 +20,10 @@ class Music {
  public:
   void play() const;
 
-	operator int() const { return index; }
+  operator int() const { return index; }
 
-	static float getVolume() { return volume; }
-	static void changeVolume(float vol) {
-		volume = vol;
-		player.setVolume(vol);
-	}
-	static void stop() { player.stop(); }
+  static void changeVolume(float vol) { player.setVolume(vol); }
+  static void stop() { player.stop(); }
 
   static const Music& valueOf(int i) { return list[i]; }
 

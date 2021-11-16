@@ -1,8 +1,8 @@
 #include "sfx.h"
 #include <SFML/Audio.hpp>
+#include "user.h"
 
 Array<Ref<SFX>> SFX::list;
-float SFX::volume = 100;
 List<sf::Sound*> SFX::players;
 bool SFX::init = false;
 
@@ -26,7 +26,7 @@ void SFX::play(float vol) const {
   players.pop_front();
   player->stop();
   player->setBuffer(buffer);
-  player->setVolume((vol * volume) / 100);
+  player->setVolume((vol * User::getSoundVol()) / 100);
   player->play();
   players.push_back(player);
 }

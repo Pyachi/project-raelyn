@@ -9,19 +9,21 @@ class BulletInfo;
 class SFX;
 
 class Character {
-	static Array<Ref<Character> > list;
+  static Array<Ref<Character> > list;
 
-  Character(const Texture& tex,
+  Character(const String& name,
+            const Texture& tex,
             int speed,
             int focusSpeed,
-						Func<const List<BulletInfo>(EntityPlayer*)> pattern,
-						Func<const SFX&(EntityPlayer*)> shootSound)
+            Func<const List<BulletInfo>(EntityPlayer*)> pattern,
+            Func<const SFX&(EntityPlayer*)> shootSound)
       : index(list.size()),
+        name(name),
         tex(tex),
         speed(speed),
         focusSpeed(focusSpeed),
-				pattern(pattern),
-				shootSound(shootSound) {
+        pattern(pattern),
+        shootSound(shootSound) {
     list.push_back(*this);
   }
 
@@ -30,16 +32,23 @@ class Character {
   const int index;
 
  public:
+  const String name;
   const Texture& tex;
   const int speed;
   const int focusSpeed;
   const Func<const List<BulletInfo>(EntityPlayer*)> pattern;
-	const Func<const SFX&(EntityPlayer*)> shootSound;
+  const Func<const SFX&(EntityPlayer*)> shootSound;
 
-	operator int() const { return index; }
+  operator int() const { return index; }
+  operator String() const { return name; }
 
   static const Character& valueOf(int i) { return list[i]; }
-	static const Array<Ref<Character> >& values() { return list; }
+  static const Character& valueOf(const String& name) {
+    for (Character& chara : list)
+      if (chara.name == name)
+        return chara;
+  }
+  static const Array<Ref<Character> >& values() { return list; }
 
   static const Character PYACHI;
   static const Character AERON;
