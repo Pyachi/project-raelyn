@@ -31,7 +31,7 @@ class Enemy {
   static const Enemy& valueOf(int i) { return list[i]; }
   static const Array<Ref<Enemy> >& values() { return list; }
 
-  static const Enemy ENEMYTEST1;
+  static const Enemy ENEMYTEST1;  // ID 0
   static const Enemy ENEMYTEST2;
   static const Enemy SIMPLESHOTGUN_TOP_LEFT;
   static const Enemy SIMPLESHOTGUN_TOP_RIGHT;
@@ -41,7 +41,7 @@ class Enemy {
   static const Enemy WAVE1BASIC;
   static const Enemy DIVER;
   static const Enemy LARGE_SLOW_LEFTTORIGHT;
-  static const Enemy LARGE_SLOW_RIGHTTOLEFT;
+  static const Enemy LARGE_SLOW_RIGHTTOLEFT;  // ID 10
   static const Enemy small_fast_RIGHTTOLEFT;
   static const Enemy small_fast_LEFTTORIGHT;
   static const Enemy small_fast_TOPDOWNTOLEFT;
@@ -49,6 +49,11 @@ class Enemy {
   static const Enemy DART1;
   static const Enemy DART2;
   static const Enemy DART3;
+  static const Enemy DART4;
+  static const Enemy DART5;
+  static const Enemy DART6;  // ID 20
+  static const Enemy SUN;
+  static const Enemy WHEEL;
 };
 
 #endif  // ENEMY_H
