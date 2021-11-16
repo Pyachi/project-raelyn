@@ -60,32 +60,48 @@ const Character Character::AERON(
 
       switch (player->level) {
         case 4:
-
-        case 3:
           if (player->focus) {
             list.push_back(BulletInfo(Bullet::BASIC40,
-                                      Texture::ARROWAQUA,
+                                      Texture::ARROWBLUE,
                                       SpawnInfo(5, {-40, -13})
                                           << SpawnInfo(-5, {40, -13})));
             list.push_back(BulletInfo(
                 Bullet::BASIC40, Texture::ARROWAQUA, SpawnInfo(0, {0, -13})));
-          } else
+          } else {
             list.push_back(BulletInfo(Bullet::BASIC40,
-                                      Texture::ARROWAQUA,
+                                      Texture::ARROWBLUE,
                                       SpawnInfo(10, {-40, -13})
                                           << SpawnInfo(-10, {40, -13})));
-          list.push_back(BulletInfo(
-              Bullet::BASIC40, Texture::ARROWAQUA, SpawnInfo(0, {0, -13})));
+            list.push_back(BulletInfo(
+                Bullet::BASIC40, Texture::ARROWAQUA, SpawnInfo(0, {0, -13})));
+          }
+          break;
+        case 3:
+          if (player->focus) {
+            list.push_back(BulletInfo(Bullet::BASIC40,
+                                      Texture::ARROWBLUE,
+                                      SpawnInfo(5, {-40, -13})
+                                          << SpawnInfo(-5, {40, -13})));
+            list.push_back(BulletInfo(
+                Bullet::BASIC40, Texture::ARROWAQUA, SpawnInfo(0, {0, -13})));
+          } else {
+            list.push_back(BulletInfo(Bullet::BASIC40,
+                                      Texture::ARROWBLUE,
+                                      SpawnInfo(10, {-40, -13})
+                                          << SpawnInfo(-10, {40, -13})));
+            list.push_back(BulletInfo(
+                Bullet::BASIC40, Texture::ARROWAQUA, SpawnInfo(0, {0, -13})));
+          }
           break;
         case 2:
           if (player->focus)
             list.push_back(BulletInfo(Bullet::BASIC40,
-                                      Texture::ARROWAQUA,
+                                      Texture::ARROWBLUE,
                                       SpawnInfo(5, {-40, -13})
                                           << SpawnInfo(-5, {40, -13})));
           else
             list.push_back(BulletInfo(Bullet::BASIC40,
-                                      Texture::ARROWAQUA,
+                                      Texture::ARROWBLUE,
                                       SpawnInfo(10, {-40, -13})
                                           << SpawnInfo(-10, {40, -13})));
           break;
