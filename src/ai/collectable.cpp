@@ -5,8 +5,10 @@
 #include "texture.h"
 #include "user.h"
 
-EntityCollectable* Collectable::spawn(const QPointF& loc, int maxDis) const {
-  EntityCollectable* col = new EntityCollectable(tex, ai);
+EntityCollectable* Collectable::spawn(const QPointF& loc,
+																			int maxDis,
+																			int force) const {
+	EntityCollectable* col = new EntityCollectable(tex, ai, force);
   if (maxDis != 0) {
     double randRot = Random::getInt() % 360;
     double dist = 0;

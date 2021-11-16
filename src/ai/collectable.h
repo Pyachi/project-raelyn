@@ -17,7 +17,9 @@ class Collectable {
   const AI<EntityPlayer> ai;
 
  public:
-	EntityCollectable* spawn(const QPointF& loc, int maxDis = 0) const;
+	EntityCollectable* spawn(const QPointF& loc,
+													 int maxDis = 0,
+													 int force = 1) const;
 
   static const Collectable POWER;
   static const Collectable POINTS;

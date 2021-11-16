@@ -25,6 +25,9 @@ class Game : public QGraphicsView {
  public:
   static void create(void);
   static EntityPlayer* getPlayer(void);
+	static bool isPlayerAlive(void) {
+		return GAME->entities.count(User::getUID());
+	}
 
   static QSet<int> getKeys(void) { return GAME->keys; }
   static Map<UID, Entity*>& getEntities(void) { return GAME->entities; }
@@ -57,6 +60,7 @@ class Game : public QGraphicsView {
   QGridLayout popupLayout;
   QPushButton menuButton;
   QGraphicsSimpleTextItem points;
+	QGraphicsSimpleTextItem power;
 
   bool paused;
   int age;

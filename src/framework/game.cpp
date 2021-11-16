@@ -19,6 +19,7 @@ Game::Game(void)
       dead("Game Over", &playableArea),
       menuButton("Return to Menu"),
       points(&screen),
+			power(&screen),
       paused(false),
       age(0) {
   GAME = this;
@@ -62,8 +63,12 @@ Game::Game(void)
   setFixedSize(size() + QSize(2, 2));
 
   points.setBrush(Qt::white);
-  points.setScale(2);
+	points.setFont(QFont("Arial", 18));
   points.setPos({710, 139});
+
+	power.setBrush(Qt::white);
+	power.setFont(QFont("Arial", 18));
+	power.setPos({710, 269});
 
   timer.start(1000 / 60);
   connect(&timer, &QTimer::timeout, [this]() { this->tick(); });
@@ -84,12 +89,17 @@ void Game::tick(void) {
   age++;
   background1.moveBy(0, 1);
   background2.moveBy(0, 1);
-  points.setText(QString::number(User::getCurrentScore()));
+	points.setText(
+			QString::number(User::getCurrentScore()).rightJustified(12, '0'));
+	if (isPlayerAlive())
+		power.setText(QString::number(getPlayer()->level) + "." +
+									QString::number(getPlayer()->power).rightJustified(2, '0') +
+									" / 4.00");
   if (!background1.collidesWithItem(&playableArea))
     background1.moveBy(0, -1360);
   if (!background2.collidesWithItem(&playableArea))
     background2.moveBy(0, -1360);
-  if (getPlayer() == nullptr) {
+	if (!isPlayerAlive()) {
     if (age % 120 == 0)
       dead.show();
     else if (age % 120 == 60)

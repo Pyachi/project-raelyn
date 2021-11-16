@@ -4,6 +4,7 @@
 #include "entitybullet.h"
 #include "packet.h"
 #include "sfx.h"
+#include "user.h"
 
 EntityEnemy::EntityEnemy(const Texture& tex,
                          const UID& id,
@@ -24,6 +25,7 @@ void EntityEnemy::tick(void) {
   for (EntityBullet* bullet : bullets) {
     SFX::EXPL_LIGHT1.play(10);
     health -= bullet->damage;
+		User::addCurrentScore(bullet->damage);
     bullet->deleteLater();
     if (health <= 0) {
       kill();
@@ -40,13 +42,13 @@ void EntityEnemy::kill(void) {
   for (Entity* entity : getNearbyEntities(BULLET, 60)) {
     EntityBullet* bullet = dynamic_cast<EntityBullet*>(entity);
     if (bullet->ownerType == ENEMY || bullet->ownerType == BULLET) {
-      Collectable::POINTS.spawn(bullet->pos());
+			Collectable::POINTS.spawn(bullet->pos(), 0, 0);
       bullet->deleteLater();
     }
   }
   for (int i = 0; i < (Random::getInt() % 5) + 3; i++)
-		Collectable::POWER.spawn(pos(), 40);
+		Collectable::POWER.spawn(pos());
   for (int i = 0; i < (Random::getInt() % 5) + 3; i++)
-		Collectable::POINTS.spawn(pos(), 40);
+		Collectable::POINTS.spawn(pos());
   deleteLater();
 }

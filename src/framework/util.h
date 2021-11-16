@@ -32,6 +32,8 @@ using Ref = std::reference_wrapper<T>;
 
 namespace Random {
 int getInt(void);
-}
+int getInt(int max);
+float getFloat(float max);
+}  // namespace Random
 
 #endif  // ALIAS_H

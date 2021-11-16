@@ -14,7 +14,7 @@ EntityBoss* Boss::spawn(const QPointF& loc, const UID& id) const {
   return boss;
 }
 
-const Boss Boss::LVL1MINI(Texture::ENEMYTEMP, {200}, [](EntityBoss* boss) {
+const Boss Boss::LVL1MINI(Texture::ENEMYTEMP, {5}, [](EntityBoss* boss) {
   switch (boss->phase) {
     case 0:
       if (boss->cycle(1000, 10) || boss->cycle(1000, 510))
