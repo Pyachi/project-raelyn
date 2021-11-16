@@ -8,23 +8,19 @@ Level::Level(const QString& path) : path(path) {
   timer.connect(&timer, &QTimer::timeout, [this]() { this->iterate(); });
 }
 
-Level Level::LVL1("assets/levels/lvl1.txt");
-Level Level::LVL2("assets/levels/lvl2.txt");
-Level Level::LVL3("assets/levels/lvl3.txt");
+Level Level::LEVEL(":/level.prll");
 
 void Level::start(void) {
-  QFile file(path);
+	QFile file(LEVEL.path);
   if (!file.open(QIODevice::ReadOnly))
     qDebug() << file.errorString();
   QTextStream in(&file);
   while (!in.atEnd())
-    instructions.push_back(in.readLine().split('/').at(0));
-  timer.start(1000 / 20);
+		LEVEL.instructions.push_back(in.readLine().split('/').at(0));
+	LEVEL.timer.start(1000 / 20);
 }
 
-void Level::resume(void) {
-  waitTimer = 0;
-}
+void Level::resume(void) { LEVEL.waitTimer = 0; }
 
 void Level::iterate(void) {
   if (waitTimer != 0) {

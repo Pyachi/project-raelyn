@@ -25,7 +25,6 @@ class Server : public QTcpServer {
 	QSet<QTcpSocket*> sockets;
 	QMap<QTcpSocket*, UID> users;
 	QMap<QTcpSocket*, QString> names;
-	Level* level;
 
 	void handleConnection(void);
 	void handleDisconnection(void);

@@ -24,6 +24,7 @@ SOURCES += \
     src/ai/character.cpp \
     src/ai/collectable.cpp \
     src/ai/enemy.cpp \
+    src/assets/font.cpp \
     src/assets/music.cpp \
     src/assets/sfx.cpp \
     src/assets/texture.cpp \
@@ -52,6 +53,7 @@ HEADERS += \
     src/ai/character.h \
     src/ai/collectable.h \
     src/ai/enemy.h \
+    src/assets/font.h \
     src/assets/music.h \
     src/assets/sfx.h \
     src/assets/texture.h \
@@ -81,7 +83,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    fonts.qrc
+    src/assets/fonts.qrc \
+    src/assets/level.qrc
 
 INCLUDEPATH += \
     src/ai \

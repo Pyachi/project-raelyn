@@ -100,13 +100,12 @@ void EntityPlayer::tick(void) {
 
     if (hit) {
       health--;
-			Game::queueEvent([](Game&) { qDebug() << "test"; }, 20);
 			for (int i = 0; i < (((level - 1) * 100) + power) / 2; i++) {
 				Collectable::POWER.spawn(pos(), 50, 5);
 			}
 			power = 0;
 			level = 1;
-      if (health == 0) {
+			if (health == 0) {
         SFX::EXPL_SUPERHEAVY1.play();
         Connection::sendPacket(PACKETPLAYINPLAYERDEATH);
         deleteLater();

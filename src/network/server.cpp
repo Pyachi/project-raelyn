@@ -54,8 +54,8 @@ void Server::handleConnection(void) {
   QTcpSocket* socket = nextPendingConnection();
   sockets.insert(socket);
   connect(socket, &QTcpSocket::readyRead, this, &Server::receivePacket);
-  connect(socket, &QTcpSocket::disconnected, this,
-          &Server::handleDisconnection);
+	connect(
+			socket, &QTcpSocket::disconnected, this, &Server::handleDisconnection);
   Menu::MENU->playerCount.setText("Players Connected: " +
                                   QString::number(sockets.size()));
 }
@@ -97,8 +97,7 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
       Menu::MENU->serverStatus.setText("Status: In Game");
       close();
       sendPacket(PACKETPLAYOUTSTARTGAME);
-      level = &Level::LVL1;
-      level->start();
+			Level::start();
       break;
     case PACKETPLAYINUPDATEPLAYER:
       sendPacket({PACKETPLAYOUTUPDATEPLAYER,
@@ -128,7 +127,7 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
       sendPacket({PACKETPLAYOUTADVANCEPHASE, packet.data}, sender);
       break;
     case PACKETPLAYINRESUMELEVEL:
-      level->resume();
+			Level::resume();
       break;
     default:
       qDebug() << "ERROR: Received OUT Packet!";

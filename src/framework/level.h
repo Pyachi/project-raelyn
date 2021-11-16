@@ -6,12 +6,10 @@
 
 class Level : public QObject {
  public:
-	void start(void);
-	void resume(void);
+	static void start(void);
+	static void resume(void);
 
-	static Level LVL1;
-	static Level LVL2;
-	static Level LVL3;
+	static Level LEVEL;
 
  private:
 	Level(const QString& file);

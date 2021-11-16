@@ -84,6 +84,7 @@ class Game : public QGraphicsView {
   QGraphicsSimpleTextItem power;
 
   bool paused;
+	int age;
   Map<UID, Entity*> entities;
 	List<std::function<void(Game&)> > eventQueue;
 	Map<int, List<std::function<void(Game&)> > > timedEventQueue;

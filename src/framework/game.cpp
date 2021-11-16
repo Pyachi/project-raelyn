@@ -8,6 +8,7 @@
 #include "texture.h"
 #include "user.h"
 #include <QFontDatabase>
+#include "font.h"
 
 Game* Game::GAME = nullptr;
 
@@ -23,7 +24,8 @@ Game::Game(void)
       menuButton("Return to Menu"),
       points(&screen),
       power(&screen),
-			paused(false) {
+			paused(false),
+			age(0) {
   GAME = this;
   setScene(&scene);
 
@@ -57,14 +59,10 @@ Game::Game(void)
     delete this;
   });
 
-  int test = QFontDatabase::addApplicationFont(":/assets/fonts/PressStart.ttf");
-  qDebug() << test;
-  QString family = QFontDatabase::applicationFontFamilies(test).at(0);
-  QFont a(family);
   dead.setBrush(Qt::red);
-  dead.setFont(a);
+	dead.setFont(Font::PRESSSTART);
   dead.setScale(3);
-  dead.setPos(-(dead.boundingRect().center().toPoint() * 5));
+	dead.setPos(-(dead.boundingRect().center().toPoint() * 3));
   dead.setZValue(10);
   dead.hide();
 
@@ -74,12 +72,12 @@ Game::Game(void)
   setFixedSize(size() + QSize(2, 2));
 
   points.setBrush(Qt::white);
-  points.setFont(QFont("Arial", 18));
-  points.setPos({710, 139});
+	points.setFont(Font::PRESSSTART);
+	points.setPos({710, 146});
 
   power.setBrush(Qt::white);
-  power.setFont(QFont("Arial", 18));
-  power.setPos({710, 269});
+	power.setFont(Font::PRESSSTART);
+	power.setPos({710, 276});
 
   timer.start(1000 / 60);
   connect(&timer, &QTimer::timeout, [this]() { this->tick(); });
@@ -88,6 +86,7 @@ Game::Game(void)
 void Game::tick(void) {
   if (paused)
     return;
+	age++;
 	//***************************************************************************
 	// Entity Ticking
 	for (auto entity : entities)
@@ -125,7 +124,16 @@ void Game::tick(void) {
                   QString::number(getPlayer()->power).rightJustified(2, '0') +
                   " / 4.00");
 		points.setText(
-				QString::number(User::getCurrentScore()).rightJustified(12, '0'));
+				QString::number(User::getCurrentScore()).rightJustified(11, '0'));
+	}
+	//***************************************************************************
+	// Game Over Display
+	if (!isPlayerAlive()) {
+		if (age % 120 == 0) {
+			dead.show();
+		} else if (age % 120 == 60) {
+			dead.hide();
+		}
 	}
 	//***************************************************************************
 	// Entity Deletion

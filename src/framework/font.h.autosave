@@ -1,0 +1,23 @@
+#ifndef FONT_H
+#define FONT_H
+
+#include "util.h"
+#include <QFont>
+#include <QFontDatabase>
+
+class Font {
+		Font(const String& file) {
+			QFontDatabase::addApplicationFont(file)
+		}
+		
+		Font(const Font& font) = delete;
+		
+		int id;
+		
+	public:
+		operator QFont() const {
+			
+		}
+};
+
+#endif  // FONT_H
