@@ -32,23 +32,33 @@ class Game : public QGraphicsView {
 
   static QSet<int> getKeys(void) { return GAME->keys; }
   static Map<UID, Entity*>& getEntities(void) { return GAME->entities; }
-  static QGraphicsRectItem& getPlayableArea(void) { return GAME->playableArea; }
+	static QGraphicsRectItem& getPlayableArea(void) { return GAME->playableArea; }
+
   static void addEntity(Entity* entity) {
-    queueEvent([entity]() { GAME->entities.insert({entity->id, entity}); });
+		queueEvent(
+				{[entity](Game& game) { game.entities.insert({entity->id, entity}); }});
   }
-  static void queueEvent(std::function<void(void)> func) {
-    if (GAME == nullptr)
+	static void queueEvent(std::function<void(Game&)> func, int time = 0) {
+		if (GAME == nullptr) {
+			qDebug() << "ERROR: Attempted to queue event before Game exists!";
       return;
-    GAME->eventQueue.push_back(func);
-  }
-  static void queueEventLater(std::function<void(void)> func, int time) {
-    if (GAME == nullptr)
-      return;
-    if (GAME->timedEventQueue.count(time))
-      GAME->timedEventQueue[time].push_back(func);
+		}
+		if (time == 0)
+			GAME->eventQueue.push_back(func);
+		else if (GAME->timedEventQueue.count(time))
+			GAME->timedEventQueue[time].emplace_back(func);
     else
-      GAME->timedEventQueue.insert({time, {func}});
+			GAME->timedEventQueue.insert({time, {func}});
   }
+
+	static Game* get() { return GAME; }
+	static void pause() {
+		if (GAME == nullptr) {
+			qDebug() << "ERROR: Attempted to pause before Game exists!";
+			return;
+		}
+		GAME->paused = true;
+	}
 
  private:
   Game(void);
@@ -74,10 +84,9 @@ class Game : public QGraphicsView {
   QGraphicsSimpleTextItem power;
 
   bool paused;
-  int age;
   Map<UID, Entity*> entities;
-  List<std::function<void(void)>> eventQueue;
-  Map<int, List<std::function<void(void)>>> timedEventQueue;
+	List<std::function<void(Game&)> > eventQueue;
+	Map<int, List<std::function<void(Game&)> > > timedEventQueue;
 
   QSet<int> keys;
 
@@ -96,7 +105,7 @@ class Game : public QGraphicsView {
     QGraphicsView::mouseMoveEvent(e);
   }
 
-  friend class Connection;
+	friend struct Runnable;
 };
 
 #endif  // SCENE_H

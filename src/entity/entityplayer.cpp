@@ -51,8 +51,8 @@ void EntityPlayer::tick(void) {
     fireBullets(character.pattern(this));
     character.shootSound(this).play(3);
     Connection::sendPacket(
-        {PACKETPLAYINFIREBULLETS,
-         QStringList() << QString::number(level) << QString::number(focus)});
+				{PACKETPLAYINFIREBULLETS, QStringList() << QString::number(level)
+																								<< QString::number(focus)});
   }
 
   int dx = 0, dy = 0;
@@ -100,7 +100,7 @@ void EntityPlayer::tick(void) {
 
     if (hit) {
       health--;
-			Game::queueEventLater([]() { qDebug() << "test"; }, 60);
+			Game::queueEvent([](Game&) { qDebug() << "test"; }, 20);
 			for (int i = 0; i < (((level - 1) * 100) + power) / 2; i++) {
 				Collectable::POWER.spawn(pos(), 50, 5);
 			}

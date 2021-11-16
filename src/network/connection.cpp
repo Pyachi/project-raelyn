@@ -32,11 +32,9 @@ bool Connection::create(QString ip, unsigned short port) {
         Menu::MENU->multiplayerMenu.show();
         SFX::DISCONNECT.play();
         destruct();
-        if (Game::GAME == nullptr)
+				if (Game::get() == nullptr)
           return;
-        Game::GAME->paused = true;
-        Game::GAME->popupText.setText("ERROR: Disconnected from Server!");
-        Game::GAME->popup.show();
+				Game::pause();
       }
     });
     return true;
@@ -75,7 +73,8 @@ void Connection::handlePacket(const Packet& packet) {
       Game::create();
       Menu::MENU->close();
       new EntityPlayer(Character::valueOf(User::getCharacter()),
-                       User::getName(), User::getUID());
+											 User::getName(),
+											 User::getUID());
       break;
     case PACKETPLAYOUTPLAYERJOIN:
       Menu::MENU->players.clear();
@@ -90,64 +89,64 @@ void Connection::handlePacket(const Packet& packet) {
       SFX::DISCONNECT.play();
       break;
     case PACKETPLAYOUTUPDATEPLAYER:
-      Game::queueEvent([packet]() {
-        Game::GAME->entities[UID::fromString(packet.data.at(0))]->setPos(
+			Game::queueEvent({[packet](Game& game) {
+				game.getEntities()[UID::fromString(packet.data.at(0))]->setPos(
             {packet.data.at(1).toDouble(), packet.data.at(2).toDouble()});
-      });
+			}});
       break;
     case PACKETPLAYOUTPLAYERDEATH:
-      Game::queueEvent([packet]() {
-        Game::GAME->entities[UID::fromString(packet.data.at(0))]->deleteLater();
-      });
+			Game::queueEvent({[packet](Game& game) {
+				game.getEntities()[UID::fromString(packet.data.at(0))]->deleteLater();
+			}});
       break;
     case PACKETPLAYOUTPLAYERSPAWN:
-      Game::queueEvent([packet]() {
+			Game::queueEvent({[packet](Game&) {
         EntityPlayer* player =
             new EntityPlayer(Character::valueOf(packet.data.at(2).toInt()),
                              packet.data.at(1).toStdString(),
-                             UID::fromString(packet.data.at(0)), ONLINEPLAYER);
+														 UID::fromString(packet.data.at(0)),
+														 ONLINEPLAYER);
         player->setOpacity(0.25);
         player->hitbox.hide();
-      });
+			}});
       break;
     case PACKETPLAYOUTFIREBULLETS:
-      Game::queueEvent([packet]() {
+			Game::queueEvent({[packet](Game& game) {
         EntityPlayer* player = dynamic_cast<EntityPlayer*>(
-            Game::GAME->entities[UID::fromString(packet.data.at(0))]);
+						game.getEntities()[UID::fromString(packet.data.at(0))]);
         player->fireBullets(player->character.pattern(player));
-      });
+			}});
       break;
     case PACKETPLAYOUTSPAWNENEMY:
-      Game::queueEvent([packet]() {
+			Game::queueEvent({[packet](Game&) {
         Enemy::valueOf(packet.data.at(1).toInt())
             .spawn({packet.data.at(2).toDouble(), packet.data.at(3).toDouble()},
                    UID::fromString(packet.data.at(0)));
-      });
+			}});
       break;
     case PACKETPLAYOUTSPAWNBOSS:
-      Game::queueEvent([packet]() {
+			Game::queueEvent({[packet](Game&) {
         Boss::valueOf(packet.data.at(1).toInt())
             .spawn({packet.data.at(2).toDouble(), packet.data.at(3).toDouble()},
                    UID::fromString(packet.data.at(0)));
-      });
+			}});
       break;
     case PACKETPLAYOUTENEMYDEATH:
-      Game::queueEvent([packet]() {
-        if (Game::GAME->entities.count(UID::fromString(packet.data.at(0))))
+			Game::queueEvent({[packet](Game& game) {
+				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
           dynamic_cast<EntityEnemy*>(
-              Game::GAME->entities[UID::fromString(packet.data.at(0))])
-              ->kill();
-      });
+							game.getEntities()[UID::fromString(packet.data.at(0))])->kill();
+			}});
       break;
     case PACKETPLAYOUTPLAYSONG:
       Music::valueOf(packet.data.at(0).toInt()).play();
       break;
     case PACKETPLAYOUTADVANCEPHASE:
-      Game::queueEvent([packet]() {
+			Game::queueEvent({[packet](Game& game) {
         dynamic_cast<EntityBoss*>(
-            Game::GAME->entities[UID::fromString(packet.data.at(0))])
-            ->advancePhase();
-      });
+						game.getEntities()[UID::fromString(packet.data.at(0))])
+						->advancePhase();
+			}});
       break;
     default:
       qDebug() << "ERROR: Received IN Packet!";
