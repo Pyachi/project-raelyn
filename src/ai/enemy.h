@@ -42,18 +42,20 @@ class Enemy {
   static const Enemy DIVER;
   static const Enemy LARGE_SLOW_LEFTTORIGHT;
   static const Enemy LARGE_SLOW_RIGHTTOLEFT;  // ID 10
-  static const Enemy small_fast_RIGHTTOLEFT;
-  static const Enemy small_fast_LEFTTORIGHT;
-  static const Enemy small_fast_TOPDOWNTOLEFT;
-  static const Enemy small_fast_TOPDOWNTORIGHT;
+  static const Enemy SMALL_FAST_RIGHTTOLEFT;
+  static const Enemy SMALL_FAST_LEFTTORIGHT;
+  static const Enemy SMALL_FAST_TOPDOWNTOLEFT;
+  static const Enemy SMALL_FAST_TOPDOWNTORIGHT;
   static const Enemy DART1;
   static const Enemy DART2;
   static const Enemy DART3;
   static const Enemy DART4;
   static const Enemy DART5;
   static const Enemy DART6;  // ID 20
-  static const Enemy SUN;
+  static const Enemy SUNEASY;
   static const Enemy WHEEL;
+  static const Enemy SUN;
+  static const Enemy WHEELEASY;
 };
 
 #endif  // ENEMY_H
