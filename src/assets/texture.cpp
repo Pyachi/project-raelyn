@@ -1,6 +1,6 @@
 #include "texture.h"
 
-Array<Ref<Texture>> Texture::list;
+Array<Ref<Texture> > Texture::list;
 //***************************************************************************
 // Round Bullets
 const Texture Texture::ROUNDRED("assets/textures/round/red.png", 1);
@@ -55,6 +55,8 @@ const Texture Texture::LAZERMAGENTA("assets/textures/lazer/magenta.png", 1);
 // Collectables
 const Texture Texture::POWER("assets/textures/collectables/power.png", 3);
 const Texture Texture::POINTS("assets/textures/collectables/points.png", 3);
+const Texture Texture::HEALTH("assets/textures/collectables/health2.png", 3);
+const Texture Texture::BOMB("assets/textures/collectables/bomb2.png", 3);
 //***************************************************************************
 // Temporary
 const Texture Texture::ENEMYTEMP("assets/textures/enemies/enemy.png", 2);
@@ -69,3 +71,10 @@ const Texture Texture::AERON("assets/textures/players/player.png", 4);
 const Texture Texture::PRYSMA("assets/textures/players/player.png", 4);
 const Texture Texture::ANEKHANDA("assets/textures/players/player.png", 4);
 const Texture Texture::HITBOX("assets/textures/players/player_hitbox.png", 0);
+//***************************************************************************
+// Sidebar
+const Texture Texture::S_HEALTH("assets/textures/collectables/health.png", 10);
+const Texture Texture::S_HEALTH_D("assets/textures/collectables/unhealth2.png",
+																	10);
+const Texture Texture::S_BOMB("assets/textures/collectables/bomb.png", 10);
+const Texture Texture::S_BOMB_D("assets/textures/collectables/unbomb2.png", 10);

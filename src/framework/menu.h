@@ -8,23 +8,31 @@
 #include <QListWidget>
 #include <QPushButton>
 #include "character.h"
+#include "music.h"
 
 class Menu : public QDialog {
  public:
-	static void openMenu(void);
+	static void openMenu(void) {
+		if (MENU == nullptr)
+			MENU = new Menu();
+		MENU->show();
+		Music::MENU.play();
+	}
 
  private:
 	Menu(void);
 
 	static Menu* MENU;
-
+	//***************************************************************************
+	// Widgets
 	QWidget mainMenu;
 	QWidget singleplayerMenu;
 	QWidget multiplayerMenu;
 	QWidget optionsMenu;
 	QWidget lobbyMenu;
 	QWidget serverMenu;
-
+	//***************************************************************************
+	// Layouts
 	QGridLayout layout;
 	QGridLayout mainLayout;
 	QGridLayout singleplayerLayout;
@@ -32,20 +40,19 @@ class Menu : public QDialog {
 	QGridLayout optionsLayout;
 	QGridLayout serverLayout;
 	QGridLayout lobbyLayout;
-
-	QLabel title;
-
+	//***************************************************************************
 	// Main
+	QLabel title;
 	QPushButton singleplayer;
 	QPushButton multiplayer;
 	QPushButton options;
 	QPushButton quit;
-
+	//***************************************************************************
 	// Singleplayer
 	QPushButton playerSingle;
 	QPushButton start;
 	QPushButton backSingleplayer;
-
+	//***************************************************************************
 	// Multiplayer
 	QLineEdit ipForm;
 	QRegExpValidator ipValidator;
@@ -54,7 +61,7 @@ class Menu : public QDialog {
 	QPushButton host;
 	QPushButton join;
 	QPushButton backMultiplayer;
-
+	//***************************************************************************
 	// Options
 	QLabel soundLabel;
 	QSlider soundSlider;
@@ -62,19 +69,19 @@ class Menu : public QDialog {
 	QSlider musicSlider;
 	QPushButton keys;
 	QPushButton backOptions;
-
+	//***************************************************************************
 	// Server
 	QLabel connectionInfo;
 	QLabel serverStatus;
 	QLabel playerCount;
 	QPushButton backServer;
-
+	//***************************************************************************
 	// Lobby
 	QListWidget players;
 	QPushButton playerLobby;
 	QPushButton startLobby;
 	QPushButton backLobby;
-
+	//***************************************************************************
 	friend class Connection;
 	friend class Server;
 };

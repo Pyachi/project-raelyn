@@ -18,22 +18,12 @@ class EntityPlayer : public Entity {
   const Character& character;
   bool focus;
   int level;
-	int power;
-
-	void addPower(void) {
-		if (level != 4)
-			power++;
-		else
-			User::addCurrentScore(500);
-	}
+	int invFrames;
 
  private:
   QGraphicsSimpleTextItem display;
-  String name;
+	const String name;
   bool firing;
-
-  int health;
-  int invFrames;
 };
 
 #endif  // ENTITYPLAYER_H

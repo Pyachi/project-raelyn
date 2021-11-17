@@ -20,6 +20,11 @@ void Level::start(void) {
 	LEVEL.timer.start(1000 / 20);
 }
 
+void Level::stop(void) {
+	LEVEL.instructions.clear();
+	LEVEL.timer.stop();
+}
+
 void Level::resume(void) { LEVEL.waitTimer = 0; }
 
 void Level::iterate(void) {

@@ -8,13 +8,13 @@ class EntityPlayer;
 class Texture;
 
 class Collectable {
-  Collectable(const Texture& tex, const AI<EntityPlayer>& ai)
+	Collectable(const Texture& tex, const std::function<void(void)> ai)
       : tex(tex), ai(ai) {}
 
   Collectable(const Collectable& col) = delete;
 
   const Texture& tex;
-  const AI<EntityPlayer> ai;
+	const std::function<void(void)> ai;
 
  public:
 	EntityCollectable* spawn(const QPointF& loc,

@@ -7,6 +7,7 @@
 class Level : public QObject {
  public:
 	static void start(void);
+	static void stop(void);
 	static void resume(void);
 
 	static Level LEVEL;

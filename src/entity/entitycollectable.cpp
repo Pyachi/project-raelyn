@@ -3,11 +3,11 @@
 #include "game.h"
 
 EntityCollectable::EntityCollectable(const Texture& tex,
-																		 const AI<EntityPlayer>& ai,
+																		 const std::function<void(void)>& ai,
 																		 int force)
 		: Entity(COLLECTABLE, tex),
-			horz((Random::getFloat(2) - 1) * force),
-			vert(((Random::getFloat(2) - 1) * -force) - 2),
+			horz((Random::getDouble(2) - 1) * force),
+			vert(((Random::getDouble(2) - 1) * -force) - 2),
 			onPickup(ai),
 			indicator(Texture::ARROWRED, this) {
 	setOpacity(0.5);
@@ -27,17 +27,16 @@ void EntityCollectable::tick(void) {
 		rotate(18);
 		moveBy(horz, vert);
 	}
-	if (age > 60) {
+	if (age > 60 && Game::playerAlive()) {
 		EntityPlayer* player = Game::getPlayer();
-		if (player != nullptr && (player->distanceSquared(this) < 150 * 150 ||
-															player->pos().y() < -200)) {
+		if (player->distanceSquared(this) < 150 * 150 || player->pos().y() < -200) {
 			moveTowardsPoint(player->pos(), 15);
 			horz = 0;
 			vert = 0;
 		} else
 			moveBy(horz, vert);
 		if (collidesWithItem(player)) {
-			onPickup(player);
+			onPickup();
 			deleteLater();
 		}
 	} else

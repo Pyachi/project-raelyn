@@ -32,8 +32,6 @@ bool Connection::create(QString ip, unsigned short port) {
         Menu::MENU->multiplayerMenu.show();
         SFX::DISCONNECT.play();
         destruct();
-				if (Game::get() == nullptr)
-          return;
 				Game::pause();
       }
     });
@@ -96,7 +94,10 @@ void Connection::handlePacket(const Packet& packet) {
       break;
     case PACKETPLAYOUTPLAYERDEATH:
 			Game::queueEvent({[packet](Game& game) {
-				game.getEntities()[UID::fromString(packet.data.at(0))]->deleteLater();
+				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
+					game.getEntities()
+							.at(UID::fromString(packet.data.at(0)))
+							->deleteLater();
 			}});
       break;
     case PACKETPLAYOUTPLAYERSPAWN:
@@ -113,7 +114,8 @@ void Connection::handlePacket(const Packet& packet) {
     case PACKETPLAYOUTFIREBULLETS:
 			Game::queueEvent({[packet](Game& game) {
         EntityPlayer* player = dynamic_cast<EntityPlayer*>(
-						game.getEntities()[UID::fromString(packet.data.at(0))]);
+						game.getEntities().at(UID::fromString(packet.data.at(0))));
+				player->focus = packet.data.at(1).toInt();
         player->fireBullets(player->character.pattern(player));
 			}});
       break;
@@ -148,8 +150,20 @@ void Connection::handlePacket(const Packet& packet) {
 						->advancePhase();
 			}});
       break;
-    default:
-      qDebug() << "ERROR: Received IN Packet!";
+		case PACKETPLAYOUTTAKEDAMAGE:
+			Game::queueEvent({[packet](Game& game) {
+				dynamic_cast<EntityPlayer*>(game.getEntities().at(UID::fromString(
+																				packet.data.at(0))))->invFrames = 100;
+			}});
+			break;
+		case PACKETPLAYOUTLEVELUP:
+			Game::queueEvent({[packet](Game& game) {
+				dynamic_cast<EntityPlayer*>(
+						game.getEntities().at(UID::fromString(packet.data.at(0))))->level++;
+			}});
+			break;
+		default:
+			qDebug() << "ERROR: Received IN Packet!";
       break;
   }
 }

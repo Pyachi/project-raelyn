@@ -8,13 +8,13 @@ class EntityPlayer;
 class EntityCollectable : public Entity {
  public:
 	EntityCollectable(const Texture& tex,
-										const AI<EntityPlayer>& onPickup,
+										const std::function<void(void)>& onPickup,
 										int force = 1);
 
  private:
-	float horz;
-	float vert;
-	const AI<EntityPlayer> onPickup;
+	double horz;
+	double vert;
+	const std::function<void(void)> onPickup;
 	QGraphicsPixmapItem indicator;
 
 	void tick(void) override;

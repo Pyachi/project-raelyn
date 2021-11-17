@@ -5,7 +5,7 @@
 #include "util.h"
 
 class Texture {
-  static Array<Ref<Texture>> list;
+	static Array<Ref<Texture> > list;
 
   Texture(const String& file, int zValue)
       : index(list.size()), file(file), zValue(zValue) {
@@ -25,7 +25,7 @@ class Texture {
   };
 
   static const Texture& valueOf(int i) { return list[i]; }
-  static const Array<Ref<Texture>>& values() { return list; }
+	static const Array<Ref<Texture> >& values() { return list; }
 
   //***************************************************************************
   // Round Bullets
@@ -81,6 +81,8 @@ class Texture {
   // Collectables
   static const Texture POWER;
   static const Texture POINTS;
+	static const Texture HEALTH;
+	static const Texture BOMB;
   //***************************************************************************
   // Temporary
   static const Texture ENEMYTEMP;
@@ -95,6 +97,12 @@ class Texture {
   static const Texture PRYSMA;
   static const Texture ANEKHANDA;
   static const Texture HITBOX;
+	//***************************************************************************
+	// Sidebar
+	static const Texture S_HEALTH;
+	static const Texture S_HEALTH_D;
+	static const Texture S_BOMB;
+	static const Texture S_BOMB_D;
 };
 
 #endif  // TEXTURES_H

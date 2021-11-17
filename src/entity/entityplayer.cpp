@@ -17,13 +17,11 @@ EntityPlayer::EntityPlayer(const Character& character,
       hitbox(Texture::HITBOX, this),
       character(character),
       focus(false),
-      level(3),
+			level(1),
+			invFrames(0),
       display(QString::fromStdString(user), this),
-      name(user),
-      firing(false),
-      power(0),
-      health(3),
-      invFrames(0) {
+			name(user),
+			firing(false) {
   hitbox.setOffset(-hitbox.boundingRect().center());
   setRotation(180);
   if (type == PLAYER)
@@ -35,6 +33,16 @@ EntityPlayer::EntityPlayer(const Character& character,
 
 void EntityPlayer::tick(void) {
   age++;
+	if (invFrames != 0) {
+		int flashTime = invFrames < 40 ? 5 : 10;
+		if (cycle(flashTime, 1))
+			setOpacity(0);
+		else if (cycle(flashTime, flashTime / 2))
+			setOpacity(type == ONLINEPLAYER ? 0.25 : 1);
+		invFrames--;
+		if (invFrames == 0)
+			setOpacity(type == ONLINEPLAYER ? 0.25 : 1);
+	}
   if (type != PLAYER)
     return;
   QSet<int> keys = Game::getKeys();
@@ -51,8 +59,7 @@ void EntityPlayer::tick(void) {
     fireBullets(character.pattern(this));
     character.shootSound(this).play(3);
     Connection::sendPacket(
-        {PACKETPLAYINFIREBULLETS, QStringList() << QString::number(level)
-                                                << QString::number(focus)});
+				{PACKETPLAYINFIREBULLETS, QStringList() << QString::number(focus)});
   }
 
   int dx = 0, dy = 0;
@@ -60,7 +67,7 @@ void EntityPlayer::tick(void) {
   if (keys.contains(User::getKeyRight()))
     dx += speed;
   if (keys.contains(User::getKeyLeft()))
-    dx -= speed;
+		dx -= speed;
   if (keys.contains(User::getKeyDown()))
     dy += speed;
   if (keys.contains(User::getKeyUp()))
@@ -76,13 +83,6 @@ void EntityPlayer::tick(void) {
                                           << QString::number(pos().y())});
   }
 
-  if (power >= 100 && level != 4) {
-    SFX::POWERUP1.play();
-    level++;
-    if (level != 4)
-      power = 0;
-  }
-
   if (invFrames == 0) {
     bool hit = false;
     for (QGraphicsItem* entity : hitbox.collidingItems()) {
@@ -96,32 +96,11 @@ void EntityPlayer::tick(void) {
           hit = true;
           break;
         }
-    }
-
+		}
     if (hit) {
-      health--;
-      for (int i = 0; i < (((level - 1) * 100) + power) / 2; i++) {
-        Collectable::POWER.spawn(pos(), 50, 5);
-      }
-      power = 0;
+			Game::takeDamage();
       level = 1;
-      if (health == 0) {
-        SFX::EXPL_SUPERHEAVY1.play();
-        Connection::sendPacket(PACKETPLAYINPLAYERDEATH);
-        deleteLater();
-      } else {
-        invFrames = 100;
-        SFX::HIT1.play();
-      }
+			invFrames = 100;
     }
-  } else {
-    int flashTime = invFrames < 40 ? 5 : 10;
-    if (cycle(flashTime, 1))
-      setOpacity(0);
-    else if (cycle(flashTime, flashTime / 2))
-      setOpacity(1);
-    invFrames--;
-    if (invFrames == 0)
-      setOpacity(1);
-  }
+	}
 }

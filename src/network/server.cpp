@@ -27,6 +27,7 @@ void Server::destruct(void) {
   if (SER == nullptr)
     return;
   SER->deleteLater();
+	Level::stop();
   SER = nullptr;
 }
 
@@ -73,6 +74,7 @@ void Server::handleDisconnection(void) {
   sendPacket({PACKETPLAYOUTPLAYERLEAVE, names.values()});
   if (sockets.size() == 0 && !isListening()) {
     Menu::MENU->serverStatus.setText("Status: In Lobby");
+		Level::stop();
     listen(QHostAddress::Any, Menu::MENU->portForm.text().toUShort());
   }
 }
@@ -129,6 +131,16 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
     case PACKETPLAYINRESUMELEVEL:
 			Level::resume();
       break;
+		case PACKETPLAYINTAKEDAMAGE:
+			sendPacket(
+					{PACKETPLAYOUTTAKEDAMAGE, QStringList() << users[sender].toString()},
+					sender);
+			break;
+		case PACKETPLAYINLEVELUP:
+			sendPacket(
+					{PACKETPLAYINLEVELUP, QStringList() << users[sender].toString()},
+					sender);
+			break;
     default:
       qDebug() << "ERROR: Received OUT Packet!";
       break;

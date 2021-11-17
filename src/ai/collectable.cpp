@@ -4,6 +4,7 @@
 #include "sfx.h"
 #include "texture.h"
 #include "user.h"
+#include "game.h"
 
 EntityCollectable* Collectable::spawn(const QPointF& loc,
 																			int maxDis,
@@ -20,23 +21,22 @@ EntityCollectable* Collectable::spawn(const QPointF& loc,
   return col;
 }
 
-const Collectable Collectable::POWER(Texture::POWER, [](EntityPlayer* player) {
-  player->addPower();
+const Collectable Collectable::POWER(Texture::POWER, []() {
+	Game::gainPower();
   SFX::COLLECT1.play(10);
 });
 
-const Collectable Collectable::POINTS(Texture::POINTS,
-                                      [](EntityPlayer* player) {
-                                        User::addCurrentScore(200);
-                                        SFX::COLLECT3.play(10);
-                                      });
+const Collectable Collectable::POINTS(Texture::POINTS, []() {
+	User::addCurrentScore(200);
+	SFX::COLLECT3.play(10);
+});
 
-const Collectable Collectable::HEALTH(Texture::ENEMYTEMP,
-                                      [](EntityPlayer* player) {
-                                        SFX::COLLECT3.play(10);
-                                      });
+const Collectable Collectable::HEALTH(Texture::HEALTH, []() {
+	SFX::POWERUP2.play(10);
+	Game::gainHealth();
+});
 
-const Collectable Collectable::BOMB(Texture::ENEMYTEMP,
-                                    [](EntityPlayer* player) {
-                                      SFX::COLLECT3.play(10);
-                                    });
+const Collectable Collectable::BOMB(Texture::BOMB, []() {
+	SFX::POWERUP3.play(10);
+	Game::gainBomb();
+});

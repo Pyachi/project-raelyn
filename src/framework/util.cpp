@@ -3,8 +3,9 @@
 
 namespace Random {
 namespace {
-std::mt19937 randGen(static_cast<unsigned long>(
-    std::chrono::steady_clock::now().time_since_epoch().count()));
+std::mt19937 randGen(static_cast<unsigned long>(std::chrono::steady_clock::now()
+																										.time_since_epoch()
+																										.count()));
 }
 
 int getInt(void) {
@@ -18,9 +19,9 @@ int getInt(int max) {
 	return i % max;
 }
 
-float getFloat(float max) {
+double getDouble(double max) {
 	int i = static_cast<int>(randGen());
 	i = i < 0 ? -i : i;
-	return static_cast<float>(i) / static_cast<float>(INT_MAX / max);
+	return static_cast<double>(i) / static_cast<double>(INT_MAX / max);
 }
 }  // namespace Random
