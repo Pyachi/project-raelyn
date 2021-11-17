@@ -47,8 +47,8 @@ void EntityPlayer::tick(void) {
     return;
   QSet<int> keys = Game::getKeys();
 
-  firing = keys.contains(User::getKeyShoot());
-  focus = keys.contains(User::getKeyFocus());
+	firing = keys.contains(User::getControls().getKeyShoot());
+	focus = keys.contains(User::getControls().getKeyFocus());
 
   if (focus)
     hitbox.setOpacity(1);
@@ -64,13 +64,13 @@ void EntityPlayer::tick(void) {
 
   int dx = 0, dy = 0;
   int speed = focus ? character.focusSpeed : character.speed;
-  if (keys.contains(User::getKeyRight()))
+	if (keys.contains(User::getControls().getKeyRight()))
     dx += speed;
-  if (keys.contains(User::getKeyLeft()))
+	if (keys.contains(User::getControls().getKeyLeft()))
 		dx -= speed;
-  if (keys.contains(User::getKeyDown()))
+	if (keys.contains(User::getControls().getKeyDown()))
     dy += speed;
-  if (keys.contains(User::getKeyUp()))
+	if (keys.contains(User::getControls().getKeyUp()))
     dy -= speed;
   if (dx != 0 && dy != 0) {
     dx /= sqrt(2);

@@ -36,6 +36,7 @@ SOURCES += \
     src/entity/entitycollectable.cpp \
     src/entity/entityenemy.cpp \
     src/entity/entityplayer.cpp \
+    src/framework/controls.cpp \
     src/framework/game.cpp \
     src/framework/level.cpp \
     src/framework/menu.cpp \
@@ -65,6 +66,7 @@ HEADERS += \
     src/entity/entitycollectable.h \
     src/entity/entityenemy.h \
     src/entity/entityplayer.h \
+    src/framework/controls.h \
     src/framework/game.h \
     src/framework/level.h \
     src/framework/menu.h \

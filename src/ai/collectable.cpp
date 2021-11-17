@@ -27,7 +27,7 @@ const Collectable Collectable::POWER(Texture::POWER, []() {
 });
 
 const Collectable Collectable::POINTS(Texture::POINTS, []() {
-	User::addCurrentScore(200);
+	User::addScore(200);
 	SFX::COLLECT3.play(10);
 });
 

@@ -41,13 +41,9 @@ class Character {
 
   operator int() const { return index; }
   operator String() const { return name; }
+	operator QString() const { return QString::fromStdString(name); }
 
   static const Character& valueOf(int i) { return list[i]; }
-  static const Character& valueOf(const String& name) {
-    for (Character& chara : list)
-      if (chara.name == name)
-        return chara;
-  }
   static const Array<Ref<Character> >& values() { return list; }
 
   static const Character PYACHI;

@@ -25,7 +25,7 @@ void EntityEnemy::tick(void) {
   for (EntityBullet* bullet : bullets) {
     SFX::EXPL_LIGHT1.play(10);
     health -= bullet->damage;
-		User::addCurrentScore(bullet->damage);
+		User::addScore(bullet->damage);
     bullet->deleteLater();
     if (health <= 0) {
       kill();

@@ -1,13 +1,14 @@
 #ifndef USER_H
 #define USER_H
 
+#include <QVector>
 #include "character.h"
+#include "controls.h"
+#include "database_api.h"
 #include "music.h"
+#include "scoreboard.h"
 #include "uid.h"
 #include "util.h"
-#include "database_api.h"
-#include "scoreboard.h"
-#include <QVector>
 
 class User {
   static User* USER;
@@ -18,19 +19,16 @@ class User {
   String ip;
   UID uid;
 
-  String character;
-  Array<int> controls;
-
+	const Character* character;
+	const Controls* controls;
   int soundVol;
   int musicVol;
 
-  int currentScore = 0;
-
+	int score = 0;
 
   QVector<Scoreboard*> masterBoard;
   Array<QString> ScoreLevels = {"hello"};
-    int lenLevels = 1;
-
+	int lenLevels = 1;
 
  public:
   static void create(void) {
@@ -43,20 +41,13 @@ class User {
   static const String& getIP(void) { return USER->ip; }
   static const UID& getUID(void) { return USER->uid; }
 
-  static const String& getCharacter(void) { return USER->character; }
-  static void setCharacter(const String& character) {
-    USER->character = character;
+	static const Character& getCharacter(void) { return *USER->character; }
+	static void setCharacter(const Character& character) {
+		USER->character = &character;
   }
-  static int getKeyUp(void) { return USER->controls[0]; }
-  static int getKeyLeft(void) { return USER->controls[1]; }
-  static int getKeyDown(void) { return USER->controls[2]; }
-  static int getKeyRight(void) { return USER->controls[3]; }
-  static int getKeyFocus(void) { return USER->controls[4]; }
-  static int getKeyShoot(void) { return USER->controls[5]; }
-  static int getKeyBomb(void) { return USER->controls[6]; }
-  static const Array<int>& getControls(void) { return USER->controls; }
-  static void setControls(const Array<int>& controls) {
-    USER->controls = controls;
+	static const Controls& getControls(void) { return *USER->controls; }
+	static void setControls(const Controls& controls) {
+		USER->controls = &controls;
   }
   static int getSoundVol(void) { return USER->soundVol; }
   static void setSoundVol(int vol) { USER->soundVol = vol; }
@@ -65,11 +56,11 @@ class User {
     USER->musicVol = vol;
     Music::changeVolume(vol);
   }
-  static int getCurrentScore(void) { return USER->currentScore; }
-  static void addCurrentScore(int score) { USER->currentScore += score; }
-  static void resetCurrentScore(void) { USER->currentScore = 0; }
-//  static const Array<int>& getHighScores(void) { return USER->highScores; }
-//  static void addHighScore(int score) { USER->highScores.push_back(score); }
+	static int getScore(void) { return USER->score; }
+	static void addScore(int score) { USER->score += score; }
+	static void resetScore(void) { USER->score = 0; }
+	//  static const Array<int>& getHighScores(void) { return USER->highScores; }
+	//  static void addHighScore(int score) { USER->highScores.push_back(score); }
 };
 
 #endif  // USER_H

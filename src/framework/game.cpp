@@ -123,7 +123,7 @@ void Game::tick(void) {
 	//***************************************************************************
 	// Sidebar Display
 	points.setText(
-			QString::number(User::getCurrentScore()).rightJustified(11, '0'));
+			QString::number(User::getScore()).rightJustified(11, '0'));
 	if (playerAlive()) {
 		powerDisplay.setText(QString::number(getPlayer()->level) + "." +
 												 QString::number(power).rightJustified(2, '0') +
@@ -250,7 +250,7 @@ void Game::gainHealth(void) {
 		return;
 	}
 	if (GAME->health == 7) {
-		User::addCurrentScore(200000);
+		User::addScore(200000);
 		return;
 	}
 	GAME->healthDisplay.at(GAME->health)->setPixmap(Texture::S_HEALTH);
@@ -263,7 +263,7 @@ void Game::gainBomb(void) {
 		return;
 	}
 	if (GAME->bombs == 7) {
-		User::addCurrentScore(100000);
+		User::addScore(100000);
 		return;
 	}
 	GAME->bombsDisplay.at(GAME->bombs)->setPixmap(Texture::S_BOMB);
@@ -276,7 +276,7 @@ void Game::gainPower(void) {
 		return;
 	}
 	if (getPlayer()->level == 4) {
-		User::addCurrentScore(500);
+		User::addScore(500);
 		return;
 	}
 	GAME->power++;

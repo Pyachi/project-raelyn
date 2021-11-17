@@ -1,5 +1,6 @@
 #include "menu.h"
 #include "connection.h"
+#include "controls.h"
 #include "music.h"
 #include "packet.h"
 #include "server.h"
@@ -15,7 +16,7 @@ Menu::Menu(void)
       multiplayer("Multiplayer"),
       options("Options"),
       quit("Quit"),
-      playerSingle("Character: Pyachi"),
+			playerSingle(User::getCharacter()),
       start("Start Game"),
       backSingleplayer("Return to Menu"),
       ipForm("127.0.0.1"),
@@ -31,12 +32,12 @@ Menu::Menu(void)
       soundSlider(Qt::Horizontal),
       musicLabel("Music Volume:"),
       musicSlider(Qt::Horizontal),
-      keys("Controls: Traditional"),
+			keys(User::getControls()),
       backOptions("Return to Menu"),
       serverStatus("Status: In Lobby"),
       playerCount("Players Connected: 0"),
       backServer("Return to Menu"),
-      playerLobby("Character: Pyachi"),
+			playerLobby(User::getCharacter()),
       startLobby("Start Game"),
       backLobby("Return to Menu") {
   setLayout(&layout);
@@ -186,19 +187,19 @@ Menu::Menu(void)
 					[this]() { User::setMusicVol(musicSlider.value() * 20); });
   connect(&keys, &QPushButton::pressed, [this]() {
     SFX::SELECT1.play(25);
-    if (User::getKeyUp() == Qt::Key_Up) {
-      keys.setText("Controls: WASD");
-			User::setControls({Qt::Key_W, Qt::Key_A, Qt::Key_S, Qt::Key_D, Qt::Key_L,
-												 Qt::Key_K, Qt::Key_J});
-    } else if (User::getKeyUp() == Qt::Key_W) {
-      keys.setText("Controls: IJKL");
-			User::setControls({Qt::Key_I, Qt::Key_J, Qt::Key_K, Qt::Key_L, Qt::Key_A,
-												 Qt::Key_S, Qt::Key_D});
-    } else if (User::getKeyUp() == Qt::Key_I) {
-      keys.setText("Controls: Traditional");
-			User::setControls({Qt::Key_Up, Qt::Key_Left, Qt::Key_Down, Qt::Key_Right,
-												 Qt::Key_Shift, Qt::Key_Z, Qt::Key_X});
-    }
+		switch (User::getControls()) {
+			case 0:
+				keys.setText(Controls::WASD);
+				User::setControls(Controls::WASD);
+				break;
+			case 1:
+				keys.setText(Controls::IJKL);
+				User::setControls(Controls::IJKL);
+				break;
+			case 2:
+				keys.setText(Controls::TRAD);
+				User::setControls(Controls::TRAD);
+		}
   });
   connect(&backOptions, &QPushButton::clicked, [this]() {
     optionsMenu.hide();
@@ -227,31 +228,27 @@ Menu::Menu(void)
   lobbyLayout.addWidget(&startLobby, 3, 1, 1, -1);
   lobbyLayout.addWidget(&backLobby, 4, 1, 1, -1);
   connect(&playerLobby, &QPushButton::clicked, [this]() {
-    switch (Character::valueOf(User::getCharacter())) {
-      case 0:
+		SFX::SELECT1.play(25);
+		switch (User::getCharacter()) {
+			case 0:
         User::setCharacter(Character::AERON);
-        playerSingle.setText("Character: Aeron");
-        playerLobby.setText("Character: Aeron");
-        SFX::SELECT1.play(25);
+				playerSingle.setText(Character::AERON);
+				playerLobby.setText(Character::AERON);
         break;
       case 1:
         User::setCharacter(Character::PRYSMA);
-        playerSingle.setText("Character: Prysma");
-        playerLobby.setText("Character: Prysma");
-        SFX::SELECT1.play(25);
+				playerSingle.setText(Character::PRYSMA);
+				playerLobby.setText(Character::PRYSMA);
         break;
       case 2:
         User::setCharacter(Character::ANEKHANDA);
-        playerSingle.setText("Character: Anekhanda");
-        playerLobby.setText("Character: Anekhanda");
-        SFX::SELECT1.play(25);
+				playerSingle.setText(Character::ANEKHANDA);
+				playerLobby.setText(Character::ANEKHANDA);
         break;
       case 3:
         User::setCharacter(Character::PYACHI);
-        playerSingle.setText("Character: Pyachi");
-        playerLobby.setText("Character: Pyachi");
-        SFX::SELECT1.play(25);
-        break;
+				playerSingle.setText(Character::PYACHI);
+				playerLobby.setText(Character::PYACHI);
     }
   });
 	connect(&startLobby, &QPushButton::clicked,

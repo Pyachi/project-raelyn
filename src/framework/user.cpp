@@ -8,11 +8,10 @@ User* User::USER = nullptr;
 
 User::User()
     : name(QDir::homePath().split('/').last().toStdString()),
-      character(Character::PYACHI.name),
-      controls({Qt::Key_Up, Qt::Key_Left, Qt::Key_Down, Qt::Key_Right,
-                Qt::Key_Shift, Qt::Key_Z, Qt::Key_X}),
-      soundVol(100),
-      musicVol(100) {
+			character(&Character::PYACHI),
+			controls(&Controls::TRAD),
+			soundVol(100),
+			musicVol(100) {
   for (const QHostAddress& address : QNetworkInterface::allAddresses()) {
     if (address.protocol() == QAbstractSocket::IPv4Protocol &&
         address.isLoopback() == false) {
@@ -64,11 +63,13 @@ User::User()
   holder->Show_Scoreboard();
 
   qDebug() << "Create settings table :";
-  qDebug() << dataAPI.create_settings_table(soundVol, musicVol, controls);
+	qDebug() << dataAPI.create_settings_table(soundVol, musicVol, *controls,
+																						*character);
 
   soundVol = dataAPI.get_SFX();
   musicVol = dataAPI.get_music();
-  controls = dataAPI.get_controls(controls);
+	controls = &Controls::valueOf(dataAPI.get_controls());
+	character = &Character::valueOf(dataAPI.getCharacter());
 
   //        for( int i = 0; i < lenLevels; i++)
   //        {
@@ -81,7 +82,7 @@ User::User()
 		database_API dataAPI;
 		dataAPI.start_connection("SQLITE");
 		dataAPI.update_settings(User::getSoundVol(), User::getMusicVol(),
-														User::getControls());
+														User::getControls(), User::getCharacter());
 		dataAPI.close_database();
 	});
 }
