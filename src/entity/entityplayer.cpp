@@ -17,7 +17,7 @@ EntityPlayer::EntityPlayer(const Character& character,
       hitbox(Texture::HITBOX, this),
       character(character),
       focus(false),
-			level(1),
+      level(3),
       display(QString::fromStdString(user), this),
       name(user),
       firing(false),
@@ -51,8 +51,8 @@ void EntityPlayer::tick(void) {
     fireBullets(character.pattern(this));
     character.shootSound(this).play(3);
     Connection::sendPacket(
-				{PACKETPLAYINFIREBULLETS, QStringList() << QString::number(level)
-																								<< QString::number(focus)});
+        {PACKETPLAYINFIREBULLETS, QStringList() << QString::number(level)
+                                                << QString::number(focus)});
   }
 
   int dx = 0, dy = 0;
@@ -86,26 +86,26 @@ void EntityPlayer::tick(void) {
   if (invFrames == 0) {
     bool hit = false;
     for (QGraphicsItem* entity : hitbox.collidingItems()) {
-			if (dynamic_cast<EntityEnemy*>(entity) ||
-					dynamic_cast<EntityBoss*>(entity)) {
-				hit = true;
-				break;
-			}
+      if (dynamic_cast<EntityEnemy*>(entity) ||
+          dynamic_cast<EntityBoss*>(entity)) {
+        hit = true;
+        break;
+      }
       if (EntityBullet* bullet = dynamic_cast<EntityBullet*>(entity))
-				if (bullet->ownerType == ENEMY || bullet->ownerType == BULLET) {
+        if (bullet->ownerType == ENEMY || bullet->ownerType == BULLET) {
           hit = true;
-					break;
-				}
+          break;
+        }
     }
 
     if (hit) {
       health--;
-			for (int i = 0; i < (((level - 1) * 100) + power) / 2; i++) {
-				Collectable::POWER.spawn(pos(), 50, 5);
-			}
-			power = 0;
-			level = 1;
-			if (health == 0) {
+      for (int i = 0; i < (((level - 1) * 100) + power) / 2; i++) {
+        Collectable::POWER.spawn(pos(), 50, 5);
+      }
+      power = 0;
+      level = 1;
+      if (health == 0) {
         SFX::EXPL_SUPERHEAVY1.play();
         Connection::sendPacket(PACKETPLAYINPLAYERDEATH);
         deleteLater();
