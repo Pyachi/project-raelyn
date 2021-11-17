@@ -5,6 +5,9 @@
 #include "music.h"
 #include "uid.h"
 #include "util.h"
+#include "database_api.h"
+#include "scoreboard.h"
+#include <QVector>
 
 class User {
   static User* USER;
@@ -22,7 +25,12 @@ class User {
   int musicVol;
 
   int currentScore = 0;
-  Array<int> highScores;
+
+
+  QVector<Scoreboard*> masterBoard;
+  Array<QString> ScoreLevels = {"hello"};
+    int lenLevels = 1;
+
 
  public:
   static void create(void) {
@@ -51,17 +59,17 @@ class User {
     USER->controls = controls;
   }
   static int getSoundVol(void) { return USER->soundVol; }
-  static void setSoundVol(float vol) { USER->soundVol = vol; }
+  static void setSoundVol(int vol) { USER->soundVol = vol; }
   static int getMusicVol(void) { return USER->musicVol; }
-  static void setMusicVol(float vol) {
+  static void setMusicVol(int vol) {
     USER->musicVol = vol;
     Music::changeVolume(vol);
   }
   static int getCurrentScore(void) { return USER->currentScore; }
   static void addCurrentScore(int score) { USER->currentScore += score; }
   static void resetCurrentScore(void) { USER->currentScore = 0; }
-  static const Array<int>& getHighScores(void) { return USER->highScores; }
-  static void addHighScore(int score) { USER->highScores.push_back(score); }
+//  static const Array<int>& getHighScores(void) { return USER->highScores; }
+//  static void addHighScore(int score) { USER->highScores.push_back(score); }
 };
 
 #endif  // USER_H
