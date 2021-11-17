@@ -63,10 +63,8 @@ User::User()
   qDebug() << "--Returned Table: ";
   holder->Show_Scoreboard();
 
-
   qDebug() << "Create settings table :";
   qDebug() << dataAPI.create_settings_table(soundVol, musicVol, controls);
-
 
   soundVol = dataAPI.get_SFX();
   musicVol = dataAPI.get_music();
@@ -78,4 +76,12 @@ User::User()
   //        }
 
   dataAPI.close_database();
+
+	atexit([]() {
+		database_API dataAPI;
+		dataAPI.start_connection("SQLITE");
+		dataAPI.update_settings(User::getSoundVol(), User::getMusicVol(),
+														User::getControls());
+		dataAPI.close_database();
+	});
 }
