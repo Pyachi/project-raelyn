@@ -23,11 +23,11 @@ public:
 
     bool update_database(QString name, Scoreboard *score);
     bool create_level_table(QString level);
-    bool create_settings_table(float SFX, float music, Array<int> controls);
-    void update_settings(float SFX, float music, Array<int> controls);
-    float get_SFX();
-    float get_music();
-    void get_controls(Array<int> controls);
+    bool create_settings_table(int SFX, int music, Array<int> controls);
+    void update_settings(int SFX, int music, Array<int> controls);
+    int get_SFX();
+    int get_music();
+    Array<int> get_controls(Array<int> controls);
     void close_database();
 
 

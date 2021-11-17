@@ -21,13 +21,16 @@ class User {
   String character;
   Array<int> controls;
 
-  float soundVol;
-  float musicVol;
+  int soundVol;
+  int musicVol;
 
   int currentScore = 0;
-  Array<int> highScores;
 
-  QVector<Scoreboard> masterBoard;
+
+  QVector<Scoreboard*> masterBoard;
+  Array<QString> ScoreLevels = {"hello"};
+    int lenLevels = 1;
+
 
  public:
   static void create(void) {
@@ -55,18 +58,18 @@ class User {
   static void setControls(const Array<int>& controls) {
     USER->controls = controls;
   }
-  static float getSoundVol(void) { return USER->soundVol; }
-  static void setSoundVol(float vol) { USER->soundVol = vol; }
-  static float getMusicVol(void) { return USER->musicVol; }
-  static void setMusicVol(float vol) {
+  static int getSoundVol(void) { return USER->soundVol; }
+  static void setSoundVol(int vol) { USER->soundVol = vol; }
+  static int getMusicVol(void) { return USER->musicVol; }
+  static void setMusicVol(int vol) {
     USER->musicVol = vol;
     Music::changeVolume(vol);
   }
   static int getCurrentScore(void) { return USER->currentScore; }
   static void addCurrentScore(int score) { USER->currentScore += score; }
   static void resetCurrentScore(void) { USER->currentScore = 0; }
-  static const Array<int>& getHighScores(void) { return USER->highScores; }
-  static void addHighScore(int score) { USER->highScores.push_back(score); }
+//  static const Array<int>& getHighScores(void) { return USER->highScores; }
+//  static void addHighScore(int score) { USER->highScores.push_back(score); }
 };
 
 #endif  // USER_H
