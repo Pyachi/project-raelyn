@@ -63,8 +63,10 @@ User::User()
   qDebug() << "--Returned Table: ";
   holder->Show_Scoreboard();
 
+
   qDebug() << "Create settings table :";
   qDebug() << dataAPI.create_settings_table(soundVol, musicVol, controls);
+
 
   soundVol = dataAPI.get_SFX();
   musicVol = dataAPI.get_music();
