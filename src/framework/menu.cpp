@@ -171,11 +171,11 @@ Menu::Menu(void)
   optionsLayout.addWidget(&soundLabel, 1, 1, 1, -1);
   optionsLayout.addWidget(&soundSlider, 2, 1, 1, -1);
   soundSlider.setMaximum(5);
-  soundSlider.setValue(5);
+  soundSlider.setValue(User::getSoundVol() / 20);
   optionsLayout.addWidget(&musicLabel, 3, 1, 1, -1);
   optionsLayout.addWidget(&musicSlider, 4, 1, 1, -1);
   musicSlider.setMaximum(5);
-  musicSlider.setValue(5);
+  musicSlider.setValue(User::getMusicVol() / 20);
   optionsLayout.addWidget(&keys, 5, 1, 1, -1);
   optionsLayout.addWidget(&backOptions, 6, 1, 1, -1);
   connect(&soundSlider, &QSlider::valueChanged, [this]() {
