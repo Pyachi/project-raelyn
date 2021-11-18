@@ -105,7 +105,7 @@ void EntityPlayer::tick(void) {
     if (hit) {
 			Game::takeDamage();
       level = 1;
-			invFrames = 100;
+			invFrames = 150;
     }
 	}
 }

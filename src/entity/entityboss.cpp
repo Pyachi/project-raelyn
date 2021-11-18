@@ -1,11 +1,11 @@
 #include "entityboss.h"
+#include <QPainter>
 #include "collectable.h"
 #include "connection.h"
+#include "entity.h"
 #include "entitybullet.h"
 #include "packet.h"
 #include "sfx.h"
-#include "entity.h"
-#include <QPainter>
 
 EntityBoss::EntityBoss(const Texture& tex,
                        const UID& id,
@@ -43,7 +43,8 @@ void EntityBoss::tick(void) {
 		List<EntityBullet*> bullets;
 		for (Entity* entity : getCollisions(BULLET)) {
 			EntityBullet* bullet = dynamic_cast<EntityBullet*>(entity);
-			if (bullet->ownerType == PLAYER || bullet->ownerType == ONLINEPLAYER)
+			if (bullet->collisionCheck &&
+					(bullet->ownerType == PLAYER || bullet->ownerType == ONLINEPLAYER))
 				bullets.push_back(bullet);
 		}
 		for (EntityBullet* bullet : bullets) {
@@ -90,10 +91,14 @@ void EntityBoss::advancePhase() {
 		healthBar.setValue(health);
     age = 0;
 		invFrames = 200;
-    for (int i = 0; i < (Random::getInt() % 5) + 5; i++)
+		for (int i = 0; i < (Random::getInt() % 15) + 15; i++)
 			Collectable::POWER.spawn(pos(), 100);
-    for (int i = 0; i < (Random::getInt() % 20) + 10; i++)
+		for (int i = 0; i < (Random::getInt() % 30) + 20; i++)
 			Collectable::POINTS.spawn(pos(), 100);
+		if (Random::getInt(5) == 0)
+			Collectable::HEALTH.spawn(pos());
+		else if (Random::getInt(3) == 0)
+			Collectable::BOMB.spawn(pos());
   }
 }
 
@@ -113,11 +118,7 @@ void ProgressBar::paintEvent(QPaintEvent*) {
 	QPen pen(QColor(255, 255, 255, 200));
 	pen.setWidth(3);
 	painter.setPen(pen);
-	painter.drawArc(5,
-									5,
-									118,
-									118,
-									1440,
+	painter.drawArc(5, 5, 118, 118, 1440,
 									static_cast<int>((static_cast<double>(value()) /
 																		static_cast<double>(maximum())) *
 																	 5760.0));

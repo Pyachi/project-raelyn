@@ -38,7 +38,7 @@ const Bullet Bullet::BASIC12([](EntityBullet* bullet) {
   bullet->moveForward(12);
 });
 const Bullet Bullet::BASIC40([](EntityBullet* bullet) {
-  bullet->moveForward(40);
+	bullet->moveForward(40);
 });
 
 const List<SpawnInfo> operator<<(const List<SpawnInfo>& list1,

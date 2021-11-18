@@ -1,14 +1,15 @@
 #include "game.h"
+#include "collectable.h"
 #include "connection.h"
 #include "entity.h"
+#include "entitybullet.h"
 #include "entityplayer.h"
+#include "font.h"
 #include "menu.h"
 #include "packet.h"
+#include "sfx.h"
 #include "texture.h"
 #include "user.h"
-#include "font.h"
-#include "sfx.h"
-#include "collectable.h"
 
 Game* Game::GAME = nullptr;
 
@@ -165,9 +166,9 @@ void Game::create(void) {
   if (GAME == nullptr)
     GAME = new Game();
   GAME->show();
-	Connection::sendPacket({PACKETPLAYINPLAYERSPAWN,
-													QStringList() << QString::number(Character::valueOf(
-																							 User::getCharacter()))});
+	Connection::sendPacket(
+			{PACKETPLAYINPLAYERSPAWN, QStringList() << QString::number(
+																		Character::valueOf(User::getCharacter()))});
 }
 /* Returns true if client player is alive, false otherwise
  */
@@ -198,8 +199,9 @@ void Game::addEntity(Entity* entity) {
 		qDebug() << "ERROR: Attempted to add entity before Game exists!";
 		return;
 	}
-	queueEvent(
-			{[entity](Game& game) { game.entities.insert({entity->id, entity}); }});
+	queueEvent({[entity](Game& game) {
+		game.entities.insert({entity->id, entity});
+	}});
 }
 
 /* Queues a task for the game to run after a given time.
@@ -246,6 +248,16 @@ void Game::takeDamage(void) {
 	} else {
 		SFX::HIT1.play();
 		Connection::sendPacket(PACKETPLAYINTAKEDAMAGE);
+		for (int i = 0; i < 150; i++) {
+			queueEvent(
+					[i](Game&) {
+						for (Entity* entity :
+								 getPlayer()->getNearbyEntities(BULLET, i * 10))
+							if (dynamic_cast<EntityBullet*>(entity)->ownerType == ENEMY)
+								entity->deleteLater();
+					},
+					i);
+		}
 	}
 }
 

@@ -10,8 +10,9 @@ class EntityBullet : public Entity {
 							 const Entity* owner,
 							 int damage);
 
-  const EntityType ownerType;
+	EntityType ownerType;
   bool borderCheck;
+	bool collisionCheck;
 	const int damage;
 
  private:

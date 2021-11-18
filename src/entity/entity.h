@@ -9,18 +9,9 @@
 class EntityBullet;
 struct BulletInfo;
 
-enum EntityType {
-	ENEMY,
-	BULLET,
-	PLAYER,
-	ONLINEPLAYER,
-	COLLECTABLE
-};
+enum EntityType { ENEMY, BULLET, PLAYER, ONLINEPLAYER, COLLECTABLE };
 
-enum MovementType {
-	SMOOTH,
-	QUICK
-};
+enum MovementType { SMOOTH, QUICK };
 
 class Entity : public QGraphicsPixmapItem {
  public:
@@ -53,7 +44,8 @@ class Entity : public QGraphicsPixmapItem {
   //***************************************************************************
   List<EntityBullet*> fireBullets(const List<BulletInfo>& list,
                                   double rot = 0,
-                                  const QPointF& loc = {0, 0});
+																	const QPointF& loc = {0, 0},
+																	bool collision = true);
   //***************************************************************************
   Entity* getNearestEntity(EntityType type) const;
   List<Entity*> getCollisions(EntityType type) const;

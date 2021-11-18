@@ -5,13 +5,16 @@ EntityBullet::EntityBullet(const Texture& tex,
 													 const Entity* owner,
 													 int damage)
     : Entity(BULLET, tex),
-      ownerType(owner->type),
+			ownerType(owner->type == BULLET
+										? dynamic_cast<const EntityBullet*>(owner)->ownerType
+										: owner->type),
       borderCheck(true),
+			collisionCheck(true),
 			damage(ownerType == ONLINEPLAYER ? 0 : damage),
       ai(ai) {
-	if (owner->type == EntityType::PLAYER)
+	if (ownerType == EntityType::PLAYER)
     setOpacity(0.25);
-	else if (owner->type == EntityType::ONLINEPLAYER)
+	else if (ownerType == EntityType::ONLINEPLAYER)
     setOpacity(0.1);
   rotate(owner->rotation());
   setPos(owner->pos());

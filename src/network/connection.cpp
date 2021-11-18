@@ -71,8 +71,7 @@ void Connection::handlePacket(const Packet& packet) {
       Game::create();
       Menu::MENU->close();
       new EntityPlayer(Character::valueOf(User::getCharacter()),
-											 User::getName(),
-											 User::getUID());
+											 User::getName(), User::getUID());
       break;
     case PACKETPLAYOUTPLAYERJOIN:
       Menu::MENU->players.clear();
@@ -89,8 +88,10 @@ void Connection::handlePacket(const Packet& packet) {
     case PACKETPLAYOUTUPDATEPLAYER:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
-					game.getEntities().at(UID::fromString(packet.data.at(0)))->setPos(
-							{packet.data.at(1).toDouble(), packet.data.at(2).toDouble()});
+					game.getEntities()
+							.at(UID::fromString(packet.data.at(0)))
+							->setPos(
+									{packet.data.at(1).toDouble(), packet.data.at(2).toDouble()});
 			}});
       break;
     case PACKETPLAYOUTPLAYERDEATH:
@@ -105,8 +106,7 @@ void Connection::handlePacket(const Packet& packet) {
 			Game::queueEvent({[packet](Game&) {
 				new EntityPlayer(Character::valueOf(packet.data.at(2).toInt()),
 												 packet.data.at(1).toStdString(),
-												 UID::fromString(packet.data.at(0)),
-												 ONLINEPLAYER);
+												 UID::fromString(packet.data.at(0)), ONLINEPLAYER);
 			}});
       break;
     case PACKETPLAYOUTFIREBULLETS:
@@ -136,8 +136,9 @@ void Connection::handlePacket(const Packet& packet) {
     case PACKETPLAYOUTENEMYDEATH:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
-					dynamic_cast<EntityEnemy*>(game.getEntities().at(UID::fromString(
-																				 packet.data.at(0))))->kill();
+					dynamic_cast<EntityEnemy*>(
+							game.getEntities().at(UID::fromString(packet.data.at(0))))
+							->kill();
 			}});
       break;
     case PACKETPLAYOUTPLAYSONG:
@@ -146,20 +147,23 @@ void Connection::handlePacket(const Packet& packet) {
     case PACKETPLAYOUTADVANCEPHASE:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
-					dynamic_cast<EntityBoss*>(game.getEntities().at(UID::fromString(
-																				packet.data.at(0))))->advancePhase();
-			}});
-			break;
-		case PACKETPLAYOUTTAKEDAMAGE:
-			Game::queueEvent({[packet](Game& game) {
-				dynamic_cast<EntityPlayer*>(game.getEntities().at(UID::fromString(
-																				packet.data.at(0))))->invFrames = 100;
+					dynamic_cast<EntityBoss*>(
+							game.getEntities().at(UID::fromString(packet.data.at(0))))
+							->advancePhase();
 			}});
       break;
+		case PACKETPLAYOUTTAKEDAMAGE:
+			Game::queueEvent({[packet](Game& game) {
+				dynamic_cast<EntityPlayer*>(
+						game.getEntities().at(UID::fromString(packet.data.at(0))))
+						->invFrames = 150;
+			}});
+			break;
 		case PACKETPLAYOUTLEVELUP:
 			Game::queueEvent({[packet](Game& game) {
 				dynamic_cast<EntityPlayer*>(
-						game.getEntities().at(UID::fromString(packet.data.at(0))))->level++;
+						game.getEntities().at(UID::fromString(packet.data.at(0))))
+						->level++;
 			}});
 			break;
 		default:

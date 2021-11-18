@@ -28,7 +28,7 @@ class Bullet {
   static const Bullet BASIC10;
   static const Bullet BASIC11;
   static const Bullet BASIC12;
-  static const Bullet BASIC40;
+	static const Bullet BASIC40;
 };
 
 struct SpawnInfo {
@@ -36,9 +36,7 @@ struct SpawnInfo {
   const double rot;
   const QPointF loc;
 
-  operator const List<SpawnInfo>() const {
-    return {*this};
-  }
+	operator const List<SpawnInfo>() const { return {*this}; }
 };
 
 const List<SpawnInfo> operator<<(const List<SpawnInfo>& list1,
@@ -79,9 +77,7 @@ struct BulletInfo {
   const int scale;
   const int damage;
 
-  operator const List<BulletInfo>() const {
-    return {*this};
-  }
+	operator const List<BulletInfo>() const { return {*this}; }
 };
 
 const List<BulletInfo> operator<<(const List<BulletInfo>& list1,

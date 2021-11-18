@@ -54,7 +54,8 @@ void Entity::moveTo(const QPointF& loc, int time, MovementType type) {
 //***************************************************************************
 List<EntityBullet*> Entity::fireBullets(const List<BulletInfo>& list,
                                         double rot,
-                                        const QPointF& loc) {
+																				const QPointF& loc,
+																				bool collision) {
   List<EntityBullet*> bullets;
   for (const BulletInfo& info : list) {
     for (const SpawnInfo& spawnInfo : info.info) {
@@ -63,6 +64,7 @@ List<EntityBullet*> Entity::fireBullets(const List<BulletInfo>& list,
       bullet->setPos(pos() + loc + spawnInfo.loc);
       bullet->setRotation(rotation() + rot + spawnInfo.rot);
       bullet->setScale(info.scale);
+			bullet->collisionCheck = collision;
       bullets.push_back(bullet);
     }
   }
