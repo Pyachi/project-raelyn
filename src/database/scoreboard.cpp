@@ -2,21 +2,19 @@
 
 
 
-Scoreboard::Scoreboard(QString lev)
+Scoreboard::Scoreboard()
 {
-    level = lev;
     length = 0;
     head = nullptr;
     tail = nullptr;
 
 }
 
-void Scoreboard::Add_Score(QString level, QString user, QDateTime time, int score)
+void Scoreboard::Add_Score(QString user, QDateTime time, int score)
 {
     run* temp = new run();
     //temp->level = level;
     //qDebug() << "temp made";
-    temp->level = level;
     temp->user = user;
     temp->score = score;
     temp->next = nullptr;
@@ -91,6 +89,7 @@ void Scoreboard::Show_Scoreboard()
     while(temp != nullptr)
     {
         qDebug() << temp->score;
+//        qDebug( )<< temp->time;
         temp = temp->next;
     }
 }
@@ -99,7 +98,7 @@ Scoreboard* Scoreboard::Extra_Here(Scoreboard* other)
 {
     // returns a Scoreboard object that has all of the runs from
     // current object that are not in other
-    Scoreboard* diff = new Scoreboard(level);
+    Scoreboard* diff = new Scoreboard();
     run* temp = head;
     int current;
     while(temp != nullptr)
@@ -113,11 +112,6 @@ Scoreboard* Scoreboard::Extra_Here(Scoreboard* other)
         temp = temp->next;
     }
     return diff;
-}
-
-void Scoreboard::Merge(Scoreboard* other)
-{
-
 }
 
 int Scoreboard::Get_length()
@@ -168,11 +162,6 @@ Scoreboard::run* Scoreboard::Get_Run(int index)
 
 }
 
-QString Scoreboard::Get_Level()
-{
-    return level;
-}
-
 int Scoreboard::Exists(run* checker)
 {
     int index = -1;
@@ -181,6 +170,10 @@ int Scoreboard::Exists(run* checker)
     run* temp = head;
     while(index == -1 && temp != nullptr)
     {
+        qDebug() << temp;
+        qDebug() << temp->time;
+        qDebug() << Ctime;
+        qDebug() << "";
         if(temp->time == Ctime)         // Checks first if the times match then
         {
             if(Runs_Equal(checker, temp))
@@ -195,9 +188,14 @@ int Scoreboard::Exists(run* checker)
     return index;
 }
 
+int Scoreboard::Get_High_Score()
+{
+    Order_Scores("Accending_Score");
+    return Get_Run(0)->score;
+}
 
 bool Scoreboard::Runs_Equal(run* A, run* B)
 {
-    return (A->level == B->level && A->user == B->user && A->score == B->score && A->time == B->time);
+    return (A->user == B->user && A->score == B->score && A->time == B->time);
 }
 

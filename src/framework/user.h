@@ -26,9 +26,8 @@ class User {
 
 	int score = 0;
 
-	Array<Scoreboard*> masterBoard;
-	Array<QString> ScoreLevels = {"hello"};
-	int lenLevels = 1;
+  Scoreboard* masterBoard;
+  Scoreboard* playerBoard;
 
  public:
   static void create(void) {
