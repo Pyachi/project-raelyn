@@ -8,10 +8,10 @@ User* User::USER = nullptr;
 
 User::User()
     : name(QDir::homePath().split('/').last().toStdString()),
-			character(&Character::PYACHI),
-			controls(&Controls::TRAD),
-			soundVol(100),
-			musicVol(100) {
+      character(&Character::PYACHI),
+      controls(&Controls::TRAD),
+      soundVol(100),
+      musicVol(100) {
   for (const QHostAddress& address : QNetworkInterface::allAddresses()) {
     if (address.protocol() == QAbstractSocket::IPv4Protocol &&
         address.isLoopback() == false) {
@@ -47,12 +47,16 @@ User::User()
       QDateTime::fromString("2021-10-09 10:43:12", "yyyy-MM-dd HH:mm:ss"),
       1700);
 
-  score->Add_Score("sg0001", QDateTime::fromString("2022-10-08 10:43:12", "yyyy-MM-dd HH:mm:ss"), 9000);
+  score->Add_Score(
+      "sg0001",
+      QDateTime::fromString("2022-10-08 10:43:12", "yyyy-MM-dd HH:mm:ss"),
+      9000);
 
   //    score->Show_Scoreboard();
 
   database_API dataAPI;
-  QSqlDatabase dab = dataAPI.start_connection("SQLITE", QString::fromStdString(name));
+  QSqlDatabase dab =
+      dataAPI.start_connection("SQLITE", QString::fromStdString(name));
   QSqlQuery query = QSqlQuery(dab);
   qDebug() << "--Create level table: ";
   qDebug() << dataAPI.create_level_table();
@@ -60,12 +64,13 @@ User::User()
   qDebug() << dataAPI.update_database(score);
 
   Scoreboard* masterBoard = dataAPI.get_scoreboard();
-  Scoreboard* playerBoard = dataAPI.get_scoreboard(QString::fromStdString(name));
+  Scoreboard* playerBoard =
+      dataAPI.get_scoreboard(QString::fromStdString(name));
 
   qDebug() << "masterBoard";
   masterBoard->Show_Scoreboard();
   qDebug() << "playerBoard";
-  playerBoard->Show_Scoreboard();
+  //  playerBoard->Show_Scoreboard();
 
   dataAPI.create_settings_table(soundVol, musicVol, *controls, *character);
 
@@ -75,14 +80,13 @@ User::User()
   controls = &Controls::valueOf(dataAPI.get_controls());
   character = &Character::valueOf(dataAPI.getCharacter());
 
-
   dataAPI.close_database();
 
-	atexit([]() {
-		database_API dataAPI;
-        dataAPI.start_connection("SQLITE", QString::fromStdString(User::getName()));
-		dataAPI.update_settings(User::getSoundVol(), User::getMusicVol(),
-														User::getControls(), User::getCharacter());
-		dataAPI.close_database();
-	});
+  atexit([]() {
+    database_API dataAPI;
+    dataAPI.start_connection("SQLITE", QString::fromStdString(User::getName()));
+    dataAPI.update_settings(User::getSoundVol(), User::getMusicVol(),
+                            User::getControls(), User::getCharacter());
+    dataAPI.close_database();
+  });
 }
