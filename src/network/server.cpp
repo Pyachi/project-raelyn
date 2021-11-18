@@ -47,7 +47,7 @@ void Server::sendPacket(const Packet& packet, QTcpSocket* sender) {
   }
 }
 
-Server::Server() : QTcpServer() {
+Server::Server() : QTcpServer(), running(false) {
   connect(this, &Server::newConnection, this, &Server::handleConnection);
   Menu::MENU->playerCount.setText("Players Connected: 0");
 }
@@ -77,15 +77,24 @@ void Server::handleDisconnection(void) {
   if (sockets.size() == 0 && !isListening()) {
     Menu::MENU->serverStatus.setText("Status: In Lobby");
 		Level::stop();
+		running = false;
     listen(QHostAddress::Any, Menu::MENU->portForm.text().toUShort());
 	} else {
+		if (running)
+			return;
 		for (auto pair : ready)
 			if (!pair.second)
 				return;
-		Menu::MENU->serverStatus.setText("Status: In Game");
-		sendPacket(C_START);
-		Level::start();
+		start();
 	}
+}
+
+void Server::start(void) {
+	Menu::MENU->serverStatus.setText("Status: In Game");
+	sendPacket(C_START);
+	close();
+	running = true;
+	Level::start();
 }
 
 void Server::receivePacket(void) {
@@ -105,25 +114,21 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
 		case S_JOIN:
 			sendPacket({C_LOBBY, getNames()});
 			sendPacket({C_SOUND, QStringList() << QString::number(SFX::CONNECT)});
-      break;
+			break;
 		case S_READY:
 			ready.at(sender) = true;
 			sendPacket({C_LOBBY, getNames()});
 			for (auto pair : ready)
 				if (!pair.second)
 					return;
-			Menu::MENU->serverStatus.setText("Status: In Game");
-			sendPacket(C_START);
-			Level::start();
+			start();
 			break;
 		case S_UNREADY:
 			ready.at(sender) = false;
 			sendPacket({C_LOBBY, getNames()});
-			break;
+      break;
     case S_START:
-      Menu::MENU->serverStatus.setText("Status: In Game");
-      sendPacket(C_START);
-			Level::start();
+			start();
       break;
     case S_UPDATELOC:
 			sendPacket({C_UPDATELOC, QStringList() << users[sender].toString()

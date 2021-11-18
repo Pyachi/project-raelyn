@@ -42,13 +42,15 @@ void Level::iterate(void) {
       waitTimer = args.at(1).toInt();
       return;
     } else if (opCode == "SPAWN") {
-      Server::sendPacket({C_SPAWNENEMY,
-                          QStringList() << UID().toString() << args.at(1)
-                                        << args.at(2) << args.at(3)});
+			Server::sendPacket(
+					{C_SPAWNENEMY, QStringList() << UID().toString() << args.at(1)
+																			 << args.at(2) << args.at(3)
+																			 << QString::number(Server::size())});
     } else if (opCode == "BOSS") {
-      Server::sendPacket({C_SPAWNBOSS,
-                          QStringList() << UID().toString() << args.at(1)
-                                        << args.at(2) << args.at(3)});
+			Server::sendPacket({C_SPAWNBOSS, QStringList()
+																					 << UID().toString() << args.at(1)
+																					 << args.at(2) << args.at(3)
+																					 << QString::number(Server::size())});
       waitTimer = -1;
       return;
     } else if (opCode == "PLAY") {

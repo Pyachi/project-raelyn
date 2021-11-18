@@ -125,23 +125,25 @@ void Connection::handlePacket(const Packet& packet) {
 			Game::queueEvent({[packet](Game&) {
         Enemy::valueOf(packet.data.at(1).toInt())
             .spawn({packet.data.at(2).toDouble(), packet.data.at(3).toDouble()},
-                   UID::fromString(packet.data.at(0)));
+									 UID::fromString(packet.data.at(0)),
+									 packet.data.at(4).toInt());
 			}});
       break;
 		case C_SPAWNBOSS:
 			Game::queueEvent({[packet](Game&) {
         Boss::valueOf(packet.data.at(1).toInt())
             .spawn({packet.data.at(2).toDouble(), packet.data.at(3).toDouble()},
-                   UID::fromString(packet.data.at(0)));
+									 UID::fromString(packet.data.at(0)),
+									 packet.data.at(4).toInt());
 			}});
-			break;
+      break;
 		case C_KILLENEMY:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
 					dynamic_cast<EntityEnemy*>(game.getEntities().at(UID::fromString(
 																				 packet.data.at(0))))->kill();
 			}});
-			break;
+      break;
 		case C_DAMAGEBOSS:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
@@ -158,13 +160,13 @@ void Connection::handlePacket(const Packet& packet) {
 					player->level = 1;
 				}
 			}});
-      break;
+			break;
 		case C_LEVELUP:
 			Game::queueEvent({[packet](Game& game) {
 				dynamic_cast<EntityPlayer*>(
 						game.getEntities().at(UID::fromString(packet.data.at(0))))->level++;
 			}});
-      break;
+			break;
 		default:
 			qDebug() << "ERROR: Received Server Packet!";
       break;

@@ -10,7 +10,7 @@ EntityBullet::EntityBullet(const Texture& tex,
 										: owner->type),
       borderCheck(true),
 			collisionCheck(true),
-			damage(ownerType == ONLINEPLAYER ? 0 : damage),
+			damage(damage),
       ai(ai) {
 	if (ownerType == EntityType::PLAYER)
     setOpacity(0.25);

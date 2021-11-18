@@ -17,7 +17,7 @@ EntityPlayer::EntityPlayer(const Character& character,
       hitbox(Texture::HITBOX, this),
       character(character),
       focus(false),
-			level(1),
+			level(4),
 			invFrames(0),
       display(QString::fromStdString(user), this),
 			name(user),
@@ -63,8 +63,7 @@ void EntityPlayer::tick(void) {
   if (firing) {
     fireBullets(character.pattern(this));
     character.shootSound(this).play(3);
-    Connection::sendPacket(
-				{S_SHOOT, QStringList() << QString::number(focus)});
+		Connection::sendPacket({S_SHOOT, QStringList() << QString::number(focus)});
   }
 
   int dx = 0, dy = 0;
@@ -83,9 +82,9 @@ void EntityPlayer::tick(void) {
   }
   if (dx != 0 || dy != 0) {
     setPos(confineToPlayableArea(pos() + QPointF(dx, dy)));
-    Connection::sendPacket({S_UPDATELOC,
-                            QStringList() << QString::number(pos().x())
-                                          << QString::number(pos().y())});
+		Connection::sendPacket({S_UPDATELOC, QStringList()
+																						 << QString::number(pos().x())
+																						 << QString::number(pos().y())});
   }
 
   if (invFrames == 0) {

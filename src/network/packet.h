@@ -31,8 +31,8 @@ enum Header {
 	C_KILLPLAYER,    // UUID
 	C_SPAWNPLAYER,   // UUID:name:PlayerType
 	C_SHOOT,         // UUID:focus
-	C_SPAWNENEMY,    // UUID:EnemyType:x:y
-	C_SPAWNBOSS,     // UUID:BossType:x:y
+	C_SPAWNENEMY,    // UUID:EnemyType:x:y:scale
+	C_SPAWNBOSS,     // UUID:BossType:x:y:scale
 	C_KILLENEMY,     // UUID
 	C_DAMAGEBOSS,    // UUID
 	C_DAMAGEPLAYER,  // UUID

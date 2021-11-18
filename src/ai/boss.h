@@ -23,7 +23,7 @@ class Boss {
   const AI<EntityBoss> ai;
 
  public:
-  EntityBoss* spawn(const QPointF& loc, const UID& id) const;
+	EntityBoss* spawn(const QPointF& loc, const UID& id, int scale) const;
 
 	operator int() const { return index; }
 
