@@ -38,7 +38,7 @@ Menu::Menu(void)
       playerCount("Players Connected: 0"),
       backServer("Return to Menu"),
 			playerLobby(User::getCharacter()),
-      startLobby("Start Game"),
+			readyLobby("Ready Up ☐"),
       backLobby("Return to Menu") {
   setLayout(&layout);
   setWindowFlags(Qt::FramelessWindowHint);
@@ -225,7 +225,7 @@ Menu::Menu(void)
   lobbyMenu.setLayout(&lobbyLayout);
   lobbyLayout.addWidget(&players, 1, 1, 1, -1);
   lobbyLayout.addWidget(&playerLobby, 2, 1, 1, -1);
-  lobbyLayout.addWidget(&startLobby, 3, 1, 1, -1);
+	lobbyLayout.addWidget(&readyLobby, 3, 1, 1, -1);
   lobbyLayout.addWidget(&backLobby, 4, 1, 1, -1);
   connect(&playerLobby, &QPushButton::clicked, [this]() {
 		SFX::SELECT1.play(25);
@@ -251,8 +251,15 @@ Menu::Menu(void)
 				playerLobby.setText(Character::PYACHI);
     }
   });
-	connect(&startLobby, &QPushButton::clicked,
-					[]() { Connection::sendPacket(PACKETPLAYINSTARTGAME); });
+	connect(&readyLobby, &QPushButton::clicked, [this]() {
+		if (readyLobby.text().contains("☐")) {
+			Connection::sendPacket(PACKETPLAYINPLAYERREADY);
+			readyLobby.setText("Ready Up ☑");
+		} else {
+			Connection::sendPacket(PACKETPLAYINPLAYERUNREADY);
+			readyLobby.setText("Ready Up ☐");
+		}
+	});
   connect(&backLobby, &QPushButton::clicked, [this]() {
     Connection::destruct();
     lobbyMenu.hide();

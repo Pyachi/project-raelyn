@@ -23,8 +23,9 @@ class Server : public QTcpServer {
 	static Server* SER;
 
 	QSet<QTcpSocket*> sockets;
-	QMap<QTcpSocket*, UID> users;
-	QMap<QTcpSocket*, QString> names;
+	Map<QTcpSocket*, UID> users;
+	Map<QTcpSocket*, QString> names;
+	Map<QTcpSocket*, bool> ready;
 
 	void handleConnection(void);
 	void handleDisconnection(void);

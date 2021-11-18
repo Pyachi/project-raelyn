@@ -63,12 +63,12 @@ void Server::handleConnection(void) {
 
 void Server::handleDisconnection(void) {
   QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
-  sendPacket({PACKETPLAYOUTPLAYERDEATH, QStringList()
-                                            << users.value(socket).toString()},
-             socket);
+	sendPacket(
+			{PACKETPLAYOUTPLAYERDEATH, QStringList() << users.at(socket).toString()},
+			socket);
   sockets.remove(socket);
-  users.remove(socket);
-  names.remove(socket);
+	users.erase(socket);
+	names.erase(socket);
   Menu::MENU->playerCount.setText("Players Connected: " +
                                   QString::number(sockets.size()));
   sendPacket({PACKETPLAYOUTPLAYERLEAVE, names.values()});
@@ -89,12 +89,15 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
   Header header = packet.header;
   switch (header) {
     case PACKETPLAYINCONNECT:
-      users.insert(sender, UID::fromString(packet.data.at(0)));
-      names.insert(sender, packet.data.at(1));
+			users.insert({sender, UID::fromString(packet.data.at(0))});
+			names.insert({sender, packet.data.at(1)});
+			ready.insert({sender, false});
       break;
-    case PACKETPLAYINPLAYERJOIN:
+		case PACKETPLAYINPLAYERJOIN: {
+			QStringList names;
       sendPacket({PACKETPLAYOUTPLAYERJOIN, names.values()});
       break;
+		}
     case PACKETPLAYINSTARTGAME:
       Menu::MENU->serverStatus.setText("Status: In Game");
       close();
@@ -140,6 +143,10 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
 			sendPacket(
 					{PACKETPLAYOUTLEVELUP, QStringList() << users[sender].toString()},
 					sender);
+			break;
+		case PACKETPLAYINPLAYERREADY:
+			break;
+		case PACKETPLAYINPLAYERUNREADY:
 			break;
     default:
       qDebug() << "ERROR: Received OUT Packet!";

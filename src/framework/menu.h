@@ -79,7 +79,7 @@ class Menu : public QDialog {
 	// Lobby
 	QListWidget players;
 	QPushButton playerLobby;
-	QPushButton startLobby;
+	QPushButton readyLobby;
 	QPushButton backLobby;
 	//***************************************************************************
 	friend class Connection;
