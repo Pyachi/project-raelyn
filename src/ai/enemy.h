@@ -24,7 +24,7 @@ class Enemy {
   const AI<EntityEnemy> ai;
 
  public:
-	EntityEnemy* spawn(const QPointF& loc, const UID& id, int scale) const;
+	EntityEnemy* spawn(const QPointF& loc, const UID& id, double scale) const;
 
   operator int() const { return index; }
 

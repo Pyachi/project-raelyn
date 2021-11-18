@@ -8,7 +8,7 @@
 
 Array<Ref<Boss> > Boss::list;
 
-EntityBoss* Boss::spawn(const QPointF& loc, const UID& id, int scale) const {
+EntityBoss* Boss::spawn(const QPointF& loc, const UID& id, double scale) const {
 	Array<int> scaledHealth = Array<int>(health.size());
 	for (ushort i = 0; i < scaledHealth.size(); i++)
 		scaledHealth[i] = health[i] * scale;

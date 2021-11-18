@@ -6,7 +6,9 @@
 #include "texture.h"
 Array<Ref<Enemy> > Enemy::list;
 
-EntityEnemy* Enemy::spawn(const QPointF& loc, const UID& id, int scale) const {
+EntityEnemy* Enemy::spawn(const QPointF& loc,
+													const UID& id,
+													double scale) const {
 	EntityEnemy* enemy = new EntityEnemy(tex, id, health * scale, ai);
   enemy->setPos(loc);
   return enemy;
