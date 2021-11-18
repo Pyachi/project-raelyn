@@ -92,30 +92,27 @@ Menu::Menu(void)
   singleplayerLayout.addWidget(&start, 2, 1, 1, -1);
   singleplayerLayout.addWidget(&backSingleplayer, 3, 1, 1, -1);
   connect(&playerSingle, &QPushButton::clicked, [this]() {
+		SFX::SELECT1.play(25);
     switch (Character::valueOf(User::getCharacter())) {
       case 0:
-        User::setCharacter(Character::AERON);
-        playerSingle.setText("Character: Aeron");
-        playerLobby.setText("Character: Aeron");
-        SFX::SELECT1.play(25);
+				User::setCharacter(Character::PYACHI);
+				playerSingle.setText(Character::PYACHI);
+				playerLobby.setText(Character::PYACHI);
         break;
       case 1:
-        User::setCharacter(Character::PRYSMA);
-        playerSingle.setText("Character: Prysma");
-        playerLobby.setText("Character: Prysma");
-        SFX::SELECT1.play(25);
+				User::setCharacter(Character::PYACHI);
+				playerSingle.setText(Character::PYACHI);
+				playerLobby.setText(Character::PYACHI);
         break;
       case 2:
-        User::setCharacter(Character::ANEKHANDA);
-        playerSingle.setText("Character: Anekhanda");
-        playerLobby.setText("Character: Anekhanda");
-        SFX::SELECT1.play(25);
+				User::setCharacter(Character::PYACHI);
+				playerSingle.setText(Character::PYACHI);
+				playerLobby.setText(Character::PYACHI);
         break;
       case 3:
         User::setCharacter(Character::PYACHI);
-        playerSingle.setText("Character: Pyachi");
-        playerLobby.setText("Character: Pyachi");
-        SFX::SELECT1.play(25);
+				playerSingle.setText(Character::PYACHI);
+				playerLobby.setText(Character::PYACHI);
         break;
     }
   });
@@ -230,27 +227,28 @@ Menu::Menu(void)
   lobbyLayout.addWidget(&backLobby, 4, 1, 1, -1);
   connect(&playerLobby, &QPushButton::clicked, [this]() {
 		SFX::SELECT1.play(25);
-		switch (User::getCharacter()) {
+		switch (Character::valueOf(User::getCharacter())) {
 			case 0:
-        User::setCharacter(Character::AERON);
-				playerSingle.setText(Character::AERON);
-				playerLobby.setText(Character::AERON);
-        break;
-      case 1:
-        User::setCharacter(Character::PRYSMA);
-				playerSingle.setText(Character::PRYSMA);
-				playerLobby.setText(Character::PRYSMA);
-        break;
-      case 2:
-        User::setCharacter(Character::ANEKHANDA);
-				playerSingle.setText(Character::ANEKHANDA);
-				playerLobby.setText(Character::ANEKHANDA);
-        break;
-      case 3:
-        User::setCharacter(Character::PYACHI);
+				User::setCharacter(Character::PYACHI);
 				playerSingle.setText(Character::PYACHI);
 				playerLobby.setText(Character::PYACHI);
-    }
+				break;
+			case 1:
+				User::setCharacter(Character::PYACHI);
+				playerSingle.setText(Character::PYACHI);
+				playerLobby.setText(Character::PYACHI);
+				break;
+			case 2:
+				User::setCharacter(Character::PYACHI);
+				playerSingle.setText(Character::PYACHI);
+				playerLobby.setText(Character::PYACHI);
+				break;
+			case 3:
+				User::setCharacter(Character::PYACHI);
+				playerSingle.setText(Character::PYACHI);
+				playerLobby.setText(Character::PYACHI);
+				break;
+		}
   });
 	connect(&readyLobby, &QPushButton::clicked, [this]() {
 		if (readyLobby.text().contains("☐")) {

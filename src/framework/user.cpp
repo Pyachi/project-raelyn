@@ -58,23 +58,23 @@ User::User()
   QSqlDatabase dab =
       dataAPI.start_connection("SQLITE", QString::fromStdString(name));
   QSqlQuery query = QSqlQuery(dab);
-  qDebug() << "--Create level table: ";
+	//  qDebug() << "--Create level table: ";
   qDebug() << dataAPI.create_level_table();
-  qDebug() << "--Update database: ";
+	//  qDebug() << "--Update database: ";
   qDebug() << dataAPI.update_database(score);
 
   Scoreboard* masterBoard = dataAPI.get_scoreboard();
   Scoreboard* playerBoard =
       dataAPI.get_scoreboard(QString::fromStdString(name));
 
-  qDebug() << "masterBoard";
+	//  qDebug() << "masterBoard";
   masterBoard->Show_Scoreboard();
-  qDebug() << "playerBoard";
+	//  qDebug() << "playerBoard";
   //  playerBoard->Show_Scoreboard();
 
   dataAPI.create_settings_table(soundVol, musicVol, *controls, *character);
 
-  qDebug() << "get settings";
+	//  qDebug() << "get settings";
   soundVol = dataAPI.get_SFX();
   musicVol = dataAPI.get_music();
   controls = &Controls::valueOf(dataAPI.get_controls());
@@ -85,8 +85,10 @@ User::User()
   atexit([]() {
     database_API dataAPI;
     dataAPI.start_connection("SQLITE", QString::fromStdString(User::getName()));
-    dataAPI.update_settings(User::getSoundVol(), User::getMusicVol(),
-                            User::getControls(), User::getCharacter());
+		dataAPI.update_settings(User::getSoundVol(),
+														User::getMusicVol(),
+														User::getControls(),
+														User::getCharacter());
     dataAPI.close_database();
   });
 }
