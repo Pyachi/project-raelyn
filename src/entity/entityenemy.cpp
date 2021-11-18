@@ -31,7 +31,7 @@ void EntityEnemy::tick(void) {
     if (health <= 0) {
       kill();
       Connection::sendPacket(
-          {PACKETPLAYINENEMYDEATH, QStringList() << id.toString()});
+          {S_KILLENEMY, QStringList() << id.toString()});
       break;
     }
   }

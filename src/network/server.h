@@ -27,6 +27,17 @@ class Server : public QTcpServer {
 	Map<QTcpSocket*, QString> names;
 	Map<QTcpSocket*, bool> ready;
 
+	const QStringList getNames() {
+		QStringList list;
+		for (auto user : names) {
+			QString name = user.second;
+			if (ready.at(user.first))
+				name += " ✓";
+			list << name;
+		}
+		return list;
+	}
+
 	void handleConnection(void);
 	void handleDisconnection(void);
 	void receivePacket(void);

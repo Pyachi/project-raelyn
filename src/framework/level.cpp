@@ -42,17 +42,17 @@ void Level::iterate(void) {
       waitTimer = args.at(1).toInt();
       return;
     } else if (opCode == "SPAWN") {
-      Server::sendPacket({PACKETPLAYOUTSPAWNENEMY,
+      Server::sendPacket({C_SPAWNENEMY,
                           QStringList() << UID().toString() << args.at(1)
                                         << args.at(2) << args.at(3)});
     } else if (opCode == "BOSS") {
-      Server::sendPacket({PACKETPLAYOUTSPAWNBOSS,
+      Server::sendPacket({C_SPAWNBOSS,
                           QStringList() << UID().toString() << args.at(1)
                                         << args.at(2) << args.at(3)});
       waitTimer = -1;
       return;
     } else if (opCode == "PLAY") {
-      Server::sendPacket({PACKETPLAYOUTPLAYSONG, QStringList() << args.at(1)});
+      Server::sendPacket({C_SONG, QStringList() << args.at(1)});
     } else if (opCode == "PAUSE") {
       waitTimer = 999;
       return;

@@ -5,6 +5,7 @@
 #include "menu.h"
 #include "packet.h"
 #include "uid.h"
+#include "sfx.h"
 
 Server* Server::SER = nullptr;
 
@@ -55,28 +56,36 @@ void Server::handleConnection(void) {
   QTcpSocket* socket = nextPendingConnection();
   sockets.insert(socket);
   connect(socket, &QTcpSocket::readyRead, this, &Server::receivePacket);
-	connect(socket, &QTcpSocket::disconnected, this,
-					&Server::handleDisconnection);
+	connect(
+			socket, &QTcpSocket::disconnected, this, &Server::handleDisconnection);
   Menu::MENU->playerCount.setText("Players Connected: " +
                                   QString::number(sockets.size()));
 }
 
 void Server::handleDisconnection(void) {
   QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
-	sendPacket(
-			{PACKETPLAYOUTPLAYERDEATH, QStringList() << users.at(socket).toString()},
-			socket);
+	sendPacket({C_KILLPLAYER, QStringList() << users.at(socket).toString()},
+						 socket);
   sockets.remove(socket);
 	users.erase(socket);
 	names.erase(socket);
+	ready.erase(socket);
   Menu::MENU->playerCount.setText("Players Connected: " +
                                   QString::number(sockets.size()));
-  sendPacket({PACKETPLAYOUTPLAYERLEAVE, names.values()});
+	sendPacket({C_LOBBY, getNames()});
+	sendPacket({C_SOUND, QStringList() << QString::number(SFX::DISCONNECT)});
   if (sockets.size() == 0 && !isListening()) {
     Menu::MENU->serverStatus.setText("Status: In Lobby");
 		Level::stop();
     listen(QHostAddress::Any, Menu::MENU->portForm.text().toUShort());
-  }
+	} else {
+		for (auto pair : ready)
+			if (!pair.second)
+				return;
+		Menu::MENU->serverStatus.setText("Status: In Game");
+		sendPacket(C_START);
+		Level::start();
+	}
 }
 
 void Server::receivePacket(void) {
@@ -88,65 +97,69 @@ void Server::receivePacket(void) {
 void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
   Header header = packet.header;
   switch (header) {
-    case PACKETPLAYINCONNECT:
+    case S_CONNECT:
 			users.insert({sender, UID::fromString(packet.data.at(0))});
 			names.insert({sender, packet.data.at(1)});
 			ready.insert({sender, false});
       break;
-		case PACKETPLAYINPLAYERJOIN: {
-			QStringList names;
-      sendPacket({PACKETPLAYOUTPLAYERJOIN, names.values()});
+		case S_JOIN:
+			sendPacket({C_LOBBY, getNames()});
+			sendPacket({C_SOUND, QStringList() << QString::number(SFX::CONNECT)});
       break;
-		}
-    case PACKETPLAYINSTARTGAME:
+		case S_READY:
+			ready.at(sender) = true;
+			sendPacket({C_LOBBY, getNames()});
+			for (auto pair : ready)
+				if (!pair.second)
+					return;
+			Menu::MENU->serverStatus.setText("Status: In Game");
+			sendPacket(C_START);
+			Level::start();
+			break;
+		case S_UNREADY:
+			ready.at(sender) = false;
+			sendPacket({C_LOBBY, getNames()});
+			break;
+    case S_START:
       Menu::MENU->serverStatus.setText("Status: In Game");
-      close();
-      sendPacket(PACKETPLAYOUTSTARTGAME);
+      sendPacket(C_START);
 			Level::start();
       break;
-    case PACKETPLAYINUPDATEPLAYER:
-      sendPacket({PACKETPLAYOUTUPDATEPLAYER,
-                  QStringList() << users[sender].toString() << packet.data},
+    case S_UPDATELOC:
+			sendPacket({C_UPDATELOC, QStringList() << users[sender].toString()
+																						 << packet.data},
                  sender);
       break;
-    case PACKETPLAYINPLAYERDEATH:
-      sendPacket(
-          {PACKETPLAYOUTPLAYERDEATH, QStringList() << users[sender].toString()},
-          sender);
+    case S_KILLPLAYER:
+			sendPacket({C_KILLPLAYER, QStringList() << users[sender].toString()},
+								 sender);
       break;
-    case PACKETPLAYINPLAYERSPAWN:
-      sendPacket({PACKETPLAYOUTPLAYERSPAWN,
-                  QStringList() << users[sender].toString() << names[sender]
-                                << packet.data},
+    case S_SPAWNPLAYER:
+			sendPacket({C_SPAWNPLAYER, QStringList() << users[sender].toString()
+																							 << names[sender] << packet.data},
                  sender);
       break;
-    case PACKETPLAYINFIREBULLETS:
-      sendPacket({PACKETPLAYOUTFIREBULLETS,
-                  QStringList() << users[sender].toString() << packet.data},
-                 sender);
+    case S_SHOOT:
+			sendPacket(
+					{C_SHOOT, QStringList() << users[sender].toString() << packet.data},
+					sender);
       break;
-    case PACKETPLAYINENEMYDEATH:
-      sendPacket({PACKETPLAYOUTENEMYDEATH, packet.data}, sender);
+    case S_KILLENEMY:
+      sendPacket({C_KILLENEMY, packet.data}, sender);
       break;
-    case PACKETPLAYINADVANCEPHASE:
-      sendPacket({PACKETPLAYOUTADVANCEPHASE, packet.data}, sender);
+    case S_DAMAGEBOSS:
+      sendPacket({C_DAMAGEBOSS, packet.data}, sender);
       break;
-    case PACKETPLAYINRESUMELEVEL:
+    case S_RESUME:
 			Level::resume();
       break;
-		case PACKETPLAYINTAKEDAMAGE:
-			sendPacket(
-					{PACKETPLAYOUTTAKEDAMAGE, QStringList() << users[sender].toString()},
-					sender);
+		case S_DAMAGEPLAYER:
+			sendPacket({C_DAMAGEPLAYER, QStringList() << users[sender].toString()},
+								 sender);
 			break;
-		case PACKETPLAYINLEVELUP:
-			sendPacket(
-					{PACKETPLAYOUTLEVELUP, QStringList() << users[sender].toString()},
-					sender);
-			break;
-		case PACKETPLAYINPLAYERREADY:
-			break;
-		case PACKETPLAYINPLAYERUNREADY:
+		case S_LEVELUP:
+			sendPacket({C_LEVELUP, QStringList() << users[sender].toString()},
+								 sender);
 			break;
     default:
       qDebug() << "ERROR: Received OUT Packet!";

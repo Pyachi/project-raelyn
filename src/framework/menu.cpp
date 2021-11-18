@@ -122,7 +122,7 @@ Menu::Menu(void)
   connect(&start, &QPushButton::clicked, []() {
     Server::create(0);
     Connection::create("127.0.0.1", Server::getPort());
-    Connection::sendPacket(PACKETPLAYINSTARTGAME);
+		Connection::sendPacket(S_START);
   });
   connect(&backSingleplayer, &QPushButton::clicked, [this]() {
     singleplayerMenu.hide();
@@ -155,7 +155,7 @@ Menu::Menu(void)
       lobbyMenu.show();
       multiplayerMenu.hide();
       adjustSize();
-      Connection::sendPacket(PACKETPLAYINPLAYERJOIN);
+			Connection::sendPacket(S_JOIN);
     } else
       SFX::SELECT2.play(25);
   });
@@ -183,8 +183,9 @@ Menu::Menu(void)
     User::setSoundVol(soundSlider.value() * 20);
     SFX::COLLECT2.play();
   });
-	connect(&musicSlider, &QSlider::valueChanged,
-					[this]() { User::setMusicVol(musicSlider.value() * 20); });
+	connect(&musicSlider, &QSlider::valueChanged, [this]() {
+		User::setMusicVol(musicSlider.value() * 20);
+	});
   connect(&keys, &QPushButton::pressed, [this]() {
     SFX::SELECT1.play(25);
 		switch (User::getControls()) {
@@ -253,10 +254,10 @@ Menu::Menu(void)
   });
 	connect(&readyLobby, &QPushButton::clicked, [this]() {
 		if (readyLobby.text().contains("☐")) {
-			Connection::sendPacket(PACKETPLAYINPLAYERREADY);
+			Connection::sendPacket(S_READY);
 			readyLobby.setText("Ready Up ☑");
 		} else {
-			Connection::sendPacket(PACKETPLAYINPLAYERUNREADY);
+			Connection::sendPacket(S_UNREADY);
 			readyLobby.setText("Ready Up ☐");
 		}
 	});

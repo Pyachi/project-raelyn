@@ -64,7 +64,7 @@ void EntityPlayer::tick(void) {
     fireBullets(character.pattern(this));
     character.shootSound(this).play(3);
     Connection::sendPacket(
-				{PACKETPLAYINFIREBULLETS, QStringList() << QString::number(focus)});
+				{S_SHOOT, QStringList() << QString::number(focus)});
   }
 
   int dx = 0, dy = 0;
@@ -83,7 +83,7 @@ void EntityPlayer::tick(void) {
   }
   if (dx != 0 || dy != 0) {
     setPos(confineToPlayableArea(pos() + QPointF(dx, dy)));
-    Connection::sendPacket({PACKETPLAYINUPDATEPLAYER,
+    Connection::sendPacket({S_UPDATELOC,
                             QStringList() << QString::number(pos().x())
                                           << QString::number(pos().y())});
   }

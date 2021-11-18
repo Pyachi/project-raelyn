@@ -55,7 +55,7 @@ void EntityBoss::tick(void) {
 			if (health <= 0) {
 				advancePhase();
 				Connection::sendPacket(
-						{PACKETPLAYINADVANCEPHASE, QStringList() << id.toString()});
+						{S_DAMAGEBOSS, QStringList() << id.toString()});
 				break;
 			}
     }
@@ -69,7 +69,7 @@ void EntityBoss::kill(void) {
 		Collectable::POWER.spawn(pos(), 200);
 	for (int i = 0; i < (Random::getInt() % 20) + 100; i++)
 		Collectable::POINTS.spawn(pos(), 200);
-  Connection::sendPacket(PACKETPLAYINRESUMELEVEL);
+  Connection::sendPacket(S_RESUME);
   deleteLater();
 }
 

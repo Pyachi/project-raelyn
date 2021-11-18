@@ -167,7 +167,7 @@ void Game::create(void) {
     GAME = new Game();
   GAME->show();
 	Connection::sendPacket(
-			{PACKETPLAYINPLAYERSPAWN, QStringList() << QString::number(
+			{S_SPAWNPLAYER, QStringList() << QString::number(
 																		Character::valueOf(User::getCharacter()))});
 }
 /* Returns true if client player is alive, false otherwise
@@ -244,10 +244,10 @@ void Game::takeDamage(void) {
 	if (GAME->health == 0) {
 		SFX::EXPL_SUPERHEAVY1.play();
 		getPlayer()->deleteLater();
-		Connection::sendPacket(PACKETPLAYINPLAYERDEATH);
+		Connection::sendPacket(S_KILLPLAYER);
 	} else {
 		SFX::HIT1.play();
-		Connection::sendPacket(PACKETPLAYINTAKEDAMAGE);
+		Connection::sendPacket(S_DAMAGEPLAYER);
 		for (int i = 0; i < 150; i++) {
 			queueEvent(
 					[i](Game&) {
@@ -301,7 +301,7 @@ void Game::gainPower(void) {
 		GAME->power = 0;
 		getPlayer()->level++;
 		SFX::POWERUP1.play();
-		Connection::sendPacket(PACKETPLAYINLEVELUP);
+		Connection::sendPacket(S_LEVELUP);
 	}
 }
 

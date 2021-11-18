@@ -7,36 +7,36 @@
 enum Header {
 	//***************************************************************************
 	// CLIENT -> SERVER
-	PACKETPLAYINCONNECT,        // UUID:name
-	PACKETPLAYINPLAYERJOIN,     // null
-	PACKETPLAYINSTARTGAME,      // null
-	PACKETPLAYINUPDATEPLAYER,   // x:y
-	PACKETPLAYINPLAYERDEATH,    // null
-	PACKETPLAYINPLAYERSPAWN,    // PlayerType
-	PACKETPLAYINFIREBULLETS,    // focus
-	PACKETPLAYINENEMYDEATH,     // UUID
-	PACKETPLAYINADVANCEPHASE,   // UUID
-	PACKETPLAYINRESUMELEVEL,    // null
-	PACKETPLAYINTAKEDAMAGE,     // null
-	PACKETPLAYINLEVELUP,        // null
-	PACKETPLAYINPLAYERREADY,    // null
-	PACKETPLAYINPLAYERUNREADY,  // null
+	S_CONNECT,       // UUID:name
+	S_JOIN,          // null
+	S_READY,         // null
+	S_UNREADY,       // null
+	S_START,         // null
+	S_UPDATELOC,     // x:y
+	S_KILLPLAYER,    // null
+	S_SPAWNPLAYER,   // PlayerType
+	S_SHOOT,         // focus
+	S_KILLENEMY,     // UUID
+	S_DAMAGEBOSS,    // UUID
+	S_RESUME,        // null
+	S_DAMAGEPLAYER,  // null
+	S_LEVELUP,       // null
 	//***************************************************************************
 	// SERVER -> CLIENT
-	PACKETPLAYOUTPLAYERJOIN,    // names
-	PACKETPLAYOUTPLAYERLEAVE,   // names
-	PACKETPLAYOUTSTARTGAME,     // null
-	PACKETPLAYOUTUPDATEPLAYER,  // UUID:x:y
-	PACKETPLAYOUTPLAYERDEATH,   // UUID
-	PACKETPLAYOUTPLAYERSPAWN,   // UUID:name:PlayerType
-	PACKETPLAYOUTFIREBULLETS,   // UUID:focus
-	PACKETPLAYOUTSPAWNENEMY,    // UUID:EnemyType:x:y
-	PACKETPLAYOUTSPAWNBOSS,     // UUID:BossType:x:y
-	PACKETPLAYOUTENEMYDEATH,    // UUID
-	PACKETPLAYOUTPLAYSONG,      // SONG
-	PACKETPLAYOUTADVANCEPHASE,  // UUID
-	PACKETPLAYOUTTAKEDAMAGE,    // UUID
-	PACKETPLAYOUTLEVELUP,       // UUID
+	C_SOUND,         // SFX:vol
+	C_SONG,          // SONG
+	C_LOBBY,         // names
+	C_START,         // null
+	C_UPDATELOC,     // UUID:x:y
+	C_KILLPLAYER,    // UUID
+	C_SPAWNPLAYER,   // UUID:name:PlayerType
+	C_SHOOT,         // UUID:focus
+	C_SPAWNENEMY,    // UUID:EnemyType:x:y
+	C_SPAWNBOSS,     // UUID:BossType:x:y
+	C_KILLENEMY,     // UUID
+	C_DAMAGEBOSS,    // UUID
+	C_DAMAGEPLAYER,  // UUID
+	C_LEVELUP,       // UUID
 	//***************************************************************************
 };
 
