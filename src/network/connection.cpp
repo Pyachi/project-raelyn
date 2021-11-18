@@ -154,9 +154,12 @@ void Connection::handlePacket(const Packet& packet) {
       break;
 		case PACKETPLAYOUTTAKEDAMAGE:
 			Game::queueEvent({[packet](Game& game) {
-				dynamic_cast<EntityPlayer*>(
-						game.getEntities().at(UID::fromString(packet.data.at(0))))
-						->invFrames = 150;
+				if (game.getEntities().count(UID::fromString(packet.data.at(0)))) {
+					EntityPlayer* player = dynamic_cast<EntityPlayer*>(
+							game.getEntities().at(UID::fromString(packet.data.at(0))));
+					player->invFrames = 150;
+					player->level = 1;
+				}
 			}});
 			break;
 		case PACKETPLAYOUTLEVELUP:
