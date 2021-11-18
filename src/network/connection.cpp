@@ -66,6 +66,7 @@ Connection::Connection(void) : QTcpSocket() {
 
 void Connection::handlePacket(const Packet& packet) {
   Header header = packet.header;
+	qDebug() << packet.encode();
   switch (header) {
 		case C_SOUND:
 			if (packet.data.length() == 2)
@@ -80,7 +81,7 @@ void Connection::handlePacket(const Packet& packet) {
 			Menu::MENU->players.clear();
 			for (const QString& name : packet.data)
 				Menu::MENU->players.addItem(name);
-      break;
+			break;
 		case C_START:
 			Game::create();
 			Menu::MENU->close();
@@ -94,7 +95,7 @@ void Connection::handlePacket(const Packet& packet) {
 					game.getEntities().at(UID::fromString(packet.data.at(0)))->setPos(
 							{packet.data.at(1).toDouble(), packet.data.at(2).toDouble()});
 			}});
-			break;
+      break;
 		case C_KILLPLAYER:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
@@ -126,7 +127,7 @@ void Connection::handlePacket(const Packet& packet) {
         Enemy::valueOf(packet.data.at(1).toInt())
             .spawn({packet.data.at(2).toDouble(), packet.data.at(3).toDouble()},
 									 UID::fromString(packet.data.at(0)),
-									 packet.data.at(4).toInt());
+									 packet.data.at(4).toDouble());
 			}});
       break;
 		case C_SPAWNBOSS:
@@ -134,7 +135,7 @@ void Connection::handlePacket(const Packet& packet) {
         Boss::valueOf(packet.data.at(1).toInt())
             .spawn({packet.data.at(2).toDouble(), packet.data.at(3).toDouble()},
 									 UID::fromString(packet.data.at(0)),
-									 packet.data.at(4).toInt());
+									 packet.data.at(4).toDouble());
 			}});
 			break;
 		case C_KILLENEMY:

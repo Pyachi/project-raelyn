@@ -10,7 +10,7 @@ EntityEnemy::EntityEnemy(const Texture& tex,
                          const UID& id,
                          int health,
                          const AI<EntityEnemy>& ai)
-    : Entity(ENEMY, tex, id), health(health), ai(ai) {}
+		: Entity(ENEMY, tex, id), health(health), ai(ai) {}
 
 void EntityEnemy::tick(void) {
   age++;
@@ -30,8 +30,7 @@ void EntityEnemy::tick(void) {
     bullet->deleteLater();
     if (health <= 0) {
       kill();
-      Connection::sendPacket(
-          {S_KILLENEMY, QStringList() << id.toString()});
+			Connection::sendPacket({S_KILLENEMY, QStringList() << id.toString()});
       break;
     }
   }
