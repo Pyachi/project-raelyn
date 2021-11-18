@@ -12,13 +12,13 @@ EntityEnemy* Enemy::spawn(const QPointF& loc, const UID& id) const {
   return enemy;
 }
 
-const Enemy Enemy::ENEMYTEST1(Texture::ENEMYTEMP, 50, [](EntityEnemy* enemy) {
+const Enemy Enemy::ENEMYTEST1(Texture::ENEMYTEMP, 1000, [](EntityEnemy* enemy) {
   if (enemy->cycle(200, 50))
     enemy->moveTo({150, -300}, 50, QUICK);
   else if (enemy->cycle(200, 150))
     enemy->moveTo({-150, -300}, 50);
 });
-const Enemy Enemy::ENEMYTEST2(Texture::ENEMYTEMP, 100, [](EntityEnemy* enemy) {
+const Enemy Enemy::ENEMYTEST2(Texture::ENEMYTEMP, 1000, [](EntityEnemy* enemy) {
   if (enemy->getAge() < 60)
 
     enemy->moveBy(0, 1);
@@ -26,7 +26,7 @@ const Enemy Enemy::ENEMYTEST2(Texture::ENEMYTEMP, 100, [](EntityEnemy* enemy) {
     enemy->deleteLater();
 });
 const Enemy Enemy::SIMPLESHOTGUN_TOP_LEFT(Texture::ENEMYTEMP,
-                                          5,
+																					1000,
                                           [](EntityEnemy* enemy) {
   if (enemy->cycle(1800, 1, 150))
     enemy->moveBy(2, .85);
@@ -49,7 +49,7 @@ const Enemy Enemy::SIMPLESHOTGUN_TOP_LEFT(Texture::ENEMYTEMP,
     enemy->deleteLater();
 });
 const Enemy Enemy::SIMPLESHOTGUN_TOP_RIGHT(Texture::ENEMYTEMP,
-                                           15,
+																					 1000,
                                            [](EntityEnemy* enemy) {
   if (enemy->cycle(1800, 1, 150))
     enemy->moveBy(-2, .85);
@@ -72,7 +72,7 @@ const Enemy Enemy::SIMPLESHOTGUN_TOP_RIGHT(Texture::ENEMYTEMP,
     enemy->deleteLater();
 });
 const Enemy Enemy::TANKYBANG_UP_DOWN(Texture::ENEMYTEMP,
-                                     100,
+																		 1000,
                                      [](EntityEnemy* enemy) {
   if (enemy->cycle(1800, 1, 175))
     enemy->moveBy(0, 1.5);
@@ -110,7 +110,7 @@ const Enemy Enemy::TANKYBANG_UP_DOWN(Texture::ENEMYTEMP,
     enemy->deleteLater();
 });
 const Enemy Enemy::SIMPLESHOTGUN_MID_LEFT_UP(Texture::ENEMYTEMP,
-                                             55,
+																						 1000,
                                              [](EntityEnemy* enemy) {
   if (enemy->cycle(1800, 1, 120))
     enemy->moveBy(5, 0);
@@ -133,7 +133,7 @@ const Enemy Enemy::SIMPLESHOTGUN_MID_LEFT_UP(Texture::ENEMYTEMP,
     enemy->deleteLater();
 });
 const Enemy Enemy::SIMPLESHOTGUN_MID_RIGHT_UP(Texture::ENEMYTEMP,
-                                              55,
+																							1000,
                                               [](EntityEnemy* enemy) {
   if (enemy->cycle(1800, 1, 120))
     enemy->moveBy(-5, 0);
@@ -156,7 +156,7 @@ const Enemy Enemy::SIMPLESHOTGUN_MID_RIGHT_UP(Texture::ENEMYTEMP,
   if (enemy->getAge() == 900)  // 15 seconds plus off screen
     enemy->deleteLater();
 });
-const Enemy Enemy::WAVE1BASIC(Texture::ENEMYTEMP, 25, [](EntityEnemy* enemy) {
+const Enemy Enemy::WAVE1BASIC(Texture::ENEMYTEMP, 1000, [](EntityEnemy* enemy) {
   if (enemy->cycle(240, 0, 100))
     enemy->moveBy(1, 2);
   else if (enemy->cycle(240, 140, 240))
@@ -167,7 +167,7 @@ const Enemy Enemy::WAVE1BASIC(Texture::ENEMYTEMP, 25, [](EntityEnemy* enemy) {
     enemy->fireBullets(
         BulletInfo(Bullet::BASIC8, Texture::ROUNDAQUA, Pattern::SHOTGUN3));
 });
-const Enemy Enemy::DIVER(Texture::ENEMYTEMP, 40, [](EntityEnemy* enemy) {
+const Enemy Enemy::DIVER(Texture::ENEMYTEMP, 1000, [](EntityEnemy* enemy) {
   if (enemy->cycle(1800, 1, 900))
     enemy->moveBy(-0.75, 0);
 
@@ -180,7 +180,7 @@ const Enemy Enemy::DIVER(Texture::ENEMYTEMP, 40, [](EntityEnemy* enemy) {
     enemy->deleteLater();
 });
 const Enemy Enemy::LARGE_SLOW_LEFTTORIGHT(Texture::ENEMYTEMP,
-                                          80,
+																					1000,
                                           [](EntityEnemy* enemy) {
   if (enemy->cycle(1800, 1, 900))
     enemy->moveBy(-0.75, 0);
@@ -194,7 +194,7 @@ const Enemy Enemy::LARGE_SLOW_LEFTTORIGHT(Texture::ENEMYTEMP,
     enemy->deleteLater();
 });
 const Enemy Enemy::LARGE_SLOW_RIGHTTOLEFT(Texture::ENEMYTEMP,
-                                          80,
+																					1000,
                                           [](EntityEnemy* enemy) {
   if (enemy->cycle(1800, 1, 900))
     enemy->moveBy(0.75, 0);
@@ -208,7 +208,7 @@ const Enemy Enemy::LARGE_SLOW_RIGHTTOLEFT(Texture::ENEMYTEMP,
     enemy->deleteLater();
 });
 const Enemy Enemy::SMALL_FAST_RIGHTTOLEFT(Texture::ENEMYTEMP,
-                                          80,
+																					1000,
                                           [](EntityEnemy* enemy) {
   if (enemy->cycle(1800, 1, 900))
     enemy->moveBy(3, 0);
@@ -222,7 +222,7 @@ const Enemy Enemy::SMALL_FAST_RIGHTTOLEFT(Texture::ENEMYTEMP,
     enemy->deleteLater();
 });
 const Enemy Enemy::SMALL_FAST_LEFTTORIGHT(Texture::ENEMYTEMP,
-                                          80,
+																					1000,
                                           [](EntityEnemy* enemy) {
   if (enemy->cycle(1800, 1, 900))
     enemy->moveBy(-3, 0);
@@ -236,7 +236,7 @@ const Enemy Enemy::SMALL_FAST_LEFTTORIGHT(Texture::ENEMYTEMP,
     enemy->deleteLater();
 });
 const Enemy Enemy::SMALL_FAST_TOPDOWNTOLEFT(Texture::ENEMYTEMP,
-                                            80,
+																						1000,
                                             [](EntityEnemy* enemy) {
   if (enemy->cycle(900, 1, 450))
     enemy->moveBy(0, 3);
@@ -250,7 +250,7 @@ const Enemy Enemy::SMALL_FAST_TOPDOWNTOLEFT(Texture::ENEMYTEMP,
     enemy->deleteLater();
 });
 const Enemy Enemy::SMALL_FAST_TOPDOWNTORIGHT(Texture::ENEMYTEMP,
-                                             80,
+																						 1000,
                                              [](EntityEnemy* enemy) {
   if (enemy->cycle(900, 1, 450))
     enemy->moveBy(0, 3);
@@ -263,7 +263,7 @@ const Enemy Enemy::SMALL_FAST_TOPDOWNTORIGHT(Texture::ENEMYTEMP,
     enemy->deleteLater();
 });
 
-const Enemy Enemy::DART1(Texture::ENEMYTEMP, 80, [](EntityEnemy* enemy) {
+const Enemy Enemy::DART1(Texture::ENEMYTEMP, 1000, [](EntityEnemy* enemy) {
   if (enemy->cycle(500, 10) || enemy->cycle(1000, 100))
     enemy->moveTo({0, 50}, 50, QUICK);
   if (enemy->cycle(500, 110) || enemy->cycle(1000, 410))
@@ -288,7 +288,7 @@ const Enemy Enemy::DART1(Texture::ENEMYTEMP, 80, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::DART2(Texture::ENEMYTEMP, 80, [](EntityEnemy* enemy) {
+const Enemy Enemy::DART2(Texture::ENEMYTEMP, 1000, [](EntityEnemy* enemy) {
   if (enemy->cycle(500, 10) || enemy->cycle(1000, 510))
     enemy->moveTo({75, -200}, 75, QUICK);
   if (enemy->cycle(500, 110))
@@ -313,7 +313,7 @@ const Enemy Enemy::DART2(Texture::ENEMYTEMP, 80, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::DART3(Texture::ENEMYTEMP, 80, [](EntityEnemy* enemy) {
+const Enemy Enemy::DART3(Texture::ENEMYTEMP, 1000, [](EntityEnemy* enemy) {
   if (enemy->cycle(500, 10) || enemy->cycle(1000, 510))
     enemy->moveTo({-75, -200}, 100, QUICK);
   if (enemy->cycle(500, 110))
@@ -338,7 +338,7 @@ const Enemy Enemy::DART3(Texture::ENEMYTEMP, 80, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::DART4(Texture::ENEMYTEMP, 50, [](EntityEnemy* enemy) {
+const Enemy Enemy::DART4(Texture::ENEMYTEMP, 1000, [](EntityEnemy* enemy) {
 
   if (enemy->cycle(1000, 10) || enemy->cycle(1000, 310) ||
       enemy->cycle(1000, 610))
@@ -368,7 +368,7 @@ const Enemy Enemy::DART4(Texture::ENEMYTEMP, 50, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::DART5(Texture::ENEMYTEMP, 50, [](EntityEnemy* enemy) {
+const Enemy Enemy::DART5(Texture::ENEMYTEMP, 1000, [](EntityEnemy* enemy) {
 
   if (enemy->cycle(1000, 10) || enemy->cycle(1000, 310) ||
       enemy->cycle(1000, 610))
@@ -397,7 +397,7 @@ const Enemy Enemy::DART5(Texture::ENEMYTEMP, 50, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::DART6(Texture::ENEMYTEMP, 50, [](EntityEnemy* enemy) {
+const Enemy Enemy::DART6(Texture::ENEMYTEMP, 1000, [](EntityEnemy* enemy) {
 
   if (enemy->cycle(1000, 10) || enemy->cycle(1000, 310) ||
       enemy->cycle(1000, 610))
@@ -427,7 +427,7 @@ const Enemy Enemy::DART6(Texture::ENEMYTEMP, 50, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::SUNEASY(Texture::ENEMYTEMP, 100, [](EntityEnemy* enemy) {
+const Enemy Enemy::SUNEASY(Texture::ENEMYTEMP, 1000, [](EntityEnemy* enemy) {
 
   if (enemy->cycle(1000, 10) || enemy->cycle(1000, 510))
     enemy->moveTo({0, -100}, 100, QUICK);
@@ -444,7 +444,7 @@ const Enemy Enemy::SUNEASY(Texture::ENEMYTEMP, 100, [](EntityEnemy* enemy) {
     }
   }
 });
-const Enemy Enemy::WHEEL(Texture::ENEMYTEMP, 200, [](EntityEnemy* enemy) {
+const Enemy Enemy::WHEEL(Texture::ENEMYTEMP, 1000, [](EntityEnemy* enemy) {
 
   if (enemy->cycle(1000, 10) || enemy->cycle(1000, 510))
     enemy->moveTo({0, -100}, 100, QUICK);
@@ -458,7 +458,7 @@ const Enemy Enemy::WHEEL(Texture::ENEMYTEMP, 200, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::SUN(Texture::ENEMYTEMP, 100, [](EntityEnemy* enemy) {
+const Enemy Enemy::SUN(Texture::ENEMYTEMP, 1000, [](EntityEnemy* enemy) {
 
   if (enemy->cycle(1000, 10) || enemy->cycle(1000, 510))
     enemy->moveTo({0, -100}, 100, QUICK);
@@ -471,7 +471,7 @@ const Enemy Enemy::SUN(Texture::ENEMYTEMP, 100, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::WHEELEASY(Texture::ENEMYTEMP, 200, [](EntityEnemy* enemy) {
+const Enemy Enemy::WHEELEASY(Texture::ENEMYTEMP, 1000, [](EntityEnemy* enemy) {
 
   if (enemy->cycle(1000, 10) || enemy->cycle(1000, 510))
     enemy->moveTo({0, -100}, 35, QUICK);

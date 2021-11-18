@@ -2,6 +2,15 @@
 #define ENTITYBOSS_H
 
 #include "entity.h"
+#include <QGraphicsProxyWidget>
+#include <QProgressBar>
+
+class ProgressBar : public QProgressBar {
+ public:
+	ProgressBar();
+
+	void paintEvent(QPaintEvent* e) override;
+};
 
 class EntityBoss : public Entity {
  public:
@@ -11,14 +20,20 @@ class EntityBoss : public Entity {
              const AI<EntityBoss>& ai);
 
   int health;
-  int phase;
+	ushort phase;
 
   void kill(void);
   void advancePhase(void);
 
  private:
+	~EntityBoss() override;
+
   const Array<int> totalHealth;
   const AI<EntityBoss>& ai;
+	int invFrames = 0;
+
+	QGraphicsProxyWidget healthBarDisplay;
+	ProgressBar healthBar;
 
   void tick(void) override;
 };

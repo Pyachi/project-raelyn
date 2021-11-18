@@ -22,7 +22,8 @@ Game::Game(void)
 			background2(Texture::BACKGROUND, &play),
 			background3(Texture::BACKGROUND2, &play),
 			background4(Texture::BACKGROUND2, &play),
-			points(&sidebar),
+			highScore(&sidebar),
+			score(&sidebar),
 			powerDisplay(&sidebar),
 			paused(false),
 			age(0) {
@@ -60,9 +61,14 @@ Game::Game(void)
   adjustSize();
   setFixedSize(size() + QSize(2, 2));
 
-  points.setBrush(Qt::white);
-	points.setFont(Font::PRESSSTART);
-	points.setPos({710, 146});
+	highScore.setText("00000000000");
+	highScore.setBrush(Qt::white);
+	highScore.setFont(Font::PRESSSTART);
+	highScore.setPos({710, 116});
+
+	score.setBrush(Qt::white);
+	score.setFont(Font::PRESSSTART);
+	score.setPos({710, 146});
 
 	powerDisplay.setBrush(Qt::white);
 	powerDisplay.setFont(Font::PRESSSTART);
@@ -122,8 +128,7 @@ void Game::tick(void) {
 		timedEventQueue.insert({event.first - 1, event.second});
 	//***************************************************************************
 	// Sidebar Display
-	points.setText(
-			QString::number(User::getScore()).rightJustified(11, '0'));
+	score.setText(QString::number(User::getScore()).rightJustified(11, '0'));
 	if (playerAlive()) {
 		powerDisplay.setText(QString::number(getPlayer()->level) + "." +
 												 QString::number(power).rightJustified(2, '0') +

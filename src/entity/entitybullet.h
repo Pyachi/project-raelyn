@@ -7,11 +7,12 @@ class EntityBullet : public Entity {
  public:
   EntityBullet(const Texture& tex,
                const AI<EntityBullet>& ai,
-               const Entity* owner);
+							 const Entity* owner,
+							 int damage);
 
   const EntityType ownerType;
   bool borderCheck;
-  int damage;
+	const int damage;
 
  private:
   const AI<EntityBullet> ai;

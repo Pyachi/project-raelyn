@@ -37,7 +37,7 @@ class Game : public QGraphicsView {
 	//***************************************************************************
 	// Sidebar
 	QGraphicsSimpleTextItem highScore;
-	QGraphicsSimpleTextItem points;
+	QGraphicsSimpleTextItem score;
 	Array<QGraphicsPixmapItem*> healthDisplay;
 	Array<QGraphicsPixmapItem*> bombsDisplay;
 	QGraphicsSimpleTextItem powerDisplay;

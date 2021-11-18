@@ -4,6 +4,8 @@
 #include "entitybullet.h"
 #include "packet.h"
 #include "sfx.h"
+#include "entity.h"
+#include <QPainter>
 
 EntityBoss::EntityBoss(const Texture& tex,
                        const UID& id,
@@ -13,27 +15,48 @@ EntityBoss::EntityBoss(const Texture& tex,
       health(health[0]),
       phase(0),
       totalHealth(health),
-      ai(ai) {}
+			ai(ai),
+			healthBarDisplay(this) {
+	healthBar.setFormat("");
+	healthBar.setRange(0, health[0]);
+	healthBar.setValue(health[0]);
+	healthBar.setAttribute(Qt::WA_TranslucentBackground);
+	healthBarDisplay.setWidget(&healthBar);
+	healthBarDisplay.adjustSize();
+	healthBarDisplay.setPos(-healthBarDisplay.boundingRect().center());
+}
 
 void EntityBoss::tick(void) {
   age++;
   ai(this);
   handleMovement();
-  List<EntityBullet*> bullets;
-  for (Entity* entity : getCollisions(BULLET)) {
-    EntityBullet* bullet = dynamic_cast<EntityBullet*>(entity);
-    if (bullet->ownerType == PLAYER || bullet->ownerType == ONLINEPLAYER)
-      bullets.push_back(bullet);
-  }
-  for (EntityBullet* bullet : bullets) {
-    SFX::EXPL_LIGHT2.play(10);
-    health -= bullet->damage;
-    bullet->deleteLater();
-    if (health <= 0) {
-      advancePhase();
-      Connection::sendPacket(
-          {PACKETPLAYINADVANCEPHASE, QStringList() << id.toString()});
-      break;
+	if (invFrames != 0) {
+		int flashTime = invFrames < 40 ? 5 : 10;
+		if (cycle(flashTime, 1))
+			setOpacity(0);
+		else if (cycle(flashTime, flashTime / 2))
+			setOpacity(type == ONLINEPLAYER ? 0.25 : 1);
+		invFrames--;
+		if (invFrames == 0)
+			setOpacity(type == ONLINEPLAYER ? 0.25 : 1);
+	} else {
+		List<EntityBullet*> bullets;
+		for (Entity* entity : getCollisions(BULLET)) {
+			EntityBullet* bullet = dynamic_cast<EntityBullet*>(entity);
+			if (bullet->ownerType == PLAYER || bullet->ownerType == ONLINEPLAYER)
+				bullets.push_back(bullet);
+		}
+		for (EntityBullet* bullet : bullets) {
+			SFX::EXPL_LIGHT2.play(10);
+			health -= bullet->damage;
+			bullet->deleteLater();
+			healthBar.setValue(health);
+			if (health <= 0) {
+				advancePhase();
+				Connection::sendPacket(
+						{PACKETPLAYINADVANCEPHASE, QStringList() << id.toString()});
+				break;
+			}
     }
   }
 }
@@ -63,10 +86,45 @@ void EntityBoss::advancePhase() {
     return;
   } else {
     health = totalHealth[phase];
+		healthBar.setMaximum(health);
+		healthBar.setValue(health);
     age = 0;
+		invFrames = 200;
     for (int i = 0; i < (Random::getInt() % 5) + 5; i++)
 			Collectable::POWER.spawn(pos(), 100);
     for (int i = 0; i < (Random::getInt() % 20) + 10; i++)
 			Collectable::POINTS.spawn(pos(), 100);
   }
+}
+
+EntityBoss::~EntityBoss() {
+	healthBarDisplay.setWidget(nullptr);
+	healthBar.deleteLater();
+}
+
+ProgressBar::ProgressBar() : QProgressBar() {
+	setMinimumSize({128, 128});
+}
+
+void ProgressBar::paintEvent(QPaintEvent*) {
+	QPainter painter;
+	painter.begin(this);
+	painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
+	QPen pen(QColor(255, 255, 255, 200));
+	pen.setWidth(3);
+	painter.setPen(pen);
+	painter.drawArc(5,
+									5,
+									118,
+									118,
+									1440,
+									static_cast<int>((static_cast<double>(value()) /
+																		static_cast<double>(maximum())) *
+																	 5760.0));
+	pen.setColor(Qt::darkRed);
+	pen.setWidth(1);
+	painter.setPen(pen);
+	painter.drawArc(3, 3, 122, 122, 0, 5760);
+	painter.drawArc(7, 7, 114, 114, 0, 5760);
+	update();
 }

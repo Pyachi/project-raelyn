@@ -22,10 +22,15 @@ EntityPlayer::EntityPlayer(const Character& character,
       display(QString::fromStdString(user), this),
 			name(user),
 			firing(false) {
+	setPos({0.5, 0.5});
   hitbox.setOffset(-hitbox.boundingRect().center());
   setRotation(180);
   if (type == PLAYER)
     display.hide();
+	else {
+		setOpacity(0.25);
+		hitbox.hide();
+	}
   display.setBrush(Qt::white);
   display.setRotation(180);
   display.setPos({display.boundingRect().center().x(), -40});

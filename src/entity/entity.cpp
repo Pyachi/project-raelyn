@@ -58,11 +58,11 @@ List<EntityBullet*> Entity::fireBullets(const List<BulletInfo>& list,
   List<EntityBullet*> bullets;
   for (const BulletInfo& info : list) {
     for (const SpawnInfo& spawnInfo : info.info) {
-      EntityBullet* bullet = new EntityBullet(info.tex, info.ai, this);
+			EntityBullet* bullet =
+					new EntityBullet(info.tex, info.ai, this, info.damage);
       bullet->setPos(pos() + loc + spawnInfo.loc);
       bullet->setRotation(rotation() + rot + spawnInfo.rot);
       bullet->setScale(info.scale);
-      bullet->damage = info.damage;
       bullets.push_back(bullet);
     }
   }

@@ -26,8 +26,8 @@ class User {
 
 	int score = 0;
 
-  QVector<Scoreboard*> masterBoard;
-  Array<QString> ScoreLevels = {"hello"};
+	Array<Scoreboard*> masterBoard;
+	Array<QString> ScoreLevels = {"hello"};
 	int lenLevels = 1;
 
  public:
@@ -35,7 +35,7 @@ class User {
     if (USER != nullptr)
       return;
     USER = new User();
-  };
+	}
 
   static const String& getName(void) { return USER->name; }
   static const String& getIP(void) { return USER->ip; }

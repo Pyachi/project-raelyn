@@ -17,7 +17,7 @@ void EntityEnemy::tick(void) {
   ai(this);
   handleMovement();
   List<EntityBullet*> bullets;
-  for (Entity* entity : getNearbyEntities(BULLET, 40)) {
+	for (Entity* entity : getCollisions(BULLET)) {
     EntityBullet* bullet = dynamic_cast<EntityBullet*>(entity);
     if (bullet->ownerType == PLAYER || bullet->ownerType == ONLINEPLAYER)
       bullets.push_back(bullet);
