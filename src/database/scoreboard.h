@@ -9,7 +9,6 @@ class Scoreboard
 public:
     struct run
     {
-        QString level;
         QString user;
         int score;
         QDateTime time;
@@ -17,14 +16,14 @@ public:
         run* last;
     };
 
-    Scoreboard(QString lev);
-    void Add_Score(QString level, QString user, QDateTime time, int score);
+    Scoreboard();
+    void Add_Score(QString user, QDateTime time, int score);
     void Add_Score(run* add);
 
     Scoreboard* Extra_Here(Scoreboard* other);
     void Order_Scores(QString key);
-    void Merge(Scoreboard* other);                  // later if needed
     int Get_length();
+    int Get_High_Score();
 
     void Show_Scoreboard();
     run* Get_Run(int index);

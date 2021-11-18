@@ -13,20 +13,22 @@
 class database_API {
  public:
 	database_API();
-	QSqlDatabase start_connection(QString type,
+    QSqlDatabase start_connection(QString type, QString use);
+    QSqlDatabase start_connection(QString type, QString use,
 																QString host,
 																int port,
 																QString name,
-																QString user,
+                                                                QString SQLuser,
 																QString pass);
-	QSqlDatabase start_connection(QString type);
 
-	bool add_score(QString level, QString user, QDateTime time, int score);
 
-	Scoreboard* get_scoreboard(QString level);
+    bool add_score(QString user, QDateTime time, int score);
 
-	bool update_database(QString name, Scoreboard* score);
-	bool create_level_table(QString level);
+    Scoreboard* get_scoreboard();
+    Scoreboard* get_scoreboard(QString use);
+
+    bool update_database(Scoreboard* score);
+    bool create_level_table();
 	bool create_settings_table(int SFX, int music, int controls, int character);
 	void update_settings(int SFX, int music, int controls, int character);
 	int get_SFX();
@@ -39,6 +41,7 @@ class database_API {
 	int run_table_stats(QString level);       // create object to have stats in
 
  private:
+    QString user;
 	QSqlDatabase db;
 };
 

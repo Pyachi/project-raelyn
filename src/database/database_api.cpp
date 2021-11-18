@@ -2,11 +2,32 @@
 
 database_API::database_API() {}
 
-QSqlDatabase database_API::start_connection(QString type,
+QSqlDatabase database_API::start_connection(QString type, QString use) {
+    // should be used only for SQLITE databases
+
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    if (type == "SQLITE") {
+        db.setDatabaseName(QDir::currentPath() + "/data");  // creates the name and path where
+    }                                 // the database should be stored
+
+    if (!db.open())  // tries to open/create the database file
+    {
+        qDebug() << db.lastError().text();  // if fail display error
+    } else {
+        qDebug() << "Database opened at: " + QDir::currentPath() +
+                                        "/scores";  // if successful display where it opened
+    }
+    user = use;
+    return db;  // returns database object
+}
+
+
+
+QSqlDatabase database_API::start_connection(QString type, QString use,
 																						QString host,
 																						int port,
 																						QString name,
-																						QString user,
+                                                                                        QString SQLuser,
 																						QString pass) {
 	QSqlDatabase start = QSqlDatabase::addDatabase(
 			type);  // starts the type of SQL database to be used (SQLite, MySQL)
@@ -14,60 +35,33 @@ QSqlDatabase database_API::start_connection(QString type,
 		start.setHostName(host);  // adds connection details to session
 		start.setPort(port);
 		start.setDatabaseName(name);
-		start.setUserName(user);
+        start.setUserName(SQLuser);
 		start.setPassword(pass);
 
 		if (!start.open())  // opens connection
-    {
-			qDebug() << start.lastError();
+        {
 			qDebug() << "Error: Unable to connect to above error.";
-    }
+        }
 	}
 	db = start;
 
+    user = use;
 	return start;
 }
 
-QSqlDatabase database_API::start_connection(QString type) {
-	// should be used only for SQLITE databases
 
-	db = QSqlDatabase::addDatabase("QSQLITE", type);
-	if (type == "SQLITE") {
-		db.setDatabaseName(QDir::currentPath() +
-											 "/scores");  // creates the name and path where
-	}                                 // the database should be stored
-
-	if (!db.open())  // tries to open/create the database file
-	{
-		qDebug() << db.lastError().text();  // if fail display error
-	} else {
-		qDebug() << "Database opened at: " + QDir::currentPath() +
-										"/scores";  // if successful display where it opened
-	}
-
-	return db;  // returns database object
-}
-
-bool database_API::add_score(QString level,
-														 QString user,
-														 QDateTime time,
-														 int score) {
+bool database_API::add_score(QString user, QDateTime time, int score) {
 	bool pass = true;
 	QSqlQuery query = QSqlQuery(db);
-	QString querySTR =
-			"INSERT INTO " + level + " (Time, User, Level, Score) VALUES ('";
-
-	querySTR.append(time.toString("yyyyMMdd HH:mm:ss"));
-	querySTR.append("', '");
+    QString querySTR = "INSERT INTO scores (User, Time, Score) VALUES ('";
 	querySTR.append(user);
-	querySTR.append("', '");
-	querySTR.append(level);
-	querySTR.append("', ");
+    querySTR.append("', '");
+    querySTR.append(time.toString("yyyyMMdd HH:mm:ss"));
+    querySTR.append("', ");
 	querySTR.append(QString::number(score));
 	querySTR.append(");");
 
 	if (!query.exec(querySTR)) {
-		qDebug() << db.lastError();
 		qDebug() << "Error: invalid query from adding score" + time.toString();
 		pass = false;
 	}
@@ -75,55 +69,78 @@ bool database_API::add_score(QString level,
 	return pass;
 }
 
-Scoreboard* database_API::get_scoreboard(QString level) {
+Scoreboard* database_API::get_scoreboard() {
+
+    Scoreboard* board = new Scoreboard();
+
 	QSqlQuery query = QSqlQuery(db);
-	QString querySTR = "SELECT * FROM ";
-	querySTR.append(level);
+    QString querySTR = "SELECT * FROM scores;";
 
-	Scoreboard* board = new Scoreboard(level);
-
-	querySTR.append(";");
 	if (!query.exec(querySTR)) {
-		qDebug() << db.lastError();
-		qDebug() << "Error: invalid query get scoreboard " + level;
+        qDebug() << "Error: invalid query get scoreboard";
 	}
 
 	while (query.next()) {
-		board->Add_Score(query.value(1).toString(), query.value(2).toString(),
-										 query.value(0).toDateTime(), query.value(3).toInt());
+        board->Add_Score(query.value(0).toString(), query.value(1).toDateTime(), query.value(2).toInt());
 	}
 
 	return board;
 }
 
-bool database_API::update_database(QString name, Scoreboard* score) {
+Scoreboard* database_API::get_scoreboard(QString use) {
+
+    Scoreboard* board = new Scoreboard();
+
+    QSqlQuery query = QSqlQuery(db);
+    QString querySTR = "SELECT * FROM scores WHERE User = '";
+    querySTR.append(use);
+    querySTR.append("';");
+
+    if (!query.exec(querySTR)) {
+        qDebug() << "Error: invalid query get scoreboard";
+    }
+    while (query.next()) {
+        QDateTime tim = QDateTime::fromString(query.value(1).toString(), "yyyyMMdd HH:mm:ss");
+        board->Add_Score(query.value(0).toString(), tim, query.value(2).toInt());
+    }
+
+    return board;
+}
+
+bool database_API::update_database(Scoreboard* score) {
 	bool pass = true;
-	Scoreboard* data = get_scoreboard(name);
+    Scoreboard* data = get_scoreboard();
 	Scoreboard* diff;
+
 	if (data == nullptr) {
 		diff = score;
 	} else {
+//        qDebug() << "data";
+//        data->Show_Scoreboard();
 		diff = score->Extra_Here(data);
-		qDebug() << "get diff";
 	}
+        qDebug() << "score";
+        score->Show_Scoreboard();
+
+
+        qDebug() << "diff";
+        diff->Show_Scoreboard();
 
 	for (int i = 0; i < diff->Get_length(); i++) {
 		Scoreboard::run* hold = diff->Get_Run(i);
-		pass = pass && add_score(hold->level, hold->user, hold->time, hold->score);
+        pass = pass && add_score(hold->user, hold->time, hold->score);
 	}
 	return pass;
 }
 
-bool database_API::create_level_table(QString level) {
-	QSqlQuery query = QSqlQuery(db);
-	QString querySTR = "CREATE TABLE IF NOT EXISTS ";
-	bool pass = true;
+bool database_API::create_level_table() {
 
-	querySTR.append(level);
-	querySTR.append(
-			" (Time DATETIME UNIQUE PRIMARY KEY, User TEXT, Level TEXT, Score int);");
+    bool pass = true;
+
+	QSqlQuery query = QSqlQuery(db);
+    QString querySTR = "CREATE TABLE IF NOT EXISTS scores (User TEXT, Time DATETIME UNIQUE PRIMARY KEY, Score int);";
+
 	if (!query.exec(querySTR)) {
-		qDebug() << db.lastError();
 		qDebug() << "Error: invalid query for create_level_table";
 		pass = false;
 	}
@@ -137,33 +154,31 @@ bool database_API::create_settings_table(int SFX,
 																				 int character) {
 	QSqlQuery query = QSqlQuery(db);
 	QString querySTR =
-			"CREATE TABLE IF NOT EXISTS settings (ID INT UNIQUE PRIMARY KEY, SFX "
+            "CREATE TABLE IF NOT EXISTS settings (User TEXT UNIQUE PRIMARY KEY, SFX "
 			"INT, Music INT, Controls INT, Character INT);";
 	bool pass = true;
 
 	if (!query.exec(querySTR)) {
-		qDebug() << db.lastError();
 		qDebug() << "Error: invalid query for create_settings_table 1";
 		pass = false;
 	}
 
-	querySTR = "INSERT INTO settings VALUES (1, ";
-	querySTR.append(QString::number(SFX));
-	querySTR.append(", ");
-	querySTR.append(QString::number(music));
-	querySTR.append(", ");
-	querySTR.append(QString::number(controls));
-	querySTR.append(", ");
-	querySTR.append(QString::number(character));
-	querySTR.append(");");
+    querySTR = "INSERT INTO settings VALUES ('";
+    querySTR.append(user);
+    querySTR.append("', ");
+    querySTR.append(QString::number(SFX));
+    querySTR.append(", ");
+    querySTR.append(QString::number(music));
+    querySTR.append(", ");
+    querySTR.append(QString::number(controls));
+    querySTR.append(", ");
+    querySTR.append(QString::number(character));
+    querySTR.append(");");
 
-	qDebug() << querySTR;
-
-	if (!query.exec(querySTR)) {
-		qDebug() << db.lastError();
-		qDebug() << "Error: invalid query for create_settings_table 3";
-		pass = false;
-	}
+    if (!query.exec(querySTR)) {
+        qDebug() << "Error: invalid query for create_settings_table first incert";
+        pass = false;
+    }
 
 	return pass;
 }
@@ -173,7 +188,7 @@ void database_API::update_settings(int SFX,
 																	 int controls,
 																	 int character) {
 	QSqlQuery query = QSqlQuery(db);
-	QString querySTR = "UPDATE settings SET SFX = ";
+    QString querySTR = "UPDATE settings SET SFX = ";
 	querySTR.append(QString::number(SFX));
 	querySTR.append(", Music = ");
 	querySTR.append(QString::number(music));
@@ -181,19 +196,21 @@ void database_API::update_settings(int SFX,
 	querySTR.append(QString::number(controls));
 	querySTR.append(", Character = ");
 	querySTR.append(QString::number(character));
-	querySTR.append(";");
+    querySTR.append(" WHERE User = '");
+    querySTR.append(user);
+    querySTR.append("';");
 
 	if (!query.exec(querySTR)) {
-		qDebug() << db.lastError();
 		qDebug() << "Error: invalid query update settings";
 	}
 }
 
 int database_API::get_SFX() {
 	QSqlQuery query = QSqlQuery(db);
-	QString querySTR = "SELECT * FROM settings;";
+    QString querySTR = "SELECT * FROM settings WHERE User = '";
+    querySTR.append(user);
+    querySTR.append("';");
 	if (!query.exec(querySTR)) {
-		qDebug() << db.lastError();
 		qDebug() << "Error: invalid query get SFX";
 	}
 	query.next();
@@ -202,9 +219,10 @@ int database_API::get_SFX() {
 
 int database_API::get_music() {
 	QSqlQuery query = QSqlQuery(db);
-	QString querySTR = "SELECT * FROM settings;";
+    QString querySTR = "SELECT * FROM settings WHERE User = '";
+    querySTR.append(user);
+    querySTR.append("';");
 	if (!query.exec(querySTR)) {
-		qDebug() << db.lastError();
 		qDebug() << "Error: invalid query get settings 1";
 	}
 	query.next();
@@ -213,20 +231,22 @@ int database_API::get_music() {
 
 int database_API::get_controls() {
 	QSqlQuery query = QSqlQuery(db);
-	QString querySTR = "SELECT * FROM settings";
+    QString querySTR = "SELECT * FROM settings WHERE User = '";
+    querySTR.append(user);
+    querySTR.append("';");
 	if (!query.exec(querySTR)) {
-		qDebug() << db.lastError();
 		qDebug() << "Error: invalid query get settings 2";
 	}
 	query.next();
-	return query.value(3).toInt();
+    return query.value(3).toInt();
 }
 
 int database_API::getCharacter(void) {
 	QSqlQuery query = QSqlQuery(db);
-	QString querySTR = "SELECT * FROM settings";
+    QString querySTR = "SELECT * FROM settings WHERE User = '";
+    querySTR.append(user);
+    querySTR.append("';");
 	if (!query.exec(querySTR)) {
-		qDebug() << db.lastError();
 		qDebug() << "Error: invalid query get settings 2";
 	}
 	query.next();
