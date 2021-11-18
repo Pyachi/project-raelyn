@@ -17,7 +17,7 @@ enum Header {
 	S_SPAWNPLAYER,   // PlayerType
 	S_SHOOT,         // focus
 	S_KILLENEMY,     // UUID
-	S_DAMAGEBOSS,    // UUID
+	S_DAMAGEBOSS,    // UUID:phase
 	S_RESUME,        // null
 	S_DAMAGEPLAYER,  // null
 	S_LEVELUP,       // null
@@ -34,7 +34,7 @@ enum Header {
 	C_SPAWNENEMY,    // UUID:EnemyType:x:y:scale
 	C_SPAWNBOSS,     // UUID:BossType:x:y:scale
 	C_KILLENEMY,     // UUID
-	C_DAMAGEBOSS,    // UUID
+	C_DAMAGEBOSS,    // UUID:phase
 	C_DAMAGEPLAYER,  // UUID
 	C_LEVELUP,       // UUID
 	//***************************************************************************

@@ -94,7 +94,7 @@ void Connection::handlePacket(const Packet& packet) {
 					game.getEntities().at(UID::fromString(packet.data.at(0)))->setPos(
 							{packet.data.at(1).toDouble(), packet.data.at(2).toDouble()});
 			}});
-      break;
+			break;
 		case C_KILLPLAYER:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
@@ -102,7 +102,7 @@ void Connection::handlePacket(const Packet& packet) {
 							.at(UID::fromString(packet.data.at(0)))
 							->deleteLater();
 			}});
-			break;
+      break;
 		case C_SPAWNPLAYER:
 			Game::queueEvent({[packet](Game&) {
 				new EntityPlayer(Character::valueOf(packet.data.at(2).toInt()),
@@ -136,19 +136,22 @@ void Connection::handlePacket(const Packet& packet) {
 									 UID::fromString(packet.data.at(0)),
 									 packet.data.at(4).toInt());
 			}});
-      break;
+			break;
 		case C_KILLENEMY:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
 					dynamic_cast<EntityEnemy*>(game.getEntities().at(UID::fromString(
 																				 packet.data.at(0))))->kill();
 			}});
-      break;
+			break;
 		case C_DAMAGEBOSS:
 			Game::queueEvent({[packet](Game& game) {
-				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
-					dynamic_cast<EntityBoss*>(game.getEntities().at(UID::fromString(
-																				packet.data.at(0))))->advancePhase();
+				if (game.getEntities().count(UID::fromString(packet.data.at(0)))) {
+					EntityBoss* boss = dynamic_cast<EntityBoss*>(
+							game.getEntities().at(UID::fromString(packet.data.at(0))));
+					if (boss->phase == packet.data.at(1).toInt())
+						boss->advancePhase();
+				}
 			}});
       break;
 		case C_DAMAGEPLAYER:
@@ -160,13 +163,13 @@ void Connection::handlePacket(const Packet& packet) {
 					player->level = 1;
 				}
 			}});
-			break;
+      break;
 		case C_LEVELUP:
 			Game::queueEvent({[packet](Game& game) {
 				dynamic_cast<EntityPlayer*>(
 						game.getEntities().at(UID::fromString(packet.data.at(0))))->level++;
 			}});
-			break;
+      break;
 		default:
 			qDebug() << "ERROR: Received Server Packet!";
       break;
