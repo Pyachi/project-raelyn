@@ -70,6 +70,7 @@ void Server::handleDisconnection(void) {
 	users.erase(socket);
 	names.erase(socket);
 	ready.erase(socket);
+	alive.remove(socket);
   Menu::MENU->playerCount.setText("Players Connected: " +
                                   QString::number(sockets.size()));
 	sendPacket({C_LOBBY, getNames()});
@@ -95,6 +96,8 @@ void Server::start(void) {
 	close();
 	running = true;
 	Level::start();
+	for (auto pair : users)
+		alive.push_back(pair.first);
 }
 
 void Server::receivePacket(void) {
@@ -136,6 +139,7 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
                  sender);
       break;
     case S_KILLPLAYER:
+			alive.remove(sender);
 			sendPacket({C_KILLPLAYER, QStringList() << users[sender].toString()},
 								 sender);
       break;

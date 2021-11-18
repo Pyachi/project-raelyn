@@ -14,7 +14,7 @@ class Server : public QTcpServer {
 	static bool create(unsigned short port);
 	static void destruct(void);
 	static unsigned short getPort(void);
-	static ulong size() { return SER->users.size(); }
+	static ulong liveCount() { return SER->alive.size(); }
 
 	static void sendPacket(const Packet& packet, QTcpSocket* sender = nullptr);
 
@@ -27,6 +27,7 @@ class Server : public QTcpServer {
 	Map<QTcpSocket*, UID> users;
 	Map<QTcpSocket*, QString> names;
 	Map<QTcpSocket*, bool> ready;
+	List<QTcpSocket*> alive;
 
 	bool running;
 
