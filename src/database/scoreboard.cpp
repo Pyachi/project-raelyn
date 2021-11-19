@@ -54,7 +54,7 @@ void Scoreboard::Order_Scores(QString key) {
 		run* hold;
 		while (start != nullptr) {
 			pass = temp->score;
-			while (temp->last != nullptr && pass < temp->last->score) {
+            while (temp->last != nullptr && pass > temp->last->score) {
 				hold = temp->last;
 				Swap_Adjectent_Runs(hold, temp);
 			}
@@ -69,8 +69,10 @@ void Scoreboard::Show_Scoreboard() {
 	Order_Scores("Accending_Score");
 	run* temp = head;
 	while (temp != nullptr) {
-		//        qDebug() << temp->score;
-		//        qDebug( )<< temp->time;
+        qDebug() << temp->score;
+        qDebug() << temp->time;
+        qDebug() << temp->user;
+        qDebug() << "";
 		temp = temp->next;
 	}
 }

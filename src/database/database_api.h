@@ -37,6 +37,8 @@ class database_API {
 	int getCharacter(void);
 	void close_database();
 
+    void update_network(QString ip, unsigned short port);
+
 	bool create_master_table(QString level);  // is this needed?
 	int run_table_stats(QString level);       // create object to have stats in
 

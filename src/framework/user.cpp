@@ -33,14 +33,8 @@ User::User()
       "bmy0004",
       QDateTime::fromString("2021-10-06 10:43:12", "yyyy-MM-dd HH:mm:ss"),
       2250);
-  score->Add_Score(
-      "bmy0004",
-      QDateTime::fromString("2021-10-07 10:43:12", "yyyy-MM-dd HH:mm:ss"),
-      1500);
-  score->Add_Score(
-      "bmy0004",
-      QDateTime::fromString("2021-10-08 10:43:12", "yyyy-MM-dd HH:mm:ss"),
-      3000);
+
+  score->Add_Score("GB0001", QDateTime::fromString("2021-11-18 01:01:00", "yyyy-MM-dd HH:mm:ss"),10000000);
 
   score->Add_Score(
       "bmy0004",
@@ -64,13 +58,15 @@ User::User()
   qDebug() << dataAPI.update_database(score);
 
   Scoreboard* masterBoard = dataAPI.get_scoreboard();
-  Scoreboard* playerBoard =
-      dataAPI.get_scoreboard(QString::fromStdString(name));
+  Scoreboard* playerBoard = dataAPI.get_scoreboard(QString::fromStdString(name));
 
-	//  qDebug() << "masterBoard";
+
+  masterBoard->Order_Scores("Accending_Score");
+  playerBoard->Order_Scores("Accending_Score");
+  qDebug() << "masterBoard--------------------";
   masterBoard->Show_Scoreboard();
-	//  qDebug() << "playerBoard";
-  //  playerBoard->Show_Scoreboard();
+  qDebug() << "playerBoard--------------------";
+  playerBoard->Show_Scoreboard();
 
   dataAPI.create_settings_table(soundVol, musicVol, *controls, *character);
 

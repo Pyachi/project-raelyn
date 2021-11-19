@@ -61,6 +61,8 @@ class Menu : public QDialog {
 	QPushButton host;
 	QPushButton join;
 	QPushButton backMultiplayer;
+    QString lastIP;
+    unsigned short lastPort;
 	//***************************************************************************
 	// Options
 	QLabel soundLabel;

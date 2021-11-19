@@ -7,6 +7,7 @@
 #include "sfx.h"
 #include "texture.h"
 #include "user.h"
+#include "database_api.h"
 
 Menu* Menu::MENU = nullptr;
 
@@ -151,6 +152,9 @@ Menu::Menu(void)
     if (Connection::create(ipForm.text(), portForm.text().toUShort())) {
       lobbyMenu.show();
       multiplayerMenu.hide();
+      database_API dataAPI;
+//      dataAPI.start_connection("SQLITE", User::getName());
+//      database_API::update_network(ipForm.text(), portForm.text().toUShort());
       adjustSize();
 			Connection::sendPacket(S_JOIN);
     } else

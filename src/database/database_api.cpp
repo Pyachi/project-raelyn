@@ -82,10 +82,12 @@ Scoreboard* database_API::get_scoreboard() {
 		//        qDebug() << "Error: invalid query get scoreboard";
 	}
 
+
+
 	while (query.next()) {
-		board->Add_Score(query.value(0).toString(),
-										 query.value(1).toDateTime(),
-										 query.value(2).toInt());
+        QDateTime tim =
+                QDateTime::fromString(query.value(1).toString(), "yyyyMMdd HH:mm:ss");
+        board->Add_Score(query.value(0).toString(), tim, query.value(2).toInt());
 	}
 
 	return board;
@@ -103,9 +105,12 @@ Scoreboard* database_API::get_scoreboard(QString use) {
 	if (!query.exec(querySTR)) {
 		//        qDebug() << "Error: invalid query get scoreboard";
 	}
+
+
 	while (query.next()) {
 		QDateTime tim =
 				QDateTime::fromString(query.value(1).toString(), "yyyyMMdd HH:mm:ss");
+
 		board->Add_Score(query.value(0).toString(), tim, query.value(2).toInt());
 	}
 
@@ -118,17 +123,12 @@ bool database_API::update_database(Scoreboard* score) {
 	Scoreboard* diff;
 
 	if (data == nullptr) {
+        qDebug() << "data = null";
 		diff = score;
-	} else {
-		//        qDebug() << "data";
-		//        data->Show_Scoreboard();
+    }
+    else {
 		diff = score->Extra_Here(data);
 	}
-	//        qDebug() << "score";
-	score->Show_Scoreboard();
-
-	//        qDebug() << "diff";
-	diff->Show_Scoreboard();
 
 	for (int i = 0; i < diff->Get_length(); i++) {
 		Scoreboard::run* hold = diff->Get_Run(i);
@@ -161,7 +161,7 @@ bool database_API::create_settings_table(int SFX,
 	QSqlQuery query = QSqlQuery(db);
 	QString querySTR =
 			"CREATE TABLE IF NOT EXISTS settings (User TEXT UNIQUE PRIMARY KEY, SFX "
-			"INT, Music INT, Controls INT, Character INT);";
+            "INT, Music INT, Controls INT, Character INT, IP TEXT, Port SMALLINT);";
 	bool pass = true;
 
 	if (!query.exec(querySTR)) {
@@ -178,8 +178,8 @@ bool database_API::create_settings_table(int SFX,
 	querySTR.append(", ");
 	querySTR.append(QString::number(controls));
 	querySTR.append(", ");
-	querySTR.append(QString::number(character));
-	querySTR.append(");");
+    querySTR.append(QString::number(character));
+    querySTR.append(", NULL, NULL);");
 
 	if (!query.exec(querySTR)) {
 		//        qDebug() << "Error: invalid query for create_settings_table first
@@ -258,6 +258,11 @@ int database_API::getCharacter(void) {
 	}
 	query.next();
 	return query.value(4).toInt();
+}
+
+void database_API::update_network(QString ip, unsigned short port)
+{
+
 }
 
 void database_API::close_database() { db.close(); }
