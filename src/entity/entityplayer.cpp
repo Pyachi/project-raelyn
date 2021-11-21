@@ -66,22 +66,22 @@ void EntityPlayer::tick(void) {
 		Connection::sendPacket({S_SHOOT, QStringList() << QString::number(focus)});
   }
 
-  int dx = 0, dy = 0;
-  int speed = focus ? character.focusSpeed : character.speed;
+	double speed = focus ? character.focusSpeed : character.speed;
+	double dx = 0, dy = 0;
 	if (keys.contains(User::getControls().getKeyRight()))
-    dx += speed;
-	if (keys.contains(User::getControls().getKeyLeft()))
+		dx += speed;
+	else if (keys.contains(User::getControls().getKeyLeft()))
 		dx -= speed;
 	if (keys.contains(User::getControls().getKeyDown()))
-    dy += speed;
-	if (keys.contains(User::getControls().getKeyUp()))
-    dy -= speed;
-  if (dx != 0 && dy != 0) {
-    dx /= sqrt(2);
-    dy /= sqrt(2);
-  }
-  if (dx != 0 || dy != 0) {
-    setPos(confineToPlayableArea(pos() + QPointF(dx, dy)));
+		dy += speed;
+	else if (keys.contains(User::getControls().getKeyUp()))
+		dy -= speed;
+	if (dx != 0 && dy != 0) {
+		dx /= sqrt(2);
+		dy /= sqrt(2);
+	}
+	if (dx != 0 || dy != 0) {
+		setPos(confineToPlayableArea(pos() + QPointF(dx, dy)));
 		Connection::sendPacket({S_UPDATELOC, QStringList()
 																						 << QString::number(pos().x())
 																						 << QString::number(pos().y())});

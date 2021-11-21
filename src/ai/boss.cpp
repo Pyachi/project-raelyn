@@ -17,75 +17,90 @@ EntityBoss* Boss::spawn(const QPointF& loc, const UID& id, double scale) const {
   return boss;
 }
 
-const Boss Boss::LVL1MINI(Texture::ENEMYTEMP,
-													{4000, 2500},
-													[](EntityBoss* boss) {
-	switch (boss->phase) {
-		case 0:
-			if (boss->cycle(1000, 10) || boss->cycle(1000, 510))
-				boss->moveTo({0, -200}, 100, QUICK);
-			if (boss->cycle(1000, 260))
-				boss->moveTo({-200, -200}, 100, QUICK);
-			if (boss->cycle(1000, 760))
-				boss->moveTo({200, -200}, 100, QUICK);
-			if (boss->cycle(250, 100) || boss->cycle(250, 150) ||
-					boss->cycle(250, 200))
-				boss->fireBullets(
-						BulletInfo(Bullet::BASIC4,
-											 Texture::ROUNDBLUE,
-											 SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10),
-											 2)
-								<< BulletInfo(Bullet::BASIC5,
-															Texture::ROUNDBLUE,
-															SpawnInfo(-5) << SpawnInfo(5),
-															2)
-								<< BulletInfo(Bullet::BASIC6,
-															Texture::ROUNDBLUE,
-															SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10),
-															2) << BulletInfo(Bullet::BASIC7,
-																							 Texture::ROUNDBLUE,
-																							 SpawnInfo(-5) << SpawnInfo(5),
-																							 2)
-								<< BulletInfo(Bullet::BASIC8,
-															Texture::ROUNDBLUE,
-															SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10),
-															2),
-						boss->getDirectionOfEntity(Game::getPlayer()));
-			if (boss->cycle(250, 100))
-				boss->fireBullets(BulletInfo([](EntityBullet* bullet) {
-																			 bullet->moveForward(3);
-																			 bullet->rotate(0.5);
-																		 },
-																		 Texture::ELLIPSEAQUA,
-																		 Pattern::CIRCLE16)
-													<< BulletInfo([](EntityBullet* bullet) {
-																					bullet->moveForward(3);
-																					bullet->rotate(-0.5);
-																				},
-																				Texture::ELLIPSEAQUA,
-																				Pattern::CIRCLE16));
-			break;
-		case 1:
-			if (boss->getAge() == 1)
-				boss->moveTo({0, -200}, 0, QUICK);
-			if (boss->getAge() > 120) {
-				if (boss->cycle(10))
-					boss->fireBullets(BulletInfo([](EntityBullet* bullet) {
-																				 bullet->moveForward(5);
-																				 bullet->rotate(0.5);
-																			 },
-																			 Texture::ELLIPSEAQUA,
-																			 Pattern::CIRCLE12),
-														boss->getAge());
-				if (boss->cycle(120))
-					boss->fireBullets(
-							BulletInfo(
-									Bullet::BASIC8, Texture::ROUNDBLUE, Pattern::CIRCLE16, 3),
-							boss->getAge());
+const Boss
+		Boss::LVL1MINI(Texture::ENEMYTEMP, {8000, 6000}, [](EntityBoss* boss) {
+			switch (boss->phase) {
+				case 0:
+					if (boss->cycle(1000, 10) || boss->cycle(1000, 510))
+						boss->moveTo({0, -200}, 100, QUICK);
+					if (boss->cycle(1000, 260))
+						boss->moveTo({-200, -200}, 100, QUICK);
+					if (boss->cycle(1000, 760))
+						boss->moveTo({200, -200}, 100, QUICK);
+					if (boss->cycle(250, 100))
+						boss->fireBullets(
+								BulletInfo([](EntityBullet* bullet) { bullet->moveForward(2); },
+													 Texture::ROUNDBLUE,
+													 SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10)
+																			 << SpawnInfo(20) << SpawnInfo(-20)
+																			 << SpawnInfo(30) << SpawnInfo(-30),
+													 2)
+										<< BulletInfo(
+													 [](EntityBullet* bullet) {
+														 bullet->moveForward(2.5);
+													 },
+													 Texture::ROUNDBLUE,
+													 SpawnInfo(-5) << SpawnInfo(5) << SpawnInfo(15)
+																				 << SpawnInfo(-15) << SpawnInfo(25)
+																				 << SpawnInfo(-25),
+													 2)
+										<< BulletInfo(
+													 [](EntityBullet* bullet) { bullet->moveForward(3); },
+													 Texture::ROUNDBLUE,
+													 SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10)
+																			 << SpawnInfo(20) << SpawnInfo(-20)
+																			 << SpawnInfo(30) << SpawnInfo(-30),
+													 2)
+										<< BulletInfo(
+													 [](EntityBullet* bullet) {
+														 bullet->moveForward(3.5);
+													 },
+													 Texture::ROUNDBLUE,
+													 SpawnInfo(-5) << SpawnInfo(5) << SpawnInfo(15)
+																				 << SpawnInfo(-15) << SpawnInfo(25)
+																				 << SpawnInfo(-25),
+													 2)
+										<< BulletInfo(
+													 [](EntityBullet* bullet) { bullet->moveForward(4); },
+													 Texture::ROUNDBLUE,
+													 SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10)
+																			 << SpawnInfo(20) << SpawnInfo(-20)
+																			 << SpawnInfo(30) << SpawnInfo(-30),
+													 2)
+										<< BulletInfo(
+													 [](EntityBullet* bullet) {
+														 bullet->moveForward(5);
+														 bullet->rotate(0.2);
+													 },
+													 Texture::ELLIPSEAQUA, Pattern::CIRCLE16)
+										<< BulletInfo(
+													 [](EntityBullet* bullet) {
+														 bullet->moveForward(5);
+														 bullet->rotate(-0.2);
+													 },
+													 Texture::ELLIPSEAQUA, Pattern::CIRCLE16),
+								boss->getDirectionOfEntity(Game::getPlayer()));
+					break;
+				case 1:
+					if (boss->getAge() == 1)
+						boss->moveTo({0, -200}, 0, QUICK);
+					if (boss->getAge() > 120) {
+						if (boss->cycle(10))
+							boss->fireBullets(BulletInfo(
+																		[](EntityBullet* bullet) {
+																			bullet->moveForward(2.5);
+																			bullet->rotate(0.25);
+																		},
+																		Texture::ELLIPSEAQUA, Pattern::CIRCLE12),
+																boss->getAge());
+						if (boss->cycle(120))
+							boss->fireBullets(BulletInfo(Bullet::BASIC4, Texture::ROUNDBLUE,
+																					 Pattern::CIRCLE16, 3),
+																boss->getAge());
+					}
+					break;
 			}
-			break;
-	}
-});
+		});
 const Boss Boss::LVL1(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});
 const Boss Boss::LVL2MINI(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});
 const Boss Boss::LVL2(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});

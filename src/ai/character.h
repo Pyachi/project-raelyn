@@ -13,8 +13,8 @@ class Character {
 
   Character(const String& name,
             const Texture& tex,
-            int speed,
-            int focusSpeed,
+						double speed,
+						double focusSpeed,
             Func<const List<BulletInfo>(EntityPlayer*)> pattern,
             Func<const SFX&(EntityPlayer*)> shootSound)
       : index(list.size()),
@@ -34,8 +34,8 @@ class Character {
  public:
   const String name;
   const Texture& tex;
-  const int speed;
-  const int focusSpeed;
+	const double speed;
+	const double focusSpeed;
   const Func<const List<BulletInfo>(EntityPlayer*)> pattern;
   const Func<const SFX&(EntityPlayer*)> shootSound;
 

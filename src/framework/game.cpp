@@ -5,8 +5,10 @@
 #include "entitybullet.h"
 #include "entityplayer.h"
 #include "font.h"
+#include "level.h"
 #include "menu.h"
 #include "packet.h"
+#include "server.h"
 #include "sfx.h"
 #include "texture.h"
 #include "user.h"
@@ -157,18 +159,31 @@ void Game::tick(void) {
 		}
 	}
 	//***************************************************************************
+	if (keys.contains(Qt::Key_R)) {
+		paused = true;
+		Level::stop();
+		Server::destruct();
+		Connection::destruct();
+		Server::create(0);
+		Connection::create("127.0.0.1", Server::getPort());
+		Connection::sendPacket(S_START);
+	}
 }
 
 /* Creates game if one doesn't yet exist,
  * then opens it to the player
  */
 void Game::create(void) {
-  if (GAME == nullptr)
-    GAME = new Game();
+	if (GAME != nullptr) {
+		GAME->close();
+		delete GAME;
+		GAME = nullptr;
+	}
+	GAME = new Game();
   GAME->show();
 	Connection::sendPacket(
 			{S_SPAWNPLAYER, QStringList() << QString::number(
-																		Character::valueOf(User::getCharacter()))});
+													Character::valueOf(User::getCharacter()))});
 }
 /* Returns true if client player is alive, false otherwise
  */

@@ -62,19 +62,11 @@ const List<SpawnInfo> operator<<(const List<SpawnInfo>& list1,
 const Pattern Pattern::CIRCLE3(SpawnInfo() << SpawnInfo(120) << SpawnInfo(240));
 const Pattern Pattern::CIRCLE4(SpawnInfo() << SpawnInfo(90) << SpawnInfo(180)
                                            << SpawnInfo(270));
-const Pattern Pattern::CIRCLE6(SpawnInfo(60)
-															 << SpawnInfo(180) << SpawnInfo(300) << CIRCLE3);
-const Pattern Pattern::CIRCLE8(SpawnInfo(45) << SpawnInfo(135) << SpawnInfo(225)
-                                             << SpawnInfo(315) << CIRCLE4);
-const Pattern Pattern::CIRCLE12(SpawnInfo(30)
-																<< SpawnInfo(90) << SpawnInfo(150)
-																<< SpawnInfo(210) << SpawnInfo(270)
-																<< SpawnInfo(330) << CIRCLE6);
-const Pattern Pattern::CIRCLE16(SpawnInfo(22.5)
-                                << SpawnInfo(67.5) << SpawnInfo(112.5)
-                                << SpawnInfo(157.5) << SpawnInfo(202.5)
-                                << SpawnInfo(247.5) << SpawnInfo(292.5)
-                                << SpawnInfo(337.5) << CIRCLE8);
+const Pattern Pattern::CIRCLE6(CIRCLE3 << CIRCLE3 + 60);
+const Pattern Pattern::CIRCLE8(CIRCLE4 << CIRCLE4 + 45);
+const Pattern Pattern::CIRCLE12(CIRCLE6 << CIRCLE6 + 30);
+const Pattern Pattern::CIRCLE16(CIRCLE8 << CIRCLE8 + 22.5);
+const Pattern Pattern::CIRCLE32(CIRCLE16 << CIRCLE16 + 11.25);
 const Pattern Pattern::SHOTGUN3(SpawnInfo() << SpawnInfo(-20) << SpawnInfo(20));
 const Pattern Pattern::SHOTGUN5(SpawnInfo(-40) << SpawnInfo(40) << SHOTGUN3);
 

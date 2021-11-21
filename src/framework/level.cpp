@@ -18,14 +18,18 @@ void Level::start(void) {
   while (!in.atEnd())
 		LEVEL.instructions.push_back(in.readLine().split('/').at(0));
 	LEVEL.timer.start(1000 / 20);
+	file.close();
 }
 
 void Level::stop(void) {
 	LEVEL.instructions.clear();
 	LEVEL.timer.stop();
+	LEVEL.waitTimer = 0;
 }
 
-void Level::resume(void) { LEVEL.waitTimer = 0; }
+void Level::resume(void) {
+	LEVEL.waitTimer = 0;
+}
 
 void Level::iterate(void) {
   if (waitTimer != 0) {
@@ -43,18 +47,18 @@ void Level::iterate(void) {
       return;
     } else if (opCode == "SPAWN") {
 			Server::sendPacket(
-					{C_SPAWNENEMY,
-					 QStringList() << UID().toString() << args.at(1) << args.at(2)
-												 << args.at(3)
-												 << QString::number((Server::liveCount() * 0.5) +
-																						0.5)});
+					{C_SPAWNENEMY, QStringList()
+														 << UID().toString() << args.at(1) << args.at(2)
+														 << args.at(3)
+														 << QString::number((Server::liveCount() * 0.5) +
+																								0.5)});
     } else if (opCode == "BOSS") {
 			Server::sendPacket(
-					{C_SPAWNBOSS,
-					 QStringList() << UID().toString() << args.at(1) << args.at(2)
-												 << args.at(3)
-												 << QString::number((Server::liveCount() * 0.5) +
-																						0.5)});
+					{C_SPAWNBOSS, QStringList()
+														<< UID().toString() << args.at(1) << args.at(2)
+														<< args.at(3)
+														<< QString::number((Server::liveCount() * 0.5) +
+																							 0.5)});
       waitTimer = -1;
       return;
     } else if (opCode == "PLAY") {

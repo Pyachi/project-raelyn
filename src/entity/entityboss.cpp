@@ -48,6 +48,8 @@ void EntityBoss::tick(void) {
 				bullets.push_back(bullet);
 		}
 		for (EntityBullet* bullet : bullets) {
+			if (health < healthBar.maximum() / 5)
+				SFX::HIT3.play(20);
 			SFX::EXPL_LIGHT2.play(10);
 			health -= bullet->damage;
 			bullet->deleteLater();
@@ -66,6 +68,7 @@ void EntityBoss::tick(void) {
 void EntityBoss::kill(void) {
   if (cleanup)
     return;
+	SFX::EXPL_HEAVY3.play();
 	for (int i = 0; i < (Random::getInt() % 5) + 50; i++)
 		Collectable::POWER.spawn(pos(), 200);
 	for (int i = 0; i < (Random::getInt() % 20) + 100; i++)
@@ -87,6 +90,7 @@ void EntityBoss::advancePhase() {
     kill();
     return;
   } else {
+		SFX::EXPL_MED3.play();
     health = totalHealth[phase];
 		healthBar.setMaximum(health);
 		healthBar.setValue(health);
@@ -119,11 +123,7 @@ void ProgressBar::paintEvent(QPaintEvent*) {
 	QPen pen(QColor(255, 255, 255, 200));
 	pen.setWidth(3);
 	painter.setPen(pen);
-	painter.drawArc(5,
-									5,
-									118,
-									118,
-									1440,
+	painter.drawArc(5, 5, 118, 118, 1440,
 									static_cast<int>((static_cast<double>(value()) /
 																		static_cast<double>(maximum())) *
 																	 5760.0));

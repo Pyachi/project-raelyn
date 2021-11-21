@@ -52,7 +52,13 @@ class Pattern {
   const List<SpawnInfo> pattern;
 
  public:
-	operator const List<SpawnInfo> &() const { return pattern; }
+	operator const List<SpawnInfo>() const { return pattern; }
+	List<SpawnInfo> operator+(double deg) const {
+		List<SpawnInfo> newPattern;
+		for (SpawnInfo info : pattern)
+			newPattern.push_back(SpawnInfo(info.rot + deg, info.loc));
+		return newPattern;
+	}
 
 	static const Pattern CIRCLE3;
   static const Pattern CIRCLE4;
@@ -60,6 +66,7 @@ class Pattern {
   static const Pattern CIRCLE8;
 	static const Pattern CIRCLE12;
   static const Pattern CIRCLE16;
+	static const Pattern CIRCLE32;
   static const Pattern SHOTGUN3;
   static const Pattern SHOTGUN5;
 };

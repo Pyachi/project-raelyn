@@ -30,7 +30,7 @@ bullet->moveForward(dis);
 const Character Character::PYACHI(
     "Character: Pyachi",
     Texture::PYACHI,
-    10,
+		8,
     3,
     [](EntityPlayer* player) -> const List<BulletInfo> {
       List<BulletInfo> list;
