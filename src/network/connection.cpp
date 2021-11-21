@@ -75,7 +75,7 @@ void Connection::handlePacket(const Packet& packet) {
       break;
 		case C_SONG:
 			Music::valueOf(packet.data.at(0).toInt()).play();
-			break;
+      break;
 		case C_LOBBY:
 			Menu::MENU->players.clear();
 			for (const QString& name : packet.data)
@@ -95,7 +95,7 @@ void Connection::handlePacket(const Packet& packet) {
 							->setPos(
 									{packet.data.at(1).toDouble(), packet.data.at(2).toDouble()});
 			}});
-      break;
+			break;
 		case C_KILLPLAYER:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
@@ -103,14 +103,14 @@ void Connection::handlePacket(const Packet& packet) {
 							.at(UID::fromString(packet.data.at(0)))
 							->deleteLater();
 			}});
-      break;
+			break;
 		case C_SPAWNPLAYER:
 			Game::queueEvent({[packet](Game&) {
 				new EntityPlayer(Character::valueOf(packet.data.at(2).toInt()),
 												 packet.data.at(1).toStdString(),
 												 UID::fromString(packet.data.at(0)), ONLINEPLAYER);
 			}});
-			break;
+      break;
 		case C_SHOOT:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0)))) {
@@ -136,7 +136,7 @@ void Connection::handlePacket(const Packet& packet) {
 									 UID::fromString(packet.data.at(0)),
 									 packet.data.at(4).toDouble());
 			}});
-			break;
+      break;
 		case C_KILLENEMY:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
@@ -154,7 +154,7 @@ void Connection::handlePacket(const Packet& packet) {
 						boss->advancePhase();
 				}
 			}});
-      break;
+			break;
 		case C_DAMAGEPLAYER:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0)))) {

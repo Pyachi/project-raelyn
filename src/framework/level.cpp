@@ -63,6 +63,8 @@ void Level::iterate(void) {
       return;
     } else if (opCode == "PLAY") {
       Server::sendPacket({C_SONG, QStringList() << args.at(1)});
+		} else if (opCode == "SOUND") {
+			Server::sendPacket({C_SOUND, QStringList() << args.at(1)});
     } else if (opCode == "PAUSE") {
       waitTimer = 999;
       return;
