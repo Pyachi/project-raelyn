@@ -70,12 +70,11 @@ User::User()
 
   dataAPI.create_settings_table(soundVol, musicVol, *controls, *character);
 
-	//  qDebug() << "get settings";
+  //    qDebug() << "get settings";
   soundVol = dataAPI.get_SFX();
   musicVol = dataAPI.get_music();
   controls = &Controls::valueOf(dataAPI.get_controls());
   character = &Character::valueOf(dataAPI.getCharacter());
-
   dataAPI.close_database();
 
   atexit([]() {

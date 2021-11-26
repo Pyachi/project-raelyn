@@ -2,6 +2,11 @@
 
 database_API::database_API() {}
 
+database_API::database_API(QString type, QString use)
+{
+    start_connection(type, use);
+}
+
 QSqlDatabase database_API::start_connection(QString type, QString use) {
 	// should be used only for SQLITE databases
 
@@ -179,8 +184,8 @@ bool database_API::create_settings_table(int SFX,
 	querySTR.append(QString::number(controls));
 	querySTR.append(", ");
     querySTR.append(QString::number(character));
-    querySTR.append(", NULL, NULL);");
-
+    querySTR.append(", '127.0.0.1', 1337);");
+//    qDebug() << querySTR;
 	if (!query.exec(querySTR)) {
 		//        qDebug() << "Error: invalid query for create_settings_table first
 		// incert";
@@ -262,7 +267,40 @@ int database_API::getCharacter(void) {
 
 void database_API::update_network(QString ip, unsigned short port)
 {
-
+    QSqlQuery query = QSqlQuery(db);
+    QString querySTR = "UPDATE settings SET IP = '";
+    querySTR.append(ip);
+    querySTR.append("', Port = ");
+    querySTR.append(QString::number(port));
+    querySTR.append(";");
+    if (!query.exec(querySTR)) {
+        //		qDebug() << "Error: invalid query update network";
+    }
 }
 
+const QString database_API::get_IP()
+{
+    QSqlQuery query = QSqlQuery(db);
+    QString querySTR = "SELECT * FROM settings WHERE User = '";
+    querySTR.append(user);
+    querySTR.append("';");
+    if (!query.exec(querySTR)) {
+        //		qDebug() << "Error: invalid query get settings 2";
+    }
+    query.next();
+    return query.value(5).toString();
+}
+
+const QString database_API::get_port()
+{
+    QSqlQuery query = QSqlQuery(db);
+    QString querySTR = "SELECT * FROM settings WHERE User = '";
+    querySTR.append(user);
+    querySTR.append("';");
+    if (!query.exec(querySTR)) {
+        //		qDebug() << "Error: invalid query get settings 2";
+    }
+    query.next();
+    return query.value(6).toString();
+}
 void database_API::close_database() { db.close(); }

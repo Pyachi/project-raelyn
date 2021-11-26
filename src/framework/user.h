@@ -24,7 +24,7 @@ class User {
   int soundVol;
   int musicVol;
 
-	int score = 0;
+  int score = 0;
 
   Scoreboard* masterBoard;
   Scoreboard* playerBoard;
