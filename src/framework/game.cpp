@@ -10,6 +10,7 @@
 #include "sfx.h"
 #include "texture.h"
 #include "user.h"
+#include "database_api.h"
 
 Game* Game::GAME = nullptr;
 
@@ -245,6 +246,8 @@ void Game::takeDamage(void) {
 		SFX::EXPL_SUPERHEAVY1.play();
 		getPlayer()->deleteLater();
 		Connection::sendPacket(S_KILLPLAYER);
+        //----------------------------------------------------------------------------------
+        User::addGame(User::getScore());
 	} else {
 		SFX::HIT1.play();
 		Connection::sendPacket(S_DAMAGEPLAYER);

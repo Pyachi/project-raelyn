@@ -8,28 +8,33 @@ Scoreboard::Scoreboard() {
 
 void Scoreboard::Add_Score(QString user, QDateTime time, int score) {
 	run* temp = new run();
-	// temp->level = level;
-	// qDebug() << "temp made";
+    qDebug() << "temp made";
 	temp->user = user;
+    qDebug() << temp->user;
+
 	temp->score = score;
+    qDebug() << temp->score;
+
 	temp->next = nullptr;
 	temp->last = tail;
 	temp->time = time;
 
 	// add date
 
-	// qDebug() << "temp pop";
+     qDebug() << "temp pop";
 
 	if (tail) {
-		tail->next = temp;
+        qDebug() << "tail" << tail;
+        tail->next = temp;
+        qDebug() << "after tail";
 	} else {
 		head = temp;
 	}
-	// qDebug() << "tail->next";
+     qDebug() << "tail->next";
 
 	tail = temp;
 
-	// qDebug() << "tail";
+     qDebug() << "tail";
 
 	length++;
 }
@@ -53,7 +58,7 @@ void Scoreboard::Order_Scores(QString key) {
 		run* start = head->next;
 		run* hold;
 		while (start != nullptr) {
-			pass = temp->score;
+            pass = temp->score;
             while (temp->last != nullptr && pass > temp->last->score) {
 				hold = temp->last;
 				Swap_Adjectent_Runs(hold, temp);
@@ -61,13 +66,14 @@ void Scoreboard::Order_Scores(QString key) {
 
 			start = start->next;
 			temp = start;
-    }
+        }
 	}
 }
 
 void Scoreboard::Show_Scoreboard() {
 	Order_Scores("Accending_Score");
 	run* temp = head;
+    qDebug() << head;
 	while (temp != nullptr) {
         qDebug() << temp->score;
         qDebug() << temp->time;
