@@ -8,12 +8,12 @@ Scoreboard::Scoreboard() {
 
 void Scoreboard::Add_Score(QString user, QDateTime time, int score) {
 	run* temp = new run();
-    qDebug() << "temp made";
+//    qDebug() << "temp made";
 	temp->user = user;
-    qDebug() << temp->user;
+//    qDebug() << temp->user;
 
 	temp->score = score;
-    qDebug() << temp->score;
+//    qDebug() << temp->score;
 
 	temp->next = nullptr;
 	temp->last = tail;
@@ -21,20 +21,20 @@ void Scoreboard::Add_Score(QString user, QDateTime time, int score) {
 
 	// add date
 
-     qDebug() << "temp pop";
+//     qDebug() << "temp pop";
 
 	if (tail) {
-        qDebug() << "tail" << tail;
+//        qDebug() << "tail" << tail;
         tail->next = temp;
-        qDebug() << "after tail";
+//        qDebug() << "after tail";
 	} else {
 		head = temp;
 	}
-     qDebug() << "tail->next";
+//     qDebug() << "tail->next";
 
 	tail = temp;
 
-     qDebug() << "tail";
+//     qDebug() << "tail";
 
 	length++;
 }
@@ -54,26 +54,31 @@ void Scoreboard::Add_Score(run* add) {
 void Scoreboard::Order_Scores(QString key) {
 	if (key == "Accending_Score") {
 		int pass;
-		run* temp = head->next;
-		run* start = head->next;
-		run* hold;
-		while (start != nullptr) {
-            pass = temp->score;
-            while (temp->last != nullptr && pass > temp->last->score) {
-				hold = temp->last;
-				Swap_Adjectent_Runs(hold, temp);
-			}
+        if(head != nullptr && head->next != nullptr)
+        {
+            qDebug() << head->next;
+            run* temp = head->next;
+            run* start = head->next;
+            run* hold;
+            while (start != nullptr) {
+                pass = temp->score;
+                while (temp->last != nullptr && pass > temp->last->score) {
+                    hold = temp->last;
+                    Swap_Adjectent_Runs(hold, temp);
+                }
 
-			start = start->next;
-			temp = start;
+                start = start->next;
+                temp = start;
+            }
         }
 	}
 }
 
 void Scoreboard::Show_Scoreboard() {
 	Order_Scores("Accending_Score");
-	run* temp = head;
+    run* temp = head;
     qDebug() << head;
+
 	while (temp != nullptr) {
         qDebug() << temp->score;
         qDebug() << temp->time;

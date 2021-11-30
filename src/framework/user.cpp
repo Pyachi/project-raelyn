@@ -20,46 +20,15 @@ User::User()
     }
   }
 
-  Scoreboard* score = new Scoreboard();
-  score->Add_Score(
-      "bmy0004",
-      QDateTime::fromString("2021-10-04 10:43:12", "yyyy-MM-dd HH:mm:ss"),
-      2000);
-  score->Add_Score(
-      "bmy0004",
-      QDateTime::fromString("2021-10-05 10:43:12", "yyyy-MM-dd HH:mm:ss"),
-      2500);
-  score->Add_Score(
-      "bmy0004",
-      QDateTime::fromString("2021-10-06 10:43:12", "yyyy-MM-dd HH:mm:ss"),
-      2250);
-
-  score->Add_Score("GB0001", QDateTime::fromString("2021-11-18 01:01:00", "yyyy-MM-dd HH:mm:ss"),10000000);
-
-  score->Add_Score(
-      "bmy0004",
-      QDateTime::fromString("2021-10-09 10:43:12", "yyyy-MM-dd HH:mm:ss"),
-      1700);
-
-  score->Add_Score(
-      "sg0001",
-      QDateTime::fromString("2022-10-08 10:43:12", "yyyy-MM-dd HH:mm:ss"),
-      9000);
-
-  //    score->Show_Scoreboard();
-
   database_API dataAPI;
   QSqlDatabase dab =
       dataAPI.start_connection("SQLITE", QString::fromStdString(name));
   QSqlQuery query = QSqlQuery(dab);
 	//  qDebug() << "--Create level table: ";
   qDebug() << dataAPI.create_level_table();
-	//  qDebug() << "--Update database: ";
-  qDebug() << dataAPI.update_database(score);
 
-  Scoreboard* masterBoard = dataAPI.get_scoreboard();
-  Scoreboard* playerBoard = dataAPI.get_scoreboard(QString::fromStdString(name));
-
+  masterBoard = dataAPI.get_scoreboard();
+  playerBoard = dataAPI.get_scoreboard(QString::fromStdString(name));
 
   masterBoard->Order_Scores("Accending_Score");
   playerBoard->Order_Scores("Accending_Score");

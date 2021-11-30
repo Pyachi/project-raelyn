@@ -111,7 +111,6 @@ Scoreboard* database_API::get_scoreboard(QString use) {
 		//        qDebug() << "Error: invalid query get scoreboard";
 	}
 
-
 	while (query.next()) {
 		QDateTime tim =
 				QDateTime::fromString(query.value(1).toString(), "yyyyMMdd HH:mm:ss");
@@ -155,6 +154,7 @@ bool database_API::create_level_table() {
 		//		qDebug() << "Error: invalid query for create_level_table";
 		pass = false;
 	}
+
 
 	return pass;
 }
