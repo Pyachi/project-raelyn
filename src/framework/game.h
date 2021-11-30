@@ -10,6 +10,10 @@
 #include "uid.h"
 #include "entityplayer.h"
 #include "user.h"
+#include <QGraphicsWidget>
+#include <QLabel>
+#include <QGraphicsProxyWidget>
+#include <QPushButton>
 
 class Game : public QGraphicsView {
 	Q_OBJECT
@@ -41,6 +45,12 @@ class Game : public QGraphicsView {
 	Array<QGraphicsPixmapItem*> healthDisplay;
 	Array<QGraphicsPixmapItem*> bombsDisplay;
 	QGraphicsSimpleTextItem powerDisplay;
+	//***************************************************************************
+	// Scoreboard Display
+	QGraphicsRectItem scoreboardDisplay;
+	Array<QGraphicsSimpleTextItem*> scoreboards;
+	QGraphicsProxyWidget menuButtonProxy;
+	QPushButton menuButton;
 	//***************************************************************************
 	// Gameplay
 	bool paused = false;

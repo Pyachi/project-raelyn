@@ -28,12 +28,14 @@ Game::Game(void)
 			highScore(&sidebar),
 			score(&sidebar),
 			powerDisplay(&sidebar),
+			scoreboardDisplay(&play),
+			menuButtonProxy(&scoreboardDisplay),
+			menuButton("Return To Menu"),
 			paused(false),
 			age(0) {
   GAME = this;
   setScene(&scene);
 
-  setInteractive(false);
   setViewport(&openGL);
 
 	sidebar.setZValue(Texture::BACKGROUNDTEMP.zValue);
@@ -90,9 +92,56 @@ Game::Game(void)
 		healthDisplay.at(i)->setPixmap(Texture::S_HEALTH);
 	for (ushort i = 0; i < bombs; i++)
 		bombsDisplay.at(i)->setPixmap(Texture::S_BOMB);
+	//***************************************************************************
+	// Scoreboard Display
+	scoreboardDisplay.setRect(0, 0, 504, 640);
+	scoreboardDisplay.setPos(-scoreboardDisplay.boundingRect().center());
+	scoreboardDisplay.setBrush(QColor(127, 127, 127, 127));
+	scoreboardDisplay.setPen(QPen(Qt::white, 3));
+	scoreboardDisplay.setZValue(100);
 
+	QGraphicsSimpleTextItem* scoreboardInfo = new QGraphicsSimpleTextItem(
+			"#    Name      Score       Date/Time", &scoreboardDisplay);
+	scoreboardInfo->setBrush(Qt::white);
+	scoreboardInfo->setFont(Font::PRESSSTART);
+	scoreboardInfo->setScale(0.8);
+	scoreboardInfo->setPos(10, 10);
+	scoreboards.push_back(scoreboardInfo);
+
+	for (ushort i = 1; i < 21; i++) {
+		QString score;
+		score.sprintf("%02d %s %011ld 00/00/00 00:00", i, "sg010ds8", 42855367847);
+		scoreboards.push_back(
+				new QGraphicsSimpleTextItem(score, &scoreboardDisplay));
+		scoreboards.at(i)->setPos({10, static_cast<double>(10 + (i * 25))});
+		scoreboards.at(i)->setBrush(Qt::white);
+		scoreboards.at(i)->setFont(Font::PRESSSTART);
+		scoreboards.at(i)->setScale(0.8);
+	}
+
+	QGraphicsSimpleTextItem* scoreboardBar = new QGraphicsSimpleTextItem(
+			"--------------------------------------", &scoreboardDisplay);
+	scoreboardBar->setBrush(Qt::white);
+	scoreboardBar->setFont(Font::PRESSSTART);
+	scoreboardBar->setScale(0.8);
+	scoreboardBar->setPos(10, 535);
+	scoreboards.push_back(scoreboardBar);
+
+	menuButtonProxy.setWidget(&menuButton);
+	menuButtonProxy.setPos(100, 570);
+	menuButtonProxy.setScale(1.5);
+
+	menuButton.setFont(Font::PRESSSTART);
+	menuButton.setFlat(true);
+	menuButton.setStyleSheet(
+			"QPushButton { background-color: transparent; border: 0px; color: "
+			"#FFFFFF }");
+	connect(&menuButton, &QPushButton::clicked, []() { qDebug() << "a"; });
+	//***************************************************************************
+	// Game Timer
 	timer.start(1000 / 60);
   connect(&timer, &QTimer::timeout, [this]() { this->tick(); });
+	paused = true;
 }
 
 void Game::tick(void) {
@@ -182,8 +231,8 @@ void Game::create(void) {
 	GAME = new Game();
   GAME->show();
 	Connection::sendPacket(
-			{S_SPAWNPLAYER, QStringList() << QString::number(
-													Character::valueOf(User::getCharacter()))});
+			{S_SPAWNPLAYER, QStringList() << QString::number(Character::valueOf(
+																					 User::getCharacter()))});
 }
 /* Returns true if client player is alive, false otherwise
  */
@@ -214,9 +263,8 @@ void Game::addEntity(Entity* entity) {
 		qDebug() << "ERROR: Attempted to add entity before Game exists!";
 		return;
 	}
-	queueEvent({[entity](Game& game) {
-		game.entities.insert({entity->id, entity});
-	}});
+	queueEvent(
+			{[entity](Game& game) { game.entities.insert({entity->id, entity}); }});
 }
 
 /* Queues a task for the game to run after a given time.
@@ -264,14 +312,14 @@ void Game::takeDamage(void) {
 		SFX::HIT1.play();
 		Connection::sendPacket(S_DAMAGEPLAYER);
 		for (int i = 0; i < 150; i++) {
-			queueEvent(
-					[i](Game&) {
-						for (Entity* entity :
-								 getPlayer()->getNearbyEntities(BULLET, i * 10))
-							if (dynamic_cast<EntityBullet*>(entity)->ownerType == ENEMY)
-								entity->deleteLater();
-					},
-					i);
+			queueEvent([i](Game&) {
+									 for (Entity* entity :
+												getPlayer()->getNearbyEntities(BULLET, i * 10))
+										 if (dynamic_cast<EntityBullet*>(entity)->ownerType ==
+												 ENEMY)
+											 entity->deleteLater();
+								 },
+								 i);
 		}
 	}
 }
