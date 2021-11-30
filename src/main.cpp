@@ -1,6 +1,6 @@
 #include <QApplication>
 #include "menu.h"
-#include "sfx.h"
+#include "texture.h"
 #include "user.h"
 
 int main(int argc, char* argv[]) {
@@ -9,6 +9,8 @@ int main(int argc, char* argv[]) {
   User::create();
 
   Menu::openMenu();
+
+	a.setWindowIcon(QIcon(Texture::ICON));
 
   return a.exec();
 }

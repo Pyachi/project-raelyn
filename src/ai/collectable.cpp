@@ -1,10 +1,10 @@
 #include "collectable.h"
 #include "entitycollectable.h"
 #include "entityplayer.h"
+#include "game.h"
 #include "sfx.h"
 #include "texture.h"
 #include "user.h"
-#include "game.h"
 
 EntityCollectable* Collectable::spawn(const QPointF& loc,
 																			int maxDis,
@@ -32,11 +32,11 @@ const Collectable Collectable::POINTS(Texture::POINTS, []() {
 });
 
 const Collectable Collectable::HEALTH(Texture::HEALTH, []() {
-	SFX::POWERUP2.play(10);
+	SFX::POWERUP2.play();
 	Game::gainHealth();
 });
 
 const Collectable Collectable::BOMB(Texture::BOMB, []() {
-	SFX::POWERUP3.play(10);
+	SFX::POWERUP3.play();
 	Game::gainBomb();
 });

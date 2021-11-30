@@ -320,7 +320,7 @@ void Game::gainPower(void) {
 	}
 }
 
-/* Cleanly deletes all remaining entities when game is closed
+/* Cleanly deletes all remaining pointers when game is closed
  */
 Game::~Game(void) {
 	GAME = nullptr;

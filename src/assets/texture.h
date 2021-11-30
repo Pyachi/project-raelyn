@@ -90,6 +90,7 @@ class Texture {
   static const Texture TITLETEMP;
   static const Texture BACKGROUND;
   static const Texture BACKGROUND2;
+	static const Texture ICON;
   //***************************************************************************
   // Players
   static const Texture PYACHI;

@@ -21,12 +21,10 @@ const Boss
 		Boss::LVL1MINI(Texture::ENEMYTEMP, {8000, 6000}, [](EntityBoss* boss) {
 			switch (boss->phase) {
 				case 0:
-					if (boss->cycle(1000, 10) || boss->cycle(1000, 510))
-						boss->moveTo({0, -200}, 100, QUICK);
-					if (boss->cycle(1000, 260))
-						boss->moveTo({-200, -200}, 100, QUICK);
-					if (boss->cycle(1000, 760))
-						boss->moveTo({200, -200}, 100, QUICK);
+					if (boss->cycle(250, 10))
+						boss->moveTo(
+								{Random::getDouble(400) - 200, Random::getDouble(100) - 250}, 0,
+								QUICK);
 					if (boss->cycle(250, 100))
 						boss->fireBullets(
 								BulletInfo([](EntityBullet* bullet) { bullet->moveForward(2); },
@@ -101,8 +99,27 @@ const Boss
 					break;
 			}
 		});
-const Boss Boss::LVL1(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});
-const Boss Boss::LVL2MINI(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});
-const Boss Boss::LVL2(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});
-const Boss Boss::LVL3MINI(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});
-const Boss Boss::LVL3(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});
+const Boss Boss::LVL1(Texture::ENEMYTEMP,
+											{6000, 4000, 2000, 6000, 8000},
+											[](EntityBoss* boss) {
+												switch (boss->phase) {
+													case 0:
+														if (boss->getAge() == 1)
+															boss->moveTo({0, -200}, 0, QUICK);
+														break;
+													case 1:
+														break;
+													case 2:
+														break;
+													case 3:
+														break;
+													case 4:
+														break;
+												}
+											});
+const Boss Boss::LVL2MINI(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss* boss) {
+});
+const Boss Boss::LVL2(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss* boss) {});
+const Boss Boss::LVL3MINI(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss* boss) {
+});
+const Boss Boss::LVL3(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss* boss) {});
