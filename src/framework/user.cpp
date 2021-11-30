@@ -20,66 +20,30 @@ User::User()
     }
   }
 
-  Scoreboard* score = new Scoreboard();
-  score->Add_Score(
-      "bmy0004",
-      QDateTime::fromString("2021-10-04 10:43:12", "yyyy-MM-dd HH:mm:ss"),
-      2000);
-  score->Add_Score(
-      "bmy0004",
-      QDateTime::fromString("2021-10-05 10:43:12", "yyyy-MM-dd HH:mm:ss"),
-      2500);
-  score->Add_Score(
-      "bmy0004",
-      QDateTime::fromString("2021-10-06 10:43:12", "yyyy-MM-dd HH:mm:ss"),
-      2250);
-  score->Add_Score(
-      "bmy0004",
-      QDateTime::fromString("2021-10-07 10:43:12", "yyyy-MM-dd HH:mm:ss"),
-      1500);
-  score->Add_Score(
-      "bmy0004",
-      QDateTime::fromString("2021-10-08 10:43:12", "yyyy-MM-dd HH:mm:ss"),
-      3000);
-
-  score->Add_Score(
-      "bmy0004",
-      QDateTime::fromString("2021-10-09 10:43:12", "yyyy-MM-dd HH:mm:ss"),
-      1700);
-
-  score->Add_Score(
-      "sg0001",
-      QDateTime::fromString("2022-10-08 10:43:12", "yyyy-MM-dd HH:mm:ss"),
-      9000);
-
-  //    score->Show_Scoreboard();
-
   database_API dataAPI;
   QSqlDatabase dab =
       dataAPI.start_connection("SQLITE", QString::fromStdString(name));
   QSqlQuery query = QSqlQuery(dab);
 	//  qDebug() << "--Create level table: ";
   qDebug() << dataAPI.create_level_table();
-	//  qDebug() << "--Update database: ";
-  qDebug() << dataAPI.update_database(score);
 
-  Scoreboard* masterBoard = dataAPI.get_scoreboard();
-  Scoreboard* playerBoard =
-      dataAPI.get_scoreboard(QString::fromStdString(name));
+  masterBoard = dataAPI.get_scoreboard();
+  playerBoard = dataAPI.get_scoreboard(QString::fromStdString(name));
 
-	//  qDebug() << "masterBoard";
+  masterBoard->Order_Scores("Accending_Score");
+  playerBoard->Order_Scores("Accending_Score");
+  qDebug() << "masterBoard--------------------";
   masterBoard->Show_Scoreboard();
-	//  qDebug() << "playerBoard";
-  //  playerBoard->Show_Scoreboard();
+  qDebug() << "playerBoard--------------------";
+  playerBoard->Show_Scoreboard();
 
   dataAPI.create_settings_table(soundVol, musicVol, *controls, *character);
 
-	//  qDebug() << "get settings";
+  //    qDebug() << "get settings";
   soundVol = dataAPI.get_SFX();
   musicVol = dataAPI.get_music();
   controls = &Controls::valueOf(dataAPI.get_controls());
   character = &Character::valueOf(dataAPI.getCharacter());
-
   dataAPI.close_database();
 
   atexit([]() {

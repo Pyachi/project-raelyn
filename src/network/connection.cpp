@@ -11,6 +11,8 @@
 #include "packet.h"
 #include "sfx.h"
 #include "user.h"
+#include "database_api.h"
+
 
 Connection* Connection::CON = nullptr;
 
@@ -35,6 +37,8 @@ bool Connection::create(QString ip, unsigned short port) {
 				Game::pause();
       }
     });
+
+
     return true;
   } else {
     CON->deleteLater();

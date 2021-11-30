@@ -2,6 +2,11 @@
 
 database_API::database_API() {}
 
+database_API::database_API(QString type, QString use)
+{
+    start_connection(type, use);
+}
+
 QSqlDatabase database_API::start_connection(QString type, QString use) {
 	// should be used only for SQLITE databases
 
@@ -51,7 +56,7 @@ QSqlDatabase database_API::start_connection(QString type,
 	return start;
 }
 
-bool database_API::add_score(QString user, QDateTime time, int score) {
+bool database_API::add_score(QString user, QDateTime time, long score) {
 	bool pass = true;
 	QSqlQuery query = QSqlQuery(db);
 	QString querySTR = "INSERT INTO scores (User, Time, Score) VALUES ('";
@@ -82,10 +87,12 @@ Scoreboard* database_API::get_scoreboard() {
 		//        qDebug() << "Error: invalid query get scoreboard";
 	}
 
+
+
 	while (query.next()) {
-		board->Add_Score(query.value(0).toString(),
-										 query.value(1).toDateTime(),
-										 query.value(2).toInt());
+        QDateTime tim =
+                QDateTime::fromString(query.value(1).toString(), "yyyyMMdd HH:mm:ss");
+        board->Add_Score(query.value(0).toString(), tim, query.value(2).toLongLong());
 	}
 
 	return board;
@@ -103,10 +110,12 @@ Scoreboard* database_API::get_scoreboard(QString use) {
 	if (!query.exec(querySTR)) {
 		//        qDebug() << "Error: invalid query get scoreboard";
 	}
+
 	while (query.next()) {
 		QDateTime tim =
 				QDateTime::fromString(query.value(1).toString(), "yyyyMMdd HH:mm:ss");
-		board->Add_Score(query.value(0).toString(), tim, query.value(2).toInt());
+
+        board->Add_Score(query.value(0).toString(), tim, query.value(2).toLongLong());
 	}
 
 	return board;
@@ -118,17 +127,12 @@ bool database_API::update_database(Scoreboard* score) {
 	Scoreboard* diff;
 
 	if (data == nullptr) {
+        qDebug() << "data = null";
 		diff = score;
-	} else {
-		//        qDebug() << "data";
-		//        data->Show_Scoreboard();
+    }
+    else {
 		diff = score->Extra_Here(data);
 	}
-	//        qDebug() << "score";
-	score->Show_Scoreboard();
-
-	//        qDebug() << "diff";
-	diff->Show_Scoreboard();
 
 	for (int i = 0; i < diff->Get_length(); i++) {
 		Scoreboard::run* hold = diff->Get_Run(i);
@@ -144,12 +148,13 @@ bool database_API::create_level_table() {
 	QSqlQuery query = QSqlQuery(db);
 	QString querySTR =
 			"CREATE TABLE IF NOT EXISTS scores (User TEXT, Time DATETIME UNIQUE "
-			"PRIMARY KEY, Score int);";
+            "PRIMARY KEY, Score long);";
 
 	if (!query.exec(querySTR)) {
 		//		qDebug() << "Error: invalid query for create_level_table";
 		pass = false;
 	}
+
 
 	return pass;
 }
@@ -161,7 +166,7 @@ bool database_API::create_settings_table(int SFX,
 	QSqlQuery query = QSqlQuery(db);
 	QString querySTR =
 			"CREATE TABLE IF NOT EXISTS settings (User TEXT UNIQUE PRIMARY KEY, SFX "
-			"INT, Music INT, Controls INT, Character INT);";
+            "INT, Music INT, Controls INT, Character INT, IP TEXT, Port SMALLINT);";
 	bool pass = true;
 
 	if (!query.exec(querySTR)) {
@@ -178,9 +183,9 @@ bool database_API::create_settings_table(int SFX,
 	querySTR.append(", ");
 	querySTR.append(QString::number(controls));
 	querySTR.append(", ");
-	querySTR.append(QString::number(character));
-	querySTR.append(");");
-
+    querySTR.append(QString::number(character));
+    querySTR.append(", '127.0.0.1', 1337);");
+//    qDebug() << querySTR;
 	if (!query.exec(querySTR)) {
 		//        qDebug() << "Error: invalid query for create_settings_table first
 		// incert";
@@ -260,4 +265,42 @@ int database_API::getCharacter(void) {
 	return query.value(4).toInt();
 }
 
+void database_API::update_network(QString ip, unsigned short port)
+{
+    QSqlQuery query = QSqlQuery(db);
+    QString querySTR = "UPDATE settings SET IP = '";
+    querySTR.append(ip);
+    querySTR.append("', Port = ");
+    querySTR.append(QString::number(port));
+    querySTR.append(";");
+    if (!query.exec(querySTR)) {
+        //		qDebug() << "Error: invalid query update network";
+    }
+}
+
+const QString database_API::get_IP()
+{
+    QSqlQuery query = QSqlQuery(db);
+    QString querySTR = "SELECT * FROM settings WHERE User = '";
+    querySTR.append(user);
+    querySTR.append("';");
+    if (!query.exec(querySTR)) {
+        //		qDebug() << "Error: invalid query get settings 2";
+    }
+    query.next();
+    return query.value(5).toString();
+}
+
+const QString database_API::get_port()
+{
+    QSqlQuery query = QSqlQuery(db);
+    QString querySTR = "SELECT * FROM settings WHERE User = '";
+    querySTR.append(user);
+    querySTR.append("';");
+    if (!query.exec(querySTR)) {
+        //		qDebug() << "Error: invalid query get settings 2";
+    }
+    query.next();
+    return query.value(6).toString();
+}
 void database_API::close_database() { db.close(); }

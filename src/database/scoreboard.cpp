@@ -6,30 +6,35 @@ Scoreboard::Scoreboard() {
 	tail = nullptr;
 }
 
-void Scoreboard::Add_Score(QString user, QDateTime time, int score) {
+void Scoreboard::Add_Score(QString user, QDateTime time, long score) {
 	run* temp = new run();
-	// temp->level = level;
-	// qDebug() << "temp made";
+//    qDebug() << "temp made";
 	temp->user = user;
+//    qDebug() << temp->user;
+
 	temp->score = score;
+//    qDebug() << temp->score;
+
 	temp->next = nullptr;
 	temp->last = tail;
 	temp->time = time;
 
 	// add date
 
-	// qDebug() << "temp pop";
+//     qDebug() << "temp pop";
 
 	if (tail) {
-		tail->next = temp;
+//        qDebug() << "tail" << tail;
+        tail->next = temp;
+//        qDebug() << "after tail";
 	} else {
 		head = temp;
 	}
-	// qDebug() << "tail->next";
+//     qDebug() << "tail->next";
 
 	tail = temp;
 
-	// qDebug() << "tail";
+//     qDebug() << "tail";
 
 	length++;
 }
@@ -48,29 +53,37 @@ void Scoreboard::Add_Score(run* add) {
 
 void Scoreboard::Order_Scores(QString key) {
 	if (key == "Accending_Score") {
-		int pass;
-		run* temp = head->next;
-		run* start = head->next;
-		run* hold;
-		while (start != nullptr) {
-			pass = temp->score;
-			while (temp->last != nullptr && pass < temp->last->score) {
-				hold = temp->last;
-				Swap_Adjectent_Runs(hold, temp);
-			}
+        long pass;
+        if(head != nullptr && head->next != nullptr)
+        {
+            qDebug() << head->next;
+            run* temp = head->next;
+            run* start = head->next;
+            run* hold;
+            while (start != nullptr) {
+                pass = temp->score;
+                while (temp->last != nullptr && pass > temp->last->score) {
+                    hold = temp->last;
+                    Swap_Adjectent_Runs(hold, temp);
+                }
 
-			start = start->next;
-			temp = start;
-    }
+                start = start->next;
+                temp = start;
+            }
+        }
 	}
 }
 
 void Scoreboard::Show_Scoreboard() {
 	Order_Scores("Accending_Score");
-	run* temp = head;
+    run* temp = head;
+    qDebug() << head;
+
 	while (temp != nullptr) {
-		//        qDebug() << temp->score;
-		//        qDebug( )<< temp->time;
+        qDebug() << temp->score;
+        qDebug() << temp->time;
+        qDebug() << temp->user;
+        qDebug() << "";
 		temp = temp->next;
 	}
 }
@@ -80,7 +93,7 @@ Scoreboard* Scoreboard::Extra_Here(Scoreboard* other) {
 	// current object that are not in other
 	Scoreboard* diff = new Scoreboard();
 	run* temp = head;
-	int current;
+    long current;
 	while (temp != nullptr) {
 		current = other->Exists(temp);
 		if (current == -1) {
@@ -152,7 +165,7 @@ int Scoreboard::Exists(run* checker) {
 	return index;
 }
 
-int Scoreboard::Get_High_Score() {
+long Scoreboard::Get_High_Score() {
 	Order_Scores("Accending_Score");
 	return Get_Run(0)->score;
 }

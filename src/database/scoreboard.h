@@ -10,20 +10,20 @@ public:
     struct run
     {
         QString user;
-        int score;
+        long score;
         QDateTime time;
         run* next;
         run* last;
     };
 
     Scoreboard();
-    void Add_Score(QString user, QDateTime time, int score);
+    void Add_Score(QString user, QDateTime time, long score);
     void Add_Score(run* add);
 
     Scoreboard* Extra_Here(Scoreboard* other);
     void Order_Scores(QString key);
     int Get_length();
-    int Get_High_Score();
+    long Get_High_Score();
 
     void Show_Scoreboard();
     run* Get_Run(int index);

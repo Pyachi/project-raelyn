@@ -7,6 +7,7 @@
 #include "sfx.h"
 #include "texture.h"
 #include "user.h"
+#include "database_api.h"
 
 Menu* Menu::MENU = nullptr;
 
@@ -19,9 +20,9 @@ Menu::Menu(void)
 			playerSingle(User::getCharacter()),
       start("Start Game"),
       backSingleplayer("Return to Menu"),
-      ipForm("127.0.0.1"),
+      ipForm(database_ip),
       ipValidator(QRegExp("[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}")),
-      portForm("1337"),
+      portForm(database_port),
       portValidator(QRegExp(
           "^(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|"
           "655[0-2][0-9]|6553[0-5])")),
@@ -148,6 +149,9 @@ Menu::Menu(void)
     Music::stop();
   });
   connect(&join, &QPushButton::clicked, [this]() {
+    database_API dataAPI;
+    dataAPI.start_connection("SQLITE", QString::fromStdString(User::getName()));
+    dataAPI.update_network(ipForm.text(), portForm.text().toUShort());
     if (Connection::create(ipForm.text(), portForm.text().toUShort())) {
       lobbyMenu.show();
       multiplayerMenu.hide();
