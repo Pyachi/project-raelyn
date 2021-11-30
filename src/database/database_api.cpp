@@ -56,7 +56,7 @@ QSqlDatabase database_API::start_connection(QString type,
 	return start;
 }
 
-bool database_API::add_score(QString user, QDateTime time, int score) {
+bool database_API::add_score(QString user, QDateTime time, long score) {
 	bool pass = true;
 	QSqlQuery query = QSqlQuery(db);
 	QString querySTR = "INSERT INTO scores (User, Time, Score) VALUES ('";
@@ -92,7 +92,7 @@ Scoreboard* database_API::get_scoreboard() {
 	while (query.next()) {
         QDateTime tim =
                 QDateTime::fromString(query.value(1).toString(), "yyyyMMdd HH:mm:ss");
-        board->Add_Score(query.value(0).toString(), tim, query.value(2).toInt());
+        board->Add_Score(query.value(0).toString(), tim, query.value(2).toLongLong());
 	}
 
 	return board;
@@ -115,7 +115,7 @@ Scoreboard* database_API::get_scoreboard(QString use) {
 		QDateTime tim =
 				QDateTime::fromString(query.value(1).toString(), "yyyyMMdd HH:mm:ss");
 
-		board->Add_Score(query.value(0).toString(), tim, query.value(2).toInt());
+        board->Add_Score(query.value(0).toString(), tim, query.value(2).toLongLong());
 	}
 
 	return board;
@@ -148,7 +148,7 @@ bool database_API::create_level_table() {
 	QSqlQuery query = QSqlQuery(db);
 	QString querySTR =
 			"CREATE TABLE IF NOT EXISTS scores (User TEXT, Time DATETIME UNIQUE "
-			"PRIMARY KEY, Score int);";
+            "PRIMARY KEY, Score long);";
 
 	if (!query.exec(querySTR)) {
 		//		qDebug() << "Error: invalid query for create_level_table";

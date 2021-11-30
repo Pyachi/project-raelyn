@@ -23,7 +23,7 @@ class database_API {
 																QString pass);
 
 
-    bool add_score(QString user, QDateTime time, int score);
+    bool add_score(QString user, QDateTime time, long score);
 
     Scoreboard* get_scoreboard();
     Scoreboard* get_scoreboard(QString use);

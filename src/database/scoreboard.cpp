@@ -6,7 +6,7 @@ Scoreboard::Scoreboard() {
 	tail = nullptr;
 }
 
-void Scoreboard::Add_Score(QString user, QDateTime time, int score) {
+void Scoreboard::Add_Score(QString user, QDateTime time, long score) {
 	run* temp = new run();
 //    qDebug() << "temp made";
 	temp->user = user;
@@ -53,7 +53,7 @@ void Scoreboard::Add_Score(run* add) {
 
 void Scoreboard::Order_Scores(QString key) {
 	if (key == "Accending_Score") {
-		int pass;
+        long pass;
         if(head != nullptr && head->next != nullptr)
         {
             qDebug() << head->next;
@@ -93,7 +93,7 @@ Scoreboard* Scoreboard::Extra_Here(Scoreboard* other) {
 	// current object that are not in other
 	Scoreboard* diff = new Scoreboard();
 	run* temp = head;
-	int current;
+    long current;
 	while (temp != nullptr) {
 		current = other->Exists(temp);
 		if (current == -1) {
@@ -165,7 +165,7 @@ int Scoreboard::Exists(run* checker) {
 	return index;
 }
 
-int Scoreboard::Get_High_Score() {
+long Scoreboard::Get_High_Score() {
 	Order_Scores("Accending_Score");
 	return Get_Run(0)->score;
 }
