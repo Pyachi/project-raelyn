@@ -12,7 +12,8 @@
 #include "sfx.h"
 #include "texture.h"
 #include "user.h"
-#include "database_api.h"
+#include "database.h"
+#include "scoreboard.h"
 
 Game* Game::GAME = nullptr;
 
@@ -31,7 +32,8 @@ Game::Game(void)
 			powerDisplay(&sidebar),
 			scoreboardDisplay(&play),
 			menuButtonProxy(&scoreboardDisplay),
-			menuButton("Return To Menu"),
+			menuButton(new QPushButton("Return To Menu")),
+			menuReturn(false),
 			paused(false),
 			age(0) {
   GAME = this;
@@ -97,7 +99,7 @@ Game::Game(void)
 	// Scoreboard Display
 	scoreboardDisplay.setRect(0, 0, 504, 640);
 	scoreboardDisplay.setPos(-scoreboardDisplay.boundingRect().center());
-	scoreboardDisplay.setBrush(QColor(127, 127, 127, 127));
+	scoreboardDisplay.setBrush(QColor(64, 64, 64, 200));
 	scoreboardDisplay.setPen(QPen(Qt::white, 3));
 	scoreboardDisplay.setZValue(100);
 
@@ -109,9 +111,16 @@ Game::Game(void)
 	scoreboardInfo->setPos(10, 10);
 	scoreboards.push_back(scoreboardInfo);
 
+	User::getMasterBoard()->sort();
+
 	for (ushort i = 1; i < 21; i++) {
 		QString score;
-		score.sprintf("%02d %s %011ld 00/00/00 00:00", i, "sg010ds8", 42855367847);
+		Scoreboard::Entry* run = User::getMasterBoard()->get(i - 1);
+		score.sprintf("%02d %8s %011ld %s",
+									i,
+									run->user.left(8).toUtf8().data(),
+									run->score,
+									run->time.toString("dd/MM/yy HH:mm").toUtf8().data());
 		scoreboards.push_back(
 				new QGraphicsSimpleTextItem(score, &scoreboardDisplay));
 		scoreboards.at(i)->setPos({10, static_cast<double>(10 + (i * 25))});
@@ -128,26 +137,31 @@ Game::Game(void)
 	scoreboardBar->setPos(10, 535);
 	scoreboards.push_back(scoreboardBar);
 
-	menuButtonProxy.setWidget(&menuButton);
+	menuButtonProxy.setWidget(menuButton);
 	menuButtonProxy.setPos(100, 570);
 	menuButtonProxy.setScale(1.5);
 
-	menuButton.setFont(Font::PRESSSTART);
-	menuButton.setFlat(true);
-	menuButton.setStyleSheet(
-			"QPushButton { background-color: transparent; border: 0px; color: "
+	menuButton->setFont(Font::PRESSSTART);
+	menuButton->setFlat(true);
+	menuButton->setStyleSheet(
+			"QPushButton { background-color: transparent; border:0px; color : "
 			"#FFFFFF }");
-	connect(&menuButton, &QPushButton::clicked, []() { qDebug() << "a"; });
+	menuButton->connect(
+			menuButton, &QPushButton::released, [this]() { menuReturn = true; });
+
+	scoreboardDisplay.hide();
 	//***************************************************************************
 	// Game Timer
 	timer.start(1000 / 60);
   connect(&timer, &QTimer::timeout, [this]() { this->tick(); });
-	paused = true;
 }
 
 void Game::tick(void) {
-  if (paused)
-    return;
+	if (paused) {
+		if (menuReturn)
+			returnToMenu();
+		return;
+	}
 	age++;
 	//***************************************************************************
 	// Entity Ticking
@@ -192,11 +206,10 @@ void Game::tick(void) {
 	//***************************************************************************
 	// Game Over Display
 	if (!playerAlive()) {
-		if (age % 120 == 0) {
+		if (age % 120 == 0)
 			gameOver.show();
-		} else if (age % 120 == 60) {
+		else if (age % 120 == 60)
 			gameOver.hide();
-		}
 	}
 	//***************************************************************************
 	// Entity Deletion
@@ -211,13 +224,13 @@ void Game::tick(void) {
 	//***************************************************************************
 	if (keys.contains(Qt::Key_R)) {
 		paused = true;
-		Level::stop();
 		Server::destruct();
 		Connection::destruct();
 		Server::create(0);
 		Connection::create("127.0.0.1", Server::getPort());
 		Connection::sendPacket(S_START);
-	}
+	} else if (keys.contains(Qt::Key_Q))
+		returnToMenu();
 }
 
 /* Creates game if one doesn't yet exist,
@@ -285,6 +298,29 @@ void Game::queueEvent(std::function<void(Game&)> func, ushort time) {
 		GAME->timedEventQueue.insert({time, {func}});
 }
 
+void Game::updateScoreboard(void) {
+	if (GAME == nullptr) {
+		qDebug()
+				<< "ERROR: Attempted to update scoreboard display before Game exists!";
+		return;
+	}
+	User::getMasterBoard()->sort();
+	for (ushort i = 1; i < 21; i++) {
+		QString score;
+		Scoreboard::Entry* run = User::getMasterBoard()->get(i - 1);
+		score.sprintf("%02d %8s %011ld %s",
+									i,
+									run->user.left(8).toUtf8().data(),
+									run->score,
+									run->time.toString("dd/MM/yy HH:mm").toUtf8().data());
+		GAME->scoreboards.at(i)->setText(score);
+		GAME->scoreboards.at(i)->setPos({10, static_cast<double>(10 + (i * 25))});
+		GAME->scoreboards.at(i)->setBrush(Qt::white);
+		GAME->scoreboards.at(i)->setFont(Font::PRESSSTART);
+		GAME->scoreboards.at(i)->setScale(0.8);
+	}
+}
+
 /* Pauses the game
  */
 void Game::pause(void) {
@@ -293,6 +329,17 @@ void Game::pause(void) {
 		return;
 	}
 	GAME->paused = true;
+}
+
+void Game::returnToMenu(void) {
+	if (GAME == nullptr) {
+		qDebug() << "ERROR: Attempted to close Game before Game exists!";
+		return;
+	}
+	Menu::openMenu();
+	Server::destruct();
+	Connection::destruct();
+	delete GAME;
 }
 
 void Game::takeDamage(void) {
@@ -309,13 +356,21 @@ void Game::takeDamage(void) {
 		SFX::EXPL_SUPERHEAVY1.play();
 		getPlayer()->deleteLater();
 		Connection::sendPacket(S_KILLPLAYER);
-        //----------------------------------------------------------------------------------
-        User::addGame(User::getScore());            // adds score to scoreboards
-        User::updateDatabase();                     // then updates the scoreboards to the database
+		//----------------------------------------------------------------------------------
+		User::addGame(User::getScore());  // adds score to scoreboards
+		User::updateDatabase();  // then updates the scoreboards to the database
+		queueEvent([](Game& game) {
+								 if (getPlayer() == nullptr) {
+									 updateScoreboard();
+									 game.scoreboardDisplay.show();
+									 game.paused = true;
+								 }
+							 },
+							 60);
 	} else {
 		SFX::HIT1.play();
 		Connection::sendPacket(S_DAMAGEPLAYER);
-		for (int i = 0; i < 150; i++) {
+		for (ushort i = 0; i < 150; i++) {
 			queueEvent([i](Game&) {
 									 for (Entity* entity :
 												getPlayer()->getNearbyEntities(BULLET, i * 10))
@@ -376,6 +431,13 @@ void Game::gainPower(void) {
  */
 Game::~Game(void) {
 	GAME = nullptr;
+	menuButton->deleteLater();
+	for (auto display : healthDisplay)
+		delete display;
+	for (auto display : bombsDisplay)
+		delete display;
+	for (auto display : scoreboards)
+		delete display;
 	for (auto entity : entities) {
 		if (entity.second->readyToDelete()) {
 			entities.erase(entity.second->id);

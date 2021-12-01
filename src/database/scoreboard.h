@@ -4,45 +4,45 @@
 #include <qdebug.h>
 #include <QVector>
 #include <QDateTime>
-class Scoreboard
-{
-public:
-    struct run
-    {
-        QString user;
-        long score;
-        QDateTime time;
-        run* next;
-        run* last;
-    };
+class Scoreboard {
+ public:
+	struct Entry {
+		Entry(QString user = "--------",
+					long score = 0,
+					QDateTime time =
+							QDateTime::fromString("20010101000000", "yyyyMMddHHmmss"))
+				: user(user), score(score), time(time), next(nullptr), last(nullptr) {}
+		QString user;
+		long score;
+		QDateTime time;
+		Entry* next;
+		Entry* last;
+	};
 
-    Scoreboard();
-    void Add_Score(QString user, QDateTime time, long score);
-    void Add_Score(run* add);
+	Scoreboard();
+	void add(QString user, QDateTime time, long score);
+	void add(Entry* add);
 
-    Scoreboard* Extra_Here(Scoreboard* other);
-    void Order_Scores(QString key);
-    int Get_length();
-    long Get_High_Score();
+	Scoreboard* extraHere(Scoreboard* other);
+	void sort();
+	int getLength();
+	long getHighScore();
 
-    void Show_Scoreboard();
-    run* Get_Run(int index);
-    QString Get_Level();
+	void show();
+	Entry* get(int index);
+	QString getLevel();
 
+ private:
+	int length;
 
+	QString level;
 
-private:
-    int length;
+	void swap(Entry* left, Entry* right);
+	int exists(Entry* checker);
+	bool equal(Entry* A, Entry* B);
 
-    QString level;
-
-    void Swap_Adjectent_Runs(run* left, run* right);
-    int Exists(run* checker);
-    bool Runs_Equal(run* A, run* B);
-
-
-    run* head;
-    run* tail;
+	Entry* head;
+	Entry* tail;
 };
 
-#endif // SCOREBOARD_H
+#endif  // SCOREBOARD_H

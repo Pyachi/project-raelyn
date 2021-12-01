@@ -50,7 +50,8 @@ class Game : public QGraphicsView {
 	QGraphicsRectItem scoreboardDisplay;
 	Array<QGraphicsSimpleTextItem*> scoreboards;
 	QGraphicsProxyWidget menuButtonProxy;
-	QPushButton menuButton;
+	QPushButton* menuButton;
+	bool menuReturn;
 	//***************************************************************************
 	// Gameplay
 	bool paused = false;
@@ -81,7 +82,9 @@ class Game : public QGraphicsView {
 	static EntityPlayer* getPlayer(void);
 	static void addEntity(Entity* entity);
 	static void queueEvent(std::function<void(Game&)> func, ushort time = 0);
+	static void updateScoreboard(void);
 	static void pause(void);
+	static void returnToMenu(void);
 
 	static void takeDamage(void);
 	static void gainHealth(void);

@@ -9,14 +9,15 @@
 #include <QPushButton>
 #include "character.h"
 #include "music.h"
-#include "database_api.h"
+#include "database.h"
 #include "user.h"
 
 class Menu : public QDialog {
  public:
-    database_API *dataAPI = new database_API("SQLITE", QString::fromStdString(User::getName()));
-    const QString database_ip = dataAPI->get_IP();
-    const QString database_port = dataAPI->get_port();
+	Database* dataAPI =
+			new Database("SQLITE", QString::fromStdString(User::getName()));
+	const QString database_ip = dataAPI->getIP();
+	const QString database_port = dataAPI->getPort();
 	static void openMenu(void) {
 		if (MENU == nullptr)
 			MENU = new Menu();
@@ -66,8 +67,8 @@ class Menu : public QDialog {
 	QPushButton host;
 	QPushButton join;
 	QPushButton backMultiplayer;
-    QString lastIP;
-    unsigned short lastPort;
+	QString lastIP;
+	unsigned short lastPort;
 	//***************************************************************************
 	// Options
 	QLabel soundLabel;

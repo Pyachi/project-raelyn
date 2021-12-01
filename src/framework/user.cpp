@@ -1,7 +1,7 @@
 #include "user.h"
 #include <QDir>
 #include <QNetworkInterface>
-#include "database_api.h"
+#include "database.h"
 #include "uid.h"
 
 User* User::USER = nullptr;
@@ -20,39 +20,38 @@ User::User()
     }
   }
 
-  database_API dataAPI;
-  QSqlDatabase dab =
-      dataAPI.start_connection("SQLITE", QString::fromStdString(name));
+	Database dataAPI;
+	QSqlDatabase dab = dataAPI.connect("SQLITE", QString::fromStdString(name));
   QSqlQuery query = QSqlQuery(dab);
 	//  qDebug() << "--Create level table: ";
-  qDebug() << dataAPI.create_level_table();
+	qDebug() << dataAPI.createLevelTable();
 
-  masterBoard = dataAPI.get_scoreboard();
-  playerBoard = dataAPI.get_scoreboard(QString::fromStdString(name));
+	masterBoard = dataAPI.getScoreboard();
+	playerBoard = dataAPI.getScoreboard(QString::fromStdString(name));
 
-  masterBoard->Order_Scores("Accending_Score");
-  playerBoard->Order_Scores("Accending_Score");
+	masterBoard->sort();
+	playerBoard->sort();
   qDebug() << "masterBoard--------------------";
-  masterBoard->Show_Scoreboard();
+	masterBoard->show();
   qDebug() << "playerBoard--------------------";
-  playerBoard->Show_Scoreboard();
+	playerBoard->show();
 
-  dataAPI.create_settings_table(soundVol, musicVol, *controls, *character);
+	dataAPI.createSettingsTable(soundVol, musicVol, *controls, *character);
 
   //    qDebug() << "get settings";
-  soundVol = dataAPI.get_SFX();
-  musicVol = dataAPI.get_music();
-  controls = &Controls::valueOf(dataAPI.get_controls());
-  character = &Character::valueOf(dataAPI.getCharacter());
-  dataAPI.close_database();
+	soundVol = dataAPI.getSFXVol();
+	musicVol = dataAPI.getMusicVol();
+	controls = &Controls::valueOf(dataAPI.getControls());
+	character = &Character::valueOf(dataAPI.getCharacter());
+	dataAPI.close();
 
   atexit([]() {
-    database_API dataAPI;
-    dataAPI.start_connection("SQLITE", QString::fromStdString(User::getName()));
-		dataAPI.update_settings(User::getSoundVol(),
-														User::getMusicVol(),
-														User::getControls(),
-														User::getCharacter());
-    dataAPI.close_database();
+		Database dataAPI;
+		dataAPI.connect("SQLITE", QString::fromStdString(User::getName()));
+		dataAPI.updateSettings(User::getSoundVol(),
+													 User::getMusicVol(),
+													 User::getControls(),
+													 User::getCharacter());
+		dataAPI.close();
   });
 }

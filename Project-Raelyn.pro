@@ -28,7 +28,7 @@ SOURCES += \
     src/assets/music.cpp \
     src/assets/sfx.cpp \
     src/assets/texture.cpp \
-    src/database/database_api.cpp \
+    src/database/database.cpp \
     src/database/scoreboard.cpp \
     src/entity/entity.cpp \
     src/entity/entityboss.cpp \
@@ -58,7 +58,7 @@ HEADERS += \
     src/assets/music.h \
     src/assets/sfx.h \
     src/assets/texture.h \
-    src/database/database_api.h \
+    src/database/database.h \
     src/database/scoreboard.h \
     src/entity/entity.h \
     src/entity/entityboss.h \

@@ -7,7 +7,7 @@
 #include "sfx.h"
 #include "texture.h"
 #include "user.h"
-#include "database_api.h"
+#include "database.h"
 
 Menu* Menu::MENU = nullptr;
 
@@ -147,11 +147,11 @@ Menu::Menu(void)
     adjustSize();
     SFX::SELECT1.play(25);
     Music::stop();
-  });
-  connect(&join, &QPushButton::clicked, [this]() {
-    database_API dataAPI;
-    dataAPI.start_connection("SQLITE", QString::fromStdString(User::getName()));
-    dataAPI.update_network(ipForm.text(), portForm.text().toUShort());
+	});
+	connect(&join, &QPushButton::clicked, [this]() {
+		Database dataAPI;
+		dataAPI.connect("SQLITE", QString::fromStdString(User::getName()));
+		dataAPI.updateNetwork(ipForm.text(), portForm.text().toUShort());
     if (Connection::create(ipForm.text(), portForm.text().toUShort())) {
       lobbyMenu.show();
       multiplayerMenu.hide();
