@@ -357,7 +357,6 @@ void Game::takeDamage(void) {
 		getPlayer()->deleteLater();
 		Connection::sendPacket(
 				{S_KILLPLAYER, QStringList() << QString::number(User::getScore())});
-		//----------------------------------------------------------------------------------
 		User::addGame(User::getScore());  // adds score to scoreboards
 		User::updateDatabase();  // then updates the scoreboards to the database
 		queueEvent([](Game& game) {

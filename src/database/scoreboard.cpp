@@ -6,6 +6,7 @@ Scoreboard::Scoreboard() {
 	tail = nullptr;
 }
 
+    // adds a new entry to the scoreboard from pass parameters
 void Scoreboard::add(QString user, QDateTime time, long score) {
 	Entry* temp = new Entry();
 	temp->user = user;
@@ -20,7 +21,7 @@ void Scoreboard::add(QString user, QDateTime time, long score) {
 	tail = temp;
 	length++;
 }
-
+    // adds a new entry that is passed in
 void Scoreboard::add(Entry* add) {
 	if (tail)
 		tail->next = add;
@@ -30,6 +31,8 @@ void Scoreboard::add(Entry* add) {
 	length++;
 }
 
+    // sorts the entries in decending score order, with index 0
+     // being the high score
 void Scoreboard::sort() {
 	long pass;
 	if (head != nullptr && head->next != nullptr) {
@@ -47,7 +50,7 @@ void Scoreboard::sort() {
 		}
 	}
 }
-
+    // displays the scoreboard to application output
 void Scoreboard::show() {
 	sort();
 	Entry* temp = head;
@@ -62,9 +65,10 @@ void Scoreboard::show() {
 	}
 }
 
+    // returns a Scoreboard object that has all of the entries
+     // in the current object that are not in other
 Scoreboard* Scoreboard::extraHere(Scoreboard* other) {
-	// returns a Scoreboard object that has all of the runs from
-	// current object that are not in other
+
 	Scoreboard* diff = new Scoreboard();
 	Entry* temp = head;
 	long current;
@@ -79,8 +83,10 @@ Scoreboard* Scoreboard::extraHere(Scoreboard* other) {
 	return diff;
 }
 
+    // returns # of entries in scoreboard
 int Scoreboard::getLength() { return length; }
 
+    // swaps the location of 2 entries passed
 void Scoreboard::swap(Entry* left, Entry* right) {
 	Entry* pointers[2];
 	pointers[0] = left->last;
@@ -104,6 +110,7 @@ void Scoreboard::swap(Entry* left, Entry* right) {
 	}
 }
 
+    // returns the pointer to the entry at index in scoreboard
 Scoreboard::Entry* Scoreboard::get(int index) {
 	Entry* temp = head;
 	if (getLength() > index) {
@@ -121,34 +128,27 @@ Scoreboard::Entry* Scoreboard::get(int index) {
 	return temp;
 }
 
+    // Sees if the passed extry exists in the scoreboard
 int Scoreboard::exists(Entry* checker) {
 	int index = -1;
 	int count = 0;
 	QDateTime Ctime = checker->time;
 	Entry* temp = head;
 	while (index == -1 && temp != nullptr) {
-		//        qDebug() << temp;
-		//        qDebug() << temp->time;
-		//        qDebug() << Ctime;
-		//        qDebug() << "";
 		if (temp->time == Ctime)  // Checks first if the times match then
-    {
+        {
 			if (equal(checker, temp)) {
 				index = count;
 				break;
 			}
-    }
+        }
 		count++;
 		temp = temp->next;
 	}
 	return index;
 }
 
-long Scoreboard::getHighScore() {
-	sort();
-	return get(0)->score;
-}
-
+    // checks if 2 entries are the same
 bool Scoreboard::equal(Entry* A, Entry* B) {
 	return (A->user == B->user && A->score == B->score && A->time == B->time);
 }

@@ -6,7 +6,8 @@
 #include <QDateTime>
 class Scoreboard {
  public:
-	struct Entry {
+        // a struct to hold a game entry with user, score, & time
+    struct Entry {
 		Entry(QString user = "--------",
 					long score = 0,
 					QDateTime time =
@@ -26,16 +27,12 @@ class Scoreboard {
 	Scoreboard* extraHere(Scoreboard* other);
 	void sort();
 	int getLength();
-	long getHighScore();
 
 	void show();
 	Entry* get(int index);
-	QString getLevel();
 
  private:
 	int length;
-
-	QString level;
 
 	void swap(Entry* left, Entry* right);
 	int exists(Entry* checker);

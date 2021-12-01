@@ -13,8 +13,8 @@
 class Database {
  public:
 	Database();
-	Database(QString type, QString use);
-	QSqlDatabase connect(QString type, QString use);
+    ~Database();
+    Database(QString use);
 
 	bool add(QString user, QDateTime time, long score);
 
@@ -34,6 +34,8 @@ class Database {
 	void updateNetwork(QString ip, unsigned short port);
 	const QString getIP();
 	const QString getPort();
+
+    QSqlDatabase getDatabase();
 
  private:
 	QString user;

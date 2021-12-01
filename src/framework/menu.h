@@ -15,7 +15,7 @@
 class Menu : public QDialog {
  public:
 	Database* dataAPI =
-			new Database("SQLITE", QString::fromStdString(User::getName()));
+    new Database(QString::fromStdString(User::getName()));
 	const QString database_ip = dataAPI->getIP();
 	const QString database_port = dataAPI->getPort();
 	static void openMenu(void) {
