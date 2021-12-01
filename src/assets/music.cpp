@@ -20,5 +20,5 @@ const Music Music::LVL3("assets/music/music_lvl3_theme.ogg");
 const Music Music::BOSS1("assets/music/music_lvl1_boss.ogg");
 const Music Music::BOSS2("assets/music/music_lvl2_boss.ogg");
 const Music Music::BOSS3("assets/music/music_lvl3_boss.ogg");
-const Music Music::LOSS("assets/music/music_credits.ogg");
+const Music Music::LOSS("assets/music/music_game_over.ogg");
 const Music Music::END("assets/music/music_credits.ogg");
