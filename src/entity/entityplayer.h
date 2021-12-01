@@ -5,6 +5,8 @@
 #include "entity.h"
 #include "user.h"
 
+struct BombInfo;
+
 class EntityPlayer : public Entity {
  public:
   EntityPlayer(const Character& character,
@@ -24,6 +26,8 @@ class EntityPlayer : public Entity {
   QGraphicsSimpleTextItem display;
 	const String name;
   bool firing;
+
+	void fireBomb(const BombInfo& info);
 };
 
 #endif  // ENTITYPLAYER_H

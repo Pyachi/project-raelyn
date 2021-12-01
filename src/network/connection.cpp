@@ -96,8 +96,16 @@ void Connection::handlePacket(const Packet& packet) {
 					game.getEntities().at(UID::fromString(packet.data.at(0)))->setPos(
 							{packet.data.at(1).toDouble(), packet.data.at(2).toDouble()});
 			}});
-      break;
+			break;
 		case C_KILLPLAYER:
+			Game::queueEvent({[packet](Game& game) {
+				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
+					game.getEntities()
+							.at(UID::fromString(packet.data.at(0)))
+							->deleteLater();
+			}});
+      break;
+		case C_SCORE:
 			User::addExternalScore(packet.data.at(2).toInt(), packet.data.at(1));
 			Game::queueEvent([](Game& game) {
 												 if (game.getPlayer() == nullptr) {
@@ -107,12 +115,6 @@ void Connection::handlePacket(const Packet& packet) {
 												 }
 											 },
 											 60);
-			Game::queueEvent({[packet](Game& game) {
-				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
-					game.getEntities()
-							.at(UID::fromString(packet.data.at(0)))
-							->deleteLater();
-			}});
 			break;
 		case C_SPAWNPLAYER:
 			Game::queueEvent({[packet](Game&) {

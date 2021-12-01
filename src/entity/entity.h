@@ -9,9 +9,19 @@
 class EntityBullet;
 struct BulletInfo;
 
-enum EntityType { ENEMY, BULLET, PLAYER, ONLINEPLAYER, COLLECTABLE };
+enum EntityType {
+	ENEMY,
+	BULLET,
+	BOMB,
+	PLAYER,
+	ONLINEPLAYER,
+	COLLECTABLE
+};
 
-enum MovementType { SMOOTH, QUICK };
+enum MovementType {
+	SMOOTH,
+	QUICK
+};
 
 class Entity : public QGraphicsPixmapItem {
  public:
@@ -23,6 +33,7 @@ class Entity : public QGraphicsPixmapItem {
 	bool readyToDelete(void) { return cleanup; }
 
   virtual void tick(void) = 0;
+	virtual void damage(int damage);
 
   const EntityType type;
   const UID id;
@@ -47,7 +58,7 @@ class Entity : public QGraphicsPixmapItem {
 																	const QPointF& loc = {0, 0},
 																	bool collision = true);
   //***************************************************************************
-  Entity* getNearestEntity(EntityType type) const;
+	Entity* getNearestEntity(EntityType type) const;
   List<Entity*> getCollisions(EntityType type) const;
   List<Entity*> getNearbyEntities(EntityType type, double distance) const;
 	double getDirectionOfEntity(const Entity* entity) const;

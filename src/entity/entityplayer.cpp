@@ -8,6 +8,7 @@
 #include "packet.h"
 #include "sfx.h"
 #include "user.h"
+#include "entitybomb.h"
 
 EntityPlayer::EntityPlayer(const Character& character,
                            const String& user,
@@ -62,7 +63,6 @@ void EntityPlayer::tick(void) {
 
   if (firing) {
     fireBullets(character.pattern(this));
-    character.shootSound(this).play(3);
 		Connection::sendPacket({S_SHOOT, QStringList() << QString::number(focus)});
   }
 
@@ -87,7 +87,12 @@ void EntityPlayer::tick(void) {
 																						 << QString::number(pos().y())});
   }
 
-  if (invFrames == 0) {
+	if (invFrames == 0 && keys.contains(User::getControls().getKeyBomb()) &&
+			Game::hasBombs()) {
+		Game::spendBomb();
+		invFrames = 150;
+		fireBomb(character.bomb(this));
+	} else if (invFrames == 0) {
     bool hit = false;
     for (QGraphicsItem* entity : hitbox.collidingItems()) {
       if (dynamic_cast<EntityEnemy*>(entity) ||
@@ -107,4 +112,11 @@ void EntityPlayer::tick(void) {
 			invFrames = 150;
     }
 	}
+}
+
+void EntityPlayer::fireBomb(const BombInfo& info) {
+	EntityBomb* bomb = new EntityBomb(info.tex, info.ai, this, info.damage);
+	bomb->setPos(pos());
+	bomb->setRotation(rotation());
+	bomb->setScale(info.scale);
 }

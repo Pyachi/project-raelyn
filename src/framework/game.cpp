@@ -355,8 +355,9 @@ void Game::takeDamage(void) {
 	if (GAME->health == 0) {
 		SFX::EXPL_SUPERHEAVY1.play();
 		getPlayer()->deleteLater();
+		Connection::sendPacket(S_KILLPLAYER);
 		Connection::sendPacket(
-				{S_KILLPLAYER, QStringList() << QString::number(User::getScore())});
+				{S_SCORE, QStringList() << QString::number(User::getScore())});
 		//----------------------------------------------------------------------------------
 		User::addGame(User::getScore());  // adds score to scoreboards
 		User::updateDatabase();  // then updates the scoreboards to the database
@@ -408,6 +409,15 @@ void Game::gainBomb(void) {
 	}
 	GAME->bombsDisplay.at(GAME->bombs)->setPixmap(Texture::S_BOMB);
 	GAME->bombs++;
+}
+
+void Game::spendBomb(void) {
+	if (GAME == nullptr || !playerAlive()) {
+		qDebug() << "ERROR: Attempted to use bombs at invalid time!";
+		return;
+	}
+	GAME->bombs--;
+	GAME->bombsDisplay.at(GAME->bombs)->setPixmap(Texture::S_BOMB_D);
 }
 
 void Game::gainPower(void) {

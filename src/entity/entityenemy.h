@@ -12,6 +12,7 @@ class EntityEnemy : public Entity {
 
   int health;
 
+	void damage(int damage) override;
   void kill(void);
 
  private:

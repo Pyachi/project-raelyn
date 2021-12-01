@@ -5,8 +5,9 @@
 
 class EntityPlayer;
 class Texture;
-class BulletInfo;
 class SFX;
+struct BulletInfo;
+struct BombInfo;
 
 class Character {
   static Array<Ref<Character> > list;
@@ -15,15 +16,15 @@ class Character {
             const Texture& tex,
 						double speed,
 						double focusSpeed,
-            Func<const List<BulletInfo>(EntityPlayer*)> pattern,
-            Func<const SFX&(EntityPlayer*)> shootSound)
+						Func<const List<BulletInfo>(EntityPlayer*)> pattern,
+						Func<const BombInfo(EntityPlayer*)> bomb)
       : index(list.size()),
         name(name),
         tex(tex),
         speed(speed),
         focusSpeed(focusSpeed),
-        pattern(pattern),
-        shootSound(shootSound) {
+				pattern(pattern),
+				bomb(bomb) {
     list.push_back(*this);
   }
 
@@ -37,7 +38,7 @@ class Character {
 	const double speed;
 	const double focusSpeed;
   const Func<const List<BulletInfo>(EntityPlayer*)> pattern;
-  const Func<const SFX&(EntityPlayer*)> shootSound;
+	const Func<const BombInfo(EntityPlayer*)> bomb;
 
 	operator int() const { return index; }
   operator String() const { return name; }

@@ -6,6 +6,7 @@
 #include "entitybullet.h"
 #include "packet.h"
 #include "sfx.h"
+#include "user.h"
 
 EntityBoss::EntityBoss(const Texture& tex,
                        const UID& id,
@@ -35,34 +36,28 @@ void EntityBoss::tick(void) {
 		if (cycle(flashTime, 1))
 			setOpacity(0);
 		else if (cycle(flashTime, flashTime / 2))
-			setOpacity(type == ONLINEPLAYER ? 0.25 : 1);
+			setOpacity(1);
 		invFrames--;
 		if (invFrames == 0)
-			setOpacity(type == ONLINEPLAYER ? 0.25 : 1);
-	} else {
-		List<EntityBullet*> bullets;
-		for (Entity* entity : getCollisions(BULLET)) {
-			EntityBullet* bullet = dynamic_cast<EntityBullet*>(entity);
-			if (bullet->collisionCheck &&
-					(bullet->ownerType == PLAYER || bullet->ownerType == ONLINEPLAYER))
-				bullets.push_back(bullet);
-		}
-		for (EntityBullet* bullet : bullets) {
-			if (health < healthBar.maximum() / 5)
-				SFX::HIT3.play(20);
-			SFX::EXPL_LIGHT2.play(10);
-			health -= bullet->damage;
-			bullet->deleteLater();
-			healthBar.setValue(health);
-			if (health <= 0) {
-				Connection::sendPacket({S_DAMAGEBOSS, QStringList()
-																									<< id.toString()
-																									<< QString::number(phase)});
-				advancePhase();
-				break;
-			}
-    }
-  }
+			setOpacity(1);
+	}
+}
+
+void EntityBoss::damage(int damage) {
+	if (invFrames != 0)
+		return;
+	if (health < healthBar.maximum() / 5)
+		SFX::HIT3.play(20);
+	SFX::EXPL_LIGHT2.play(10);
+	health -= damage;
+	User::addScore(damage);
+	healthBar.setValue(health);
+	if (health <= 0) {
+		Connection::sendPacket({S_DAMAGEBOSS, QStringList()
+																							<< id.toString()
+																							<< QString::number(phase)});
+		advancePhase();
+	}
 }
 
 void EntityBoss::kill(void) {
@@ -123,7 +118,11 @@ void ProgressBar::paintEvent(QPaintEvent*) {
 	QPen pen(QColor(255, 255, 255, 200));
 	pen.setWidth(3);
 	painter.setPen(pen);
-	painter.drawArc(5, 5, 118, 118, 1440,
+	painter.drawArc(5,
+									5,
+									118,
+									118,
+									1440,
 									static_cast<int>((static_cast<double>(value()) /
 																		static_cast<double>(maximum())) *
 																	 5760.0));

@@ -76,7 +76,8 @@ Entity* Entity::getNearestEntity(EntityType type) const {
 	double closestDistance = 99999999;
 	for (auto entity : Game::getEntities()) {
 		if (entity.second->type == type &&
-				entity.second->distanceSquared(this) < closestDistance) {
+				entity.second->distanceSquared(this) < closestDistance &&
+				entity.second->isOnScreen()) {
 			closest = entity.second;
 			closestDistance = entity.second->distanceSquared(this);
 		}
@@ -134,3 +135,4 @@ bool Entity::isOnScreen(void) const {
   return collidesWithItem(&Game::getPlayableArea());
 }
 //***************************************************************************
+void Entity::damage(int) {}

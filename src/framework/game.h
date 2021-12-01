@@ -90,6 +90,8 @@ class Game : public QGraphicsView {
 	static void takeDamage(void);
 	static void gainHealth(void);
 	static void gainBomb(void);
+	static bool hasBombs(void) { return GAME->bombs != 0; }
+	static void spendBomb(void);
 	static void gainPower(void);
 	//***************************************************************************
 	// Getters

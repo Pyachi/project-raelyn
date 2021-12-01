@@ -13,7 +13,8 @@ enum Header {
 	S_UNREADY,       // null
 	S_START,         // null
 	S_UPDATELOC,     // x:y
-	S_KILLPLAYER,    // score
+	S_KILLPLAYER,    // null
+	S_SCORE,         // score
 	S_SPAWNPLAYER,   // PlayerType
 	S_SHOOT,         // focus
 	S_KILLENEMY,     // UUID
@@ -28,7 +29,8 @@ enum Header {
 	C_LOBBY,         // names
 	C_START,         // null
 	C_UPDATELOC,     // UUID:x:y
-	C_KILLPLAYER,    // UUID:name:score
+	C_KILLPLAYER,    // UUID
+	C_SCORE,         // name:score
 	C_SPAWNPLAYER,   // UUID:name:PlayerType
 	C_SHOOT,         // UUID:focus
 	C_SPAWNENEMY,    // UUID:EnemyType:x:y:scale

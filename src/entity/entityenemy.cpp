@@ -16,24 +16,16 @@ void EntityEnemy::tick(void) {
   age++;
   ai(this);
   handleMovement();
-  List<EntityBullet*> bullets;
-	for (Entity* entity : getCollisions(BULLET)) {
-    EntityBullet* bullet = dynamic_cast<EntityBullet*>(entity);
-		if (bullet->collisionCheck &&
-				(bullet->ownerType == PLAYER || bullet->ownerType == ONLINEPLAYER))
-      bullets.push_back(bullet);
-  }
-  for (EntityBullet* bullet : bullets) {
-    SFX::EXPL_LIGHT1.play(10);
-    health -= bullet->damage;
-		User::addScore(bullet->damage);
-    bullet->deleteLater();
-    if (health <= 0) {
-      kill();
-			Connection::sendPacket({S_KILLENEMY, QStringList() << id.toString()});
-      break;
-    }
-  }
+}
+
+void EntityEnemy::damage(int damage) {
+	SFX::EXPL_LIGHT1.play(10);
+	health -= damage;
+	User::addScore(damage);
+	if (health <= 0) {
+		kill();
+		Connection::sendPacket({S_KILLENEMY, QStringList() << id.toString()});
+	}
 }
 
 void EntityEnemy::kill(void) {

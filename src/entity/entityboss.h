@@ -22,6 +22,7 @@ class EntityBoss : public Entity {
   int health;
 	ushort phase;
 
+	void damage(int damage) override;
   void kill(void);
   void advancePhase(void);
 

@@ -31,6 +31,7 @@ SOURCES += \
     src/database/database.cpp \
     src/database/scoreboard.cpp \
     src/entity/entity.cpp \
+    src/entity/entitybomb.cpp \
     src/entity/entityboss.cpp \
     src/entity/entitybullet.cpp \
     src/entity/entitycollectable.cpp \
@@ -61,6 +62,7 @@ HEADERS += \
     src/database/database.h \
     src/database/scoreboard.h \
     src/entity/entity.h \
+    src/entity/entitybomb.h \
     src/entity/entityboss.h \
     src/entity/entitybullet.h \
     src/entity/entitycollectable.h \
