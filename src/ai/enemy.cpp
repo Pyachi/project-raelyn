@@ -224,7 +224,7 @@ const Enemy Enemy::SMALL_FAST_RIGHTTOLEFT(Texture::ENEMYTEMP,
     enemy->deleteLater();
 });
 const Enemy Enemy::SMALL_FAST_LEFTTORIGHT(Texture::ENEMYTEMP,
-                                          300,
+                                          280,
                                           [](EntityEnemy* enemy) {
   if (enemy->cycle(1800, 1, 900))
     enemy->moveBy(-3, 0);
@@ -265,7 +265,7 @@ const Enemy Enemy::SMALL_FAST_TOPDOWNTORIGHT(Texture::ENEMYTEMP,
     enemy->deleteLater();
 });
 
-const Enemy Enemy::DART1(Texture::ENEMYTEMP, 500, [](EntityEnemy* enemy) {
+const Enemy Enemy::DART1(Texture::ENEMYTEMP, 550, [](EntityEnemy* enemy) {
   if (enemy->cycle(500, 10) || enemy->cycle(1000, 100))
     enemy->moveTo({0, 50}, 50, QUICK);
   if (enemy->cycle(500, 110) || enemy->cycle(1000, 410))
@@ -290,7 +290,7 @@ const Enemy Enemy::DART1(Texture::ENEMYTEMP, 500, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::DART2(Texture::ENEMYTEMP, 500, [](EntityEnemy* enemy) {
+const Enemy Enemy::DART2(Texture::ENEMYTEMP, 550, [](EntityEnemy* enemy) {
   if (enemy->cycle(500, 10) || enemy->cycle(1000, 510))
     enemy->moveTo({75, -200}, 75, QUICK);
   if (enemy->cycle(500, 110))
@@ -315,7 +315,7 @@ const Enemy Enemy::DART2(Texture::ENEMYTEMP, 500, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::DART3(Texture::ENEMYTEMP, 500, [](EntityEnemy* enemy) {
+const Enemy Enemy::DART3(Texture::ENEMYTEMP, 550, [](EntityEnemy* enemy) {
   if (enemy->cycle(500, 10) || enemy->cycle(1000, 510))
     enemy->moveTo({-75, -200}, 100, QUICK);
   if (enemy->cycle(500, 110))
@@ -340,7 +340,7 @@ const Enemy Enemy::DART3(Texture::ENEMYTEMP, 500, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::DART4(Texture::ENEMYTEMP, 500, [](EntityEnemy* enemy) {
+const Enemy Enemy::DART4(Texture::ENEMYTEMP, 550, [](EntityEnemy* enemy) {
   if (enemy->cycle(515, 10) || enemy->cycle(515, 310))
     enemy->moveTo({-100, -100}, 100, QUICK);
   if (enemy->cycle(515, 110) || enemy->cycle(515, 410))
@@ -365,7 +365,7 @@ const Enemy Enemy::DART4(Texture::ENEMYTEMP, 500, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::DART5(Texture::ENEMYTEMP, 500, [](EntityEnemy* enemy) {
+const Enemy Enemy::DART5(Texture::ENEMYTEMP, 550, [](EntityEnemy* enemy) {
   if (enemy->cycle(1000, 10) || enemy->cycle(1000, 310) ||
       enemy->cycle(1000, 610))
     enemy->moveTo({100, -100}, 100, QUICK);
@@ -393,7 +393,7 @@ const Enemy Enemy::DART5(Texture::ENEMYTEMP, 500, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::DART6(Texture::ENEMYTEMP, 500, [](EntityEnemy* enemy) {
+const Enemy Enemy::DART6(Texture::ENEMYTEMP, 550, [](EntityEnemy* enemy) {
   if (enemy->cycle(1000, 10) || enemy->cycle(1000, 310) ||
       enemy->cycle(1000, 610))
     enemy->moveTo({0, -200}, 100, QUICK);
@@ -421,7 +421,7 @@ const Enemy Enemy::DART6(Texture::ENEMYTEMP, 500, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::SUNEASY(Texture::ENEMYTEMP, 700, [](EntityEnemy* enemy) {
+const Enemy Enemy::SUNEASY(Texture::ENEMYTEMP, 1000, [](EntityEnemy* enemy) {
   if (enemy->cycle(515, 10) || enemy->cycle(515, 510))
     enemy->moveTo({0, -100}, 30, QUICK);
 
@@ -434,7 +434,7 @@ const Enemy Enemy::SUNEASY(Texture::ENEMYTEMP, 700, [](EntityEnemy* enemy) {
   {
     if (enemy->cycle(50)) {
       enemy->fireBullets(
-          BulletInfo(Bullet::BASIC3, Texture::ARROWYELLOW, Pattern::CIRCLE16));
+          BulletInfo(Bullet::BASIC5, Texture::ARROWYELLOW, Pattern::CIRCLE16));
       SFX::EXPL_LIGHT3.play(25);
     }
   }
@@ -464,7 +464,7 @@ const Enemy Enemy::SUN(Texture::ENEMYTEMP, 500, [](EntityEnemy* enemy) {
   }
 });
 
-const Enemy Enemy::WHEELEASY(Texture::ENEMYTEMP, 500, [](EntityEnemy* enemy) {
+const Enemy Enemy::WHEELEASY(Texture::ENEMYTEMP, 1000, [](EntityEnemy* enemy) {
   if (enemy->cycle(515, 10) || enemy->cycle(515, 510))
     enemy->moveTo({0, -100}, 30, QUICK);
 
