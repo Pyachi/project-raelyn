@@ -17,8 +17,8 @@ class Boss {
 
   Boss(const Boss& boss) = delete;
 
-  const int index;
-  const Texture& tex;
+	const int index;
+	const Texture& tex;
   const Array<int> health;
   const AI<EntityBoss> ai;
 
@@ -27,7 +27,7 @@ class Boss {
 
 	operator int() const { return index; }
 
-  static const Boss& valueOf(int i) { return list[i]; }
+	static const Boss& valueOf(int i) { return list[i]; }
 
   static const Boss LVL1MINI;
   static const Boss LVL1;

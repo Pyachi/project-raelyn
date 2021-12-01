@@ -355,7 +355,8 @@ void Game::takeDamage(void) {
 	if (GAME->health == 0) {
 		SFX::EXPL_SUPERHEAVY1.play();
 		getPlayer()->deleteLater();
-		Connection::sendPacket(S_KILLPLAYER);
+		Connection::sendPacket(
+				{S_KILLPLAYER, QStringList() << QString::number(User::getScore())});
 		//----------------------------------------------------------------------------------
 		User::addGame(User::getScore());  // adds score to scoreboards
 		User::updateDatabase();  // then updates the scoreboards to the database

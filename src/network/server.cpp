@@ -140,7 +140,8 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
       break;
     case S_KILLPLAYER:
 			alive.remove(sender);
-			sendPacket({C_KILLPLAYER, QStringList() << users[sender].toString()},
+			sendPacket({C_KILLPLAYER, QStringList() << users[sender].toString()
+																							<< names[sender] << packet.data},
 								 sender);
       break;
     case S_SPAWNPLAYER:

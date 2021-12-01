@@ -4,7 +4,7 @@
 #include "util.h"
 
 class Controls {
-	static Array<Ref<Controls>> list;
+	static Array<Ref<Controls> > list;
 
 	Controls(const String& name, const Array<int>& controls)
 			: index(list.size()), controls(controls), name(name) {

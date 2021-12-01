@@ -14,17 +14,17 @@ class Texture {
 
   Texture(const Texture& texture) = delete;
 
-  const int index;
-  const String file;
+	const int index;
+	const String file;
 
  public:
   const int zValue;
 
   operator const QPixmap() const {
     return QPixmap(QString::fromStdString(file));
-  };
+	};
 
-  static const Texture& valueOf(int i) { return list[i]; }
+	static const Texture& valueOf(int i) { return list[i]; }
 	static const Array<Ref<Texture> >& values() { return list; }
 
   //***************************************************************************

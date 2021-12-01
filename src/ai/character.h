@@ -29,7 +29,7 @@ class Character {
 
   Character(const Character& player) = delete;
 
-  const int index;
+	const int index;
 
  public:
   const String name;
@@ -39,11 +39,11 @@ class Character {
   const Func<const List<BulletInfo>(EntityPlayer*)> pattern;
   const Func<const SFX&(EntityPlayer*)> shootSound;
 
-  operator int() const { return index; }
+	operator int() const { return index; }
   operator String() const { return name; }
 	operator QString() const { return QString::fromStdString(name); }
 
-  static const Character& valueOf(int i) { return list[i]; }
+	static const Character& valueOf(int i) { return list[i]; }
   static const Array<Ref<Character> >& values() { return list; }
 
   static const Character PYACHI;

@@ -96,15 +96,24 @@ void Connection::handlePacket(const Packet& packet) {
 					game.getEntities().at(UID::fromString(packet.data.at(0)))->setPos(
 							{packet.data.at(1).toDouble(), packet.data.at(2).toDouble()});
 			}});
-			break;
+      break;
 		case C_KILLPLAYER:
+			User::addExternalScore(packet.data.at(2).toInt(), packet.data.at(1));
+			Game::queueEvent([](Game& game) {
+												 if (game.getPlayer() == nullptr) {
+													 game.updateScoreboard();
+													 game.displayScoreboard();
+													 game.pause();
+												 }
+											 },
+											 60);
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
 					game.getEntities()
 							.at(UID::fromString(packet.data.at(0)))
 							->deleteLater();
 			}});
-      break;
+			break;
 		case C_SPAWNPLAYER:
 			Game::queueEvent({[packet](Game&) {
 				new EntityPlayer(Character::valueOf(packet.data.at(2).toInt()),
@@ -138,7 +147,7 @@ void Connection::handlePacket(const Packet& packet) {
 									 UID::fromString(packet.data.at(0)),
 									 packet.data.at(4).toDouble());
 			}});
-      break;
+			break;
 		case C_KILLENEMY:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
@@ -155,7 +164,7 @@ void Connection::handlePacket(const Packet& packet) {
 						boss->advancePhase();
 				}
 			}});
-			break;
+      break;
 		case C_DAMAGEPLAYER:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0)))) {

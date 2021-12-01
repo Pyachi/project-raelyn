@@ -83,6 +83,7 @@ class Game : public QGraphicsView {
 	static void addEntity(Entity* entity);
 	static void queueEvent(std::function<void(Game&)> func, ushort time = 0);
 	static void updateScoreboard(void);
+	static void displayScoreboard(void) { GAME->scoreboardDisplay.show(); }
 	static void pause(void);
 	static void returnToMenu(void);
 

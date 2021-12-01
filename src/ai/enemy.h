@@ -17,7 +17,7 @@ class Enemy {
 
   Enemy(const Enemy& enemy) = delete;
 
-  const int index;
+	const int index;
 
   const Texture& tex;
   const int health;
@@ -26,9 +26,9 @@ class Enemy {
  public:
 	EntityEnemy* spawn(const QPointF& loc, const UID& id, double scale) const;
 
-  operator int() const { return index; }
+	operator int() const { return index; }
 
-  static const Enemy& valueOf(int i) { return list[i]; }
+	static const Enemy& valueOf(int i) { return list[i]; }
   static const Array<Ref<Enemy> >& values() { return list; }
 
   static const Enemy ENEMYTEST1;  // ID 0

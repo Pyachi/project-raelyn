@@ -14,18 +14,18 @@ class Music {
 
   Music(const Music& song) = delete;
 
-  const int index;
+	const int index;
   const String file;
 
  public:
   void play() const;
 
-  operator int() const { return index; }
+	operator int() const { return index; }
 
   static void changeVolume(float vol) { player.setVolume(vol); }
   static void stop() { player.stop(); }
 
-  static const Music& valueOf(int i) { return list[i]; }
+	static const Music& valueOf(int i) { return list[i]; }
 
   static const Music MENU;
   static const Music LVL1;

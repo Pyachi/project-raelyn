@@ -22,6 +22,12 @@ class Menu : public QDialog {
 		if (MENU == nullptr)
 			MENU = new Menu();
 		MENU->show();
+		MENU->mainMenu.show();
+		MENU->singleplayerMenu.hide();
+		MENU->multiplayerMenu.hide();
+		MENU->optionsMenu.hide();
+		MENU->serverMenu.hide();
+		MENU->lobbyMenu.hide();
 		Music::MENU.play();
 	}
 

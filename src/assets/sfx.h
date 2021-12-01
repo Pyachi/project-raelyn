@@ -16,15 +16,15 @@ class SFX {
 
   SFX(const SFX& sfx) = delete;
 
-  const int index;
+	const int index;
   sf::SoundBuffer buffer;
 
  public:
   void play(float vol = 100) const;
 
-  operator int() const { return index; }
+	operator int() const { return index; }
 
-  static const SFX& valueOf(int i) { return list[i]; }
+	static const SFX& valueOf(int i) { return list[i]; }
 
   static const SFX COLLECT1;
   static const SFX COLLECT2;
