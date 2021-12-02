@@ -39,6 +39,7 @@ void EntityEnemy::kill(void) {
       bullet->deleteLater();
     }
   }
+	SFX::EXPL_MED2.play(25);
   for (int i = 0; i < (Random::getInt() % 5) + 3; i++)
 		Collectable::POWER.spawn(pos());
   for (int i = 0; i < (Random::getInt() % 5) + 3; i++)
