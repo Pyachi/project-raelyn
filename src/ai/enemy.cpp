@@ -287,6 +287,7 @@ const Enemy Enemy::DART1(Texture::ENEMY, 550, [](EntityEnemy* enemy) {
 													SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10),
 													2),
         enemy->getDirectionOfEntity(Game::getPlayer()));
+		SFX::LASER1.play(25);
   }
 });
 
@@ -312,6 +313,7 @@ const Enemy Enemy::DART2(Texture::ENEMY, 550, [](EntityEnemy* enemy) {
 													SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10),
 													2),
         enemy->getDirectionOfEntity(Game::getPlayer()));
+		SFX::LASER1.play(25);
   }
 });
 
@@ -337,6 +339,7 @@ const Enemy Enemy::DART3(Texture::ENEMY, 550, [](EntityEnemy* enemy) {
 													SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10),
 													2),
         enemy->getDirectionOfEntity(Game::getPlayer()));
+		SFX::LASER1.play(25);
   }
 });
 
@@ -362,6 +365,7 @@ const Enemy Enemy::DART4(Texture::ENEMY, 550, [](EntityEnemy* enemy) {
 													SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10),
 													2),
         enemy->getDirectionOfEntity(Game::getPlayer()));
+		SFX::LASER1.play(25);
   }
 });
 
@@ -390,6 +394,7 @@ const Enemy Enemy::DART5(Texture::ENEMY, 550, [](EntityEnemy* enemy) {
 													SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10),
 													2),
         enemy->getDirectionOfEntity(Game::getPlayer()));
+		SFX::LASER1.play(25);
   }
 });
 
@@ -418,6 +423,7 @@ const Enemy Enemy::DART6(Texture::ENEMY, 550, [](EntityEnemy* enemy) {
 													SpawnInfo() << SpawnInfo(-10) << SpawnInfo(10),
 													2),
         enemy->getDirectionOfEntity(Game::getPlayer()));
+		SFX::LASER1.play(25);
   }
 });
 
