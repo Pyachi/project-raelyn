@@ -221,14 +221,7 @@ void Game::tick(void) {
 		}
 	}
 	//***************************************************************************
-	if (keys.contains(Qt::Key_R)) {
-		paused = true;
-		Server::destruct();
-		Connection::destruct();
-		Server::create(0);
-		Connection::create("127.0.0.1", Server::getPort());
-		Connection::sendPacket(S_START);
-	} else if (keys.contains(Qt::Key_Q))
+	if (keys.contains(Qt::Key_Q))
 		returnToMenu();
 }
 

@@ -55,7 +55,7 @@ class Game : public QGraphicsView {
 	//***************************************************************************
 	// Gameplay
 	bool paused = false;
-	ushort health = 3;
+	ushort health = 7;
 	ushort bombs = 3;
 	ushort power = 0;
 	ulong age = 0;
