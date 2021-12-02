@@ -122,7 +122,7 @@ void Connection::handlePacket(const Packet& packet) {
 												 }
 											 },
 											 60);
-			break;
+      break;
 		case C_SPAWNPLAYER:
 			Game::queueEvent({[packet](Game&) {
 				new EntityPlayer(Character::valueOf(packet.data.at(2).toInt()),
@@ -140,7 +140,7 @@ void Connection::handlePacket(const Packet& packet) {
 					player->fireBullets(player->character.pattern(player));
 				}
 			}});
-      break;
+			break;
 		case C_SPAWNENEMY:
 			Game::queueEvent({[packet](Game&) {
         Enemy::valueOf(packet.data.at(1).toInt())
@@ -206,7 +206,7 @@ void Connection::handlePacket(const Packet& packet) {
 																													 User::getScore())});
 												 }
 											 },
-											 300);
+											 450);
 			Game::queueEvent([](Game& game) {
 												 game.updateScoreboard();
 												 game.displayScoreboard();

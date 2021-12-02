@@ -14,7 +14,7 @@ class Bullet {
   const AI<EntityBullet> ai;
 
  public:
-	operator const AI<EntityBullet> &() const { return ai; }
+	operator const AI<EntityBullet>&() const { return ai; }
 
   static const Bullet BASIC1;
   static const Bullet BASIC2;
@@ -29,6 +29,11 @@ class Bullet {
   static const Bullet BASIC11;
   static const Bullet BASIC12;
 	static const Bullet BASIC40;
+	static const Bullet HOMING6;
+	static const Bullet HOMING7;
+	static const Bullet HOMING8;
+	static const Bullet FLOWER;
+	static const Bullet FLOWERREV;
 };
 
 struct SpawnInfo {
@@ -36,13 +41,17 @@ struct SpawnInfo {
   const double rot;
   const QPointF loc;
 
-	operator const List<SpawnInfo>() const { return {*this}; }
+	operator const List<SpawnInfo>() const {
+		return {*this};
+	}
 };
 
 const List<SpawnInfo> operator<<(const List<SpawnInfo>& list1,
                                  const SpawnInfo& info);
 const List<SpawnInfo> operator<<(const List<SpawnInfo>& list1,
                                  const List<SpawnInfo>& list2);
+const List<SpawnInfo> operator+(const List<SpawnInfo>& list, double deg);
+const List<SpawnInfo> operator*(const List<SpawnInfo>& list, int count);
 
 class Pattern {
   Pattern(const List<SpawnInfo>& pattern) : pattern(pattern) {}
@@ -53,12 +62,6 @@ class Pattern {
 
  public:
 	operator const List<SpawnInfo>() const { return pattern; }
-	List<SpawnInfo> operator+(double deg) const {
-		List<SpawnInfo> newPattern;
-		for (SpawnInfo info : pattern)
-			newPattern.push_back(SpawnInfo(info.rot + deg, info.loc));
-		return newPattern;
-	}
 
 	static const Pattern CIRCLE3;
   static const Pattern CIRCLE4;
@@ -84,7 +87,9 @@ struct BulletInfo {
   const int scale;
   const int damage;
 
-	operator const List<BulletInfo>() const { return {*this}; }
+	operator const List<BulletInfo>() const {
+		return {*this};
+	}
 };
 
 const List<BulletInfo> operator<<(const List<BulletInfo>& list1,

@@ -1,5 +1,6 @@
 #include "bullet.h"
 #include "entitybullet.h"
+#include "game.h"
 
 const Bullet Bullet::BASIC1([](EntityBullet* bullet) {
   bullet->moveForward(1);
@@ -40,6 +41,77 @@ const Bullet Bullet::BASIC12([](EntityBullet* bullet) {
 const Bullet Bullet::BASIC40([](EntityBullet* bullet) {
 	bullet->moveForward(40);
 });
+const Bullet Bullet::HOMING6([](EntityBullet* bullet) {
+	if (bullet->getAge() < 30) {
+		double dir = bullet->getDirectionOfEntity(Game::getPlayer());
+		dir -= bullet->rotation();
+		if (dir == 180 || dir == -180)
+			dir = 0;
+		while (dir > 180)
+			dir -= 360;
+		while (dir < -180)
+			dir += 360;
+		dir = dir > 2 ? 2 : dir < -2 ? -2 : dir;
+		bullet->rotate(dir);
+	}
+	bullet->moveForward(6);
+});
+const Bullet Bullet::HOMING7([](EntityBullet* bullet) {
+	if (bullet->getAge() < 30) {
+		double dir = bullet->getDirectionOfEntity(Game::getPlayer());
+		dir -= bullet->rotation();
+		if (dir == 180 || dir == -180)
+			dir = 0;
+		while (dir > 180)
+			dir -= 360;
+		while (dir < -180)
+			dir += 360;
+		dir = dir > 2 ? 2 : dir < -2 ? -2 : dir;
+		bullet->rotate(dir);
+	}
+	bullet->moveForward(7);
+});
+const Bullet Bullet::HOMING8([](EntityBullet* bullet) {
+	if (bullet->getAge() < 30) {
+		double dir = bullet->getDirectionOfEntity(Game::getPlayer());
+		dir -= bullet->rotation();
+		if (dir == 180 || dir == -180)
+			dir = 0;
+		while (dir > 180)
+			dir -= 360;
+		while (dir < -180)
+			dir += 360;
+		dir = dir > 2 ? 2 : dir < -2 ? -2 : dir;
+		bullet->rotate(dir);
+	}
+	bullet->moveForward(8);
+});
+const Bullet Bullet::FLOWER([](EntityBullet* bullet) {
+	if (bullet->getAge() == 1)
+		bullet->collisionCheck = false;
+	if (bullet->getAge() == 30)
+		bullet->collisionCheck = true;
+	if (bullet->getAge() < 30) {
+		bullet->rotate(6);
+		bullet->moveForward(3);
+	} else {
+		bullet->rotate(0.2);
+		bullet->moveForward(6);
+	}
+});
+const Bullet Bullet::FLOWERREV([](EntityBullet* bullet) {
+	if (bullet->getAge() == 1)
+		bullet->collisionCheck = false;
+	if (bullet->getAge() == 30)
+		bullet->collisionCheck = true;
+	if (bullet->getAge() < 30) {
+		bullet->rotate(-6);
+		bullet->moveForward(3);
+	} else {
+		bullet->rotate(-0.2);
+		bullet->moveForward(6);
+	}
+});
 
 const List<SpawnInfo> operator<<(const List<SpawnInfo>& list1,
                                  const SpawnInfo& info) {
@@ -58,6 +130,19 @@ const List<SpawnInfo> operator<<(const List<SpawnInfo>& list1,
     list.push_back(info);
   return list;
 };
+const List<SpawnInfo> operator+(const List<SpawnInfo>& list, double deg) {
+	List<SpawnInfo> newPattern;
+	for (SpawnInfo info : list)
+		newPattern.push_back(SpawnInfo(info.rot + deg, info.loc));
+	return newPattern;
+}
+const List<SpawnInfo> operator*(const List<SpawnInfo>& list, int count) {
+	List<SpawnInfo> newPattern;
+	for (int i = 0; i < count; i++)
+		for (SpawnInfo info : list)
+			newPattern.push_back(SpawnInfo(info.rot + (360.0 / count) * i, info.loc));
+	return newPattern;
+}
 
 const Pattern Pattern::CIRCLE3(SpawnInfo() << SpawnInfo(120) << SpawnInfo(240));
 const Pattern Pattern::CIRCLE4(SpawnInfo() << SpawnInfo(90) << SpawnInfo(180)

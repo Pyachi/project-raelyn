@@ -135,4 +135,5 @@ bool Entity::isOnScreen(void) const {
   return collidesWithItem(&Game::getPlayableArea());
 }
 //***************************************************************************
+void Entity::tick() {}
 void Entity::damage(int) {}

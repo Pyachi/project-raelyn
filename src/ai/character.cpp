@@ -81,6 +81,8 @@ const Character Character::PYACHI(
 																	 0,
 																	 {0, 0},
 																	 false);
+														 if (bullet->getAge() > 60)
+															 bullet->deleteLater();
 													 },
 													 Texture::ELLIPSERED,
 													 SpawnInfo(0, {0, -13}),
@@ -101,6 +103,8 @@ const Character Character::PYACHI(
 														 dir = dir > 10 ? 10 : dir < -10 ? -10 : dir;
 														 bullet->rotate(dir);
 														 bullet->moveForward(20);
+														 if (bullet->getAge() > 60)
+															 bullet->deleteLater();
 													 },
 													 Texture::ELLIPSEORANGE,
 													 SpawnInfo(0, {0, -13}),
@@ -147,6 +151,8 @@ const Character Character::PYACHI(
 														 dir = dir > 8 ? 8 : dir < -8 ? -8 : dir;
 														 bullet->rotate(dir);
 														 bullet->moveForward(20);
+														 if (bullet->getAge() > 60)
+															 bullet->deleteLater();
 													 },
 													 Texture::ELLIPSEYELLOW,
 													 SpawnInfo(0, {0, -13}),
@@ -191,6 +197,8 @@ const Character Character::PYACHI(
 														 dir = dir > 5 ? 5 : dir < -5 ? -5 : dir;
 														 bullet->rotate(dir);
 														 bullet->moveForward(20);
+														 if (bullet->getAge() > 60)
+															 bullet->deleteLater();
 													 },
 													 Texture::ELLIPSEYELLOW,
 													 SpawnInfo(0, {0, -13}),
@@ -234,6 +242,8 @@ const Character Character::PYACHI(
 														 dir = dir > 2 ? 2 : dir < -2 ? -2 : dir;
 														 bullet->rotate(dir);
 														 bullet->moveForward(20);
+														 if (bullet->getAge() > 60)
+															 bullet->deleteLater();
 													 },
 													 Texture::ELLIPSEYELLOW,
 													 SpawnInfo(0, {0, -13}),
