@@ -21,7 +21,6 @@ void EntityEnemy::tick(void) {
 void EntityEnemy::damage(int damage) {
 	SFX::EXPL_LIGHT1.play(10);
 	health -= damage;
-	User::addScore(damage);
 	if (health <= 0) {
 		kill();
 		Connection::sendPacket({S_KILLENEMY, QStringList() << id.toString()});

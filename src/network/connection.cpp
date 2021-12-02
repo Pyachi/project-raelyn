@@ -77,12 +77,12 @@ void Connection::handlePacket(const Packet& packet) {
       break;
 		case C_SONG:
 			Music::valueOf(packet.data.at(0).toInt()).play();
-			break;
+      break;
 		case C_LOBBY:
 			Menu::MENU->players.clear();
 			for (const QString& name : packet.data)
 				Menu::MENU->players.addItem(name);
-			break;
+      break;
 		case C_START:
 			Game::create();
 			Menu::MENU->close();
@@ -115,7 +115,7 @@ void Connection::handlePacket(const Packet& packet) {
 												 }
 											 },
 											 60);
-      break;
+			break;
 		case C_SPAWNPLAYER:
 			Game::queueEvent({[packet](Game&) {
 				new EntityPlayer(Character::valueOf(packet.data.at(2).toInt()),
@@ -123,7 +123,7 @@ void Connection::handlePacket(const Packet& packet) {
 												 UID::fromString(packet.data.at(0)),
 												 ONLINEPLAYER);
 			}});
-      break;
+			break;
 		case C_SHOOT:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0)))) {
@@ -149,7 +149,7 @@ void Connection::handlePacket(const Packet& packet) {
 									 UID::fromString(packet.data.at(0)),
 									 packet.data.at(4).toDouble());
 			}});
-      break;
+			break;
 		case C_KILLENEMY:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
@@ -166,7 +166,7 @@ void Connection::handlePacket(const Packet& packet) {
 						boss->advancePhase();
 				}
 			}});
-      break;
+			break;
 		case C_DAMAGEPLAYER:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0)))) {
@@ -176,13 +176,18 @@ void Connection::handlePacket(const Packet& packet) {
 					player->level = 1;
 				}
 			}});
-			break;
+      break;
 		case C_LEVELUP:
 			Game::queueEvent({[packet](Game& game) {
 				dynamic_cast<EntityPlayer*>(
 						game.getEntities().at(UID::fromString(packet.data.at(0))))->level++;
 			}});
-			break;
+      break;
+		case C_BOMB:
+			Game::queueEvent({[packet](Game& game) {
+				dynamic_cast<EntityPlayer*>(game.getEntities().at(UID::fromString(
+																				packet.data.at(0))))->fireBomb();
+			}});
 		default:
 			qDebug() << "ERROR: Received Server Packet!";
       break;

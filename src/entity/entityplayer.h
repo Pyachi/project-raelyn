@@ -22,12 +22,12 @@ class EntityPlayer : public Entity {
   int level;
 	int invFrames;
 
+	void fireBomb();
+
  private:
   QGraphicsSimpleTextItem display;
 	const String name;
   bool firing;
-
-	void fireBomb(const BombInfo& info);
 };
 
 #endif  // ENTITYPLAYER_H

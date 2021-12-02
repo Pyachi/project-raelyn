@@ -22,6 +22,7 @@ enum Header {
 	S_RESUME,        // null
 	S_DAMAGEPLAYER,  // null
 	S_LEVELUP,       // null
+	S_BOMB,          // null
 	//***************************************************************************
 	// SERVER -> CLIENT
 	C_SOUND,         // SFX:vol
@@ -39,6 +40,7 @@ enum Header {
 	C_DAMAGEBOSS,    // UUID:phase
 	C_DAMAGEPLAYER,  // UUID
 	C_LEVELUP,       // UUID
+	C_BOMB,          // UUID
 	//***************************************************************************
 };
 

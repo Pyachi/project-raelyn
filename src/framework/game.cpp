@@ -362,6 +362,7 @@ void Game::takeDamage(void) {
 									 updateScoreboard();
 									 game.scoreboardDisplay.show();
 									 game.paused = true;
+									 Music::LOSS.play();
 								 }
 							 },
 							 60);

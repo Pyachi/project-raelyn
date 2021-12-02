@@ -1,5 +1,6 @@
 #include "entitybullet.h"
 #include "entitybomb.h"
+#include "user.h"
 
 EntityBullet::EntityBullet(const Texture& tex,
                            const AI<EntityBullet>& ai,
@@ -30,6 +31,8 @@ void EntityBullet::tick(void) {
 	if (ownerType == PLAYER || ownerType == ONLINEPLAYER)
 		for (Entity* entity : getCollisions(ENEMY)) {
 			entity->damage(damage);
+			if (ownerType == PLAYER)
+				User::addScore(damage);
 			deleteLater();
 		}
   if (borderCheck && !isOnScreen())

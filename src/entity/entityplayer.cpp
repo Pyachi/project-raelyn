@@ -91,7 +91,8 @@ void EntityPlayer::tick(void) {
 			Game::hasBombs()) {
 		Game::spendBomb();
 		invFrames = 150;
-		fireBomb(character.bomb(this));
+		fireBomb();
+		Connection::sendPacket(S_BOMB);
 	} else if (invFrames == 0) {
     bool hit = false;
     for (QGraphicsItem* entity : hitbox.collidingItems()) {
@@ -114,7 +115,8 @@ void EntityPlayer::tick(void) {
 	}
 }
 
-void EntityPlayer::fireBomb(const BombInfo& info) {
+void EntityPlayer::fireBomb() {
+	BombInfo info = character.bomb(this);
 	EntityBomb* bomb = new EntityBomb(info.tex, info.ai, this, info.damage);
 	bomb->setPos(pos());
 	bomb->setRotation(rotation());
