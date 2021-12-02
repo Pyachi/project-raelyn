@@ -1,6 +1,7 @@
 #include "user.h"
 #include <QDir>
 #include <QNetworkInterface>
+#include <QSqlQuery>
 #include "database.h"
 #include "uid.h"
 
@@ -20,31 +21,31 @@ User::User()
     }
   }
 
-    Database dataAPI(QString::fromStdString(name));         // starts connection to database
-    QSqlQuery query = QSqlQuery(dataAPI.getDatabase());
-    dataAPI.createLevelTable();                             // if no scores table, make one
+	Database& dataAPI = Database::create(name);  // starts connection to database
+	QSqlQuery query = QSqlQuery(dataAPI.getDatabase());
+	dataAPI.createScoreTable();  // if no scores table, make one
 
-    masterBoard = dataAPI.getScoreboard();                                  // gets the scoreboards from the database
-	playerBoard = dataAPI.getScoreboard(QString::fromStdString(name));
+	masterBoard =
+			dataAPI.getMasterboard();  // gets the scoreboards from the database
+	playerBoard = dataAPI.getPlayerboard(QString::fromStdString(name));
 
-    masterBoard->sort();            // sort the boards in decending score order
-	playerBoard->sort();
+	dataAPI.createSettingsTable(soundVol, musicVol, *controls,
+															*character);  // if no settings table, make one
 
-    dataAPI.createSettingsTable(soundVol, musicVol, *controls, *character); // if no settings table, make one
-
-    soundVol = dataAPI.getSFXVol();         // set settings to ones in database
+	soundVol = dataAPI.getSFXVol();  // set settings to ones in database
 	musicVol = dataAPI.getMusicVol();
 	controls = &Controls::valueOf(dataAPI.getControls());
-    character = &Character::valueOf(dataAPI.getCharacter());
-    dataAPI.close();
+	character = &Character::valueOf(dataAPI.getCharacter());
+}
 
-  atexit([]() {
-        Database dataAPI(QString::fromStdString(User::getName()));
-//		dataAPI.connect("SQLITE", QString::fromStdString(User::getName()));
-		dataAPI.updateSettings(User::getSoundVol(),
-													 User::getMusicVol(),
-													 User::getControls(),
-													 User::getCharacter());
-		dataAPI.close();
-  });
+void User::addGame(int score) {
+	USER->masterBoard.add({QString::fromStdString(User::getName()), score,
+												 QDateTime::currentDateTime()});
+	//	USER->playerBoard->add(QString::fromStdString(User::getName()),
+	//												 QDateTime::currentDateTime(),
+	// score);
+}
+
+void User::addExternalScore(int score, const QString& user) {
+	USER->masterBoard.add({user, score, QDateTime::currentDateTime()});
 }

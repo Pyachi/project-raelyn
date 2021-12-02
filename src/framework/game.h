@@ -1,19 +1,19 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <QGraphicsView>
-#include <QTimer>
-#include <QOpenGLWidget>
 #include <QGraphicsPixmapItem>
-#include <QKeyEvent>
-#include "util.h"
-#include "uid.h"
-#include "entityplayer.h"
-#include "user.h"
-#include <QGraphicsWidget>
-#include <QLabel>
 #include <QGraphicsProxyWidget>
+#include <QGraphicsView>
+#include <QGraphicsWidget>
+#include <QKeyEvent>
+#include <QLabel>
+#include <QOpenGLWidget>
 #include <QPushButton>
+#include <QTimer>
+#include "entityplayer.h"
+#include "uid.h"
+#include "user.h"
+#include "util.h"
 
 class Game : public QGraphicsView {
 	Q_OBJECT

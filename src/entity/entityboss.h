@@ -1,9 +1,9 @@
 #ifndef ENTITYBOSS_H
 #define ENTITYBOSS_H
 
-#include "entity.h"
 #include <QGraphicsProxyWidget>
 #include <QProgressBar>
+#include "entity.h"
 
 class ProgressBar : public QProgressBar {
  public:

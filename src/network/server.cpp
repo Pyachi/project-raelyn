@@ -4,8 +4,8 @@
 #include <QTcpSocket>
 #include "menu.h"
 #include "packet.h"
-#include "uid.h"
 #include "sfx.h"
+#include "uid.h"
 
 Server* Server::SER = nullptr;
 
@@ -56,8 +56,8 @@ void Server::handleConnection(void) {
   QTcpSocket* socket = nextPendingConnection();
   sockets.insert(socket);
   connect(socket, &QTcpSocket::readyRead, this, &Server::receivePacket);
-	connect(
-			socket, &QTcpSocket::disconnected, this, &Server::handleDisconnection);
+	connect(socket, &QTcpSocket::disconnected, this,
+					&Server::handleDisconnection);
   Menu::MENU->playerCount.setText("Players Connected: " +
                                   QString::number(sockets.size()));
 }
@@ -134,8 +134,8 @@ void Server::handlePacket(const Packet& packet, QTcpSocket* sender) {
 			start();
       break;
     case S_UPDATELOC:
-			sendPacket({C_UPDATELOC, QStringList() << users[sender].toString()
-																						 << packet.data},
+			sendPacket({C_UPDATELOC, QStringList()
+																	 << users[sender].toString() << packet.data},
                  sender);
       break;
     case S_KILLPLAYER:

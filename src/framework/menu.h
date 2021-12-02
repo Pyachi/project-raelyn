@@ -8,16 +8,12 @@
 #include <QListWidget>
 #include <QPushButton>
 #include "character.h"
-#include "music.h"
 #include "database.h"
+#include "music.h"
 #include "user.h"
 
 class Menu : public QDialog {
  public:
-	Database* dataAPI =
-    new Database(QString::fromStdString(User::getName()));
-	const QString database_ip = dataAPI->getIP();
-	const QString database_port = dataAPI->getPort();
 	static void openMenu(void) {
 		if (MENU == nullptr)
 			MENU = new Menu();

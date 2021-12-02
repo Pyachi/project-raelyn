@@ -1,6 +1,7 @@
 #include "entityplayer.h"
 #include "collectable.h"
 #include "connection.h"
+#include "entitybomb.h"
 #include "entityboss.h"
 #include "entitybullet.h"
 #include "entityenemy.h"
@@ -8,7 +9,6 @@
 #include "packet.h"
 #include "sfx.h"
 #include "user.h"
-#include "entitybomb.h"
 
 EntityPlayer::EntityPlayer(const Character& character,
                            const String& user,

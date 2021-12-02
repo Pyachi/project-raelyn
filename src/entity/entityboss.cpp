@@ -118,11 +118,7 @@ void ProgressBar::paintEvent(QPaintEvent*) {
 	QPen pen(QColor(255, 255, 255, 200));
 	pen.setWidth(3);
 	painter.setPen(pen);
-	painter.drawArc(5,
-									5,
-									118,
-									118,
-									1440,
+	painter.drawArc(5, 5, 118, 118, 1440,
 									static_cast<int>((static_cast<double>(value()) /
 																		static_cast<double>(maximum())) *
 																	 5760.0));

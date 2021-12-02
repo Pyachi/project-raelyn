@@ -1,13 +1,13 @@
 #include "menu.h"
 #include "connection.h"
 #include "controls.h"
+#include "database.h"
 #include "music.h"
 #include "packet.h"
 #include "server.h"
 #include "sfx.h"
 #include "texture.h"
 #include "user.h"
-#include "database.h"
 
 Menu* Menu::MENU = nullptr;
 
@@ -20,9 +20,9 @@ Menu::Menu(void)
 			playerSingle(User::getCharacter()),
       start("Start Game"),
       backSingleplayer("Return to Menu"),
-      ipForm(database_ip),
+			ipForm(Database::get().getIP()),
       ipValidator(QRegExp("[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}")),
-      portForm(database_port),
+			portForm(Database::get().getPort()),
       portValidator(QRegExp(
           "^(0|[1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|"
           "655[0-2][0-9]|6553[0-5])")),
@@ -149,7 +149,6 @@ Menu::Menu(void)
     Music::stop();
 	});
 	connect(&join, &QPushButton::clicked, [this]() {
-        Database dataAPI(QString::fromStdString(User::getName()));
     if (Connection::create(ipForm.text(), portForm.text().toUShort())) {
       lobbyMenu.show();
       multiplayerMenu.hide();
@@ -182,9 +181,8 @@ Menu::Menu(void)
     User::setSoundVol(soundSlider.value() * 20);
     SFX::COLLECT2.play();
   });
-	connect(&musicSlider, &QSlider::valueChanged, [this]() {
-		User::setMusicVol(musicSlider.value() * 20);
-	});
+	connect(&musicSlider, &QSlider::valueChanged,
+					[this]() { User::setMusicVol(musicSlider.value() * 20); });
   connect(&keys, &QPushButton::pressed, [this]() {
     SFX::SELECT1.play(25);
 		switch (User::getControls()) {

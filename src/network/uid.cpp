@@ -22,9 +22,7 @@ QString UID::toString(void) const {
 
 UID UID::fromString(const QString& string) {
 	QStringList list = string.split('-');
-	return UID(list.at(0).toUInt(),
-						 list.at(1).toUInt(),
-						 list.at(2).toUInt(),
+	return UID(list.at(0).toUInt(), list.at(1).toUInt(), list.at(2).toUInt(),
 						 list.at(3).toUInt());
 }
 
@@ -34,8 +32,9 @@ bool UID::operator==(const UID& other) const {
 }
 
 bool UID::operator<(const UID& other) const {
-	return (sec1 == other.sec1 ? sec2 == other.sec2
-					? sec3 == other.sec3 ? sec4 < other.sec4 : sec3 < other.sec3
-					: sec2 < other.sec2
-					: sec1 < other.sec1);
+	return (sec1 == other.sec1
+							? sec2 == other.sec2
+										? sec3 == other.sec3 ? sec4 < other.sec4 : sec3 < other.sec3
+										: sec2 < other.sec2
+							: sec1 < other.sec1);
 }

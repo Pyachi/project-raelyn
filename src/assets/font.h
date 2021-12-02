@@ -1,9 +1,9 @@
 #ifndef FONT_H
 #define FONT_H
 
-#include "util.h"
 #include <QFont>
 #include <QFontDatabase>
+#include "util.h"
 
 class Font {
 	static Map<String, int> fonts;

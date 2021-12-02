@@ -1,44 +1,49 @@
 #ifndef DATABASE_API_H
 #define DATABASE_API_H
 
-#include <qdebug.h>
 #include <QDateTime>
-#include <QDir>
 #include <QSqlDatabase>
-#include <QSqlError>
-#include <QSqlQuery>
-#include "scoreboard.h"
+#include <QString>
 #include "util.h"
 
+class Scoreboard;
+struct Entry;
+
 class Database {
+	Database(const QString& user)
+			: user(user), db(QSqlDatabase::addDatabase("QSQLITE")) {
+		atexit([]() {
+			DB->db.close();
+			delete DB;
+		});
+	}
+
+	static Database* DB;
+
  public:
-	Database();
-    ~Database();
-    Database(QString use);
+	static Database& create(const String& user);
+	static Database& get();
+	bool add(const Entry& entry);
 
-	bool add(QString user, QDateTime time, long score);
+	Scoreboard getMasterboard(void);
+	Scoreboard getPlayerboard(QString use);
 
-	Scoreboard* getScoreboard();
-	Scoreboard* getScoreboard(QString use);
-
-	bool update(Scoreboard* score);
-	bool createLevelTable();
-	bool createSettingsTable(int SFX, int music, int controls, int character);
+	void createScoreTable();
+	void createSettingsTable(int SFX, int music, int controls, int character);
 	void updateSettings(int SFX, int music, int controls, int character);
-	int getSFXVol();
-	int getMusicVol();
-	int getControls();
+	int getSFXVol(void);
+	int getMusicVol(void);
+	int getControls(void);
 	int getCharacter(void);
-	void close();
 
 	void updateNetwork(QString ip, unsigned short port);
-	const QString getIP();
-	const QString getPort();
+	const QString getIP(void);
+	const QString getPort(void);
 
-    QSqlDatabase getDatabase();
+	QSqlDatabase& getDatabase(void) { return DB->db; }
 
  private:
-	QString user;
+	const QString user;
 	QSqlDatabase db;
 };
 

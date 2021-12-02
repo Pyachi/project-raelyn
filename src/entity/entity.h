@@ -9,19 +9,9 @@
 class EntityBullet;
 struct BulletInfo;
 
-enum EntityType {
-	ENEMY,
-	BULLET,
-	BOMB,
-	PLAYER,
-	ONLINEPLAYER,
-	COLLECTABLE
-};
+enum EntityType { ENEMY, BULLET, BOMB, PLAYER, ONLINEPLAYER, COLLECTABLE };
 
-enum MovementType {
-	SMOOTH,
-	QUICK
-};
+enum MovementType { SMOOTH, QUICK };
 
 class Entity : public QGraphicsPixmapItem {
  public:

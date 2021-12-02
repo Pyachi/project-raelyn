@@ -1,6 +1,7 @@
 #include "connection.h"
 #include <QNetworkProxy>
 #include "boss.h"
+#include "database.h"
 #include "enemy.h"
 #include "entityboss.h"
 #include "entityenemy.h"
@@ -11,7 +12,6 @@
 #include "packet.h"
 #include "sfx.h"
 #include "user.h"
-#include "database.h"
 
 Connection* Connection::CON = nullptr;
 
@@ -77,7 +77,7 @@ void Connection::handlePacket(const Packet& packet) {
       break;
 		case C_SONG:
 			Music::valueOf(packet.data.at(0).toInt()).play();
-      break;
+			break;
 		case C_LOBBY:
 			Menu::MENU->players.clear();
 			for (const QString& name : packet.data)
@@ -87,14 +87,15 @@ void Connection::handlePacket(const Packet& packet) {
 			Game::create();
 			Menu::MENU->close();
 			new EntityPlayer(Character::valueOf(User::getCharacter()),
-											 User::getName(),
-											 User::getUID());
-      break;
+											 User::getName(), User::getUID());
+			break;
 		case C_UPDATELOC:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
-					game.getEntities().at(UID::fromString(packet.data.at(0)))->setPos(
-							{packet.data.at(1).toDouble(), packet.data.at(2).toDouble()});
+					game.getEntities()
+							.at(UID::fromString(packet.data.at(0)))
+							->setPos(
+									{packet.data.at(1).toDouble(), packet.data.at(2).toDouble()});
 			}});
 			break;
 		case C_KILLPLAYER:
@@ -104,26 +105,26 @@ void Connection::handlePacket(const Packet& packet) {
 							.at(UID::fromString(packet.data.at(0)))
 							->deleteLater();
 			}});
-      break;
+			break;
 		case C_SCORE:
 			User::addExternalScore(packet.data.at(2).toInt(), packet.data.at(1));
-			Game::queueEvent([](Game& game) {
-												 if (game.getPlayer() == nullptr) {
-													 game.updateScoreboard();
-													 game.displayScoreboard();
-													 game.pause();
-												 }
-											 },
-											 60);
-			break;
+			Game::queueEvent(
+					[](Game& game) {
+						if (game.getPlayer() == nullptr) {
+							game.updateScoreboard();
+							game.displayScoreboard();
+							game.pause();
+						}
+					},
+					60);
+      break;
 		case C_SPAWNPLAYER:
 			Game::queueEvent({[packet](Game&) {
 				new EntityPlayer(Character::valueOf(packet.data.at(2).toInt()),
 												 packet.data.at(1).toStdString(),
-												 UID::fromString(packet.data.at(0)),
-												 ONLINEPLAYER);
+												 UID::fromString(packet.data.at(0)), ONLINEPLAYER);
 			}});
-			break;
+      break;
 		case C_SHOOT:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0)))) {
@@ -133,7 +134,7 @@ void Connection::handlePacket(const Packet& packet) {
 					player->fireBullets(player->character.pattern(player));
 				}
 			}});
-			break;
+      break;
 		case C_SPAWNENEMY:
 			Game::queueEvent({[packet](Game&) {
         Enemy::valueOf(packet.data.at(1).toInt())
@@ -153,8 +154,9 @@ void Connection::handlePacket(const Packet& packet) {
 		case C_KILLENEMY:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
-					dynamic_cast<EntityEnemy*>(game.getEntities().at(UID::fromString(
-																				 packet.data.at(0))))->kill();
+					dynamic_cast<EntityEnemy*>(
+							game.getEntities().at(UID::fromString(packet.data.at(0))))
+							->kill();
 			}});
 			break;
 		case C_DAMAGEBOSS:
@@ -180,7 +182,8 @@ void Connection::handlePacket(const Packet& packet) {
 		case C_LEVELUP:
 			Game::queueEvent({[packet](Game& game) {
 				dynamic_cast<EntityPlayer*>(
-						game.getEntities().at(UID::fromString(packet.data.at(0))))->level++;
+						game.getEntities().at(UID::fromString(packet.data.at(0))))
+						->level++;
 			}});
       break;
 		default:
