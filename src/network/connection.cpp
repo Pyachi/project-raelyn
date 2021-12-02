@@ -33,7 +33,13 @@ bool Connection::create(QString ip, unsigned short port) {
         Menu::MENU->multiplayerMenu.show();
         SFX::DISCONNECT.play();
         destruct();
-				Game::pause();
+				Game::queueEvent([](Game& game) {
+					User::addGame(User::getScore());
+					game.updateScoreboard();
+					game.displayScoreboard();
+					game.pause();
+					Music::LOSS.play();
+				});
       }
     });
 
@@ -77,7 +83,7 @@ void Connection::handlePacket(const Packet& packet) {
       break;
 		case C_SONG:
 			Music::valueOf(packet.data.at(0).toInt()).play();
-			break;
+      break;
 		case C_LOBBY:
 			Menu::MENU->players.clear();
 			for (const QString& name : packet.data)
@@ -104,7 +110,7 @@ void Connection::handlePacket(const Packet& packet) {
 							.at(UID::fromString(packet.data.at(0)))
 							->deleteLater();
 			}});
-      break;
+			break;
 		case C_SCORE:
 			User::addExternalScore(packet.data.at(1).toInt(), packet.data.at(0));
 			Game::queueEvent([](Game& game) {
@@ -150,14 +156,14 @@ void Connection::handlePacket(const Packet& packet) {
 									 UID::fromString(packet.data.at(0)),
 									 packet.data.at(4).toDouble());
 			}});
-			break;
+      break;
 		case C_KILLENEMY:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
 					dynamic_cast<EntityEnemy*>(game.getEntities().at(UID::fromString(
 																				 packet.data.at(0))))->kill();
 			}});
-			break;
+      break;
 		case C_DAMAGEBOSS:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0)))) {
@@ -177,18 +183,31 @@ void Connection::handlePacket(const Packet& packet) {
 					player->level = 1;
 				}
 			}});
-      break;
+			break;
 		case C_LEVELUP:
 			Game::queueEvent({[packet](Game& game) {
 				dynamic_cast<EntityPlayer*>(
 						game.getEntities().at(UID::fromString(packet.data.at(0))))->level++;
 			}});
-      break;
+			break;
 		case C_BOMB:
 			Game::queueEvent({[packet](Game& game) {
 				dynamic_cast<EntityPlayer*>(game.getEntities().at(UID::fromString(
 																				packet.data.at(0))))->fireBomb();
 			}});
+			break;
+		case C_END:
+			if (Game::playerAlive())
+				sendPacket(
+						{S_SCORE, QStringList() << QString::number(User::getScore())});
+			Music::END.play();
+			Game::queueEvent([](Game& game) {
+												 game.updateScoreboard();
+												 game.displayScoreboard();
+												 game.pause();
+											 },
+											 300);
+			break;
 		default:
 			qDebug() << "ERROR: Received Server Packet!";
       break;

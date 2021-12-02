@@ -41,6 +41,7 @@ enum Header {
 	C_DAMAGEPLAYER,  // UUID
 	C_LEVELUP,       // UUID
 	C_BOMB,          // UUID
+	C_END,           // null
 	//***************************************************************************
 };
 

@@ -24,6 +24,7 @@ class Menu : public QDialog {
 		MENU->optionsMenu.hide();
 		MENU->serverMenu.hide();
 		MENU->lobbyMenu.hide();
+		MENU->readyLobby.setText("Ready Up ☐");
 		Music::MENU.play();
 	}
 
