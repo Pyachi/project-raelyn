@@ -114,7 +114,9 @@ Game::Game(void)
 	for (ushort i = 1; i < 21; i++) {
 		QString score;
 		Entry run = User::getMasterBoard().get(i - 1);
-		score.sprintf("%02d %8s %011ld %s", i, run.user.left(8).toUtf8().data(),
+		score.sprintf("%02d %8s %011ld %s",
+									i,
+									run.user.left(8).toUtf8().data(),
 									run.score,
 									run.time.toString("dd/MM/yy HH:mm").toUtf8().data());
 		scoreboards.push_back(
@@ -142,8 +144,8 @@ Game::Game(void)
 	menuButton->setStyleSheet(
 			"QPushButton { background-color: transparent; border:0px; color : "
 			"#FFFFFF }");
-	menuButton->connect(menuButton, &QPushButton::released,
-											[this]() { menuReturn = true; });
+	menuButton->connect(
+			menuButton, &QPushButton::released, [this]() { menuReturn = true; });
 
 	scoreboardDisplay.hide();
 	//***************************************************************************
@@ -242,8 +244,8 @@ void Game::create(void) {
 	GAME = new Game();
   GAME->show();
 	Connection::sendPacket(
-			{S_SPAWNPLAYER, QStringList() << QString::number(
-													Character::valueOf(User::getCharacter()))});
+			{S_SPAWNPLAYER, QStringList() << QString::number(Character::valueOf(
+																					 User::getCharacter()))});
 }
 /* Returns true if client player is alive, false otherwise
  */
@@ -274,9 +276,8 @@ void Game::addEntity(Entity* entity) {
 		qDebug() << "ERROR: Attempted to add entity before Game exists!";
 		return;
 	}
-	queueEvent({[entity](Game& game) {
-		game.entities.insert({entity->id, entity});
-	}});
+	queueEvent(
+			{[entity](Game& game) { game.entities.insert({entity->id, entity}); }});
 }
 
 /* Queues a task for the game to run after a given time.
@@ -305,7 +306,9 @@ void Game::updateScoreboard(void) {
 	for (ushort i = 1; i < 21; i++) {
 		QString score;
 		Entry run = User::getMasterBoard().get(i - 1);
-		score.sprintf("%02d %8s %011ld %s", i, run.user.left(8).toUtf8().data(),
+		score.sprintf("%02d %8s %011ld %s",
+									i,
+									run.user.left(8).toUtf8().data(),
 									run.score,
 									run.time.toString("dd/MM/yy HH:mm").toUtf8().data());
 		GAME->scoreboards.at(i)->setText(score);
@@ -352,28 +355,28 @@ void Game::takeDamage(void) {
 		getPlayer()->deleteLater();
 		Connection::sendPacket(
 				{S_SCORE, QStringList() << QString::number(User::getScore())});
-		User::addScore(User::getScore());  // adds score to scoreboards
-		queueEvent(
-				[](Game& game) {
-					if (getPlayer() == nullptr) {
-						updateScoreboard();
-						game.scoreboardDisplay.show();
-						game.paused = true;
-					}
-				},
-				60);
+		Connection::sendPacket(S_KILLPLAYER);
+		User::addGame(User::getScore());  // adds score to scoreboards
+		queueEvent([](Game& game) {
+								 if (getPlayer() == nullptr) {
+									 updateScoreboard();
+									 game.scoreboardDisplay.show();
+									 game.paused = true;
+								 }
+							 },
+							 60);
 	} else {
 		SFX::HIT1.play();
 		Connection::sendPacket(S_DAMAGEPLAYER);
 		for (ushort i = 0; i < 150; i++) {
-			queueEvent(
-					[i](Game&) {
-						for (Entity* entity :
-								 getPlayer()->getNearbyEntities(BULLET, i * 10))
-							if (dynamic_cast<EntityBullet*>(entity)->ownerType == ENEMY)
-								entity->deleteLater();
-					},
-					i);
+			queueEvent([i](Game&) {
+									 for (Entity* entity :
+												getPlayer()->getNearbyEntities(BULLET, i * 10))
+										 if (dynamic_cast<EntityBullet*>(entity)->ownerType ==
+												 ENEMY)
+											 entity->deleteLater();
+								 },
+								 i);
 		}
 	}
 }

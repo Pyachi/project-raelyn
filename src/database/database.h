@@ -26,7 +26,6 @@ class Database {
 	bool add(const Entry& entry);
 
 	Scoreboard getMasterboard(void);
-	Scoreboard getPlayerboard(QString use);
 
 	void createScoreTable();
 	void createSettingsTable(int SFX, int music, int controls, int character);

@@ -55,28 +55,6 @@ Scoreboard Database::getMasterboard() {
 	return board;
 }
 
-// returns a scoreboard that contains all the entries
-// from the given user
-Scoreboard Database::getPlayerboard(QString use) {
-	Scoreboard board;
-
-	QSqlQuery query = QSqlQuery(db);
-	QString querySTR = "SELECT * FROM scores WHERE User = '";
-	querySTR.append(use);
-	querySTR.append("';");
-
-	query.exec(querySTR);
-
-	while (query.next()) {
-		QDateTime tim =
-				QDateTime::fromString(query.value(1).toString(), "yyyyMMdd HH:mm:ss");
-
-		board.add({query.value(0).toString(), query.value(2).toLongLong(), tim});
-	}
-
-	return board;
-}
-
 // create a new table to store the entries in
 void Database::createScoreTable() {
 	QSqlQuery query = QSqlQuery(db);

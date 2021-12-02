@@ -27,10 +27,10 @@ User::User()
 
 	masterBoard =
 			dataAPI.getMasterboard();  // gets the scoreboards from the database
-	playerBoard = dataAPI.getPlayerboard(QString::fromStdString(name));
 
-	dataAPI.createSettingsTable(soundVol, musicVol, *controls,
-															*character);  // if no settings table, make one
+	dataAPI.createSettingsTable(
+			soundVol, musicVol, *controls, *character);  // if no settings table, make
+																									 // one
 
 	soundVol = dataAPI.getSFXVol();  // set settings to ones in database
 	musicVol = dataAPI.getMusicVol();
@@ -41,9 +41,6 @@ User::User()
 void User::addGame(int score) {
 	USER->masterBoard.add({QString::fromStdString(User::getName()), score,
 												 QDateTime::currentDateTime()});
-	//	USER->playerBoard->add(QString::fromStdString(User::getName()),
-	//												 QDateTime::currentDateTime(),
-	// score);
 }
 
 void User::addExternalScore(int score, const QString& user) {

@@ -149,6 +149,7 @@ Menu::Menu(void)
     Music::stop();
 	});
 	connect(&join, &QPushButton::clicked, [this]() {
+		Database::get().updateNetwork(ipForm.text(), portForm.text().toUShort());
     if (Connection::create(ipForm.text(), portForm.text().toUShort())) {
       lobbyMenu.show();
       multiplayerMenu.hide();
@@ -181,8 +182,9 @@ Menu::Menu(void)
     User::setSoundVol(soundSlider.value() * 20);
     SFX::COLLECT2.play();
   });
-	connect(&musicSlider, &QSlider::valueChanged,
-					[this]() { User::setMusicVol(musicSlider.value() * 20); });
+	connect(&musicSlider, &QSlider::valueChanged, [this]() {
+		User::setMusicVol(musicSlider.value() * 20);
+	});
   connect(&keys, &QPushButton::pressed, [this]() {
     SFX::SELECT1.play(25);
 		switch (User::getControls()) {

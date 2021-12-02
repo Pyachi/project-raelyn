@@ -82,20 +82,19 @@ void Connection::handlePacket(const Packet& packet) {
 			Menu::MENU->players.clear();
 			for (const QString& name : packet.data)
 				Menu::MENU->players.addItem(name);
-      break;
+			break;
 		case C_START:
 			Game::create();
 			Menu::MENU->close();
 			new EntityPlayer(Character::valueOf(User::getCharacter()),
-											 User::getName(), User::getUID());
+											 User::getName(),
+											 User::getUID());
 			break;
 		case C_UPDATELOC:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
-					game.getEntities()
-							.at(UID::fromString(packet.data.at(0)))
-							->setPos(
-									{packet.data.at(1).toDouble(), packet.data.at(2).toDouble()});
+					game.getEntities().at(UID::fromString(packet.data.at(0)))->setPos(
+							{packet.data.at(1).toDouble(), packet.data.at(2).toDouble()});
 			}});
 			break;
 		case C_KILLPLAYER:
@@ -105,24 +104,24 @@ void Connection::handlePacket(const Packet& packet) {
 							.at(UID::fromString(packet.data.at(0)))
 							->deleteLater();
 			}});
-			break;
+      break;
 		case C_SCORE:
-			User::addExternalScore(packet.data.at(2).toInt(), packet.data.at(1));
-			Game::queueEvent(
-					[](Game& game) {
-						if (game.getPlayer() == nullptr) {
-							game.updateScoreboard();
-							game.displayScoreboard();
-							game.pause();
-						}
-					},
-					60);
+			User::addExternalScore(packet.data.at(1).toInt(), packet.data.at(0));
+			Game::queueEvent([](Game& game) {
+												 if (game.getPlayer() == nullptr) {
+													 game.updateScoreboard();
+													 game.displayScoreboard();
+													 game.pause();
+												 }
+											 },
+											 60);
       break;
 		case C_SPAWNPLAYER:
 			Game::queueEvent({[packet](Game&) {
 				new EntityPlayer(Character::valueOf(packet.data.at(2).toInt()),
 												 packet.data.at(1).toStdString(),
-												 UID::fromString(packet.data.at(0)), ONLINEPLAYER);
+												 UID::fromString(packet.data.at(0)),
+												 ONLINEPLAYER);
 			}});
       break;
 		case C_SHOOT:
@@ -150,15 +149,14 @@ void Connection::handlePacket(const Packet& packet) {
 									 UID::fromString(packet.data.at(0)),
 									 packet.data.at(4).toDouble());
 			}});
-			break;
+      break;
 		case C_KILLENEMY:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
-					dynamic_cast<EntityEnemy*>(
-							game.getEntities().at(UID::fromString(packet.data.at(0))))
-							->kill();
+					dynamic_cast<EntityEnemy*>(game.getEntities().at(UID::fromString(
+																				 packet.data.at(0))))->kill();
 			}});
-			break;
+      break;
 		case C_DAMAGEBOSS:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0)))) {
@@ -178,14 +176,13 @@ void Connection::handlePacket(const Packet& packet) {
 					player->level = 1;
 				}
 			}});
-      break;
+			break;
 		case C_LEVELUP:
 			Game::queueEvent({[packet](Game& game) {
 				dynamic_cast<EntityPlayer*>(
-						game.getEntities().at(UID::fromString(packet.data.at(0))))
-						->level++;
+						game.getEntities().at(UID::fromString(packet.data.at(0))))->level++;
 			}});
-      break;
+			break;
 		default:
 			qDebug() << "ERROR: Received Server Packet!";
       break;
