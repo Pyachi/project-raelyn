@@ -59,9 +59,9 @@ const Texture Texture::HEALTH("assets/textures/collectables/health2.png", 4);
 const Texture Texture::BOMB("assets/textures/collectables/bomb2.png", 4);
 //***************************************************************************
 // Temporary
-const Texture Texture::ENEMYTEMP("assets/textures/enemies/enemy.png", 3);
-const Texture Texture::BACKGROUNDTEMP("assets/textures/misc/background.png", 5);
-const Texture Texture::TITLETEMP("assets/textures/misc/title.png", 5);
+const Texture Texture::ENEMY("assets/textures/players/pyachi.png", 3);
+const Texture Texture::SCREEN("assets/textures/misc/background.png", 5);
+const Texture Texture::TITLE("assets/textures/misc/title.png", 5);
 const Texture Texture::BACKGROUND("assets/textures/misc/background1.png", -1);
 const Texture Texture::BACKGROUND2("assets/textures/misc/background2.png", 0);
 const Texture Texture::ICON("assets/textures/misc/icon.png", 0);

@@ -85,9 +85,9 @@ class Texture {
 	static const Texture BOMB;
   //***************************************************************************
   // Temporary
-  static const Texture ENEMYTEMP;
-  static const Texture BACKGROUNDTEMP;
-  static const Texture TITLETEMP;
+  static const Texture ENEMY;
+  static const Texture SCREEN;
+  static const Texture TITLE;
   static const Texture BACKGROUND;
   static const Texture BACKGROUND2;
 	static const Texture ICON;

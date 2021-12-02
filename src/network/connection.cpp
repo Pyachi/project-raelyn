@@ -95,14 +95,14 @@ void Connection::handlePacket(const Packet& packet) {
 			new EntityPlayer(Character::valueOf(User::getCharacter()),
 											 User::getName(),
 											 User::getUID());
-      break;
+			break;
 		case C_UPDATELOC:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
 					game.getEntities().at(UID::fromString(packet.data.at(0)))->setPos(
 							{packet.data.at(1).toDouble(), packet.data.at(2).toDouble()});
 			}});
-      break;
+			break;
 		case C_KILLPLAYER:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0))))
@@ -130,7 +130,7 @@ void Connection::handlePacket(const Packet& packet) {
 												 UID::fromString(packet.data.at(0)),
 												 ONLINEPLAYER);
 			}});
-			break;
+      break;
 		case C_SHOOT:
 			Game::queueEvent({[packet](Game& game) {
 				if (game.getEntities().count(UID::fromString(packet.data.at(0)))) {
@@ -140,7 +140,7 @@ void Connection::handlePacket(const Packet& packet) {
 					player->fireBullets(player->character.pattern(player));
 				}
 			}});
-			break;
+      break;
 		case C_SPAWNENEMY:
 			Game::queueEvent({[packet](Game&) {
         Enemy::valueOf(packet.data.at(1).toInt())
@@ -197,18 +197,22 @@ void Connection::handlePacket(const Packet& packet) {
 			}});
 			break;
 		case C_END:
-			if (Game::playerAlive()) {
-				User::addGame(User::getScore());
-				sendPacket(
-						{S_SCORE, QStringList() << QString::number(User::getScore())});
-			}
 			Music::END.play();
+			Game::queueEvent([](Game& game) {
+												 if (game.playerAlive()) {
+													 User::addGame(User::getScore());
+													 sendPacket({S_SCORE, QStringList()
+																										<< QString::number(
+																													 User::getScore())});
+												 }
+											 },
+											 300);
 			Game::queueEvent([](Game& game) {
 												 game.updateScoreboard();
 												 game.displayScoreboard();
 												 game.pause();
 											 },
-											 300);
+											 500);
 			break;
 		default:
 			qDebug() << "ERROR: Received Server Packet!";

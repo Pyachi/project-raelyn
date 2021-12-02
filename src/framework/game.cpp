@@ -21,7 +21,7 @@ Game::Game(void)
     : QGraphicsView(),
       scene(0, 0, 900, 720),
 			play(-272, -340, 544, 680),
-			sidebar(Texture::BACKGROUNDTEMP),
+			sidebar(Texture::SCREEN),
 			gameOver("Game Over", &play),
 			background1(Texture::BACKGROUND, &play),
 			background2(Texture::BACKGROUND, &play),
@@ -41,7 +41,7 @@ Game::Game(void)
 
   setViewport(&openGL);
 
-	sidebar.setZValue(Texture::BACKGROUNDTEMP.zValue);
+	sidebar.setZValue(Texture::SCREEN.zValue);
 	scene.addItem(&sidebar);
 
 	play.setPos(40 + play.boundingRect().width() / 2,

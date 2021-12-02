@@ -1,16 +1,11 @@
 //WAVE 1************************************
 PLAY:1
-
 WAIT:60
-
-
 //STRING 1**********************************************
 STARTLOOP:5
 SPAWN:5:-390:-130
 WAIT:20
 ENDLOOP
-END
-$
 WAIT:40
 STARTLOOP:5
 SPAWN:6:390:-130
@@ -79,5 +74,4 @@ WAIT:30
 BOSS:1:0:-500
 SOUND:14
 END
-\$
 

@@ -18,7 +18,7 @@ EntityBoss* Boss::spawn(const QPointF& loc, const UID& id, double scale) const {
 }
 
 const Boss
-		Boss::LVL1MINI(Texture::ENEMYTEMP, {8000, 6000}, [](EntityBoss* boss) {
+		Boss::LVL1MINI(Texture::ENEMY, {8000, 6000}, [](EntityBoss* boss) {
 			switch (boss->phase) {
 				case 0:
 					if (boss->cycle(250, 10))
@@ -99,7 +99,7 @@ const Boss
 					break;
 			}
 		});
-const Boss Boss::LVL1(Texture::ENEMYTEMP,
+const Boss Boss::LVL1(Texture::ENEMY,
 											{6000, 4000, 2000, 6000, 8000},
 											[](EntityBoss* boss) {
 												switch (boss->phase) {
@@ -117,7 +117,7 @@ const Boss Boss::LVL1(Texture::ENEMYTEMP,
 														break;
 												}
 											});
-const Boss Boss::LVL2MINI(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});
-const Boss Boss::LVL2(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});
-const Boss Boss::LVL3MINI(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});
-const Boss Boss::LVL3(Texture::ENEMYTEMP, {50, 50}, [](EntityBoss*) {});
+const Boss Boss::LVL2MINI(Texture::ENEMY, {50, 50}, [](EntityBoss*) {});
+const Boss Boss::LVL2(Texture::ENEMY, {50, 50}, [](EntityBoss*) {});
+const Boss Boss::LVL3MINI(Texture::ENEMY, {50, 50}, [](EntityBoss*) {});
+const Boss Boss::LVL3(Texture::ENEMY, {50, 50}, [](EntityBoss*) {});

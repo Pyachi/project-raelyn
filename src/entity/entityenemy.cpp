@@ -10,7 +10,9 @@ EntityEnemy::EntityEnemy(const Texture& tex,
                          const UID& id,
                          int health,
                          const AI<EntityEnemy>& ai)
-		: Entity(ENEMY, tex, id), health(health), ai(ai) {}
+		: Entity(ENEMY, tex, id), health(health), ai(ai) {
+	setScale(0.5);
+}
 
 void EntityEnemy::tick(void) {
   age++;
