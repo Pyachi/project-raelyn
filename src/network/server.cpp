@@ -81,7 +81,7 @@ void Server::handleDisconnection(void) {
 		running = false;
     listen(QHostAddress::Any, Menu::MENU->portForm.text().toUShort());
 	} else {
-		if (running)
+		if (running || users.empty())
 			return;
 		for (auto pair : ready)
 			if (!pair.second)
