@@ -149,9 +149,7 @@ Menu::Menu(void)
     Music::stop();
 	});
 	connect(&join, &QPushButton::clicked, [this]() {
-		Database dataAPI;
-		dataAPI.connect("SQLITE", QString::fromStdString(User::getName()));
-		dataAPI.updateNetwork(ipForm.text(), portForm.text().toUShort());
+        Database dataAPI(QString::fromStdString(User::getName()));
     if (Connection::create(ipForm.text(), portForm.text().toUShort())) {
       lobbyMenu.show();
       multiplayerMenu.hide();

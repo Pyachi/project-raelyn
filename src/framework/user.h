@@ -62,7 +62,6 @@ class User {
 	static Scoreboard* getPlayerBoard() { return USER->playerBoard; }
 
 	static void addGame(int score) {
-		USER->masterBoard->show();
 		USER->masterBoard->add(QString::fromStdString(User::getName()),
 													 QDateTime::currentDateTime(),
 													 score);
@@ -72,15 +71,12 @@ class User {
 	}
 
 	static void addExternalScore(int score, const QString& user) {
-		USER->masterBoard->show();
 		USER->masterBoard->add(user, QDateTime::currentDateTime(), score);
 	}
 
 	static void updateDatabase() {
-		Database dataAPI;
-		dataAPI.connect("SQLITE", QString::fromStdString(User::getName()));
+        Database dataAPI(QString::fromStdString(User::getName()));
 		dataAPI.update(USER->masterBoard);
-		//        dataAPI.update_database(USER->playerBoard);
 		dataAPI.close();
 	}
 };

@@ -20,34 +20,27 @@ User::User()
     }
   }
 
-	Database dataAPI;
-	QSqlDatabase dab = dataAPI.connect("SQLITE", QString::fromStdString(name));
-  QSqlQuery query = QSqlQuery(dab);
-	//  qDebug() << "--Create level table: ";
-	qDebug() << dataAPI.createLevelTable();
+    Database dataAPI(QString::fromStdString(name));         // starts connection to database
+    QSqlQuery query = QSqlQuery(dataAPI.getDatabase());
+    dataAPI.createLevelTable();                             // if no scores table, make one
 
-	masterBoard = dataAPI.getScoreboard();
+    masterBoard = dataAPI.getScoreboard();                                  // gets the scoreboards from the database
 	playerBoard = dataAPI.getScoreboard(QString::fromStdString(name));
 
-	masterBoard->sort();
+    masterBoard->sort();            // sort the boards in decending score order
 	playerBoard->sort();
-  qDebug() << "masterBoard--------------------";
-	masterBoard->show();
-  qDebug() << "playerBoard--------------------";
-	playerBoard->show();
 
-	dataAPI.createSettingsTable(soundVol, musicVol, *controls, *character);
+    dataAPI.createSettingsTable(soundVol, musicVol, *controls, *character); // if no settings table, make one
 
-  //    qDebug() << "get settings";
-	soundVol = dataAPI.getSFXVol();
+    soundVol = dataAPI.getSFXVol();         // set settings to ones in database
 	musicVol = dataAPI.getMusicVol();
 	controls = &Controls::valueOf(dataAPI.getControls());
-	character = &Character::valueOf(dataAPI.getCharacter());
-	dataAPI.close();
+    character = &Character::valueOf(dataAPI.getCharacter());
+    dataAPI.close();
 
   atexit([]() {
-		Database dataAPI;
-		dataAPI.connect("SQLITE", QString::fromStdString(User::getName()));
+        Database dataAPI(QString::fromStdString(User::getName()));
+//		dataAPI.connect("SQLITE", QString::fromStdString(User::getName()));
 		dataAPI.updateSettings(User::getSoundVol(),
 													 User::getMusicVol(),
 													 User::getControls(),
