@@ -180,7 +180,7 @@ Menu::Menu(void)
   optionsLayout.addWidget(&backOptions, 6, 1, 1, -1);
   connect(&soundSlider, &QSlider::valueChanged, [this]() {
     User::setSoundVol(soundSlider.value() * 20);
-    SFX::COLLECT2.play();
+		SFX::COLLECT2.play(25);
   });
 	connect(&musicSlider, &QSlider::valueChanged, [this]() {
 		User::setMusicVol(musicSlider.value() * 20);

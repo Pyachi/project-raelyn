@@ -197,9 +197,11 @@ void Connection::handlePacket(const Packet& packet) {
 			}});
 			break;
 		case C_END:
-			if (Game::playerAlive())
+			if (Game::playerAlive()) {
+				User::addGame(User::getScore());
 				sendPacket(
 						{S_SCORE, QStringList() << QString::number(User::getScore())});
+			}
 			Music::END.play();
 			Game::queueEvent([](Game& game) {
 												 game.updateScoreboard();

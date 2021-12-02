@@ -335,6 +335,7 @@ void Game::returnToMenu(void) {
 		return;
 	}
 	Menu::openMenu();
+	SFX::SELECT1.play(25);
 	Server::destruct();
 	Connection::destruct();
 	delete GAME;
